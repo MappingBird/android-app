@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -34,6 +35,7 @@ public class MappingBirdLoginActivity extends Activity implements
 	private String mEmails = null;
 	private String mPasswords = null;
 	private static final int MSG_LOGIN_FINISH = 0;
+	private static final int MSG_LOGIN_FAIL = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +91,17 @@ public class MappingBirdLoginActivity extends Activity implements
 				new Thread(new Runnable() {
 					public void run() {
 						User user = mApi.logIn(mEmails, mPasswords);
-						Message msg = new Message();
-						msg.what = MSG_LOGIN_FINISH;
-						msg.obj = user;
-						mLoginHandler.sendMessage(msg);
+						if (user != null) {
+							Message msg = new Message();
+							msg.what = MSG_LOGIN_FINISH;
+							msg.obj = user;
+							mLoginHandler.sendMessage(msg);
+						}
+						else {
+							Message msg = new Message();
+							msg.what = MSG_LOGIN_FAIL;
+							mLoginHandler.sendMessage(msg);
+						}
 					}
 				}).start();
 			} else {
@@ -109,21 +118,24 @@ public class MappingBirdLoginActivity extends Activity implements
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case MSG_LOGIN_FINISH:
-				 isLoaing(false); 
+				isLoaing(false);
 				if (msg.obj instanceof User) {
 					User user = (User) msg.obj;
 					if (user != null) {
+						Log.i("test", "user is not null");
 						Intent intent = new Intent();
 						intent.setClass(
 								MappingBirdLoginActivity.this,
 								com.mappingbird.MappingBirdProfileActivity.class);
 						intent.putExtra("user", user);
 						MappingBirdLoginActivity.this.startActivity(intent);
-					} else {
-						Toast.makeText(getApplicationContext(), "Login Fail!",
-								Toast.LENGTH_SHORT).show();
-					}
+					} 
 				}
+				break;
+			case MSG_LOGIN_FAIL:
+				Log.i("test", "user is null");
+				Toast.makeText(getApplicationContext(), "Login Fail!",
+						Toast.LENGTH_SHORT).show();
 				break;
 			}
 		}

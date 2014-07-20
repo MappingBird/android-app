@@ -27,16 +27,23 @@ class MapParse {
 		int id = -1;
 		String token = null;
 		User user = null;
+		String error = null;
 
-		if (obj.has("token")) {
-			token = obj.optString("token");
-			MappingBirdSharedPreferences.savePrefAccessToken(context, token);
-		}
-		if (obj.has("user")) {
-			JSONObject userobj = obj.getJSONObject("user");
-			email = userobj.optString("email");
-			id = userobj.optInt("id");
-			user = new User(id, email, token);
+		if (!obj.has("error")) {
+
+			if (obj.has("token")) {
+				token = obj.optString("token");
+				MappingBirdSharedPreferences
+						.savePrefAccessToken(context, token);
+			}
+			if (obj.has("user")) {
+				JSONObject userobj = obj.getJSONObject("user");
+				email = userobj.optString("email");
+				id = userobj.optInt("id");
+				user = new User(id, email, token);
+			}
+		}else {
+			error = obj.getString("error");
 		}
 		// error
 		return user;
