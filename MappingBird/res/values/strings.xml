@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mappingbird</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="get_start">Get Started</string>
+    <string name="account">Account</string>
+    <string name="login_content_title">Log In Mappingbird Account</string>
+    <string name="login_content"><![CDATA[<font color=#000000>Once you log your account, you can view all your saved places on Mappingbird. If you haven\'t signed up, please visit </font><font color=#01A9E7>www.mappingbird.com</font>]]></string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">LOG IN</string>
+    <string name="logining">LOGING IN...</string>
+    <string name="logout">LOG OUT</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="get_direction">Get Direction</string>
+    <string name="loadig_main">Remember places for later.</string>
+    <string name="login_description">Log in your MappingBird account to view the places yo save on www.mappingbird.com.</string>
+
+</resources>
