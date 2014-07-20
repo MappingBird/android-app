@@ -96,8 +96,7 @@ public class MappingBirdLoginActivity extends Activity implements
 							msg.what = MSG_LOGIN_FINISH;
 							msg.obj = user;
 							mLoginHandler.sendMessage(msg);
-						}
-						else {
+						} else {
 							Message msg = new Message();
 							msg.what = MSG_LOGIN_FAIL;
 							mLoginHandler.sendMessage(msg);
@@ -116,9 +115,9 @@ public class MappingBirdLoginActivity extends Activity implements
 	private Handler mLoginHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
+			isLoaing(false);
 			switch (msg.what) {
 			case MSG_LOGIN_FINISH:
-				isLoaing(false);
 				if (msg.obj instanceof User) {
 					User user = (User) msg.obj;
 					if (user != null) {
@@ -129,7 +128,7 @@ public class MappingBirdLoginActivity extends Activity implements
 								com.mappingbird.MappingBirdProfileActivity.class);
 						intent.putExtra("user", user);
 						MappingBirdLoginActivity.this.startActivity(intent);
-					} 
+					}
 				}
 				break;
 			case MSG_LOGIN_FAIL:
