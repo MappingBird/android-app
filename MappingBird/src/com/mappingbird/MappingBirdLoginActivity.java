@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -18,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mappingbird.api.MappingBirdAPI;
+import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.User;
 
 public class MappingBirdLoginActivity extends Activity implements
@@ -34,8 +32,6 @@ public class MappingBirdLoginActivity extends Activity implements
 	private MappingBirdAPI mApi = null;
 	private String mEmails = null;
 	private String mPasswords = null;
-	private static final int MSG_LOGIN_FINISH = 0;
-	private static final int MSG_LOGIN_FAIL = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,54 +84,33 @@ public class MappingBirdLoginActivity extends Activity implements
 			mPasswords = mPassword.getText().toString();
 			isLoaing(true);
 			if (!mEmails.equals("") && !mPasswords.equals("")) {
-				new Thread(new Runnable() {
-					public void run() {
-						User user = mApi.logIn(mEmails, mPasswords);
-						if (user != null) {
-							Message msg = new Message();
-							msg.what = MSG_LOGIN_FINISH;
-							msg.obj = user;
-							mLoginHandler.sendMessage(msg);
-						} else {
-							Message msg = new Message();
-							msg.what = MSG_LOGIN_FAIL;
-							mLoginHandler.sendMessage(msg);
-						}
-					}
-				}).start();
+				mApi.logIn(mLoginListener, mEmails, mPasswords);
 			} else {
 				isLoaing(false);
 				Toast.makeText(getApplicationContext(),
-						"The data is incomplete!", Toast.LENGTH_SHORT).show();
+						getResources().getString(R.string.data_incomplete), Toast.LENGTH_SHORT).show();
 			}
 			break;
 		}
 	}
 
-	private Handler mLoginHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
+	OnLogInListener mLoginListener = new OnLogInListener() {
+
+		@Override
+		public void onLogIn(int statusCode, User user) {
 			isLoaing(false);
-			switch (msg.what) {
-			case MSG_LOGIN_FINISH:
-				if (msg.obj instanceof User) {
-					User user = (User) msg.obj;
-					if (user != null) {
-						Log.i("test", "user is not null");
-						Intent intent = new Intent();
-						intent.setClass(
-								MappingBirdLoginActivity.this,
-								com.mappingbird.MappingBirdProfileActivity.class);
-						intent.putExtra("user", user);
-						MappingBirdLoginActivity.this.startActivity(intent);
-					}
-				}
-				break;
-			case MSG_LOGIN_FAIL:
-				Log.i("test", "user is null");
-				Toast.makeText(getApplicationContext(), "Login Fail!",
+			if (statusCode == MappingBirdAPI.RESULT_OK) {
+				Intent intent = new Intent();
+				intent.setClass(MappingBirdLoginActivity.this,
+						com.mappingbird.MappingBirdProfileActivity.class);
+				MappingBirdLoginActivity.this.startActivity(intent);
+			} else if (statusCode == MappingBirdAPI.RESULT_NETWORK_ERROR) {
+				Toast.makeText(getApplicationContext(),
+						getResources().getString(R.string.login_fail_network_error), Toast.LENGTH_SHORT).show();
+			} else if (statusCode == MappingBirdAPI.RESULT_ACCOUNT_ERROR) {
+				Toast.makeText(getApplicationContext(),
+						getResources().getString(R.string.login_fail_accout_error),
 						Toast.LENGTH_SHORT).show();
-				break;
 			}
 		}
 	};

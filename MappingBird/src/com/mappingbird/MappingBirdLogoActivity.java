@@ -65,7 +65,7 @@ public class MappingBirdLogoActivity extends Activity {
 		// rotateAnimation.setRepeatMode(Animation.)
 		animationSet.addAnimation(rotateAnimation);
 		mApi = new MappingBirdAPI(this.getApplicationContext());
-		isLogin = mApi.isLogin();
+		isLogin = mApi.getCurrentUser() == null ? false : true;
 	}
 
 	@Override

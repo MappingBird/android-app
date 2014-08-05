@@ -64,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/login_content_text"
             android:hint="@string/email"
+            android:inputType="textEmailAddress"
             android:textColor="#000000" />
 
         <EditText
@@ -73,7 +74,8 @@
             android:layout_below="@id/input_email"
             android:layout_centerVertical="true"
             android:hint="@string/password"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:inputType="textPassword" />
 
         <ImageView
             android:id="@+id/question_icon"

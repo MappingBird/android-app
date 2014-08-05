@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.User;
@@ -35,11 +36,10 @@ public class MappingBirdProfileActivity extends Activity implements
 		mLogOut.setOnClickListener(this);
 		mBackIcon.setOnClickListener(this);
 		mApi = new MappingBirdAPI(this.getApplicationContext());
-		Intent intent = this.getIntent();
-		Bundle bundle = intent.getExtras();
-
-		user = (User) bundle.getSerializable("user");
-		mEmail.setText(user.getEmail());
+		user = mApi.getCurrentUser();
+		if (user != null) {
+			mEmail.setText(user.getEmail());
+		}
 	}
 
 	@Override
@@ -47,7 +47,15 @@ public class MappingBirdProfileActivity extends Activity implements
 		switch (v.getId()) {
 
 		case R.id.logout:
-			mApi.logOut();
+			if (mApi.logOut()) {
+				Intent intent = new Intent();
+				intent.setClass(MappingBirdProfileActivity.this,
+						com.mappingbird.MappingBirdMainActivity.class);
+				MappingBirdProfileActivity.this.startActivity(intent);
+			} else {
+				Toast.makeText(getApplicationContext(), "Logout Fail!",
+						Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.back_icon:
 			startCollectionActivity();

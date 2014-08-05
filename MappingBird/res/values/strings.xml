@@ -18,5 +18,16 @@
     <string name="get_direction">Get Direction</string>
     <string name="loadig_main">Remember places for later.</string>
     <string name="login_description">Log in your MappingBird account to view the places yo save on www.mappingbird.com.</string>
-
+	<string name="no_data">No Data</string>
+	<string name="error">Error</string>
+    <string name="internal_error">Internal Error</string>
+    <string name="network_error">Network Error</string>
+    <string name="unknow_error">Unknow Error</string> 
+    <string name="loading">Loading...</string>
+    <string name="my_loaction">My Location</string>
+    <string name="login_fail_network_error">Login Fail!Network Error.</string>
+    <string name="login_fail_accout_error">Login Fail! Email or Password Error.</string>
+    <string name="data_incomplete">The data is incomplete!</string>
+    <string name="ok">OK</string>
+    
 </resources>

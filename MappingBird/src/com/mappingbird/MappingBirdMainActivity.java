@@ -62,13 +62,14 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 				mLocationListener);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 				(long) 10000, 5.0f, mLocationListener);
-		findViewById(R.id.login_frame).setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				return true;
-			}
-		});
+		findViewById(R.id.login_frame).setOnTouchListener(
+				new OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						return true;
+					}
+				});
 	}
 
 	private android.location.LocationListener mLocationListener = new android.location.LocationListener() {
@@ -115,12 +116,11 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 				myLocation.remove();
 				myLocation = null;
 			}
-			myLocation = mMap
-						.addMarker(new MarkerOptions()
-								.position(lng)
-								.title("My Location")
-								.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.icon_current_location)));
+			myLocation = mMap.addMarker(new MarkerOptions()
+					.position(lng)
+					.title("My Location")
+					.icon(BitmapDescriptorFactory
+							.fromResource(R.drawable.icon_current_location)));
 
 		}
 	}

@@ -25,7 +25,6 @@
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/back_icon"
             android:text="Eiffel Tower"
-            android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" >
         </TextView>
@@ -39,13 +38,18 @@
         android:background="#FFFFFF" >
 
         <ImageView
+            android:id="@+id/trip_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <ImageView
             android:id="@+id/pin_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/pin_camera" />
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:id="@+id/palce_name"
@@ -54,8 +58,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/pin_icon"
-            android:text="Eiffel Tower"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:textSize="26sp" >
         </TextView>
     </RelativeLayout>
@@ -68,11 +71,10 @@
         android:padding="10dp" >
 
         <TextView
-            android:id="@+id/trip_place_title"
+            android:id="@+id/trip_place_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Avenue Gustave Eiffel, 75007 Paris, France Honymoon, Must-See"
             android:textColor="#000000"
             android:textSize="12sp" >
         </TextView>
@@ -81,18 +83,17 @@
             android:id="@+id/gray_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/trip_place_title"
+            android:layout_below="@id/trip_place_address"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:background="#C0C0C0" />
 
         <TextView
-            android:id="@+id/trip_place_content"
+            android:id="@+id/trip_place_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/gray_line"
             android:layout_centerHorizontal="true"
-            android:text="The most distinctive symble of Paris, the Eiffel Tower (Tour Eiffel) was much maligned by criticswhen it rose on the city&apos;s skyline in 1889 as part of the Universal Exhibition, but its graceful symmetry soon made it the star arrraction."
             android:textColor="#000000"
             android:textSize="12sp" >
         </TextView>
@@ -101,7 +102,7 @@
             android:id="@+id/get_direction"
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:layout_below="@id/trip_place_content"
+            android:layout_below="@id/trip_place_description"
             android:layout_marginTop="10dp"
             android:background="@drawable/login_selector" >
 
@@ -128,4 +129,5 @@
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
+
 </RelativeLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false" >
+
+    <item
+        android:drawable="@drawable/bird_animation_w1"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w2"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w3"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w4"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w5"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w6"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w7"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w8"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w9"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w10"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w11"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w12"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w13"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w14"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w15"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w16"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w17"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w18"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w19"
+        android:duration="150"/>
+    <item
+        android:drawable="@drawable/bird_animation_w20"
+        android:duration="150"/>
+
+</animation-list>
