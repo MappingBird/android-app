@@ -657,7 +657,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		private final IconGenerator mClusterIconGenerator = new IconGenerator(
 				getApplicationContext());
 		private final ImageView mImageView;
-		private final ImageView mClusterImageView;
+//		private final ImageView mClusterImageView;
 		private final int mDimension;
 
 		public MappingBirdRender() {
@@ -666,8 +666,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			View multiProfile = getLayoutInflater().inflate(
 					R.layout.mappingbird_multi_pins, null);
 			mClusterIconGenerator.setContentView(multiProfile);
-			mClusterImageView = (ImageView) multiProfile
-					.findViewById(R.id.image);
+//			mClusterImageView = (ImageView) multiProfile
+//					.findViewById(R.id.image);
 
 			mImageView = new ImageView(getApplicationContext());
 			mDimension = (int) getResources().getDimension(
@@ -706,7 +706,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			MultiDrawable multiDrawable = new MultiDrawable(profilePhotos);
 			multiDrawable.setBounds(0, 0, width, height);
 
-			mClusterImageView.setImageDrawable(multiDrawable);
+//			mClusterImageView.setImageDrawable(multiDrawable);
 			Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster
 					.getSize()));
 			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
