@@ -1,0 +1,8 @@
+.DS_Store
+bin/
+gen/
+.gradle/1.10/
+build/
+lint.xml
+proguard-project.txt
+proguard-project

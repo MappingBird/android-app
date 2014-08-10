@@ -72,7 +72,13 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyB2D1EcbKy9ffARb9auHuEWhC5hwqGTFnw" />
+            android:value="AIzaSyAOoW4gqgCyPTGaXZj0-y3jkC3VfsNNbN0" />
+        <!--
+        formal
+        AIzaSyAOoW4gqgCyPTGaXZj0-y3jkC3VfsNNbN0
+        Test
+        AIzaSyB2D1EcbKy9ffARb9auHuEWhC5hwqGTFnw
+         -->
     </application>
 
     <!-- The Google Maps Android API uses OpenGL ES version 2 to render the map -->

@@ -1,0 +1,3 @@
+include ':google-play-services_lib'
+include ':mlibray'
+include ':MappingBird'
