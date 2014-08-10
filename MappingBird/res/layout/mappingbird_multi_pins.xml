@@ -10,6 +10,7 @@
         android:layout_gravity="center"
         android:background="@drawable/pin_number"
         android:textColor="#F6892A"
+        android:gravity="center"
         android:textStyle="bold" />
 
 </FrameLayout>

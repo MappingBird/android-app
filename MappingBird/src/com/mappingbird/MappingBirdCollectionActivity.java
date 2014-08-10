@@ -707,8 +707,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			multiDrawable.setBounds(0, 0, width, height);
 
 //			mClusterImageView.setImageDrawable(multiDrawable);
-			Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster
-					.getSize()));
+			String size = String.valueOf(cluster.getSize());
+			if(cluster.getSize() > 100) {
+				size = "99+";
+			}
+			Bitmap icon = mClusterIconGenerator.makeIcon(size);
 			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
 		}
 
