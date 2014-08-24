@@ -55,6 +55,7 @@ import com.mappingbird.api.OnGetCollectionInfoListener;
 import com.mappingbird.api.OnGetCollectionsListener;
 import com.mappingbird.api.Point;
 import com.mappingbird.common.DeBug;
+import com.mappingbird.common.Utils;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
@@ -134,6 +135,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				Intent intent = new Intent();
 				intent.setClass(MappingBirdCollectionActivity.this,
 						com.mappingbird.MappingBirdProfileActivity.class);
+//				Utils.startActivity(MappingBirdCollectionActivity.this, intent);
 				MappingBirdCollectionActivity.this.startActivity(intent);
 			}
 		});
@@ -682,6 +684,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 			intent.setClass(this,
 					com.mappingbird.MappingBirdPlaceActivity.class);
+//			Utils.startActivity(MappingBirdCollectionActivity.this, intent);
 			this.startActivity(intent);
 		}
 

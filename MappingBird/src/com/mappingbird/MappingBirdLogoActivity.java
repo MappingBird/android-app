@@ -12,6 +12,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.mappingbird.api.MappingBirdAPI;
+import com.mappingbird.common.Utils;
 
 public class MappingBirdLogoActivity extends Activity {
 
@@ -42,6 +43,7 @@ public class MappingBirdLogoActivity extends Activity {
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 						| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				MappingBirdLogoActivity.this.startActivity(intent);
+				overridePendingTransition(R.anim.activity_open_enter_animation, R.anim.activity_open_exit_animation);
 				break;
 			}
 		}
