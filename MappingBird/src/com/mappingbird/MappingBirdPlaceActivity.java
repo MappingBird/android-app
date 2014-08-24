@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.mappingbird.api.Collection;
@@ -34,6 +35,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private ImageView mPlacePhoto = null;
 	private ImageView mPinIcon = null;
 	private TextView mPlaceAddress = null;
+	private ScrollView mScrollView = null;
+
 	private double mPlaceLatitude = 0;
 	private double mPlaceLongitude = 0;
 	private LocationManager mLocationManager;
@@ -59,6 +62,9 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mPlacePhoto = (ImageView) findViewById(R.id.trip_photo);
 		mPlaceAddress = (TextView) findViewById(R.id.trip_place_address);
 		mPinIcon = (ImageView) findViewById(R.id.pin_icon);
+		mScrollView = (ScrollView) findViewById(R.id.trip_place_scrollview);
+		
+		mScrollView.setOverScrollMode(ScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS);
 
 		mBack.setOnClickListener(this);
 		mGetDirection.setOnClickListener(this);

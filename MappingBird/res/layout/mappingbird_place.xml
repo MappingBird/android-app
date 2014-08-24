@@ -3,18 +3,136 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <com.mappingbird.widget.MappingbirdScrollView
+        android:id="@+id/trip_place_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/trip_place_photo"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="#FFFFFF" >
+
+                <ImageView
+                    android:id="@+id/trip_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/pin_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:id="@+id/palce_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/pin_icon"
+                    android:textColor="#FFFFFF"
+                    android:textSize="26sp" >
+                </TextView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/trip_detail_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/trip_place_photo"
+                android:padding="10dp" >
+
+                <TextView
+                    android:id="@+id/trip_place_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#000000"
+                    android:textSize="12sp" >
+                </TextView>
+
+                <View
+                    android:id="@+id/gray_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/trip_place_address"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#C0C0C0" />
+
+                <TextView
+                    android:id="@+id/trip_place_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/gray_line"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#000000"
+                    android:textSize="12sp" >
+                </TextView>
+
+                <RelativeLayout
+                    android:id="@+id/get_direction"
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:layout_below="@id/trip_place_description"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_selector" >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" >
+
+                        <ImageView
+                            android:id="@+id/get_direction_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icon_get_direction" />
+
+                        <TextView
+                            android:id="@+id/get_direction_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/get_direction_icon"
+                            android:text="@string/get_direction"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp" >
+                        </TextView>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </com.mappingbird.widget.MappingbirdScrollView>
+
     <RelativeLayout
         android:id="@+id/trip_detail_title"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#F6892A" >
+        android:background="#00000000" >
 
         <ImageView
             android:id="@+id/back_icon"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:scaleType="center"
             android:src="@drawable/icon_back" />
 
         <TextView
@@ -22,112 +140,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/back_icon"
-            android:text="Eiffel Tower"
+            android:singleLine="true"
+            android:textColor="#fff"
             android:textSize="18sp"
             android:textStyle="bold" >
         </TextView>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/trip_place_photo"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_below="@id/trip_detail_title"
-        android:background="#FFFFFF" >
-
-        <ImageView
-            android:id="@+id/trip_photo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
-
-        <ImageView
-            android:id="@+id/pin_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp" />
-
-        <TextView
-            android:id="@+id/palce_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/pin_icon"
-            android:textColor="#FFFFFF"
-            android:textSize="26sp" >
-        </TextView>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/trip_detail_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/trip_place_photo"
-        android:padding="10dp" >
-
-        <TextView
-            android:id="@+id/trip_place_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:textColor="#000000"
-            android:textSize="12sp" >
-        </TextView>
-
-        <View
-            android:id="@+id/gray_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/trip_place_address"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="#C0C0C0" />
-
-        <TextView
-            android:id="@+id/trip_place_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/gray_line"
-            android:layout_centerHorizontal="true"
-            android:textColor="#000000"
-            android:textSize="12sp" >
-        </TextView>
-
-        <RelativeLayout
-            android:id="@+id/get_direction"
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:layout_below="@id/trip_place_description"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/login_selector" >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true" >
-
-                <ImageView
-                    android:id="@+id/get_direction_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_get_direction" />
-
-                <TextView
-                    android:id="@+id/get_direction_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/get_direction_icon"
-                    android:text="@string/get_direction"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp" >
-                </TextView>
-            </RelativeLayout>
-        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>
