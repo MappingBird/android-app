@@ -31,9 +31,12 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private Collection mCollection = null;
 	private TextView mTitle = null;
 	private TextView mPlaceName = null;
+	private TextView mPlaceTag = null;
+	private TextView mPlaceDate = null;
 	private TextView mDescription = null;
 	private ImageView mPlacePhoto = null;
 	private ImageView mPinIcon = null;
+	private ImageView mShareIcon = null;
 	private TextView mPlaceAddress = null;
 	private ScrollView mScrollView = null;
 
@@ -58,10 +61,17 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mGetDirection = (RelativeLayout) findViewById(R.id.get_direction);
 		mTitle = (TextView) findViewById(R.id.trip_detail_title_name);
 		mPlaceName = (TextView) findViewById(R.id.palce_name);
+		mPlaceTag = (TextView) findViewById(R.id.trip_place_tag);
+		mPlaceDate = (TextView) findViewById(R.id.trip_place_date);
+		
 		mDescription = (TextView) findViewById(R.id.trip_place_description);
 		mPlacePhoto = (ImageView) findViewById(R.id.trip_photo);
 		mPlaceAddress = (TextView) findViewById(R.id.trip_place_address);
 		mPinIcon = (ImageView) findViewById(R.id.pin_icon);
+		mShareIcon = (ImageView) findViewById(R.id.share_icon);
+		
+		mShareIcon.setOnClickListener(mShareClickListener);
+		
 		mScrollView = (ScrollView) findViewById(R.id.trip_place_scrollview);
 		
 		mScrollView.setOverScrollMode(ScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS);
@@ -114,6 +124,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 				mPlaceName.setText(point.getLocation().getPlaceName());
 				mDescription.setText(point.getDescription());
 				mPlaceAddress.setText(point.getLocation().getPlaceAddress());
+				mPlaceTag.setText(point.getType());
+				mPlaceDate.setText(point.getCreateTime());
 			} else {
 				String title = "";
 				title = getResources().getString(R.string.error);
@@ -125,6 +137,17 @@ public class MappingBirdPlaceActivity extends Activity implements
 			}
 		}
 
+	};
+	
+	OnClickListener mShareClickListener = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			String placeInfo = "";
+			placeInfo = mPoint.getLocation().getPlaceName() + "\n" + mPoint.getLocation().getPlaceAddress() + "\n";
+			getShareIntent("Share", placeInfo);
+			
+		}
 	};
 	
 	android.content.DialogInterface.OnClickListener positiveListener = new android.content.DialogInterface.OnClickListener() {
@@ -163,37 +186,46 @@ public class MappingBirdPlaceActivity extends Activity implements
 		}
 	}
 
-	private void getDirection(long latitude, long longitude) {
-		// "http://maps.google.com/maps?lat="+latitude+"&lng="+longitude
-		Intent intent = new Intent(
-				android.content.Intent.ACTION_VIEW,
-				Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
-		startActivity(intent);
-	}
+//	private void getDirection(long latitude, long longitude) {
+//		// "http://maps.google.com/maps?lat="+latitude+"&lng="+longitude
+//		Intent intent = new Intent(
+//				android.content.Intent.ACTION_VIEW,
+//				Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
+//		startActivity(intent);
+//	}
 
 	private int getPinIcon(int type) {
 		int iconRes = -1;
 		switch (type) {
 		case Point.TYPE_RESTAURANT:
-			iconRes = R.drawable.pin_restaurant;
+			iconRes = R.drawable.category_icon_restaurant;
 			break;
 		case Point.TYPE_HOTEL:
-			iconRes = R.drawable.pin_bed;
+			iconRes = R.drawable.category_icon_hotel;
 			break;
 		case Point.TYPE_MALL:
-			iconRes = R.drawable.pin_shopcart;
+			iconRes = R.drawable.category_icon_mall;
 			break;
 		case Point.TYPE_BAR:
-			iconRes = R.drawable.pin_bar;
+			iconRes = R.drawable.category_icon_bar;
 			break;
 		case Point.TYPE_MISC:
-			iconRes = R.drawable.pin_general;
+			iconRes = R.drawable.category_icon_default;
 			break;
 		case Point.TYPE_SCENICSPOT:
-			iconRes = R.drawable.pin_camera;
+			iconRes = R.drawable.category_icon_scene;
 			break;
 		}
 		return iconRes;
+	}
+	
+	private void  getShareIntent(String title, String placeInfo) {
+		Intent intent=new Intent(Intent.ACTION_SEND);
+		intent.setType("text/plain");
+//		intent.putExtra(Intent.EXTRA_SUBJECT, title);
+		intent.putExtra(Intent.EXTRA_TEXT, placeInfo);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 
 }

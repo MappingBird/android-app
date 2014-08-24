@@ -10,5 +10,6 @@
     <color name="item_text_press">#FFFFFF</color>
     <color name = "transparent" > #00000000 </color > 
     <color name = "white" > #FFFFFF</color >  
-    <color name = "green" > #1D9301</color >  
+    <color name = "green" > #1D9301</color >  
+    <color name = "blue" > #01A9E7</color >  
 </resources>

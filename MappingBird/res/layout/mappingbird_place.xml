@@ -24,51 +24,74 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
-
-                <ImageView
-                    android:id="@+id/pin_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp" />
-
-                <TextView
-                    android:id="@+id/palce_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/pin_icon"
-                    android:textColor="#FFFFFF"
-                    android:textSize="26sp" >
-                </TextView>
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/trip_detail_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/trip_place_photo"
                 android:padding="10dp" >
+
+                <ImageView
+                    android:id="@+id/pin_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp" />
+
+                <TextView
+                    android:id="@+id/palce_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pin_icon"
+                    android:layout_margin="5dp"
+                    android:textColor="#4E4E4E"
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/trip_place_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:textColor="#000000"
-                    android:textSize="12sp" >
+                    android:layout_below="@id/palce_name"
+                    android:drawableLeft="@drawable/icon_address"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#707070"
+                    android:textSize="14sp" >
+                </TextView>
+
+                <TextView
+                    android:id="@+id/trip_place_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trip_place_address"
+                    android:drawableLeft="@drawable/icon_tag"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#707070"
+                    android:textSize="14sp" >
+                </TextView>
+
+                <TextView
+                    android:id="@+id/trip_place_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trip_place_tag"
+                    android:drawableLeft="@drawable/icon_date"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#707070"
+                    android:textSize="14sp" >
                 </TextView>
 
                 <View
                     android:id="@+id/gray_line"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@id/trip_place_address"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#C0C0C0" />
+                    android:layout_below="@id/trip_place_date"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:background="#EEEEEE" />
 
                 <TextView
                     android:id="@+id/trip_place_description"
@@ -76,47 +99,31 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/gray_line"
                     android:layout_centerHorizontal="true"
-                    android:textColor="#000000"
-                    android:textSize="12sp" >
+                    android:textColor="#707070"
+                    android:textSize="14sp" >
                 </TextView>
 
                 <RelativeLayout
                     android:id="@+id/get_direction"
                     android:layout_width="match_parent"
-                    android:layout_height="38dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/trip_place_description"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/login_selector" >
+                    android:background="@drawable/direction_bg_selector" >
 
-                    <RelativeLayout
+                    <TextView
+                        android:id="@+id/get_direction_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" >
-
-                        <ImageView
-                            android:id="@+id/get_direction_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/icon_get_direction" />
-
-                        <TextView
-                            android:id="@+id/get_direction_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/get_direction_icon"
-                            android:text="@string/get_direction"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp" >
-                        </TextView>
-                    </RelativeLayout>
+                        android:layout_centerInParent="true"
+                        android:drawableLeft="@drawable/direction_selector"
+                        android:gravity="center_vertical"
+                        android:text="@string/get_direction"
+                        android:textColor="@color/direction_text_color"
+                        android:textSize="18sp" >
+                    </TextView>
                 </RelativeLayout>
             </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:textSize="18sp" />
         </LinearLayout>
     </com.mappingbird.widget.MappingbirdScrollView>
 
@@ -124,7 +131,7 @@
         android:id="@+id/trip_detail_title"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#00000000" >
+        android:background="#F6892A" >
 
         <ImageView
             android:id="@+id/back_icon"
@@ -134,18 +141,28 @@
             android:layout_marginLeft="10dp"
             android:scaleType="center"
             android:src="@drawable/icon_back" />
-
+        
+        <ImageView
+            android:id="@+id/share_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:scaleType="center"
+            android:src="@drawable/share_selector" />
+        
         <TextView
             android:id="@+id/trip_detail_title_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/share_icon"
             android:layout_toRightOf="@id/back_icon"
             android:singleLine="true"
             android:textColor="#fff"
             android:textSize="18sp"
             android:textStyle="bold" >
         </TextView>
+        
     </RelativeLayout>
 
 </RelativeLayout>
