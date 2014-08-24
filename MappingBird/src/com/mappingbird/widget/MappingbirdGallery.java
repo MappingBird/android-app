@@ -19,4 +19,5 @@ public class MappingbirdGallery extends View {
 		super(context, attrs, defStyle);
 	}
 
+	
 }
