@@ -63,18 +63,19 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mPlaceName = (TextView) findViewById(R.id.palce_name);
 		mPlaceTag = (TextView) findViewById(R.id.trip_place_tag);
 		mPlaceDate = (TextView) findViewById(R.id.trip_place_date);
-		
+
 		mDescription = (TextView) findViewById(R.id.trip_place_description);
 		mPlacePhoto = (ImageView) findViewById(R.id.trip_photo);
 		mPlaceAddress = (TextView) findViewById(R.id.trip_place_address);
 		mPinIcon = (ImageView) findViewById(R.id.pin_icon);
 		mShareIcon = (ImageView) findViewById(R.id.share_icon);
-		
+
 		mShareIcon.setOnClickListener(mShareClickListener);
-		
+
 		mScrollView = (ScrollView) findViewById(R.id.trip_place_scrollview);
-		
-		mScrollView.setOverScrollMode(ScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS);
+
+		mScrollView
+				.setOverScrollMode(ScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS);
 
 		mBack.setOnClickListener(this);
 		mGetDirection.setOnClickListener(this);
@@ -107,8 +108,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 				.get(mPosition).getId());
 		mContext = this;
 
-		mLoadingDialog = MappingBirdDialog.createMessageDialog(
-				mContext, null, true);
+		mLoadingDialog = MappingBirdDialog.createMessageDialog(mContext, null,
+				true);
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
 	}
@@ -131,25 +132,28 @@ public class MappingBirdPlaceActivity extends Activity implements
 				title = getResources().getString(R.string.error);
 				String error = "";
 				error = MappingBirdDialog.setError(statusCode, mContext);
-				MappingBirdDialog.createMessageDialog(mContext,
-						title, error, getResources().getString(R.string.ok),
+				MappingBirdDialog.createMessageDialog(mContext, title, error,
+						getResources().getString(R.string.ok),
 						positiveListener, null, null).show();
 			}
 		}
 
 	};
-	
-	OnClickListener mShareClickListener = new OnClickListener(){
+
+	OnClickListener mShareClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
 			String placeInfo = "";
-			placeInfo = mPoint.getLocation().getPlaceName() + "\n" + mPoint.getLocation().getPlaceAddress() + "\n";
-			getShareIntent("Share", placeInfo);
-			
+			if (mPoint != null) {
+				placeInfo = mPoint.getLocation().getPlaceName() + "\n"
+						+ mPoint.getLocation().getPlaceAddress() + "\n";
+				getShareIntent("Share", placeInfo);
+			}
+
 		}
 	};
-	
+
 	android.content.DialogInterface.OnClickListener positiveListener = new android.content.DialogInterface.OnClickListener() {
 
 		@Override
@@ -186,13 +190,13 @@ public class MappingBirdPlaceActivity extends Activity implements
 		}
 	}
 
-//	private void getDirection(long latitude, long longitude) {
-//		// "http://maps.google.com/maps?lat="+latitude+"&lng="+longitude
-//		Intent intent = new Intent(
-//				android.content.Intent.ACTION_VIEW,
-//				Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
-//		startActivity(intent);
-//	}
+	// private void getDirection(long latitude, long longitude) {
+	// // "http://maps.google.com/maps?lat="+latitude+"&lng="+longitude
+	// Intent intent = new Intent(
+	// android.content.Intent.ACTION_VIEW,
+	// Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
+	// startActivity(intent);
+	// }
 
 	private int getPinIcon(int type) {
 		int iconRes = -1;
@@ -218,11 +222,11 @@ public class MappingBirdPlaceActivity extends Activity implements
 		}
 		return iconRes;
 	}
-	
-	private void  getShareIntent(String title, String placeInfo) {
-		Intent intent=new Intent(Intent.ACTION_SEND);
+
+	private void getShareIntent(String title, String placeInfo) {
+		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("text/plain");
-//		intent.putExtra(Intent.EXTRA_SUBJECT, title);
+		// intent.putExtra(Intent.EXTRA_SUBJECT, title);
 		intent.putExtra(Intent.EXTRA_TEXT, placeInfo);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
