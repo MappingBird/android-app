@@ -1,30 +1,18 @@
 package com.mappingbird.offline;
 
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.HashSet;
-
-import android.os.Bundle;
-import android.os.Environment;
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.Menu;
-import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.mappingbird.R;
-import com.mappingbird.R.id;
-import com.mappingbird.R.layout;
-import com.mappingbird.R.menu;
+import com.mappingbird.common.DeBug;
 
 public class MainActivity extends Activity {
 	static String TAG = "MainActivity";
@@ -49,7 +37,7 @@ public class MainActivity extends Activity {
 	                            .getMap();
 	        //-- Check if we were successful in obtaining the map.
 	        if (map_ != null) {
-	        	Log.i(TAG, "mMap is available.");	        		    			    		
+	        	DeBug.i(TAG, "mMap is available.");	        		    			    		
 	        		        		       
 	        	
 	        	new MapTileDownloaderTask().execute(new String[]{"еxе_ел"});

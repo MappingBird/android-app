@@ -1,9 +1,10 @@
 package com.mappingbird.offline;
 
-import java.net.URL;
 import java.net.MalformedURLException;
-import android.util.Log;
+import java.net.URL;
+
 import com.google.android.gms.maps.model.UrlTileProvider;
+import com.mappingbird.common.DeBug;
 
 public class MapBoxOnlineTileProvider extends UrlTileProvider {	    
     private static final String TAG = "MapBoxOnlineTileProvider";
@@ -23,7 +24,7 @@ public class MapBoxOnlineTileProvider extends UrlTileProvider {
     @Override
     public URL getTileUrl(int x, int y, int z) {
         try {
-        	Log.i(TAG, String.format(Constants.MAPBOX_URL_FORMAT, Constants.MAPBOX_ID, z, x, y));        	
+        	DeBug.i(TAG, String.format(Constants.MAPBOX_URL_FORMAT, Constants.MAPBOX_ID, z, x, y));        	
             return new URL(String.format(Constants.MAPBOX_URL_FORMAT, Constants.MAPBOX_ID, z, x, y));
         }
         catch (MalformedURLException e) {

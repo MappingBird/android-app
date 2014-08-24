@@ -2,7 +2,8 @@ package com.mappingbird.api;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+
+import com.mappingbird.common.DeBug;
 
 class UserPrefs {
 	private static final String PREFS_NAME = "com.mappingbird.api.UserPrefs";
@@ -30,7 +31,7 @@ class UserPrefs {
 	}
 
 	public void setUser(User user) {
-		Log.i(TAG , "set User");
+		DeBug.i(TAG , "set User");
 		if (user == null)
 			return;
 		editor.putString(getFieldKey(KEY_EMAIL), user.getEmail());
@@ -40,7 +41,7 @@ class UserPrefs {
 	}
 
 	public User getUser() {
-		Log.i(TAG , "get User");
+		DeBug.i(TAG , "get User");
 		String email = settings.getString(getFieldKey(KEY_EMAIL), "");
 		String token = settings.getString(getFieldKey(KEY_TOKEN), "");
 		long id = settings.getLong(getFieldKey(KEY_ID), -1);
@@ -48,13 +49,13 @@ class UserPrefs {
 		if (id != -1 && !email.equals("") && !token.equals("")) {
 			return new User(id, email, token);
 		} else {
-			Log.i(TAG , "user is null");
+			DeBug.i(TAG , "user is null");
 			return null;
 		}
 	}
 
 	public boolean deleteUser(User user) {
-		Log.i(TAG , "delete User");
+		DeBug.i(TAG , "delete User");
 		if (user == null)
 			return true;
 		editor.remove(getFieldKey(KEY_ID));

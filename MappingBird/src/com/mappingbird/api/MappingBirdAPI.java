@@ -4,7 +4,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.mappingbird.common.DeBug;
 
 public class MappingBirdAPI {
 	private static final String TAG = MappingBirdAPI.class.getName();
@@ -73,7 +74,7 @@ public class MappingBirdAPI {
 
 		boolean status = false;
 		if (clearUser()) {
-			Log.i(TAG, "logout sucess");
+			DeBug.i(TAG, "logout sucess");
 			status = true;
 			// String url = mHost + "/api/user/logout";
 			// String method = "GET";
@@ -81,7 +82,7 @@ public class MappingBirdAPI {
 			// status = conn.req(url, method, null,
 			// NetwokConnection.API_LOGOUT);
 		} else {
-			Log.i(TAG, "logout fail");
+			DeBug.i(TAG, "logout fail");
 		}
 		return status;
 	}

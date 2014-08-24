@@ -2,20 +2,15 @@ package com.mappingbird.offline;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
+
+import android.content.Context;
 
 import com.google.android.gms.maps.model.Tile;
 import com.google.android.gms.maps.model.TileProvider;
-
-import android.content.Context;
-import android.content.res.AssetManager;
-import android.util.Log;
+import com.mappingbird.common.DeBug;
 
 
 public class OfflineTileProvider implements TileProvider {	
@@ -59,12 +54,12 @@ public class OfflineTileProvider implements TileProvider {
         } catch (IOException e) {
         	java.io.StringWriter sw = new java.io.StringWriter(); 
             e.printStackTrace(new java.io.PrintWriter(sw));
-            Log.e(TAG, sw.toString());
+            DeBug.e(TAG, sw.toString());
             return null;
         } catch (OutOfMemoryError e) {
         	java.io.StringWriter sw = new java.io.StringWriter();        	
             e.printStackTrace(new java.io.PrintWriter(sw));
-            Log.e(TAG, sw.toString());
+            DeBug.e(TAG, sw.toString());
             return null;
         } finally {
             if (in != null) try { in.close(); } catch (Exception ignored) {}

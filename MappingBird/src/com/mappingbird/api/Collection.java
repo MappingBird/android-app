@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.util.Log;
+import com.mappingbird.common.DeBug;
 
 public class Collection implements Serializable{
 
@@ -98,7 +98,7 @@ public class Collection implements Serializable{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		Log.i(TAG, "milliseconds: format =" + ms);
+		DeBug.i(TAG, "milliseconds: format =" + ms);
 		return ms;
 	}
 }

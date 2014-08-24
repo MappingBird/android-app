@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 

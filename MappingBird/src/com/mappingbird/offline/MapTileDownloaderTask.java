@@ -1,22 +1,21 @@
 package com.mappingbird.offline;
 
 import java.io.File;
-import java.io.FileOutputStream;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.util.Log;
-import android.content.Context;
+
+import com.mappingbird.common.DeBug;
 
 public class MapTileDownloaderTask extends AsyncTask<String, Void, JSONArray> {
 	static final String API_TILEPATHS = "http://mappingbirds.appspot.com/getMapTilePathZXY?address=%s&zoom=%s";
@@ -66,7 +65,7 @@ public class MapTileDownloaderTask extends AsyncTask<String, Void, JSONArray> {
 		} catch (Exception e) {
 			java.io.StringWriter sw = new java.io.StringWriter();
 			e.printStackTrace(new java.io.PrintWriter(sw));			
-			Log.e(TAG, sw.toString());
+			DeBug.e(TAG, sw.toString());
 		}
 		
 		return tilePaths;

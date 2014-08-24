@@ -2,13 +2,14 @@ package com.mappingbird.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.mappingbird.api.Collection;
+
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+
+import com.mappingbird.common.DeBug;
 
 final class MappingBirdUtil {
 	private static final String TAG = MappingBirdUtil.class.getName();
@@ -31,26 +32,26 @@ final class MappingBirdUtil {
 
 	public void sendLogIn(int apiType, OnLogInListener listener,
 			String urlEndpoint, String method, JSONObject postData) {
-		Log.d(TAG, "[sendLogIn]");
+		DeBug.d(TAG, "[sendLogIn]");
 
 		Info info = new Info(apiType, listener, urlEndpoint, method, postData);
 		LoadInfoThread thread = mLoadingThreadHashMap.get(info.mKey);
 		if (thread != null) {
-			Log.d(TAG, "[sendLogIn]thread exist.");
+			DeBug.d(TAG, "[sendLogIn]thread exist.");
 			thread.addLogInListener(listener);
 		} else {
 			if (mLoadingThreadHashMap.size() >= LOADING_THREAD_MAX) {
 				Info waitinfo = mWaitHaspMap.get(info.mKey);
 				if (waitinfo != null) {
-					Log.d(TAG, "[sendLogIn] info exist");
+					DeBug.d(TAG, "[sendLogIn] info exist");
 					waitinfo.addLogInListener(listener);
 				} else {
-					Log.d(TAG, "[sendLogIn]info add");
+					DeBug.d(TAG, "[sendLogIn]info add");
 					mWaitHaspMap.put(info.mKey, info);
 					mWaitIndexArray.add(info.mKey);
 				}
 			} else {
-				Log.d(TAG, "[sendLogIn]thread <1");
+				DeBug.d(TAG, "[sendLogIn]thread <1");
 				thread = new LoadInfoThread(info);
 				mLoadingThreadHashMap.put(info.mKey, thread);
 				thread.start();
@@ -61,25 +62,25 @@ final class MappingBirdUtil {
 	public void sendGetCollection(int apiType,
 			OnGetCollectionsListener listener, String urlEndpoint,
 			String method) {
-		Log.d(TAG, "[sendGetCollection]");
+		DeBug.d(TAG, "[sendGetCollection]");
 		Info info = new Info(apiType, listener, urlEndpoint, method);
 		LoadInfoThread thread = mLoadingThreadHashMap.get(info.mKey);
 		if (thread != null) {
-			Log.d(TAG, "[sendGetCollection] thread exist.");
+			DeBug.d(TAG, "[sendGetCollection] thread exist.");
 			thread.addCollectionListener(listener);
 		} else {
 			if (mLoadingThreadHashMap.size() >= LOADING_THREAD_MAX) {
 				Info waitinfo = mWaitHaspMap.get(info.mKey);
 				if (waitinfo != null) {
-					Log.d(TAG, "[sendGetCollection] info exist");
+					DeBug.d(TAG, "[sendGetCollection] info exist");
 					waitinfo.addCollectionListener(listener);
 				} else {
-					Log.d(TAG, "[sendGetCollection] info add");
+					DeBug.d(TAG, "[sendGetCollection] info add");
 					mWaitHaspMap.put(info.mKey, info);
 					mWaitIndexArray.add(info.mKey);
 				}
 			} else {
-				Log.d(TAG, "[sendGetCollection] thread <1");
+				DeBug.d(TAG, "[sendGetCollection] thread <1");
 				thread = new LoadInfoThread(info);
 				mLoadingThreadHashMap.put(info.mKey, thread);
 				thread.start();
@@ -90,25 +91,25 @@ final class MappingBirdUtil {
 	public void sendGetPoints(int apiType, OnGetPointsListener listener,
 			String url, String method) {
 		
-		Log.d(TAG, "[sendGetPoints]");
+		DeBug.d(TAG, "[sendGetPoints]");
 		Info info = new Info(apiType, listener, url, method);
 		LoadInfoThread thread = mLoadingThreadHashMap.get(info.mKey);
 		if (thread != null) {
-			Log.d(TAG, "[sendGetPoints] thread exist.");
+			DeBug.d(TAG, "[sendGetPoints] thread exist.");
 			thread.addPointListener(listener);
 		} else {
 			if (mLoadingThreadHashMap.size() >= LOADING_THREAD_MAX) {
 				Info waitinfo = mWaitHaspMap.get(info.mKey);
 				if (waitinfo != null) {
-					Log.d(TAG, "[sendGetPoints] info exist");
+					DeBug.d(TAG, "[sendGetPoints] info exist");
 					waitinfo.addPointListener(listener);
 				} else {
-					Log.d(TAG, "[sendGetPoints] info add");
+					DeBug.d(TAG, "[sendGetPoints] info add");
 					mWaitHaspMap.put(info.mKey, info);
 					mWaitIndexArray.add(info.mKey);
 				}
 			} else {
-				Log.d(TAG, "[sendGetPoints] thread <1");
+				DeBug.d(TAG, "[sendGetPoints] thread <1");
 				thread = new LoadInfoThread(info);
 				mLoadingThreadHashMap.put(info.mKey, thread);
 				thread.start();
@@ -119,25 +120,25 @@ final class MappingBirdUtil {
 	public void sendGetCollectionInfo(int apiType,
 			OnGetCollectionInfoListener listener, String url, String method) {
 		
-		Log.d(TAG, "[sendGetCollectionInfo]");
+		DeBug.d(TAG, "[sendGetCollectionInfo]");
 		Info info = new Info(apiType, listener, url, method);
 		LoadInfoThread thread = mLoadingThreadHashMap.get(info.mKey);
 		if (thread != null) {
-			Log.d(TAG, "[sendGetPoints] thread exist.");
+			DeBug.d(TAG, "[sendGetPoints] thread exist.");
 			thread.addCollectionInfoListener(listener);
 		} else {
 			if (mLoadingThreadHashMap.size() >= LOADING_THREAD_MAX) {
 				Info waitinfo = mWaitHaspMap.get(info.mKey);
 				if (waitinfo != null) {
-					Log.d(TAG, "[sendGetCollectionInfo] info exist");
+					DeBug.d(TAG, "[sendGetCollectionInfo] info exist");
 					waitinfo.addCollectionInfoListener(listener);
 				} else {
-					Log.d(TAG, "[sendGetCollectionInfo] info add");
+					DeBug.d(TAG, "[sendGetCollectionInfo] info add");
 					mWaitHaspMap.put(info.mKey, info);
 					mWaitIndexArray.add(info.mKey);
 				}
 			} else {
-				Log.d(TAG, "[sendGetCollectionInfo] thread <1");
+				DeBug.d(TAG, "[sendGetCollectionInfo] thread <1");
 				thread = new LoadInfoThread(info);
 				mLoadingThreadHashMap.put(info.mKey, thread);
 				thread.start();
@@ -149,7 +150,7 @@ final class MappingBirdUtil {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			Log.d(TAG, "Handler, msg.what =" + msg.what);
+			DeBug.d(TAG, "Handler, msg.what =" + msg.what);
 			switch (msg.what) {
 			case MSG_LOGIN_FINISH:
 				if (msg.obj instanceof Info) {
@@ -380,7 +381,7 @@ final class MappingBirdUtil {
 
 		@Override
 		public void run() {
-			Log.d(TAG, "thread run.");
+			DeBug.d(TAG, "thread run.");
 			Collections collections = null;
 			Collection collection = null;
 			Point point = null;

@@ -19,7 +19,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +33,6 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -50,16 +48,19 @@ import com.google.maps.android.ui.IconGenerator;
 import com.mappingbird.MappingBirdBitmap.MappingBirdBitmapListner;
 import com.mappingbird.api.Collection;
 import com.mappingbird.api.Collections;
+import com.mappingbird.api.LocationService;
+import com.mappingbird.api.LocationService.LocationServiceListener;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetCollectionInfoListener;
 import com.mappingbird.api.OnGetCollectionsListener;
 import com.mappingbird.api.Point;
+import com.mappingbird.common.DeBug;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
 
-	private static final String TAG = MappingBirdCollectionActivity.class
-			.getName();
+	private static final String TAG = "MappingBird";
+
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -87,6 +88,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private ClusterManager<MappingBirdItem> mClusterManager;
 	private MappingBirdItem mClickedClusterItem;
 	private Cluster<MappingBirdItem> mClickedCluster;
+
+	private LocationService mLocationService;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -198,7 +201,18 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if(mLocationService != null)
+			mLocationService.start();
 	}
+
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if(mLocationService != null)
+			mLocationService.stopUsingGPS();
+	}
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -240,12 +254,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		@Override
 		public void onGetCollectionInfo(int statusCode, Collection collection) {
-			Log.i(TAG, "getCollectionInfoListener");
+			DeBug.i(TAG, "getCollectionInfoListener");
 			if (mLoadingDialog != null && mLoadingDialog.isShowing())
 				mLoadingDialog.dismiss();
 
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
-				Log.i(TAG, "getCollectionInfoListener: OK");
+				DeBug.i(TAG, "getCollectionInfoListener: OK");
 				mCollection = collection;
 				setUpMapIfNeeded();
 				if (mMyMarker != null) {
@@ -294,23 +308,26 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if (mMap == null) {
 			mMap = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.trip_map)).getMap();
-			Log.i(TAG, "mMap =" + mMap);
+			DeBug.i(TAG, "mMap =" + mMap);
 		}
 		if (mMap != null) {
-			Log.i(TAG, "mMap !=  null");
-			mMap.getUiSettings().setMyLocationButtonEnabled(false);
-			mMap.setMyLocationEnabled(true);
-			mMap.setOnMyLocationChangeListener(mMyLocationChangeListener);
-
+			DeBug.i(TAG, "mMap !=  null");
+//			mMap.getUiSettings().setMyLocationButtonEnabled(false);
+//			mMap.setMyLocationEnabled(false);
+//			mMap.setOnMyLocationChangeListener(mMyLocationChangeListener);
+			
+			mLocationService = new LocationService(mContext);
+			mLocationService.setLocationServiceListener(mMyLocationChangedListener);
+			mLocationService.start();
 		}
 
 	}
 
-	OnMyLocationChangeListener mMyLocationChangeListener = new OnMyLocationChangeListener() {
-
+	private LocationServiceListener mMyLocationChangedListener = new LocationServiceListener() {
+		
 		@Override
-		public void onMyLocationChange(Location location) {
-
+		public void onLocationChanged(Location location) {
+			DeBug.i(TAG, "mMyLocationChangedListener : location = "+location.toString());
 			mMyLocation = new LatLng(location.getLatitude(),
 					location.getLongitude());
 
@@ -325,6 +342,26 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			}
 		}
 	};
+
+//	OnMyLocationChangeListener mMyLocationChangeListener = new OnMyLocationChangeListener() {
+//
+//		@Override
+//		public void onMyLocationChange(Location location) {
+//
+//			mMyLocation = new LatLng(location.getLatitude(),
+//					location.getLongitude());
+//
+//			if (mMyMarker != null) {
+//				mMyMarker.setPosition(mMyLocation);
+//				mMyMarker.setIcon(BitmapDescriptorFactory
+//						.fromResource(R.drawable.icon_current_location));
+//				mMyMarker.setTitle(getResources().getString(
+//						R.string.my_loaction));
+//			} else {
+//				setUpMap();
+//			}
+//		}
+//	};
 
 	private void setUpMap() {
 		mMap.getUiSettings().setZoomControlsEnabled(false);
@@ -415,9 +452,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			double longitude = mCollection.getPointsObj().get(i).getLocation()
 					.getLongitude();
 			int type = mCollection.getPointsObj().get(i).getTypeInt();
-			Log.i(TAG, "type =" + type);
+			DeBug.i(TAG, "type =" + type);
 			String title = mCollection.getPointsObj().get(i).getTitle();
-			Log.i(TAG, "latitude =" + latitude + ", longitude=" + longitude);
+			DeBug.i(TAG, "latitude =" + latitude + ", longitude=" + longitude);
 			LatLng latlng = new LatLng(latitude, longitude);
 			int distance = (int) getDistance(mMyLocation.latitude,
 					mMyLocation.longitude, latitude, longitude);
@@ -454,9 +491,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			double longitude = mCollection.getPointsObj().get(i).getLocation()
 					.getLongitude();
 			int type = mCollection.getPointsObj().get(i).getTypeInt();
-			Log.i(TAG, "type =" + type);
+			DeBug.i(TAG, "type =" + type);
 			String title = mCollection.getPointsObj().get(i).getTitle();
-			Log.i(TAG, "latitude =" + latitude + ", longitude=" + longitude);
+			DeBug.i(TAG, "latitude =" + latitude + ", longitude=" + longitude);
 			LatLng latlng = new LatLng(latitude, longitude);
 			int distance = (int) getDistance(mMyLocation.latitude,
 					mMyLocation.longitude, latitude, longitude);
@@ -518,7 +555,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		@Override
 		public View getInfoWindow(final Marker marker) {
-			Log.i(TAG, "getInfoContents");
+			DeBug.i(TAG, "getInfoContents");
 			int position = -1;
 			// for (int i = 0; i < mMarkers.size(); i++) {
 			// if (marker.equals(mMarkers.get(i))) {
@@ -557,7 +594,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				String imagePath = null;
 				imagePath = mCollection.getPointsObj().get(position)
 						.getImageDetails().get(0).getUrl();
-				Log.i(TAG, "imagePath =" + imagePath);
+				DeBug.i(TAG, "imagePath =" + imagePath);
 
 				mLoadBitmap.getBitmapByURL(icon, imagePath,
 						mLoadBitmap.ICON_TYPE_CONTENT_INFO_ICON);
@@ -567,7 +604,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 							@Override
 							public void loadBitmapFinish(String key) {
-								Log.i(TAG, "callback");
+								DeBug.i(TAG, "callback");
 								marker.showInfoWindow();
 							}
 						});

@@ -7,7 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.mappingbird.common.DeBug;
 
 class MapParse {
 
@@ -19,7 +20,7 @@ class MapParse {
 		obj.put("email", email);
 		obj.put("password", password);
 		obj.put("token", 1);
-		Log.i(TAG, "[login json] =" + obj.toString());
+		DeBug.i(TAG, "[login json] =" + obj.toString());
 		return obj;
 	}
 
@@ -44,7 +45,7 @@ class MapParse {
 			pref.setUser(user);
 		} else {
 			error = obj.getString("error");
-			Log.i(TAG, "[error] =" + error);
+			DeBug.i(TAG, "[error] =" + error);
 		}
 		return user;
 	}
@@ -59,26 +60,26 @@ class MapParse {
 				.optLong("most_recent_modified_collection");
 		JSONArray array = obj.getJSONArray("collections");
 		for (int i = 0; i < array.length(); i++) {
-			Log.i(TAG, "[collection json] length=" + array.length() + ":" + i);
+			DeBug.i(TAG, "[collection json] length=" + array.length() + ":" + i);
 			JSONObject arrayobj = array.getJSONObject(i);
 			long id = arrayobj.optLong("id");
-			Log.i(TAG, "[collection json] id=" + id);
+			DeBug.i(TAG, "[collection json] id=" + id);
 			String name = arrayobj.optString("name");
-			Log.i(TAG, "[collection json] name=" + name);
+			DeBug.i(TAG, "[collection json] name=" + name);
 			long userId = arrayobj.optLong("user");
-			Log.i(TAG, "[collection json] userId=" + userId);
+			DeBug.i(TAG, "[collection json] userId=" + userId);
 			String createTime = arrayobj.optString("create_time");
-			Log.i(TAG, "[collection json] createTime=" + createTime);
+			DeBug.i(TAG, "[collection json] createTime=" + createTime);
 			String updateTime = arrayobj.optString("update_time");
-			Log.i(TAG, "[collection json] updateTime=" + updateTime);
+			DeBug.i(TAG, "[collection json] updateTime=" + updateTime);
 			boolean isNewest = (newestCollectionId == id ? true : false);
-			Log.i(TAG, "[collection json] isNewest=" + isNewest);
+			DeBug.i(TAG, "[collection json] isNewest=" + isNewest);
 			ArrayList<Integer> points = new ArrayList<Integer>();
 			points.clear();
 			JSONArray pointarray = arrayobj.getJSONArray("points");
 			for (int j = 0; j < pointarray.length(); j++) {
 				int pid = (Integer) pointarray.get(j);
-				Log.i(TAG, "[collection json] pid=" + pid);
+				DeBug.i(TAG, "[collection json] pid=" + pid);
 				points.add(pid);
 			}
 			collections.add(new Collection(id, userId, name, createTime,
@@ -94,66 +95,66 @@ class MapParse {
 		JSONObject obj = new JSONObject(rsp);
 
 		long pid = obj.optLong("id");
-		Log.i(TAG, "[point json] pid=" + pid);
+		DeBug.i(TAG, "[point json] pid=" + pid);
 
 		String title = obj.optString("title");
-		Log.i(TAG, "[point json] title=" + title);
+		DeBug.i(TAG, "[point json] title=" + title);
 
 		String url = obj.optString("url");
-		Log.i(TAG, "[point json] url=" + url);
+		DeBug.i(TAG, "[point json] url=" + url);
 
 		String description = obj.optString("description");
-		Log.i(TAG, "[point json] description=" + description);
+		DeBug.i(TAG, "[point json] description=" + description);
 
 		String place_name = obj.optString("place_name");
-		Log.i(TAG, "[point json] place_name=" + place_name);
+		DeBug.i(TAG, "[point json] place_name=" + place_name);
 
 		String place_address = obj.optString("place_address");
-		Log.i(TAG, "[point json] place_address=" + place_address);
+		DeBug.i(TAG, "[point json] place_address=" + place_address);
 
 		String place_phone = obj.optString("place_phone");
-		Log.i(TAG, "[point json] place_phone=" + place_phone);
+		DeBug.i(TAG, "[point json] place_phone=" + place_phone);
 
 		String coordinates = obj.optString("coordinates");
-		Log.i(TAG, "[point json] coordinates=" + coordinates);
+		DeBug.i(TAG, "[point json] coordinates=" + coordinates);
 
 		String type = obj.optString("type");
-		Log.i(TAG, "[point json] type=" + type);
+		DeBug.i(TAG, "[point json] type=" + type);
 
 		long collectionId = obj.optLong("collection");
-		Log.i(TAG, "[point json] collectionId=" + collectionId);
+		DeBug.i(TAG, "[point json] collectionId=" + collectionId);
 
 		String pcreateTime = obj.optString("create_time");
-		Log.i(TAG, "[point json] createTime=" + pcreateTime);
+		DeBug.i(TAG, "[point json] createTime=" + pcreateTime);
 
 		String pupdateTime = obj.optString("update_time");
-		Log.i(TAG, "[point json] updateTime=" + pupdateTime);
+		DeBug.i(TAG, "[point json] updateTime=" + pupdateTime);
 
 		JSONObject location = obj.getJSONObject("location");
 
 		long lId = location.optLong("id");
-		Log.i(TAG, "[location json] lId=" + lId);
+		DeBug.i(TAG, "[location json] lId=" + lId);
 
 		String placename = location.optString("place_name");
-		Log.i(TAG, "[location json] place_name=" + placename);
+		DeBug.i(TAG, "[location json] place_name=" + placename);
 
 		String placeaddress = location.optString("place_address");
-		Log.i(TAG, "[location json] place_address=" + placeaddress);
+		DeBug.i(TAG, "[location json] place_address=" + placeaddress);
 
 		String placephone = location.optString("place_phone");
-		Log.i(TAG, "[location json] place_phone=" + placephone);
+		DeBug.i(TAG, "[location json] place_phone=" + placephone);
 
 		String lcoordinates = location.optString("coordinates");
-		Log.i(TAG, "[location json] coordinates=" + lcoordinates);
+		DeBug.i(TAG, "[location json] coordinates=" + lcoordinates);
 
 		String category = location.optString("category");
-		Log.i(TAG, "[location json] category=" + category);
+		DeBug.i(TAG, "[location json] category=" + category);
 
 		String lcreateTime = location.optString("create_time");
-		Log.i(TAG, "[location json] createTime=" + lcreateTime);
+		DeBug.i(TAG, "[location json] createTime=" + lcreateTime);
 
 		String lupdateTime = location.optString("update_time");
-		Log.i(TAG, "[location json] updateTime=" + lupdateTime);
+		DeBug.i(TAG, "[location json] updateTime=" + lupdateTime);
 
 		ArrayList<ImageDetail> images = new ArrayList<ImageDetail>();
 		images.clear();
@@ -162,22 +163,22 @@ class MapParse {
 			JSONObject imagearrayobj = imagearray.getJSONObject(j);
 
 			long iId = imagearrayobj.optLong("id");
-			Log.i(TAG, "[image json] tId=" + iId);
+			DeBug.i(TAG, "[image json] tId=" + iId);
 
 			String iUrl = imagearrayobj.optString("url");
-			Log.i(TAG, "[image json] Url=" + iUrl);//
+			DeBug.i(TAG, "[image json] Url=" + iUrl);//
 
 			String thumb_path = imagearrayobj.optString("thumb_path");
-			Log.i(TAG, "[image json] thumb_path=" + thumb_path);
+			DeBug.i(TAG, "[image json] thumb_path=" + thumb_path);
 
 			long iPointId = imagearrayobj.optLong("point");
-			Log.i(TAG, "[image json] PointId=" + iPointId);
+			DeBug.i(TAG, "[image json] PointId=" + iPointId);
 
 			String ct = imagearrayobj.optString("create_time");
-			Log.i(TAG, "[image json] create_time=" + ct);
+			DeBug.i(TAG, "[image json] create_time=" + ct);
 
 			String ut = imagearrayobj.optString("update_time");
-			Log.i(TAG, "[image json] update_time=" + ut);
+			DeBug.i(TAG, "[image json] update_time=" + ut);
 			images.add(new ImageDetail(iId, thumb_path, iUrl, ct, ut, iPointId));
 		}
 
@@ -188,10 +189,10 @@ class MapParse {
 			JSONObject tagarrayobj = tagarray.getJSONObject(k);
 
 			long tId = tagarrayobj.optLong("id");
-			Log.i(TAG, "[tag json] tId=" + tId);
+			DeBug.i(TAG, "[tag json] tId=" + tId);
 
 			String tName = tagarrayobj.optString("name");
-			Log.i(TAG, "[tag json] name=" + tName);
+			DeBug.i(TAG, "[tag json] name=" + tName);
 			tags.add(new Tag(tId, tName));
 		}
 
@@ -206,32 +207,32 @@ class MapParse {
 			String rsp) throws JSONException {
 		JSONObject obj = new JSONObject(rsp);
 		long cid = obj.optLong("id");
-		Log.i(TAG, "[collection info json] cid=" + cid);
+		DeBug.i(TAG, "[collection info json] cid=" + cid);
 
 		String name = obj.optString("name");
-		Log.i(TAG, "[collection info json] name=" + name);
+		DeBug.i(TAG, "[collection info json] name=" + name);
 
 		long userId = obj.optLong("user");
-		Log.i(TAG, "[collection info json] userId=" + userId);
+		DeBug.i(TAG, "[collection info json] userId=" + userId);
 
 		JSONArray array = obj.getJSONArray("points");
 		ArrayList<Point> points = new ArrayList<Point>();
 		points.clear();
 		for (int i = 0; i < array.length(); i++) {
-			Log.i(TAG, "[collection info json] length=" + array.length() + ":"
+			DeBug.i(TAG, "[collection info json] length=" + array.length() + ":"
 					+ i);
 			JSONObject arrayobj = array.getJSONObject(i);
 			long pid = arrayobj.optLong("id");
-			Log.i(TAG, "[cp info json] pid=" + pid);
+			DeBug.i(TAG, "[cp info json] pid=" + pid);
 
 			String title = arrayobj.optString("title");
-			Log.i(TAG, "[cp info json] title=" + title);
+			DeBug.i(TAG, "[cp info json] title=" + title);
 
 			String coordinates = arrayobj.optString("coordinates");
-			Log.i(TAG, "[cp info json] coordinates=" + coordinates);
+			DeBug.i(TAG, "[cp info json] coordinates=" + coordinates);
 
 			String type = arrayobj.optString("type");
-			Log.i(TAG, "[cp info json] title=" + type);
+			DeBug.i(TAG, "[cp info json] title=" + type);
 
 			ArrayList<ImageDetail> images = new ArrayList<ImageDetail>();
 			images.clear();
@@ -241,23 +242,23 @@ class MapParse {
 				JSONObject imagearrayobj = imagearray.getJSONObject(j);
 
 				long iId = imagearrayobj.optLong("id");
-				Log.i(TAG, "[ci json] tId=" + iId);
+				DeBug.i(TAG, "[ci json] tId=" + iId);
 
 				String iUrl = imagearrayobj.optString("url");
-				Log.i(TAG, "[ci json] Url=" + iUrl);//
+				DeBug.i(TAG, "[ci json] Url=" + iUrl);//
 
 				String thumb_path = imagearrayobj.optString("thumb_path");
-				Log.i(TAG, "[ci json] thumb_path=" + thumb_path);
+				DeBug.i(TAG, "[ci json] thumb_path=" + thumb_path);
 				images.add(new ImageDetail(iId, thumb_path, iUrl));
 			}
 
 			JSONObject location = arrayobj.getJSONObject("location");
 
 			long lId = location.optLong("id");
-			Log.i(TAG, "[cl json] lId=" + lId);
+			DeBug.i(TAG, "[cl json] lId=" + lId);
 
 			String lcoordinates = location.optString("coordinates");
-			Log.i(TAG, "[cl json] coordinates=" + lcoordinates);
+			DeBug.i(TAG, "[cl json] coordinates=" + lcoordinates);
 
 			points.add(new Point(pid, title, coordinates, type, images,
 					new Location(lId, lcoordinates)));

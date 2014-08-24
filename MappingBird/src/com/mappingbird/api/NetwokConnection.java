@@ -19,7 +19,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
@@ -29,7 +28,8 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Base64;
-import android.util.Log;
+
+import com.mappingbird.common.DeBug;
 
 class NetwokConnection {
 
@@ -57,16 +57,16 @@ class NetwokConnection {
 	int req(final String url, final String method, final JSONObject postData,
 			int apiType) {
 
-		Log.d(TAG, "[Http]url =" + url);
+		DeBug.d(TAG, "[Http]url =" + url);
 		try {
-			Log.d(TAG, "-----server start-----");
+			DeBug.d(TAG, "-----server start-----");
 			long starttime = System.currentTimeMillis();
 			String rsp = retryhttpConnection(url, method, postData);
 			long endtime = System.currentTimeMillis();
-			Log.d(TAG, "-----server end-----");
-			Log.d(TAG, "server run: " + (endtime - starttime) + " ms.");
+			DeBug.d(TAG, "-----server end-----");
+			DeBug.d(TAG, "server run: " + (endtime - starttime) + " ms.");
 			rsp = unescapeUnicode(rsp);
-			Log.d(TAG, "[Http]rsp =" + rsp);
+			DeBug.d(TAG, "[Http]rsp =" + rsp);
 //			writefile(rsp);
 
 			if (rsp != null) {
@@ -74,10 +74,10 @@ class NetwokConnection {
 					return MappingBirdAPI.RESULT_NO_LOGIN_ERROR;
 				}
 				if (rsp.equals("networkError")) {
-					Log.d(TAG, "[Http]retry 3 times: network error.");
+					DeBug.d(TAG, "[Http]retry 3 times: network error.");
 					return MappingBirdAPI.RESULT_NETWORK_ERROR;
 				}
-				Log.d(TAG, "[Http]parse json");
+				DeBug.d(TAG, "[Http]parse json");
 				switch (apiType) {
 				case API_LOGIN:
 					mUser = MapParse.parseAccountResult(mContext, rsp);
@@ -99,20 +99,20 @@ class NetwokConnection {
 							rsp);	
 				}
 			} else {
-				Log.e(TAG, "RSP is  NULL!");
+				DeBug.e(TAG, "RSP is  NULL!");
 				return MappingBirdAPI.RESULT_INTERNAL_ERROR;
 			}
 		} catch (ClientProtocolException e) {
-			Log.e(TAG, "Client Protocal Error!");
-			Log.getStackTraceString(e);
+			DeBug.e(TAG, "Client Protocal Error!");
+//			DeBug.getStackTraceString(e);
 			return MappingBirdAPI.RESULT_NETWORK_ERROR;
 		} catch (IOException e) {
-			Log.e(TAG, "IO Erro!");
-			Log.getStackTraceString(e);
+			DeBug.e(TAG, "IO Erro!");
+//			DeBug.getStackTraceString(e);
 			return MappingBirdAPI.RESULT_NETWORK_ERROR;
 		} catch (JSONException e) {
-			Log.e(TAG, "JSON Parser Error: server rsp error!");
-			Log.getStackTraceString(e);
+			DeBug.e(TAG, "JSON Parser Error: server rsp error!");
+//			DeBug.getStackTraceString(e);
 			return MappingBirdAPI.RESULT_INTERNAL_ERROR;
 		}
 		return MappingBirdAPI.RESULT_OK;
@@ -126,11 +126,11 @@ class NetwokConnection {
 			try {
 				rsp = httpConnection(url, method, postData);
 				if (rsp != null) {
-					Log.i(TAG, "don't need retry");
+					DeBug.i(TAG, "don't need retry");
 					break;
 				} else {
 					retrynum--;
-					Log.w(TAG, "retry num:" + retrynum);
+					DeBug.w(TAG, "retry num:" + retrynum);
 					try {
 						Thread.sleep(300);
 					} catch (InterruptedException e) {
@@ -139,7 +139,7 @@ class NetwokConnection {
 				}
 			} catch (EOFException e) {
 				retrynum--;
-				Log.w(TAG, "EOFException retry num:" + retrynum);
+				DeBug.w(TAG, "EOFException retry num:" + retrynum);
 				e.printStackTrace();
 				try {
 					Thread.sleep(200);
@@ -151,7 +151,7 @@ class NetwokConnection {
 				}
 			} catch (IOException e) {
 				retrynum--;
-				Log.w(TAG, "IOException retry num :" + retrynum);
+				DeBug.w(TAG, "IOException retry num :" + retrynum);
 				e.printStackTrace();
 				try {
 					Thread.sleep(200);
@@ -162,7 +162,7 @@ class NetwokConnection {
 					rsp = "networkError";
 				}
 			} catch (Exception e) {
-				Log.w(TAG, "open url Exception retry" + retrynum);
+				DeBug.w(TAG, "open url Exception retry" + retrynum);
 				e.printStackTrace();
 				break;
 			}
@@ -182,7 +182,7 @@ class NetwokConnection {
 		if (method.equals("GET")) {
 			if (mCurrentUser != null) {
 				String auth = "Token " + mCurrentUser.getToken();
-				Log.i(TAG, "auth =" + auth);
+				DeBug.i(TAG, "auth =" + auth);
 				HttpGet get = new HttpGet(url);
 				get.setHeader("Content-Type", "application/json");
 				get.setHeader("Authorization", auth);
@@ -206,11 +206,11 @@ class NetwokConnection {
 		HttpResponse response = client.execute(request);
 		StatusLine status = response.getStatusLine();
 		int statusCode = status.getStatusCode();
-		Log.d(TAG, "statusCode =" + statusCode);
+		DeBug.d(TAG, "statusCode =" + statusCode);
 		if (statusCode == HttpStatus.SC_OK) {
 			rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
 		} else {
-			Log.e(TAG, EntityUtils.toString(response.getEntity()));
+			DeBug.e(TAG, EntityUtils.toString(response.getEntity()));
 		}
 		return rsp;
 	}
@@ -250,10 +250,10 @@ class NetwokConnection {
 		File externalStorageDir = Environment.getExternalStorageDirectory();
 		File myFile = new File(externalStorageDir, "yourfilename.txt");
 
-		Log.i("Test", "externalStorageDir = "+externalStorageDir);
+		DeBug.i("Test", "externalStorageDir = "+externalStorageDir);
 		if (myFile.exists()) {
 			try {
-				Log.i("Test", "myFile exist");
+				DeBug.i("Test", "myFile exist");
 				FileOutputStream fostream = new FileOutputStream(myFile);
 				OutputStreamWriter oswriter = new OutputStreamWriter(fostream);
 				BufferedWriter bwriter = new BufferedWriter(oswriter);
@@ -262,14 +262,14 @@ class NetwokConnection {
 				bwriter.close();
 				oswriter.close();
 				fostream.close();
-				Log.i("Test", "myFile finished");
+				DeBug.i("Test", "myFile finished");
 			} catch (IOException e) {
 				e.printStackTrace();
-				Log.i("Test", "myFile e = "+e.toString());
+				DeBug.i("Test", "myFile e = "+e.toString());
 			}
 		} else {
 			try {
-				Log.i("Test", "myFile create 1");
+				DeBug.i("Test", "myFile create 1");
 				myFile.createNewFile();
 				FileOutputStream fostream = new FileOutputStream(myFile);
 				OutputStreamWriter oswriter = new OutputStreamWriter(fostream);
@@ -279,10 +279,10 @@ class NetwokConnection {
 				bwriter.close();
 				oswriter.close();
 				fostream.close();
-				Log.i("Test", "myFile create 2");
+				DeBug.i("Test", "myFile create 2");
 			} catch (IOException e) {
 				e.printStackTrace();
-				Log.i("Test", "myFile createNewFile e = "+e.toString());
+				DeBug.i("Test", "myFile createNewFile e = "+e.toString());
 			}
 		}
 	}

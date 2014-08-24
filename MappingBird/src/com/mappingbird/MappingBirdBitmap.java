@@ -20,8 +20,9 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.util.LruCache;
-import android.util.Log;
 import android.widget.ImageView;
+
+import com.mappingbird.common.DeBug;
 
 class MappingBirdBitmap {
 	private static final String TAG = MappingBirdBitmap.class.getName();
@@ -65,7 +66,7 @@ class MappingBirdBitmap {
 			int memoryClass = ((ActivityManager) context
 					.getSystemService(Context.ACTIVITY_SERVICE))
 					.getMemoryClass();
-			Log.i(TAG, "memoryClass =" + memoryClass);
+			DeBug.i(TAG, "memoryClass =" + memoryClass);
 			memoryClass = memoryClass > 32 ? 32 : memoryClass;
 			int size = (memoryClass / 8) * 1024 * 1024; // max: 4Mb
 			mCachePool = new BitmapCache(size);
@@ -94,7 +95,7 @@ class MappingBirdBitmap {
 		if (imageView != null) {
 			imageView.setImageResource(color);
 		} else {
-			Log.d(TAG, "ImageView is null ");
+			DeBug.d(TAG, "ImageView is null ");
 		}
 	}
 
@@ -102,7 +103,7 @@ class MappingBirdBitmap {
 		if (imageView != null) {
 			imageView.setImageBitmap(bmp);
 		} else {
-			Log.d(TAG, "ImageView is null ");
+			DeBug.d(TAG, "ImageView is null ");
 		}
 	}
 
@@ -110,7 +111,7 @@ class MappingBirdBitmap {
 		if (imageView != null) {
 			imageView.setImageBitmap(bmp);
 		} else {
-			Log.d(TAG, "ImageView is null ");
+			DeBug.d(TAG, "ImageView is null ");
 		}
 	}
 
@@ -149,7 +150,7 @@ class MappingBirdBitmap {
 	}
 
 	public Bitmap getBitmapByURL(ImageView targetView, String url, int missType) {
-		Log.d(TAG, "getBitmapByURI , url : " + url);
+		DeBug.d(TAG, "getBitmapByURI , url : " + url);
 		if (url == null || url.length() < 1) {
 			if (targetView != null) {
 				targetView.setTag(null);
@@ -228,10 +229,10 @@ class MappingBirdBitmap {
 	Bitmap getUrlBitmap(String iconUrl, int missType) {
 
 		try {
-			Log.i(TAG, "start db");
+			DeBug.i(TAG, "start db");
 			Bitmap bitmap = null;
 
-			Log.i(TAG, "bitmap=" + bitmap);
+			DeBug.i(TAG, "bitmap=" + bitmap);
 			if (bitmap == null) {
 				// Server and insert DB
 				URL url = new URL(iconUrl);
@@ -239,17 +240,17 @@ class MappingBirdBitmap {
 				conn.setConnectTimeout(30 * 1000);
 				conn.setReadTimeout(10 * 1000);
 				conn.connect();
-				Log.i(TAG, "bitmap: get stream");
+				DeBug.i(TAG, "bitmap: get stream");
 				InputStream isCover = conn.getInputStream();
-				Log.i(TAG, "bitmap: start decode, isCover =" + isCover);
+				DeBug.i(TAG, "bitmap: start decode, isCover =" + isCover);
 				bitmap = BitmapFactory.decodeStream(isCover);
 				isCover.close();
 			}
 			return bitmap;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e(TAG, "exception:" + iconUrl);
-			Log.e(TAG, "exception:" + e.getMessage());
+			DeBug.e(TAG, "exception:" + iconUrl);
+			DeBug.e(TAG, "exception:" + e.getMessage());
 			return null;
 		}
 	}
@@ -307,7 +308,7 @@ class MappingBirdBitmap {
 					if (hasImage) {
 						// save to cache
 						putBitmapToCachePool(object.mUrl, object.mBmp);
-						Log.i(TAG,
+						DeBug.i(TAG,
 								mLog
 										+ "Bitmap size / bytes: "
 										+ object.mBmp.getWidth()
@@ -317,7 +318,7 @@ class MappingBirdBitmap {
 										+ (object.mBmp.getRowBytes() * object.mBmp
 												.getHeight()));
 					} else {
-						Log.d(TAG, mLog + " url : " + object.mUrl + ""
+						DeBug.d(TAG, mLog + " url : " + object.mUrl + ""
 								+ "Bitmap is null ");
 					}
 
