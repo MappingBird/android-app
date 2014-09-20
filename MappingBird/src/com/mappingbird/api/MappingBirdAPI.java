@@ -15,7 +15,7 @@ public class MappingBirdAPI {
 	public static final int RESULT_NETWORK_ERROR = 2;
 	public static final int RESULT_NO_LOGIN_ERROR = 3;
 	public static final int RESULT_ACCOUNT_ERROR = 4;
-	private static final String mHost = "http://mappingbird.com";
+	private static final String mHost = "https://mappingbird.com";
 	private Context mContext = null;
 	private MappingBirdUtil mUtil = null;
 	UserPrefs mCurrentUserPref = null;

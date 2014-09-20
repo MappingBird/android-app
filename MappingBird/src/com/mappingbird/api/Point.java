@@ -3,6 +3,9 @@ package com.mappingbird.api;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.mappingbird.MappingBirdItem;
+
 public class Point implements Serializable {
 
 	public static final int TYPE_RESTAURANT = 0;
@@ -27,6 +30,8 @@ public class Point implements Serializable {
 	private Location mLocation;
 	private String mCreateTime;
 	private String mUpdateTime;
+	private double mLatitude;
+	private double mLongitude;
 
 	Point(long id, String title, String coordinates, String type,
 			ArrayList<ImageDetail> images, Location location) {
@@ -36,6 +41,8 @@ public class Point implements Serializable {
 		mType = type;
 		mImages = images;
 		mLocation = location;
+		mLatitude = mLocation.getLatitude();
+		mLongitude = mLocation.getLongitude();
 	}
 
 	Point(long id, String title, String url, String type, String description,
@@ -56,8 +63,14 @@ public class Point implements Serializable {
 		mTags = tags;
 		CollectionId = collectionId;
 		mLocation = location;
+		mLatitude = mLocation.getLatitude();
+		mLongitude = mLocation.getLongitude();
 		mCreateTime = createTime;
 		mUpdateTime = updateTime;
+	}
+
+	public LatLng getLatLng() {
+		return new LatLng(mLatitude, mLongitude);
 	}
 
 	public long getId() {
@@ -141,4 +154,7 @@ public class Point implements Serializable {
 		return mUpdateTime;
 	}
 
+	public boolean equals(Point o) {
+		return mTitle.equals(o.mTitle) && mLocation.equals(o.getLocation());
+	}
 }

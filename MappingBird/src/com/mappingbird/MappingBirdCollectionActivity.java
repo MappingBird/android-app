@@ -1,6 +1,5 @@
 package com.mappingbird;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +56,8 @@ import com.mappingbird.api.Point;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.common.Utils;
+import com.mappingbird.widget.MappingbirdListLayout;
+import com.mappingbird.widget.MappingbirdListLayout.CardClickListener;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
@@ -77,6 +78,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private ArrayAdapter<String> mAdapter;
 	private Collections mCollections = null;
 	private Collection mCollection = null;
+	private ArrayList<Point> mPositionItems = new ArrayList<Point>();
 
 	private LatLng mMyLocation = null;
 	private Marker mMyMarker = null;
@@ -88,11 +90,13 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 	private ClusterManager<MappingBirdItem> mClusterManager;
 	private MappingBirdItem mClickedClusterItem;
+	private Marker mClickedMarker = null;
 	private Cluster<MappingBirdItem> mClickedCluster;
 
 	private LocationService mLocationService;
 	
 	private CustomInfoWindowAdapter mInfoWindowAdapter;
+	private MappingbirdListLayout mMappingbirdListLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +118,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xfff6892a));
-		getActionBar().setIcon(R.drawable.collection_selector);
+		getActionBar().setIcon(R.drawable.icon_collections);
 
 		getActionBar().setDisplayOptions(
 				getActionBar().getDisplayOptions()
@@ -129,6 +133,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 //		layoutParams.rightMargin = 10;
 		mProfile.setLayoutParams(layoutParams);
 		getActionBar().setCustomView(mProfile);
+
+		mMappingbirdListLayout = (MappingbirdListLayout) findViewById(R.id.item_list_layout);
+		mMappingbirdListLayout.setCardClickListener(mCardClickListener);
 
 		mProfile.setOnClickListener(new OnClickListener() {
 
@@ -145,13 +152,16 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				R.drawable.ic_drawer, R.string.account,
 				R.string.action_settings) {
 			public void onDrawerClosed(View view) {
+				DeBug.v("onDrawerClosed");
 				getActionBar().setTitle(mTitle);
 				invalidateOptionsMenu();
 
 			}
 
 			public void onDrawerOpened(View drawerView) {
+				DeBug.v("onDrawerOpened");
 				getActionBar().setTitle(mTitle);
+				mMappingbirdListLayout.closeCardLayout();
 				invalidateOptionsMenu();
 
 			}
@@ -234,6 +244,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			if(mClickedMarker != null) {
+				mClickedMarker.remove();
+				mClickedMarker = null;
+			}
 			selectItem(position);
 			MappingBirdPref.getIns().setCollectionPosition(position);
 		}
@@ -329,7 +343,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			DeBug.i(TAG, "mMyLocationChangedListener : location = "+location.toString());
 			mMyLocation = new LatLng(location.getLatitude(),
 					location.getLongitude());
-
+			mMappingbirdListLayout.setMyLocation(mMyLocation);
 			if (mMyMarker != null) {
 				mMyMarker.setPosition(mMyLocation);
 				mMyMarker.setIcon(BitmapDescriptorFactory
@@ -370,10 +384,18 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				.setOnClusterItemClickListener(new OnClusterItemClickListener<MappingBirdItem>() {
 
 					@Override
-					public boolean onClusterItemClick(MappingBirdItem item) {
+					public boolean onClusterItemClick(MappingBirdItem item, Marker marker) {
+						if(mClickedMarker != null) {
+							mClickedMarker.setIcon(BitmapDescriptorFactory
+									.fromResource(mClickedClusterItem.mPinIcon));
+						}
+						mClickedMarker = marker;
+						marker.setIcon(BitmapDescriptorFactory
+								.fromResource(R.drawable.pin_selected));
 						mClickedClusterItem = item;
+						mMappingbirdListLayout.clickItem(item);
 						mMap.setInfoWindowAdapter(mInfoWindowAdapter);
-						return false;
+						return true;
 					}
 				});
 
@@ -394,9 +416,17 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 
 	private void addItems() {
+		if(mMyMarker != null) {
+			mMyMarker.remove();
+		}
 		mMyMarker = null;
 		mLatLngs.clear();
 		mMap.clear();
+
+		if(mClickedMarker != null) {
+			mClickedMarker.remove();
+			mClickedMarker = null;
+		}
 
 		if (mMyMarker == null) {
 			mMyMarker = mMap.addMarker(new MarkerOptions()
@@ -406,22 +436,22 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 							.fromResource(R.drawable.icon_current_location)));
 		}
 
+		mPositionItems.clear();
 		for (int i = 0; i < mCollection.getPointsObj().size(); i++) {
-			double latitude = mCollection.getPointsObj().get(i).getLocation()
+			Point point = mCollection.getPointsObj().get(i);
+			double latitude = point.getLocation()
 					.getLatitude();
-			double longitude = mCollection.getPointsObj().get(i).getLocation()
+			double longitude = point.getLocation()
 					.getLongitude();
-			int type = mCollection.getPointsObj().get(i).getTypeInt();
+			int type = point.getTypeInt();
 			DeBug.i(TAG, "type =" + type);
-			String title = mCollection.getPointsObj().get(i).getTitle();
+			String title = point.getTitle();
 			DeBug.i(TAG, "latitude =" + latitude + ", longitude=" + longitude);
 			LatLng latlng = new LatLng(latitude, longitude);
-			int distance = (int) getDistance(mMyLocation.latitude,
-					mMyLocation.longitude, latitude, longitude);
-			DecimalFormat df = new DecimalFormat();
-			String style = "#,###,###";
-			df.applyPattern(style);
-			String sdistance = df.format(distance);
+
+			String sdistance = Utils.getDistanceString( 
+					Utils.getDistance(mMyLocation.latitude,
+					mMyLocation.longitude, latitude, longitude));
 			boolean isSame = false;
 			for (int j = 0; j < mLatLngs.size(); j++) {
 				LatLng l = mLatLngs.get(j);
@@ -435,9 +465,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mLatLngs.add(latlng);
 				MappingBirdItem offsetItem = new MappingBirdItem(i, latlng,
 						title, getPinIcon(type), sdistance);
+				mPositionItems.add(point);
 				mClusterManager.addItem(offsetItem);
 			}
 		}
+		mMappingbirdListLayout.setPositionData(mPositionItems);
 	}
 
 	// ====================================================
@@ -549,12 +581,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		return iconRes;
 	}
 
-	float getDistance(double lat1, double lon1, double lat2, double lon2) {
-		float[] results = new float[1];
-		Location.distanceBetween(lat1, lon1, lat2, lon2, results);
-		return results[0];
-	}
-
 	@Override
 	public void onClusterItemInfoWindowClick(MappingBirdItem item) {
 		int position = -1;
@@ -566,18 +592,32 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 		// enter another activity
 		if (position > -1) {
-			Intent intent = new Intent();
-			intent.putExtra("position", position);
-			intent.putExtra("collection", mCollection);
-			intent.putExtra("myLatitude", mMyLocation.latitude);
-			intent.putExtra("myLongitude", mMyLocation.longitude);
-
-			intent.setClass(this,
-					com.mappingbird.MappingBirdPlaceActivity.class);
-			this.startActivity(intent);
+//			Intent intent = new Intent();
+//			intent.putExtra("position", position);
+//			intent.putExtra("collection", mCollection);
+//			intent.putExtra("myLatitude", mMyLocation.latitude);
+//			intent.putExtra("myLongitude", mMyLocation.longitude);
+//
+//			intent.setClass(this,
+//					com.mappingbird.MappingBirdPlaceActivity.class);
+//			this.startActivity(intent);
 		}
 
 	}
+
+	private CardClickListener mCardClickListener = new CardClickListener() {
+		@Override
+		public void onClickCard(Point point) {
+			Intent intent = new Intent();
+			intent.putExtra(MappingBirdPlaceActivity.EXTRA_MBPOINT, point);
+			intent.putExtra("myLatitude", mMyLocation.latitude);
+			intent.putExtra("myLongitude", mMyLocation.longitude);
+
+			intent.setClass(MappingBirdCollectionActivity.this,
+					com.mappingbird.MappingBirdPlaceActivity.class);
+			MappingBirdCollectionActivity.this.startActivity(intent);
+		}
+	};
 
 	class MappingBirdRender extends DefaultClusterRenderer<MappingBirdItem> {
 

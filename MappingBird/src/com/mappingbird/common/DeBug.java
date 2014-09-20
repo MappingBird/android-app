@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class DeBug{
 
-	private static final boolean DEBUG = true;
+	public static final boolean DEBUG = true;
 
 	public static final String TAG = "MappingBird";
 	

@@ -19,10 +19,20 @@ public class MappingbirdScrollView extends ScrollView {
 		super(context, attrs, defStyle);
 	}
 
-//	@Override
-//	protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX,
-//			boolean clampedY) {
-//		if (scrollY < 0)
-//			super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
-//	}
+	@Override
+	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+		super.onScrollChanged(l, t, oldl, oldt);
+		if(mOnScrollViewListener != null)
+			mOnScrollViewListener.onScrollChanged(this, l, t, oldl, oldt);
+	}
+
+	public void setOnScrollViewListener(OnScrollViewListener listener) {
+		mOnScrollViewListener = listener;
+	}
+
+	private OnScrollViewListener mOnScrollViewListener = null;
+	public interface OnScrollViewListener {
+		void onScrollChanged(MappingbirdScrollView v, int l, int t, int oldl,
+				int oldt);
+	}
 }

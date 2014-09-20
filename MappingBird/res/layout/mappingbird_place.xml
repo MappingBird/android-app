@@ -6,7 +6,11 @@
     <com.mappingbird.widget.MappingbirdScrollView
         android:id="@+id/trip_place_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        android:scrollbarAlwaysDrawVerticalTrack="false" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -16,14 +20,22 @@
             <RelativeLayout
                 android:id="@+id/trip_place_photo"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="@dimen/place_gallery_height"
                 android:background="#FFFFFF" >
 
+                <!--
                 <ImageView
                     android:id="@+id/trip_photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
+                -->
+
+                <com.mappingbird.widget.MappingbirdGallery
+                    android:id="@+id/trip_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#000" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -124,14 +136,60 @@
                     </TextView>
                 </RelativeLayout>
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/trip_map_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:minHeight="250dp"
+                android:scaleType="fitXY" />
         </LinearLayout>
     </com.mappingbird.widget.MappingbirdScrollView>
 
     <RelativeLayout
+        android:id="@+id/trip_detail_title_back"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/title_bar_background" >
+
+        <ImageView
+            android:id="@+id/back_icon_back"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:scaleType="center"
+            android:src="@drawable/icon_back" />
+
+        <ImageView
+            android:id="@+id/share_icon_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:scaleType="center"
+            android:src="@drawable/share_selector" />
+
+        <TextView
+            android:id="@+id/trip_detail_title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/share_icon_back"
+            android:layout_toRightOf="@id/back_icon_back"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" >
+        </TextView>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/trip_detail_title"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="#F6892A" >
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/transparent" >
 
         <ImageView
             android:id="@+id/back_icon"
@@ -141,7 +199,7 @@
             android:layout_marginLeft="10dp"
             android:scaleType="center"
             android:src="@drawable/icon_back" />
-        
+
         <ImageView
             android:id="@+id/share_icon"
             android:layout_width="wrap_content"
@@ -149,20 +207,6 @@
             android:layout_alignParentRight="true"
             android:scaleType="center"
             android:src="@drawable/share_selector" />
-        
-        <TextView
-            android:id="@+id/trip_detail_title_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/share_icon"
-            android:layout_toRightOf="@id/back_icon"
-            android:singleLine="true"
-            android:textColor="#fff"
-            android:textSize="18sp"
-            android:textStyle="bold" >
-        </TextView>
-        
     </RelativeLayout>
 
 </RelativeLayout>

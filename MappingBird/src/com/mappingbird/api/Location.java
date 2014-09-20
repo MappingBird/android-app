@@ -73,4 +73,8 @@ public class Location implements Serializable{
 	public String getUpdateTime() {
 		return mLUpdateTime;
 	}
+
+	public boolean equals(Location o) {
+		return mLCoordinates.equals(o.mLCoordinates);
+	}
 }

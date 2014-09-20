@@ -255,7 +255,7 @@ public class ClusterManager<T extends ClusterItem> implements GoogleMap.OnCamera
      * Called when an individual ClusterItem is clicked.
      */
     public interface OnClusterItemClickListener<T extends ClusterItem> {
-        public boolean onClusterItemClick(T item);
+        public boolean onClusterItemClick(T item, Marker marker);
     }
 
     /**

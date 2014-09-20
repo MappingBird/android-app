@@ -3,19 +3,21 @@ package com.mappingbird;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
-class MappingBirdItem implements ClusterItem {
+public class MappingBirdItem implements ClusterItem {
 
-	private final LatLng mPosition;
+	public final LatLng mPosition;
 	public final String mTitle;
 	public final int mPinIcon;
 	public final int mIndex;
 	public String mSnippet;
 
+	public final int mIcon;
 	public MappingBirdItem(int index, LatLng position, String title,
 			int pinicon, String snippet) {
 		mIndex = index;
 		this.mTitle = title;
 		mPinIcon = pinicon;
+		mIcon = pinicon;
 		mPosition = position;
 		mSnippet = snippet;
 	}
@@ -29,4 +31,9 @@ class MappingBirdItem implements ClusterItem {
 		return mIndex;
 	}
 
+	public boolean equals(MappingBirdItem o) {
+		return mTitle.equals(o.mTitle) && mPosition.equals(o.mPosition);
+	}
+
+	
 }

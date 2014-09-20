@@ -124,7 +124,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements ClusterRen
         mClusterManager.getMarkerCollection().setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                return mItemClickListener != null && mItemClickListener.onClusterItemClick(mMarkerCache.get(marker));
+                return mItemClickListener != null && mItemClickListener.onClusterItemClick(mMarkerCache.get(marker), marker);
             }
         });
 

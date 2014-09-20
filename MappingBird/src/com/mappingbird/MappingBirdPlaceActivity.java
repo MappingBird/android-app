@@ -1,5 +1,7 @@
 package com.mappingbird;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,28 +19,39 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.mappingbird.api.Collection;
+import com.mappingbird.api.ImageDetail;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetPointsListener;
 import com.mappingbird.api.Point;
+import com.mappingbird.common.BitmapLoader;
+import com.mappingbird.common.BitmapParameters;
+import com.mappingbird.common.DeBug;
+import com.mappingbird.widget.MappingbirdGallery;
+import com.mappingbird.widget.MappingbirdScrollView;
+import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
 
 public class MappingBirdPlaceActivity extends Activity implements
 		OnClickListener {
 
+	public static final String EXTRA_MBPOINT = "mb_point";
 	private static final String TAG = MappingBirdPlaceActivity.class.getName();
 	ImageView mBack = null;
 	RelativeLayout mGetDirection = null;
-	private int mPosition = -1;
-	private Collection mCollection = null;
+	private Point mCurrentPoint;
 	private TextView mTitle = null;
 	private TextView mPlaceName = null;
 	private TextView mPlaceTag = null;
 	private TextView mPlaceDate = null;
 	private TextView mDescription = null;
-	private ImageView mPlacePhoto = null;
 	private ImageView mPinIcon = null;
 	private ImageView mShareIcon = null;
 	private TextView mPlaceAddress = null;
-	private ScrollView mScrollView = null;
+	private ImageView mTripMapView = null;
+	private MappingbirdScrollView mScrollView = null;
+	
+	private View mTitleBack = null;
+	
+	private MappingbirdGallery mPlacePhoto;
 
 	private double mPlaceLatitude = 0;
 	private double mPlaceLongitude = 0;
@@ -52,6 +65,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private Context mContext = null;
 	private Dialog mLoadingDialog = null;
 
+	private int mTitleBarHeight = 0;
+	private BitmapLoader mBitmapLoader;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -64,55 +79,82 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mPlaceTag = (TextView) findViewById(R.id.trip_place_tag);
 		mPlaceDate = (TextView) findViewById(R.id.trip_place_date);
 
+		mTitleBack = findViewById(R.id.trip_detail_title_back);
+		mTitleBack.setAlpha(0);
 		mDescription = (TextView) findViewById(R.id.trip_place_description);
-		mPlacePhoto = (ImageView) findViewById(R.id.trip_photo);
+		mPlacePhoto = (MappingbirdGallery) findViewById(R.id.trip_photo);
 		mPlaceAddress = (TextView) findViewById(R.id.trip_place_address);
 		mPinIcon = (ImageView) findViewById(R.id.pin_icon);
 		mShareIcon = (ImageView) findViewById(R.id.share_icon);
-
 		mShareIcon.setOnClickListener(mShareClickListener);
 
-		mScrollView = (ScrollView) findViewById(R.id.trip_place_scrollview);
+		mTripMapView = (ImageView) findViewById(R.id.trip_map_view);
+
+		mScrollView = (MappingbirdScrollView) findViewById(R.id.trip_place_scrollview);
+		mScrollView.setOnScrollViewListener(mOnScrollViewListener);
 
 		mScrollView
 				.setOverScrollMode(ScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS);
+
+		mTitleBarHeight = (int) getResources().getDimension(R.dimen.place_gallery_height);
 
 		mBack.setOnClickListener(this);
 		mGetDirection.setOnClickListener(this);
 
 		Intent intent = this.getIntent();
-		mPosition = intent.getIntExtra("position", -1);
-		mCollection = (Collection) intent.getSerializableExtra("collection");
+		mCurrentPoint = (Point) intent.getSerializableExtra(EXTRA_MBPOINT);
 		mMyLatitude = intent.getDoubleExtra("myLatitude", 0);
 		mMyLongitude = intent.getDoubleExtra("myLongitude", 0);
 
-		mPlaceLatitude = mCollection.getPointsObj().get(mPosition)
-				.getLocation().getLatitude();
-		mPlaceLongitude = mCollection.getPointsObj().get(mPosition)
-				.getLocation().getLongitude();
+		mPlaceLatitude = mCurrentPoint.getLocation().getLatitude();
+		mPlaceLongitude = mCurrentPoint.getLocation().getLongitude();
 
-		mTitle.setText(mCollection.getPointsObj().get(mPosition).getTitle());
-		mPinIcon.setImageResource(getPinIcon(mCollection.getPointsObj()
-				.get(mPosition).getTypeInt()));
+		mTitle.setText(mCurrentPoint.getTitle());
+		mPinIcon.setImageResource(getPinIcon(mCurrentPoint.getTypeInt()));
 
 		mLoadBitmap = new MappingBirdBitmap(this.getApplicationContext());
-
-		mLoadBitmap.getBitmapByURL(mPlacePhoto,
-				mCollection.getPointsObj().get(mPosition).getImageDetails()
-						.get(0).getUrl(),
-				mLoadBitmap.ICON_TYPE_CONTENT_INFO_ICON);
+		ArrayList<ImageDetail> imagelist = mCurrentPoint.getImageDetails();
+		ArrayList<String> list = new ArrayList<String>();
+		for(ImageDetail item : imagelist) {
+			list.add(item.getUrl());
+		}
+		mPlacePhoto.setData(list);
+//		mLoadBitmap.getBitmapByURL(mPlacePhoto,
+//				mCollection.getPointsObj().get(mPosition).getImageDetails()
+//						.get(0).getUrl(),
+//				mLoadBitmap.ICON_TYPE_CONTENT_INFO_ICON);
 
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 
-		mApi.getPoints(mPointListener, mCollection.getPointsObj()
-				.get(mPosition).getId());
+		mApi.getPoints(mPointListener, mCurrentPoint.getId());
 		mContext = this;
 
 		mLoadingDialog = MappingBirdDialog.createMessageDialog(mContext, null,
 				true);
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
+		
+		String mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center="+mPlaceLatitude+","+mPlaceLongitude+
+				"&zoom=16&size=720x400"
+				+"&markers=color:red%7Ccolor:red%7Clabel:C%7C"+mPlaceLatitude+","+mPlaceLongitude;
+		mBitmapLoader = new BitmapLoader(this);
+		BitmapParameters params = BitmapParameters.getUrlBitmap(mapUrl);
+		mBitmapLoader.getBitmap(mTripMapView, params);
 	}
+
+	private OnScrollViewListener mOnScrollViewListener = new OnScrollViewListener() {
+		
+		@Override
+		public void onScrollChanged(MappingbirdScrollView v, int l, int t,
+				int oldl, int oldt) {
+			DeBug.e("Scroll", "onScrollChanged , scroll Y = "+v.getScrollY()+", mTitleBarHeight = "+mTitleBarHeight);
+			if(mTitleBarHeight > Math.abs(v.getScrollY())) {
+				mTitleBack.setAlpha(Math.abs(v.getScrollY())/(float)mTitleBarHeight);
+			} else {
+				mTitleBack.setAlpha(1.0f);
+			}
+		}
+	};
 
 	OnGetPointsListener mPointListener = new OnGetPointsListener() {
 
@@ -147,7 +189,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 			String placeInfo = "";
 			if (mPoint != null) {
 				placeInfo = mPoint.getLocation().getPlaceName() + "\n"
-						+ mPoint.getLocation().getPlaceAddress() + "\n";
+						+ mPoint.getLocation().getPlaceAddress() + "\n"
+						+ mPoint.getUrl()+"\n";
 				getShareIntent("Share", placeInfo);
 			}
 

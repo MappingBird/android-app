@@ -4,4 +4,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Place -->
+    <dimen name="place_gallery_height">220dp</dimen>
+    
+    <!-- Gallery -->
+    <dimen name="gallery_bubble_padding">1dp</dimen>
+    <!--  -->
+    <dimen name="title_bar_height">45dp</dimen>
 </resources>

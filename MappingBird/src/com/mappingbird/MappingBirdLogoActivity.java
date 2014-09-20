@@ -12,7 +12,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.mappingbird.api.MappingBirdAPI;
-import com.mappingbird.common.Utils;
 
 public class MappingBirdLogoActivity extends Activity {
 
