@@ -89,7 +89,7 @@ class MapParse {
 		return collections;
 	}
 
-	public static Point parsePointsResult(Context mContext, String rsp)
+	public static MBPointData parsePointsResult(Context mContext, String rsp)
 			throws JSONException {
 
 		JSONObject obj = new JSONObject(rsp);
@@ -196,7 +196,7 @@ class MapParse {
 			tags.add(new Tag(tId, tName));
 		}
 
-		return new Point(pid, title, url, type, description, place_address,
+		return new MBPointData(pid, title, url, type, description, place_address,
 				place_phone, place_name, coordinates, images, tags,
 				collectionId, new Location(lId, placeaddress, placephone,
 						placename, lcoordinates, category, lcreateTime,
@@ -216,7 +216,7 @@ class MapParse {
 		DeBug.i(TAG, "[collection info json] userId=" + userId);
 
 		JSONArray array = obj.getJSONArray("points");
-		ArrayList<Point> points = new ArrayList<Point>();
+		ArrayList<MBPointData> points = new ArrayList<MBPointData>();
 		points.clear();
 		for (int i = 0; i < array.length(); i++) {
 			DeBug.i(TAG, "[collection info json] length=" + array.length() + ":"
@@ -260,7 +260,7 @@ class MapParse {
 			String lcoordinates = location.optString("coordinates");
 			DeBug.i(TAG, "[cl json] coordinates=" + lcoordinates);
 
-			points.add(new Point(pid, title, coordinates, type, images,
+			points.add(new MBPointData(pid, title, coordinates, type, images,
 					new Location(lId, lcoordinates)));
 		}
 

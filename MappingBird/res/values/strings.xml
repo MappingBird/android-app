@@ -31,7 +31,8 @@
     <string name="ok">OK</string>
     
     <!-- Distance -->
-    <string name="distance_less_one_meter">&#060;1M</string>
-    <string name="distance_meter">%1$sM</string>
-    <string name="distance_kilometer">%1$sKM</string>
+    <string name="distance_less_one_meter">&#060;1</string>
+    <string name="distance_meter">M</string>
+    <string name="distance_kilometer">KM</string>
+    <string name="distance_max_kilometer">+KM</string>
 </resources>

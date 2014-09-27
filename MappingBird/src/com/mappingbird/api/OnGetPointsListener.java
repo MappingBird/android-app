@@ -1,6 +1,6 @@
 package com.mappingbird.api;
 
 public interface OnGetPointsListener {
-	public abstract void onGetPoints(int statusCode, Point point);
+	public abstract void onGetPoints(int statusCode, MBPointData point);
 
 }

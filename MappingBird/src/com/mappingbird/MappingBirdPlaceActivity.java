@@ -22,7 +22,7 @@ import com.mappingbird.api.Collection;
 import com.mappingbird.api.ImageDetail;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetPointsListener;
-import com.mappingbird.api.Point;
+import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
@@ -37,7 +37,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private static final String TAG = MappingBirdPlaceActivity.class.getName();
 	ImageView mBack = null;
 	RelativeLayout mGetDirection = null;
-	private Point mCurrentPoint;
+	private MBPointData mCurrentPoint;
 	private TextView mTitle = null;
 	private TextView mPlaceName = null;
 	private TextView mPlaceTag = null;
@@ -61,7 +61,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 	private MappingBirdBitmap mLoadBitmap = null;
 	private MappingBirdAPI mApi = null;
-	private Point mPoint = null;
+	private MBPointData mPoint = null;
 	private Context mContext = null;
 	private Dialog mLoadingDialog = null;
 
@@ -102,7 +102,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mGetDirection.setOnClickListener(this);
 
 		Intent intent = this.getIntent();
-		mCurrentPoint = (Point) intent.getSerializableExtra(EXTRA_MBPOINT);
+		mCurrentPoint = (MBPointData) intent.getSerializableExtra(EXTRA_MBPOINT);
 		mMyLatitude = intent.getDoubleExtra("myLatitude", 0);
 		mMyLongitude = intent.getDoubleExtra("myLongitude", 0);
 
@@ -159,7 +159,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 	OnGetPointsListener mPointListener = new OnGetPointsListener() {
 
 		@Override
-		public void onGetPoints(int statusCode, Point point) {
+		public void onGetPoints(int statusCode, MBPointData point) {
 			if (mLoadingDialog != null && mLoadingDialog.isShowing())
 				mLoadingDialog.dismiss();
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
@@ -244,22 +244,22 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private int getPinIcon(int type) {
 		int iconRes = -1;
 		switch (type) {
-		case Point.TYPE_RESTAURANT:
+		case MBPointData.TYPE_RESTAURANT:
 			iconRes = R.drawable.category_icon_restaurant;
 			break;
-		case Point.TYPE_HOTEL:
+		case MBPointData.TYPE_HOTEL:
 			iconRes = R.drawable.category_icon_hotel;
 			break;
-		case Point.TYPE_MALL:
+		case MBPointData.TYPE_MALL:
 			iconRes = R.drawable.category_icon_mall;
 			break;
-		case Point.TYPE_BAR:
+		case MBPointData.TYPE_BAR:
 			iconRes = R.drawable.category_icon_bar;
 			break;
-		case Point.TYPE_MISC:
+		case MBPointData.TYPE_MISC:
 			iconRes = R.drawable.category_icon_default;
 			break;
-		case Point.TYPE_SCENICSPOT:
+		case MBPointData.TYPE_SCENICSPOT:
 			iconRes = R.drawable.category_icon_scene;
 			break;
 		}

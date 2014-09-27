@@ -19,7 +19,7 @@ public class Collection implements Serializable{
 	private String mUpdateTime;
 	private boolean mIsNewest;
 	private ArrayList<Integer> mPoints = new ArrayList<Integer>();
-	private ArrayList<Point> mPointsObjs = new ArrayList<Point>();
+	private ArrayList<MBPointData> mPointsObjs = new ArrayList<MBPointData>();
 
 	Collection(long id, long userId, String name, String createTime,
 			String updateTime, boolean isNewest, ArrayList<Integer> points) {
@@ -33,7 +33,7 @@ public class Collection implements Serializable{
 	}
 	
 	Collection(long id, long userId, String name, String createTime,
-			String updateTime, ArrayList<Point> pointobjs) {
+			String updateTime, ArrayList<MBPointData> pointobjs) {
 		mId = id;
 		mUserId = userId;
 		mName = name;
@@ -42,7 +42,7 @@ public class Collection implements Serializable{
 		mPointsObjs = pointobjs;
 	}
 	
-	Collection(long id, long userId, String name, ArrayList<Point> pointobjs) {
+	Collection(long id, long userId, String name, ArrayList<MBPointData> pointobjs) {
 		mId = id;
 		mUserId = userId;
 		mName = name;
@@ -61,7 +61,7 @@ public class Collection implements Serializable{
 		return mPoints;
 	}
 	
-	public ArrayList<Point> getPointsObj() {
+	public ArrayList<MBPointData> getPointsObj() {
 		return mPointsObjs;
 	}
 

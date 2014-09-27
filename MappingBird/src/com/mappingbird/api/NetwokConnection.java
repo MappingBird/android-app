@@ -46,7 +46,7 @@ class NetwokConnection {
 	private User mCurrentUser = null;
 	private Collections mCollections;
 	private Collection mCollection;
-	private Point mPoint;
+	private MBPointData mPoint;
 
 	NetwokConnection(Context context) {
 		mContext = context;
@@ -287,7 +287,7 @@ class NetwokConnection {
 		}
 	}
 
-	public Point getPoint() {
+	public MBPointData getPoint() {
 		return mPoint;
 	}
 }

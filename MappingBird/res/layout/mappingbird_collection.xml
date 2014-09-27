@@ -20,23 +20,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#00000000" >
-
+<!-- 
             <RelativeLayout
                 android:id="@+id/item_back2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/cards_background"
                 android:visibility="gone" />
-
-            <RelativeLayout
-                android:id="@+id/item_back1"
+-->
+		    <include layout="@layout/mappingbird_listlayout_card"
+                android:id="@+id/item_back2"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+		    <include layout="@layout/mappingbird_listlayout_card"
+                android:id="@+id/item_back1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/cards_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+		    <include layout="@layout/mappingbird_listlayout_card"
+                android:id="@+id/item_back0"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone" />
 
             <com.mappingbird.widget.MappingbirdListView
@@ -46,6 +61,7 @@
                 android:layout_gravity="start"
                 android:background="#00000000"
                 android:cacheColorHint="#00000000"
+                android:scrollbars="none"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0dp" />
         </com.mappingbird.widget.MappingbirdListLayout>

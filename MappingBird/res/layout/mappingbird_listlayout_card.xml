@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mappingbird.widget.MappingbirdListLayoutCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cards_background" >
+
+    <ImageView
+        android:id="@+id/card_icon"
+        android:layout_width="@dimen/list_layout_card_icon_width"
+        android:layout_height="@dimen/list_layout_card_icon_height"
+        android:scaleType="center"
+        android:background="@drawable/default_thumbnail" />
+
+    <TextView
+        android:id="@+id/card_distance"
+        android:layout_width="@dimen/list_layout_card_distance_width"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:textColor="#4E4E4E"
+        android:textStyle="normal"
+       	style="@style/TextStyle_Quote" />
+
+    <ImageView
+        android:id="@+id/card_divider"
+        android:layout_width="1dp"
+        android:layout_height="@dimen/list_layout_card_icon_height"
+        android:layout_toLeftOf="@id/card_distance"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:src="#b7b7b7" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/card_divider"
+        android:layout_toRightOf="@id/card_icon"
+        android:paddingLeft="8dp"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/card_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextStyle_Subtitle"
+            android:textStyle="normal"
+            android:textColor="#4E4E4E"
+            android:ellipsize="none"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/card_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextStyle_Body_Small"
+            android:paddingTop="10dp"
+            android:textColor="#707070"
+            android:ellipsize="none"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/list_layout_card_icon_height"
+        android:layout_toLeftOf="@id/card_divider"
+        android:background="@drawable/card_white_gradient" />
+
+</com.mappingbird.widget.MappingbirdListLayoutCardView>

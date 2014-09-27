@@ -202,7 +202,7 @@ final class MappingBirdUtil {
 		private String mKey;
 		private Collections mCollections;
 		private Collection mCollection;
-		private Point mPoint;
+		private MBPointData mPoint;
 		private User mUser;
 		private int mStatus = MappingBirdAPI.RSP_STATUS_DEFAULT;
 		private int mApiType = 0;
@@ -342,7 +342,7 @@ final class MappingBirdUtil {
 				listener.onGetCollectionInfo(mStatus, mCollection);
 		}
 
-		public void setPoint(Point point) {
+		public void setPoint(MBPointData point) {
 			mPoint = point;	
 		}
 	}
@@ -384,7 +384,7 @@ final class MappingBirdUtil {
 			DeBug.d(TAG, "thread run.");
 			Collections collections = null;
 			Collection collection = null;
-			Point point = null;
+			MBPointData point = null;
 			User user = null;
 			int status = MappingBirdAPI.RSP_STATUS_DEFAULT;
 			Message msg = new Message();

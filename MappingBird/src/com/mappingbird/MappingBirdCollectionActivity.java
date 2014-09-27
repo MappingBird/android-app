@@ -18,6 +18,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.SpannableString;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,7 +53,7 @@ import com.mappingbird.api.LocationService.LocationServiceListener;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetCollectionInfoListener;
 import com.mappingbird.api.OnGetCollectionsListener;
-import com.mappingbird.api.Point;
+import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.common.Utils;
@@ -78,7 +79,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private ArrayAdapter<String> mAdapter;
 	private Collections mCollections = null;
 	private Collection mCollection = null;
-	private ArrayList<Point> mPositionItems = new ArrayList<Point>();
+	private ArrayList<MBPointData> mPositionItems = new ArrayList<MBPointData>();
 
 	private LatLng mMyLocation = null;
 	private Marker mMyMarker = null;
@@ -280,7 +281,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				DeBug.i(TAG, "getCollectionInfoListener: OK");
 				mCollection = collection;
 				setUpMapIfNeeded();
-
 			} else {
 				String title = "";
 				title = getResources().getString(R.string.error);
@@ -391,7 +391,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 						}
 						mClickedMarker = marker;
 						marker.setIcon(BitmapDescriptorFactory
-								.fromResource(R.drawable.pin_selected));
+								.fromResource(item.mPinIconSelected));
 						mClickedClusterItem = item;
 						mMappingbirdListLayout.clickItem(item);
 						mMap.setInfoWindowAdapter(mInfoWindowAdapter);
@@ -438,7 +438,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		mPositionItems.clear();
 		for (int i = 0; i < mCollection.getPointsObj().size(); i++) {
-			Point point = mCollection.getPointsObj().get(i);
+			MBPointData point = mCollection.getPointsObj().get(i);
 			double latitude = point.getLocation()
 					.getLatitude();
 			double longitude = point.getLocation()
@@ -449,7 +449,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			DeBug.i(TAG, "latitude =" + latitude + ", longitude=" + longitude);
 			LatLng latlng = new LatLng(latitude, longitude);
 
-			String sdistance = Utils.getDistanceString( 
+			SpannableString sdistance = Utils.getDistanceString( 
 					Utils.getDistance(mMyLocation.latitude,
 					mMyLocation.longitude, latitude, longitude));
 			boolean isSame = false;
@@ -464,7 +464,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			if (!isSame) {
 				mLatLngs.add(latlng);
 				MappingBirdItem offsetItem = new MappingBirdItem(i, latlng,
-						title, getPinIcon(type), sdistance);
+						title, getPinIcon(type), getPinIconSelected(type), sdistance);
 				mPositionItems.add(point);
 				mClusterManager.addItem(offsetItem);
 			}
@@ -559,23 +559,54 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private int getPinIcon(int type) {
 		int iconRes = -1;
 		switch (type) {
-		case Point.TYPE_RESTAURANT:
+		case MBPointData.TYPE_RESTAURANT:
 			iconRes = R.drawable.pin_restaurant;
 			break;
-		case Point.TYPE_HOTEL:
+		case MBPointData.TYPE_HOTEL:
 			iconRes = R.drawable.pin_bed;
 			break;
-		case Point.TYPE_MALL:
+		case MBPointData.TYPE_MALL:
 			iconRes = R.drawable.pin_shopcart;
 			break;
-		case Point.TYPE_BAR:
+		case MBPointData.TYPE_BAR:
 			iconRes = R.drawable.pin_bar;
 			break;
-		case Point.TYPE_MISC:
+		case MBPointData.TYPE_MISC:
 			iconRes = R.drawable.pin_general;
 			break;
-		case Point.TYPE_SCENICSPOT:
+		case MBPointData.TYPE_SCENICSPOT:
 			iconRes = R.drawable.pin_camera;
+			break;
+		default :
+			iconRes = R.drawable.pin_new;
+			break;
+		}
+		return iconRes;
+	}
+
+	private int getPinIconSelected(int type) {
+		int iconRes = -1;
+		switch (type) {
+		case MBPointData.TYPE_RESTAURANT:
+			iconRes = R.drawable.pin_restaurant_selected;
+			break;
+		case MBPointData.TYPE_HOTEL:
+			iconRes = R.drawable.pin_bed_selected;
+			break;
+		case MBPointData.TYPE_MALL:
+			iconRes = R.drawable.pin_shopcart_selected;
+			break;
+		case MBPointData.TYPE_BAR:
+			iconRes = R.drawable.pin_bar_selected;
+			break;
+		case MBPointData.TYPE_MISC:
+			iconRes = R.drawable.pin_general_selected;
+			break;
+		case MBPointData.TYPE_SCENICSPOT:
+			iconRes = R.drawable.pin_camera_selected;
+			break;
+		default :
+			iconRes = R.drawable.pin_new_selected;
 			break;
 		}
 		return iconRes;
@@ -607,7 +638,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 	private CardClickListener mCardClickListener = new CardClickListener() {
 		@Override
-		public void onClickCard(Point point) {
+		public void onClickCard(MBPointData point) {
 			Intent intent = new Intent();
 			intent.putExtra(MappingBirdPlaceActivity.EXTRA_MBPOINT, point);
 			intent.putExtra("myLatitude", mMyLocation.latitude);
@@ -629,6 +660,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 //		private final ImageView mClusterImageView;
 		private final int mDimension;
 
+
+		/*
+		 * Gmap Mark layout
+		 */
 		public MappingBirdRender() {
 			super(getApplicationContext(), mMap, mClusterManager);
 
@@ -641,11 +676,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mImageView = new ImageView(getApplicationContext());
 			mDimension = (int) getResources().getDimension(
 					R.dimen.custom_profile_image);
-			mImageView.setLayoutParams(new ViewGroup.LayoutParams(mDimension,
-					mDimension));
-			int padding = (int) getResources().getDimension(
-					R.dimen.custom_profile_padding);
-			mImageView.setPadding(padding, padding, padding, padding);
+			mImageView.setLayoutParams(new ViewGroup.LayoutParams(
+					ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT));
 			mIconGenerator.setContentView(mImageView);
 		}
 
@@ -654,7 +687,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mImageView.setImageResource(place.mPinIcon);
 			Bitmap icon = mIconGenerator.makeIcon();
 			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon))
-					.title(place.mTitle).snippet(place.mSnippet);
+					.title(place.mTitle).snippet(place.mSnippet.toString());
 		}
 
 		@Override

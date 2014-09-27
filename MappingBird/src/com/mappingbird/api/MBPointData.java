@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.MappingBirdItem;
 
-public class Point implements Serializable {
+public class MBPointData implements Serializable {
 
 	public static final int TYPE_RESTAURANT = 0;
 	public static final int TYPE_MALL = 1;
@@ -33,7 +33,7 @@ public class Point implements Serializable {
 	private double mLatitude;
 	private double mLongitude;
 
-	Point(long id, String title, String coordinates, String type,
+	MBPointData(long id, String title, String coordinates, String type,
 			ArrayList<ImageDetail> images, Location location) {
 		mId = id;
 		mTitle = title;
@@ -45,7 +45,7 @@ public class Point implements Serializable {
 		mLongitude = mLocation.getLongitude();
 	}
 
-	Point(long id, String title, String url, String type, String description,
+	MBPointData(long id, String title, String url, String type, String description,
 			String address, String phone, String name, String coordinates,
 			ArrayList<ImageDetail> images, ArrayList<Tag> tags,
 			long collectionId, Location location, String createTime,
@@ -154,7 +154,7 @@ public class Point implements Serializable {
 		return mUpdateTime;
 	}
 
-	public boolean equals(Point o) {
+	public boolean equals(MBPointData o) {
 		return mTitle.equals(o.mTitle) && mLocation.equals(o.getLocation());
 	}
 }
