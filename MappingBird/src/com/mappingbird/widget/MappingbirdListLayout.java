@@ -77,7 +77,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 
 	private ListView mListView;
 	private MappingbirdListLayoutCardView mCard1, mCard2; 
-	private MappingbirdListLayoutCardView mCard0;
+	private MappingbirdListLayoutCardView mCard0, mCardAnim;
 	private ItemAdapter mItemAdapter;
 
 	private MBPointData mCurrentPoint = null;
@@ -120,6 +120,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 		mListView.setAdapter(mItemAdapter);
 		
 		mCard0 = (MappingbirdListLayoutCardView)findViewById(R.id.item_back0);
+		mCardAnim = (MappingbirdListLayoutCardView) findViewById(R.id.item_back_anim);
 		mCard1 = (MappingbirdListLayoutCardView)findViewById(R.id.item_back1);
 		mCard2 = (MappingbirdListLayoutCardView)findViewById(R.id.item_back2);
 		
@@ -144,18 +145,17 @@ public class MappingbirdListLayout extends RelativeLayout {
 
 	private void initItemPosition() {
 		// 1
-		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCard1.getLayoutParams();
-		lp.height = mCardHeight;
-		mCard1.setLayoutParams(lp);
+//		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCard1.getLayoutParams();
+//		lp.height = mCardHeight;
+//		mCard1.setLayoutParams(lp);
 		mCard1.setY(getHeight() - mCard1_Position);
 		// 2
-		lp = (RelativeLayout.LayoutParams) mCard2.getLayoutParams();
-		lp.height = mCardHeight;
-		mCard2.setLayoutParams(lp);
+//		lp = (RelativeLayout.LayoutParams) mCard2.getLayoutParams();
+//		lp.height = mCardHeight;
+//		mCard2.setLayoutParams(lp);
 		mCard2.setY(getHeight() - mCard2_Position);
 		// 0
 		mCard0.setY(getHeight() - mCard0_Position);
-		
 	}
 	// init -------
 
@@ -226,8 +226,8 @@ public class MappingbirdListLayout extends RelativeLayout {
 	private void handleChangeItem() {
 		ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(mCard1, "y", mCard1.getY(),
 				getHeight());
-		objectAnimatino.setDuration(300);
-//		objectAnimatino.addListener(mListViewTopAnimDownListener);
+		objectAnimatino.setDuration(200);
+		objectAnimatino.addListener(mItemChangedCard1Listener);
 		objectAnimatino.start();
 		mMode = MODE_ITEM_CHANGE_ITEM;
 	}
@@ -772,15 +772,78 @@ public class MappingbirdListLayout extends RelativeLayout {
 
 	public void clickItem(MappingBirdItem item) {
 		MBPointData point = mItemAdapter.clickItem(item);
-		mCurrentPoint = point;
-		if(mMode == MODE_ITEM_NORMAL) {
-			mCard1.setData(mMyLocation, point);
-			switchMode(MODE_ITEM_CHANGE_ITEM);
-		} else {
-			mCard0.setData(mMyLocation, point);
-			switchMode(MODE_ITEM_NORMAL);
+		if(!mCurrentPoint.equals(point)) {
+			mCurrentPoint = point;
+			if(mMode == MODE_ITEM_NORMAL) {
+				switchMode(MODE_ITEM_CHANGE_ITEM);
+			} else {
+				mCard0.setData(mMyLocation, point);
+				switchMode(MODE_ITEM_NORMAL);
+			}
 		}
 	}
+
+	private AnimatorListener mItemChangedCard1Listener = new AnimatorListener() {
+		@Override
+		public void onAnimationCancel(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			
+			mCardAnim.setData(mMyLocation, mCard0.getPoint());
+			mCardAnim.setVisibility(View.VISIBLE);
+			mCardAnim.setY(getHeight() - mCard0_Position);
+			float scale = mCard1.getWidth()*1.0f / mCard0.getWidth();
+			mCard0.setData(mMyLocation, mCurrentPoint);
+			mCard0.setY(getHeight());
+
+			ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(mCardAnim, "y", getHeight() - mCard0_Position,
+					getHeight() - mCard1_Position);
+			objectAnimatino.setDuration(200);
+			objectAnimatino.start();
+			ObjectAnimator objectAnimatino2 = ObjectAnimator.ofFloat(mCardAnim, "ScaleX", 1.0f,
+					scale);
+			objectAnimatino2.setDuration(200);
+			objectAnimatino2.start();
+
+			ObjectAnimator objectAnimatino1 = ObjectAnimator.ofFloat(mCard0, "y", getHeight(),
+					getHeight() - mCard0_Position);
+			objectAnimatino1.setDuration(200);
+			objectAnimatino.addListener(mItemChangedCard0UpListener);
+			objectAnimatino1.start();
+		}
+
+		@Override
+		public void onAnimationRepeat(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationStart(Animator animation) {
+		}
+	};
+
+	private AnimatorListener mItemChangedCard0UpListener = new AnimatorListener() {
+		@Override
+		public void onAnimationCancel(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			mCard1.cleanData();
+			mCard1.setY(getHeight() - mCard1_Position);
+			mCardAnim.setVisibility(View.GONE);
+			switchMode(MODE_ITEM_NORMAL);
+		}
+
+		@Override
+		public void onAnimationRepeat(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationStart(Animator animation) {
+		}
+	};
 
 	private AnimatorListener mListViewAnimUpListener = new AnimatorListener() {
 		@Override

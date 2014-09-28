@@ -52,6 +52,17 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 		}
 	}
 
+	public MBPointData getPoint() {
+		return mPoint;
+	}
+
+	public void cleanData() {
+		mPoint = null;
+		mIcon.setImageDrawable(null);
+		mTitle.setText("");
+		mDistance.setText("");
+	}
+
 	public void setData(LatLng mylocation, MBPointData point) {
 		if(point == null)
 			return;
