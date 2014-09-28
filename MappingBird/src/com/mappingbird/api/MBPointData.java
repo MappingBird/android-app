@@ -34,12 +34,13 @@ public class MBPointData implements Serializable {
 	private double mLongitude;
 
 	MBPointData(long id, String title, String coordinates, String type,
-			ArrayList<ImageDetail> images, Location location) {
+			ArrayList<ImageDetail> images, ArrayList<Tag> tags, Location location) {
 		mId = id;
 		mTitle = title;
 		mCoordinates = coordinates;
 		mType = type;
 		mImages = images;
+		mTags = tags;
 		mLocation = location;
 		mLatitude = mLocation.getLatitude();
 		mLongitude = mLocation.getLongitude();

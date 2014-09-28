@@ -14,9 +14,10 @@ public class Location implements Serializable{
 	private String mLCreateTime;
 	private String mLUpdateTime;
 
-	Location(long id, String coordinates) {
+	Location(long id, String coordinates, String address) {
 		mLId = id;
 		mLCoordinates = coordinates;
+		mLPlaceAddress = address;
 	}
 	
 	Location(long id, String address, String phone, String name,

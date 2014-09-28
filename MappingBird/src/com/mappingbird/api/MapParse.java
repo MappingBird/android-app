@@ -242,7 +242,7 @@ class MapParse {
 				JSONObject imagearrayobj = imagearray.getJSONObject(j);
 
 				long iId = imagearrayobj.optLong("id");
-				DeBug.i(TAG, "[ci json] tId=" + iId);
+				DeBug.i(TAG, "[ci json] iId=" + iId);
 
 				String iUrl = imagearrayobj.optString("url");
 				DeBug.i(TAG, "[ci json] Url=" + iUrl);//
@@ -260,8 +260,25 @@ class MapParse {
 			String lcoordinates = location.optString("coordinates");
 			DeBug.i(TAG, "[cl json] coordinates=" + lcoordinates);
 
-			points.add(new MBPointData(pid, title, coordinates, type, images,
-					new Location(lId, lcoordinates)));
+			String address = location.optString("place_address");
+			DeBug.i(TAG, "[cl json] address=" + address);
+
+			ArrayList<Tag> tags = new ArrayList<Tag>();
+			tags.clear();
+
+			JSONArray tagarray = arrayobj.getJSONArray("tags");
+			for (int j = 0; j < tagarray.length(); j++) {
+				JSONObject tagobj = tagarray.getJSONObject(j);
+				long tId = tagobj.optLong("id");
+				DeBug.i(TAG, "[tag json] tId=" + tId);
+
+				String tName = tagobj.optString("name");
+				DeBug.i(TAG, "[tag json] name ="+ tName);
+				tags.add(new Tag(tId, tName));
+			}
+
+			points.add(new MBPointData(pid, title, coordinates, type, images, tags,
+					new Location(lId, lcoordinates, address)));
 		}
 
 		return new Collection(cid, userId, name, points);

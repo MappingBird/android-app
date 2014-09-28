@@ -598,6 +598,9 @@ public class MappingbirdListLayout extends RelativeLayout {
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 		DeBug.i("Test", "dispatchTouchEvent, mMode = "+mMode);
 		switch(mMode) {
+			case MODE_ITEM_CHANGE_ITEM : {
+				return true;
+			}
 			case MODE_ITEM_NORMAL: {
 				if(handleItemNormalTouchEvent(ev))
 					return true;
@@ -832,6 +835,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 		public void onAnimationEnd(Animator animation) {
 			mCard1.cleanData();
 			mCard1.setY(getHeight() - mCard1_Position);
+			mCardAnim.cleanData();
 			mCardAnim.setVisibility(View.GONE);
 			switchMode(MODE_ITEM_NORMAL);
 		}

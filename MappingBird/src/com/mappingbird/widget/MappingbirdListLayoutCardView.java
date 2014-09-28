@@ -63,6 +63,10 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 		mDistance.setText("");
 	}
 
+	public void setHeight() {
+		
+	}
+
 	public void setData(LatLng mylocation, MBPointData point) {
 		if(point == null)
 			return;
@@ -75,7 +79,7 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 			mBitmapLoader.getBitmap(mIcon, params);
 		}
 		mTitle.setText(mPoint.getTitle());
-		mSubTitle.setText(mPoint.getPlaceAddress());
+		mSubTitle.setText(mPoint.getLocation().getPlaceAddress());
 		if(mylocation != null) {
 			mDistance.setText(
 					Utils.getDistanceString(
