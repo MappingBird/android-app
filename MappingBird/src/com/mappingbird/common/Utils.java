@@ -33,7 +33,6 @@ public class Utils {
 		int bodySmallTextSize = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 
 				MappingBirdApplication.instance().getResources().getDimension(R.dimen.body_small_text_size),
 				MappingBirdApplication.instance().getResources().getDisplayMetrics());
-		DeBug.d("Test", "bodySmallTextSize = "+bodySmallTextSize);
 		if(distance < 1) {
 			// < 1m
 			String firstStr = MappingBirdApplication.instance().getString(R.string.distance_less_one_meter);

@@ -8,8 +8,11 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +20,6 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
@@ -39,12 +41,6 @@ import com.mappingbird.common.Utils;
 
 public class MappingbirdListLayout extends RelativeLayout {
 
-//	private static final int MODE_NONE = 4;
-//	private static final int MODE_ITEM = 0;
-//	private static final int MODE_DRAG_UP = 1;
-//	private static final int MODE_DRAG_DOWN = 3;
-//	private static final int MODE_LIST = 2;
-	
 	private static final int MODE_NORMAL 				= 0;
 
 	private static final int MODE_ITEM_NORMAL 			= 10;
@@ -62,20 +58,20 @@ public class MappingbirdListLayout extends RelativeLayout {
 	private static final int MODE_LIST_TOP_DRAGING_DOWN		= 25;
 	private static final int MODE_LIST_TOP_ANIM_DOWN		= 29;
 
-	
+	private static final float MAX_ALPHA = 0.8f;
+
 	private int mTouchDownX = 0;
 	private int mTouchDownY = 0;
 
 	private int mMode = MODE_NORMAL;
 	
-	private int mCardHeight = 300;
 	private int mCard0_Position = 300;
 	private int mCard1_Position = 330;
 	private int mCard2_Position = 360;
 	
 	private int mItemMaxHeight = 400;
 
-	private ListView mListView;
+	private MappingbirdListView mListView;
 	private MappingbirdListLayoutCardView mCard1, mCard2; 
 	private MappingbirdListLayoutCardView mCard0, mCardAnim;
 	private ItemAdapter mItemAdapter;
@@ -96,7 +92,11 @@ public class MappingbirdListLayout extends RelativeLayout {
 	// Click card
 	private CardClickListener mCardClickListener = null;
 	
+	private GestureDetector mGestureDetector = null;
 	private boolean isInited = false;
+	
+	private boolean mTouchEventFling = false;
+	private float mVelocityY = 0;
 	public MappingbirdListLayout(Context context) {
 		super(context);
 	}
@@ -113,7 +113,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		mListView = (ListView) findViewById(R.id.item_list);
+		mListView = (MappingbirdListView) findViewById(R.id.item_list);
 		mListView.setOnItemClickListener(mListViewItemClickListener);
 		mListView.setVisibility(View.GONE);
 		mItemAdapter = new ItemAdapter(getContext());
@@ -126,15 +126,51 @@ public class MappingbirdListLayout extends RelativeLayout {
 		
 		mBitmapLoader = new BitmapLoader(getContext());
 		
-		mCardHeight = (int)getResources().getDimension(R.dimen.list_layout_card_height);
 		mCard0_Position = (int)getResources().getDimension(R.dimen.list_layout_card0_position_height);
 		mCard1_Position = (int)getResources().getDimension(R.dimen.list_layout_card1_position_height);
 		mCard2_Position = (int)getResources().getDimension(R.dimen.list_layout_card2_position_height);
 		
 		mItemMaxHeight = (int) getResources().getDimension(R.dimen.place_item_card_max_position);
 		isInited = false;
+		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
 	}
 
+	private OnGestureListener mGestureListener = new OnGestureListener() {
+		
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+			return false;
+		}
+		
+		@Override
+		public void onShowPress(MotionEvent e) {
+		}
+		
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+				float distanceY) {
+			return false;
+		}
+		
+		@Override
+		public void onLongPress(MotionEvent e) {
+		}
+		
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			mTouchEventFling = true;
+			mVelocityY = velocityY;
+			return false;
+		}
+		
+		@Override
+		public boolean onDown(MotionEvent e) {
+			mTouchEventFling = false;
+			mVelocityY = 0;
+			return false;
+		}
+	};
 	// init +++++++
 	private void init() {
 		if(isInited)
@@ -146,16 +182,17 @@ public class MappingbirdListLayout extends RelativeLayout {
 	private void initItemPosition() {
 		// 1
 //		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCard1.getLayoutParams();
-//		lp.height = mCardHeight;
 //		mCard1.setLayoutParams(lp);
 		mCard1.setY(getHeight() - mCard1_Position);
+		mCard1.setParentHeight(-1);
 		// 2
 //		lp = (RelativeLayout.LayoutParams) mCard2.getLayoutParams();
-//		lp.height = mCardHeight;
 //		mCard2.setLayoutParams(lp);
 		mCard2.setY(getHeight() - mCard2_Position);
+		mCard2.setParentHeight(-1);
 		// 0
 		mCard0.setY(getHeight() - mCard0_Position);
+		mCard0.setParentHeight(getHeight());
 	}
 	// init -------
 
@@ -172,6 +209,9 @@ public class MappingbirdListLayout extends RelativeLayout {
 	private void switchMode(int mode) {
 		DeBug.d("Test", "switchMode from ["+mMode+"] to ["+mode+"]");
 		switch(mode) {
+			case MODE_ITEM_CHANGE_TO_LIST:
+				mCard0.switchItemAnimation(mCardSwitchItemListener);
+				break;
 			case MODE_ITEM_NORMAL: {
 				handleItemNormal();
 				break;
@@ -233,7 +273,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 	}
 
 	private void handleListTopAimDown() {
-		ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(mListView, "y", mListView.getY(),
+		ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(this, "ListViewMarginTop", mListView.getY(),
 				getHeight());
 		objectAnimatino.setDuration(300);
 		objectAnimatino.addListener(mListViewTopAnimDownListener);
@@ -242,7 +282,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 	}
 
 	private void handleListBottomAimDown() {
-		ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(mListView, "y", mListView.getY(),
+		ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(this, "ListViewMarginTop", mListView.getY(),
 				getHeight() - mItemMaxHeight);
 		objectAnimatino.setDuration(300);
 		objectAnimatino.addListener(mListViewBottomAnimDownListener);
@@ -251,7 +291,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 	}
 
 	private void handleListBottomAimUp() {
-		ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(mListView, "y", mListView.getY(),
+		ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(this, "ListViewMarginTop", mListView.getY(),
 				0);
 		objectAnimatino.setDuration(300);
 		objectAnimatino.addListener(mListViewBottomAnimUpListener);
@@ -260,8 +300,10 @@ public class MappingbirdListLayout extends RelativeLayout {
 	}
 
 	private void handleListDownNormal() {
+		mCard0.resetLayout();
 		mCard0.setVisibility(View.GONE);
 		mListView.setVisibility(View.VISIBLE);
+		mListView.setParentHeight(getHeight());
 		setListViewMarginTop(getHeight() - mItemMaxHeight);
 		mMode = MODE_LIST_BOTTOM_NORMAL;
 	}
@@ -278,7 +320,13 @@ public class MappingbirdListLayout extends RelativeLayout {
 	private void handleItemAnimationUp() {
 		ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(mCard0, "y", mCard0.getY(),
 				getHeight() - mItemMaxHeight);
-		objectAnimatino.setDuration(300);
+		int dis = (int)(getHeight() - mItemMaxHeight - mCard0.getY());
+		long time = 300;
+		if(dis < mItemMaxHeight/3) {
+			time = 150;
+		}
+		
+		objectAnimatino.setDuration(time);
 		objectAnimatino.addListener(mItemViewMoveUpListener);
 		objectAnimatino.start();
 		mMode = MODE_ITEM_ANIMATION_UP;
@@ -369,8 +417,15 @@ public class MappingbirdListLayout extends RelativeLayout {
 		switchMode(MODE_NORMAL);
 	}
 
-	private void setListViewMarginTop(int top) {
+	public void setListViewMarginTop(float top) {
+		if(top < 0)
+			top = 0;
 		mListView.setY(top);
+		float rate = ((float)top)/ (getHeight() - mItemMaxHeight);
+		if(rate > 1)
+			rate = 1;
+		int bgColor = Color.argb((int)(0xff*(MAX_ALPHA*(1-rate))), 0xff, 0xff, 0xff);
+		setBackgroundColor(bgColor);
 	}
 
 	private void setItemMarginTop(int top) {
@@ -460,10 +515,18 @@ public class MappingbirdListLayout extends RelativeLayout {
 			case MotionEvent.ACTION_CANCEL:
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_OUTSIDE: {
-				if(mCard0.getY() < (getHeight() - mItemMaxHeight/2 - mCard0_Position/2)) {
-					switchMode(MODE_ITEM_ANIMATION_UP);
+				if(!mTouchEventFling || Math.abs(mVelocityY) < 500) {
+					if(mCard0.getY() < (getHeight() - mItemMaxHeight/2 - mCard0_Position/2)) {
+						switchMode(MODE_ITEM_ANIMATION_UP);
+					} else {
+						switchMode(MODE_ITEM_ANIMATION_DOWN);
+					}
 				} else {
-					switchMode(MODE_ITEM_ANIMATION_DOWN);
+					if(mVelocityY > 0) {
+						switchMode(MODE_ITEM_ANIMATION_DOWN);
+					} else {
+						switchMode(MODE_ITEM_ANIMATION_UP);
+					}
 				}
 				break;
 			}
@@ -526,12 +589,20 @@ public class MappingbirdListLayout extends RelativeLayout {
 			case MotionEvent.ACTION_CANCEL:
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_OUTSIDE: {
-				if(mListView.getY() < ((getHeight()-mItemMaxHeight)/2)) {
-					switchMode(MODE_LIST_BOTTOM_ANIM_UP);
-				} else if(mListView.getY() < ((getHeight()-mItemMaxHeight/2))){
-					switchMode(MODE_LIST_BOTTOM_ANIM_DOWN);
+				if(!mTouchEventFling || Math.abs(mVelocityY) < 500) {
+					if(mListView.getY() < ((getHeight()-mItemMaxHeight)/2)) {
+						switchMode(MODE_LIST_BOTTOM_ANIM_UP);
+					} else if(mListView.getY() < ((getHeight()-mItemMaxHeight/2))){
+						switchMode(MODE_LIST_BOTTOM_ANIM_DOWN);
+					} else {
+						switchMode(MODE_LIST_TOP_ANIM_DOWN);
+					}
 				} else {
-					switchMode(MODE_LIST_TOP_ANIM_DOWN);
+					if(mVelocityY > 0) {
+						switchMode(MODE_LIST_TOP_ANIM_DOWN);
+					} else {
+						switchMode(MODE_LIST_BOTTOM_ANIM_UP);
+					}
 				}
 				break;
 			}
@@ -584,19 +655,28 @@ public class MappingbirdListLayout extends RelativeLayout {
 		case MotionEvent.ACTION_CANCEL:
 		case MotionEvent.ACTION_UP:
 		case MotionEvent.ACTION_OUTSIDE:
-			if(mListView.getY() < getHeight()/2) {
-				switchMode(MODE_LIST_BOTTOM_ANIM_UP);
+			if(!mTouchEventFling || Math.abs(mVelocityY) < 500) {
+				if(mListView.getY() < getHeight()/2) {
+					switchMode(MODE_LIST_BOTTOM_ANIM_UP);
+				} else {
+					switchMode(MODE_LIST_TOP_ANIM_DOWN);
+				}
 			} else {
-				switchMode(MODE_LIST_TOP_ANIM_DOWN);
+				if(mVelocityY > 0) {
+					switchMode(MODE_LIST_TOP_ANIM_DOWN);
+				} else {
+					switchMode(MODE_LIST_BOTTOM_ANIM_UP);
+				}
 			}
 			return true;
-		}			
+		}
 		return false;
 	}
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
-		DeBug.i("Test", "dispatchTouchEvent, mMode = "+mMode);
+//		DeBug.i("Test", "dispatchTouchEvent, mMode = "+mMode);
+		mGestureDetector.onTouchEvent(ev);
 		switch(mMode) {
 			case MODE_ITEM_CHANGE_ITEM : {
 				return true;
@@ -925,7 +1005,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 		}
 	};
 
-	private AnimatorListener mItemViewMoveUpListener = new AnimatorListener() {
+	private AnimatorListener mCardSwitchItemListener = new AnimatorListener() {
 		@Override
 		public void onAnimationCancel(Animator animation) {
 		}
@@ -933,6 +1013,25 @@ public class MappingbirdListLayout extends RelativeLayout {
 		@Override
 		public void onAnimationEnd(Animator animation) {
 			switchMode(MODE_LIST_BOTTOM_NORMAL);
+		}
+
+		@Override
+		public void onAnimationRepeat(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationStart(Animator animation) {
+		}
+	};
+
+	private AnimatorListener mItemViewMoveUpListener = new AnimatorListener() {
+		@Override
+		public void onAnimationCancel(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			switchMode(MODE_ITEM_CHANGE_TO_LIST);
 		}
 
 		@Override
@@ -1133,8 +1232,8 @@ public class MappingbirdListLayout extends RelativeLayout {
 			}
 			
 			TextView address = (TextView) convertView.findViewById(R.id.card_address);
-			DeBug.e("Test", "item.mPoint = "+item.mPoint.getPlaceAddress());
-			address.setText("Test 23423423");
+			address.setText(item.mPoint.getLocation().getPlaceAddress());
+			DeBug.i("Test", "height = "+convertView.getHeight());
 			return convertView;
 		}
 	}
