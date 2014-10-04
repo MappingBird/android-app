@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/title_btn_people"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:scaleType="center"
+        android:src="@drawable/account_selector" />
+
+    <ImageView
+        android:id="@+id/title_btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/title_btn_people"
+        android:scaleType="center"
+        android:src="@drawable/please_add_icon" />
+
+    <TextView 
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/title_btn_add"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:singleLine="true"
+        android:textColor="#FFF"
+        android:textSize="18sp"/>
+</RelativeLayout>

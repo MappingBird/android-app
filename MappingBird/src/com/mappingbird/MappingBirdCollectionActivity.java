@@ -20,6 +20,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.SpannableString;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -70,7 +71,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private ActionBarDrawerToggle mDrawerToggle;
 	private CharSequence mTitle;
 	private ArrayList<String> mTripTitles;
-	private ImageView mProfile = null;
+	private TextView mTitleText;
 
 	private GoogleMap mMap;
 	private ArrayList<LatLng> mLatLngs = new ArrayList<LatLng>();
@@ -124,45 +125,36 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		getActionBar().setDisplayOptions(
 				getActionBar().getDisplayOptions()
 						| ActionBar.DISPLAY_SHOW_CUSTOM);
-		mProfile = new ImageView(getActionBar().getThemedContext());
-		mProfile.setScaleType(ImageView.ScaleType.CENTER);
-		mProfile.setImageResource(R.drawable.account_selector);
+		LayoutInflater inflater = LayoutInflater.from(getActionBar().getThemedContext());
+		View titlelayout = inflater.inflate(R.layout.mappingbird_collection_title_view, null, false);
 		ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
 				ActionBar.LayoutParams.WRAP_CONTENT,
 				ActionBar.LayoutParams.WRAP_CONTENT, Gravity.RIGHT
 						| Gravity.CENTER_VERTICAL);
-//		layoutParams.rightMargin = 10;
-		mProfile.setLayoutParams(layoutParams);
-		getActionBar().setCustomView(mProfile);
+		titlelayout.setLayoutParams(layoutParams);
+		getActionBar().setCustomView(titlelayout);
+		titlelayout.findViewById(R.id.title_btn_people).setOnClickListener(mTitleClickListener);
+		titlelayout.findViewById(R.id.title_btn_add).setOnClickListener(mTitleClickListener);
+		mTitleText = (TextView) findViewById(R.id.title_text);
 
 		mMappingbirdListLayout = (MappingbirdListLayout) findViewById(R.id.item_list_layout);
 		mMappingbirdListLayout.setCardClickListener(mCardClickListener);
-
-		mProfile.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setClass(MappingBirdCollectionActivity.this,
-						com.mappingbird.MappingBirdProfileActivity.class);
-				MappingBirdCollectionActivity.this.startActivity(intent);
-			}
-		});
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, R.string.account,
 				R.string.action_settings) {
 			public void onDrawerClosed(View view) {
 				DeBug.v("onDrawerClosed");
-				getActionBar().setTitle(mTitle);
+//				getActionBar().setTitle(mTitle);
+				mTitleText.setText(mTitle);
 				invalidateOptionsMenu();
 
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				DeBug.v("onDrawerOpened");
-				getActionBar().setTitle(mTitle);
-				mMappingbirdListLayout.closeCardLayout();
+//				getActionBar().setTitle(mTitle);
+				mTitleText.setText(mTitle);
 				invalidateOptionsMenu();
 
 			}
@@ -264,6 +256,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if (mCollections != null && mCollections.getCount() > 0) {
 			if (mLoadingDialog != null)
 				mLoadingDialog.show();
+			mMappingbirdListLayout.closeLayout();
 			mApi.getCollectionInfo(getCollectionInfoListener,
 					mCollections.get(position).getId());
 		}
@@ -293,6 +286,24 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			}
 		};
 	};
+
+	private OnClickListener mTitleClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			switch(v.getId()) {
+			case R.id.title_btn_people:
+				Intent intent = new Intent();
+				intent.setClass(MappingBirdCollectionActivity.this,
+						com.mappingbird.MappingBirdProfileActivity.class);
+				MappingBirdCollectionActivity.this.startActivity(intent);
+				break;
+			case R.id.title_btn_add:
+				break;
+			}
+			
+		}
+	};
 	android.content.DialogInterface.OnClickListener positiveListener = new android.content.DialogInterface.OnClickListener() {
 
 		@Override
@@ -304,7 +315,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	public void setTitle(CharSequence title) {
 		mTitle = title;
-		getActionBar().setTitle(mTitle);
+//		getActionBar().setTitle(mTitle);
+		mTitleText.setText(mTitle);
 	}
 
 	@Override

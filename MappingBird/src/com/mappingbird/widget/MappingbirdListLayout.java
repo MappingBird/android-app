@@ -58,7 +58,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 	private static final int MODE_LIST_TOP_DRAGING_DOWN		= 25;
 	private static final int MODE_LIST_TOP_ANIM_DOWN		= 29;
 
-	private static final float MAX_ALPHA = 0.8f;
+	private static final float MAX_ALPHA = 0.9f;
 
 	private int mTouchDownX = 0;
 	private int mTouchDownY = 0;
@@ -209,6 +209,9 @@ public class MappingbirdListLayout extends RelativeLayout {
 	private void switchMode(int mode) {
 		DeBug.d("Test", "switchMode from ["+mMode+"] to ["+mode+"]");
 		switch(mode) {
+			case MODE_NORMAL:
+				handleNormal();
+				break;
 			case MODE_ITEM_CHANGE_TO_LIST:
 				mCard0.switchItemAnimation(mCardSwitchItemListener);
 				break;
@@ -261,6 +264,22 @@ public class MappingbirdListLayout extends RelativeLayout {
 				break;
 			}
 		}
+	}
+
+	private void handleNormal() {
+		if(mCard0.getVisibility() == View.VISIBLE) {
+			fakeViewAnimation(false);
+			ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(mCard0, "y", mCard0.getY(),
+					getHeight());
+			objectAnimatino.setDuration(300);
+			objectAnimatino.start();
+		} else if(mListView.getVisibility() == View.VISIBLE) {
+			ObjectAnimator objectAnimatino = ObjectAnimator.ofFloat(this, "ListViewMarginTop", mListView.getY(),
+					getHeight());
+			objectAnimatino.setDuration(300);
+			objectAnimatino.start();			
+		}
+		mMode = MODE_NORMAL;
 	}
 
 	private void handleChangeItem() {
@@ -413,7 +432,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 //		}
 //	}
 
-	public void closeCardLayout() {
+	public void closeLayout() {
 		switchMode(MODE_NORMAL);
 	}
 
