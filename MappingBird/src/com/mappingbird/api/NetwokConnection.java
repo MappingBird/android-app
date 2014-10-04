@@ -39,7 +39,12 @@ class NetwokConnection {
 	public static final int API_GET_COLLECTIONS = 2;
 	public static final int API_GET_POINTS = 3;
 	public static final int API_GET_COLLECTION_INFO = 4;
-	
+	public static final int API_ADD_COLLECTION = 5;
+	public static final int API_ADD_PLACE = 6;
+	public static final int API_UPLOAD_IMAGE = 7;
+	public static final int API_SEARCH_FOURSQUARE = 8;
+	public static final int API_EXPLORE_FOURSQUARE = 9;
+
 	private static User mUser = null;
 	private static Context mContext = null;
 
@@ -47,6 +52,7 @@ class NetwokConnection {
 	private Collections mCollections;
 	private Collection mCollection;
 	private MBPointData mPoint;
+	private VenueCollection mVenues;
 
 	NetwokConnection(Context context) {
 		mContext = context;
@@ -61,13 +67,14 @@ class NetwokConnection {
 		try {
 			DeBug.d(TAG, "-----server start-----");
 			long starttime = System.currentTimeMillis();
-			String rsp = retryhttpConnection(url, method, postData);
+			String rsp = retryhttpConnection(url, method, postData, apiType);
 			long endtime = System.currentTimeMillis();
 			DeBug.d(TAG, "-----server end-----");
 			DeBug.d(TAG, "server run: " + (endtime - starttime) + " ms.");
+			DeBug.d(TAG, "[Http]rsp =" + rsp);
 			rsp = unescapeUnicode(rsp);
 			DeBug.d(TAG, "[Http]rsp =" + rsp);
-//			writefile(rsp);
+			// writefile(rsp);
 
 			if (rsp != null) {
 				if (rsp.equals("no_token")) {
@@ -88,15 +95,39 @@ class NetwokConnection {
 				case API_LOGOUT:
 					break;
 				case API_GET_COLLECTIONS:
-					mCollections = MapParse.parseCollectionsResult(mContext,
-							rsp);
+					mCollections = MapParse.parseCollectionsResult(rsp);
 					break;
 				case API_GET_POINTS:
-					mPoint = MapParse.parsePointsResult(mContext, rsp);
+					mPoint = MapParse.parsePointsResult(rsp);
 					break;
 				case API_GET_COLLECTION_INFO:
-					mCollection = MapParse.parseCollectionInfoResult(mContext,
-							rsp);	
+					mCollection = MapParse.parseCollectionInfoResult(rsp);
+				case API_ADD_COLLECTION:
+					break;
+				case API_ADD_PLACE:
+					break;
+				case API_UPLOAD_IMAGE:
+					break;
+				case API_SEARCH_FOURSQUARE:
+					long code = MapParse.parseErrorResult(rsp);
+					if (code == 200) {
+						mVenues = MapParse.parseSearchResult(rsp);
+					} else if (code == 400) {
+						return MappingBirdAPI.RESULT_BAD_REQUEST_ERROR;
+					} else {
+						return MappingBirdAPI.RESULT_UNKNOW_ERROR;
+					}
+					break;
+				case API_EXPLORE_FOURSQUARE:
+					long ecode = MapParse.parseErrorResult(rsp);
+					if (ecode == 200) {
+						mVenues = MapParse.parseExploreResult(rsp);
+					} else if (ecode == 400) {
+						return MappingBirdAPI.RESULT_BAD_REQUEST_ERROR;
+					} else {
+						return MappingBirdAPI.RESULT_UNKNOW_ERROR;
+					}
+					break;
 				}
 			} else {
 				DeBug.e(TAG, "RSP is  NULL!");
@@ -104,27 +135,28 @@ class NetwokConnection {
 			}
 		} catch (ClientProtocolException e) {
 			DeBug.e(TAG, "Client Protocal Error!");
-//			DeBug.getStackTraceString(e);
+			// DeBug.getStackTraceString(e);
 			return MappingBirdAPI.RESULT_NETWORK_ERROR;
 		} catch (IOException e) {
 			DeBug.e(TAG, "IO Erro!");
-//			DeBug.getStackTraceString(e);
+			// DeBug.getStackTraceString(e);
 			return MappingBirdAPI.RESULT_NETWORK_ERROR;
 		} catch (JSONException e) {
 			DeBug.e(TAG, "JSON Parser Error: server rsp error!");
-//			DeBug.getStackTraceString(e);
+			// DeBug.getStackTraceString(e);
 			return MappingBirdAPI.RESULT_INTERNAL_ERROR;
 		}
 		return MappingBirdAPI.RESULT_OK;
 	}
 
 	private String retryhttpConnection(String url, String method,
-			JSONObject postData) throws ClientProtocolException, IOException {
+			JSONObject postData, int apiType) throws ClientProtocolException,
+			IOException {
 		String rsp = null;
 		int retrynum = 3;
 		while (retrynum > 0 && rsp == null) {
 			try {
-				rsp = httpConnection(url, method, postData);
+				rsp = httpConnection(url, method, postData, apiType);
 				if (rsp != null) {
 					DeBug.i(TAG, "don't need retry");
 					break;
@@ -170,13 +202,14 @@ class NetwokConnection {
 		return rsp;
 	}
 
-	private String httpConnection(String url, String method, JSONObject postData)
-			throws ClientProtocolException, IOException {
+	private String httpConnection(String url, String method,
+			JSONObject postData, int apiType) throws ClientProtocolException,
+			IOException {
 		String rsp = null;
 		HttpUriRequest request = null;
 		HttpParams httpParameters = new BasicHttpParams();
-//		HttpConnectionParams.setConnectionTimeout(httpParameters, 60 * 1000);
-//		HttpConnectionParams.setSoTimeout(httpParameters, 60 * 1000);
+		// HttpConnectionParams.setConnectionTimeout(httpParameters, 60 * 1000);
+		// HttpConnectionParams.setSoTimeout(httpParameters, 60 * 1000);
 		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 
 		if (method.equals("GET")) {
@@ -185,7 +218,9 @@ class NetwokConnection {
 				DeBug.i(TAG, "auth =" + auth);
 				HttpGet get = new HttpGet(url);
 				get.setHeader("Content-Type", "application/json");
-				get.setHeader("Authorization", auth);
+				if (apiType == API_GET_COLLECTIONS || apiType == API_GET_POINTS
+						|| apiType == API_GET_COLLECTION_INFO)
+					get.setHeader("Authorization", auth);
 				request = get;
 			} else {
 				rsp = "no_token";
@@ -208,6 +243,8 @@ class NetwokConnection {
 		int statusCode = status.getStatusCode();
 		DeBug.d(TAG, "statusCode =" + statusCode);
 		if (statusCode == HttpStatus.SC_OK) {
+			rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
+		} else if (statusCode == HttpStatus.SC_BAD_REQUEST) {
 			rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
 		} else {
 			DeBug.e(TAG, EntityUtils.toString(response.getEntity()));
@@ -246,11 +283,15 @@ class NetwokConnection {
 		return mCollection;
 	}
 
+	public VenueCollection getVenues() {
+		return mVenues;
+	}
+
 	public void writefile(String s) {
 		File externalStorageDir = Environment.getExternalStorageDirectory();
 		File myFile = new File(externalStorageDir, "yourfilename.txt");
 
-		DeBug.i("Test", "externalStorageDir = "+externalStorageDir);
+		DeBug.i("Test", "externalStorageDir = " + externalStorageDir);
 		if (myFile.exists()) {
 			try {
 				DeBug.i("Test", "myFile exist");
@@ -265,7 +306,7 @@ class NetwokConnection {
 				DeBug.i("Test", "myFile finished");
 			} catch (IOException e) {
 				e.printStackTrace();
-				DeBug.i("Test", "myFile e = "+e.toString());
+				DeBug.i("Test", "myFile e = " + e.toString());
 			}
 		} else {
 			try {
@@ -282,7 +323,7 @@ class NetwokConnection {
 				DeBug.i("Test", "myFile create 2");
 			} catch (IOException e) {
 				e.printStackTrace();
-				DeBug.i("Test", "myFile createNewFile e = "+e.toString());
+				DeBug.i("Test", "myFile createNewFile e = " + e.toString());
 			}
 		}
 	}
