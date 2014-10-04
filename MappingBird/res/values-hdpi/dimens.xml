@@ -26,4 +26,9 @@
     
     <!-- body small -->
     <dimen name="body_small_text_size">14px</dimen>
+    
+    <!-- Select category -->
+    <dimen name="select_category_margin_left">40dp</dimen>
+    <dimen name="select_category_margin_right">40dp</dimen>
+    <dimen name="select_category_margin_bottom">10dp</dimen>
 </resources>

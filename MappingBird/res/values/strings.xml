@@ -35,4 +35,7 @@
     <string name="distance_meter">M</string>
     <string name="distance_kilometer">KM</string>
     <string name="distance_max_kilometer">+KM</string>
+    
+    <!-- Add place -->
+    <string name="add_place_pick_category">Pick a category for the place you are going to save.</string>
 </resources>

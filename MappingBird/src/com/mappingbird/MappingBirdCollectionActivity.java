@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -19,6 +20,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.SpannableString;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -51,10 +53,10 @@ import com.mappingbird.api.Collection;
 import com.mappingbird.api.Collections;
 import com.mappingbird.api.LocationService;
 import com.mappingbird.api.LocationService.LocationServiceListener;
+import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetCollectionInfoListener;
 import com.mappingbird.api.OnGetCollectionsListener;
-import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.common.Utils;
@@ -299,6 +301,13 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				MappingBirdCollectionActivity.this.startActivity(intent);
 				break;
 			case R.id.title_btn_add:
+				Display display = getWindowManager().getDefaultDisplay();
+				Point size = new Point();
+				display.getSize(size);
+				int width = size.x;
+				int height = size.y;
+				Dialog selected = MappingBirdDialog.createSelectPlaceKindDialog(mContext, width, height);
+				selected.show();
 				break;
 			}
 			

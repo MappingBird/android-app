@@ -6,23 +6,24 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.drawable.AnimationDrawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mappingbird.api.MappingBirdAPI;
+import com.mappingbird.widget.MappingbirdSelectPleaceKindLayout;
 
 class MappingBirdDialog {
-	private static Dialog mDialog = null;
 
 	public static Dialog createMessageDialog(Context context, String message,
 			boolean isLoading) {
 
-		mDialog = new Dialog(context, R.style.LoadingDialog);
-		mDialog.setContentView(R.layout.mappingbird_dailog);
+		Dialog dialog = new Dialog(context, R.style.LoadingDialog);
+		dialog.setContentView(R.layout.mappingbird_dailog);
 
-		TextView msg = (TextView) mDialog.findViewById(R.id.message);
-		ImageView image = (ImageView) mDialog.findViewById(R.id.image);
+		TextView msg = (TextView) dialog.findViewById(R.id.message);
+		ImageView image = (ImageView) dialog.findViewById(R.id.image);
 
 		if (message != null) {
 			msg.setVisibility(View.VISIBLE);
@@ -42,8 +43,20 @@ class MappingBirdDialog {
 			image.setVisibility(View.GONE);
 		}
 
-		return mDialog;
+		return dialog;
 
+	}
+
+	public static Dialog createSelectPlaceKindDialog(Context context, int width, int height) {
+
+		Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+		LayoutInflater inflater = LayoutInflater.from(context);
+		MappingbirdSelectPleaceKindLayout layout = (MappingbirdSelectPleaceKindLayout)
+				inflater.inflate(R.layout.mappingbird_select_place_kind_layout,
+						null, false);
+		layout.initView(width, height);
+		dialog.setContentView(layout);
+		return dialog;
 	}
 
 	public static Dialog createMessageDialog(Context context, String title,

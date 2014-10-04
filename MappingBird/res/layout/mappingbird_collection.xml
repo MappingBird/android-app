@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#00000000" >
-<!-- 
+
+            <!--
             <RelativeLayout
                 android:id="@+id/item_back2"
                 android:layout_width="match_parent"
@@ -29,37 +30,42 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/cards_background"
                 android:visibility="gone" />
--->
-		    <include layout="@layout/mappingbird_listlayout_card"
+            -->
+
+            <include
                 android:id="@+id/item_back2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_layout_card_height"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/list_layout_card_height"
+                layout="@layout/mappingbird_listlayout_card"
                 android:visibility="gone" />
 
-		    <include layout="@layout/mappingbird_listlayout_card"
+            <include
                 android:id="@+id/item_back1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_layout_card_height"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/list_layout_card_height"
+                layout="@layout/mappingbird_listlayout_card"
                 android:visibility="gone" />
 
-		    <include layout="@layout/mappingbird_listlayout_card"
+            <include
                 android:id="@+id/item_back_anim"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/list_layout_card_height"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                layout="@layout/mappingbird_listlayout_card"
                 android:visibility="gone" />
 
-		    <include layout="@layout/mappingbird_listlayout_card"
+            <include
                 android:id="@+id/item_back0"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/list_layout_card_height"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                layout="@layout/mappingbird_listlayout_card"
                 android:visibility="gone" />
 
             <com.mappingbird.widget.MappingbirdListView
@@ -69,10 +75,10 @@
                 android:layout_gravity="start"
                 android:background="#00000000"
                 android:cacheColorHint="#00000000"
-                android:listSelector="#00000000"
-                android:scrollbars="none"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="0dp" />
+                android:dividerHeight="0dp"
+                android:listSelector="#00000000"
+                android:scrollbars="none" />
         </com.mappingbird.widget.MappingbirdListLayout>
 
         <ListView
@@ -85,5 +91,4 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp" />
     </android.support.v4.widget.DrawerLayout>
-
 </RelativeLayout>
