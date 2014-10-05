@@ -32,6 +32,9 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 	private int mCancelYPosition = 0;
 	private Dialog mDialog;
 
+	private double mLatitude = 0;
+	private double mLongitude = 0;
+
 	public MappingbirdSelectPleaceKindLayout(Context context) {
 		super(context);
 	}
@@ -103,6 +106,8 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 				mDialog.dismiss();
 			Intent intent = new Intent(getContext(), MappingBirdPickPlaceActivity.class);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_TYPE, type);
+			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LAT, mLatitude);
+			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LONG, mLongitude);
 			getContext().startActivity(intent);
 		}
 	};
@@ -118,6 +123,11 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 
 	public void setDialig(Dialog dialog) {
 		mDialog = dialog;
+	}
+
+	public void setLocation(double latitude, double longitude) {
+		mLatitude = latitude;
+		mLongitude = longitude;
 	}
 
 	public void initView(int width, int height) {

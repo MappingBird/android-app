@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.widget.MappingbirdSelectPleaceKindLayout;
 
-class MappingBirdDialog {
+public class MappingBirdDialog {
 
 	public static Dialog createMessageDialog(Context context, String message,
 			boolean isLoading) {
@@ -47,7 +47,8 @@ class MappingBirdDialog {
 
 	}
 
-	public static Dialog createSelectPlaceKindDialog(Context context, int width, int height) {
+	public static Dialog createSelectPlaceKindDialog(Context context, int width, int height,
+			double latitude, double longitude) {
 
 		Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
 		LayoutInflater inflater = LayoutInflater.from(context);
@@ -55,6 +56,7 @@ class MappingBirdDialog {
 				inflater.inflate(R.layout.dialog_select_place_kind_layout,
 						null, false);
 		layout.initView(width, height);
+		layout.setLocation(latitude, longitude);
 		dialog.setContentView(layout);
 		layout.startAnimation();
 		layout.setDialig(dialog);

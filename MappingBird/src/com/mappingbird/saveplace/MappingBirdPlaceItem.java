@@ -1,6 +1,9 @@
 package com.mappingbird.saveplace;
 
-import com.mappingbird.api.Location;
+import android.text.SpannableString;
+
+import com.mappingbird.api.Venue;
+import com.mappingbird.common.Utils;
 
 
 public class MappingBirdPlaceItem  {
@@ -10,12 +13,29 @@ public class MappingBirdPlaceItem  {
 	
 	public static final int TYPE_NUMBER = 3;
 	
-	private String mName = "";
-	private String mAddress = "";
-	private Location mLocation;
-	
-	public MappingBirdPlaceItem(String name, String address) {
-		
+	private int mType = TYPE_PLACE;
+	private Venue mData;
+	private SpannableString mDistanceStr;
+	public float mDistance;
+	public MappingBirdPlaceItem(int type, Venue data, double latitude, double longitude) {
+		mType = type;
+		mData = data;
+		mDistance = Utils.getDistance(latitude, longitude, mData.getLatitude(), mData.getLongitude());
+		mDistanceStr = Utils.getDistanceString(mDistance);
 	}
 
+	public int getType() {
+		return mType;
+	}
+
+	public String getName() {
+		return mData.getName();
+	}
+	public String getAddress() {
+		return mData.getAddress();
+	}
+
+	public SpannableString getDistance() {
+		return mDistanceStr;
+	}
 }

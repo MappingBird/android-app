@@ -9,9 +9,8 @@
         android:layout_height="match_parent"
         android:background="#00000000"
         android:cacheColorHint="#00000000"
-        android:divider="@android:color/transparent"
+        android:divider="#00000000"
         android:dividerHeight="0dp"
-        android:listSelector="#00000000"
         android:scrollbars="none" />
 
 </RelativeLayout>

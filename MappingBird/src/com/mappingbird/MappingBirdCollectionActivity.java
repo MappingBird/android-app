@@ -306,7 +306,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				display.getSize(size);
 				int width = size.x;
 				int height = size.y;
-				Dialog selected = MappingBirdDialog.createSelectPlaceKindDialog(mContext, width, height);
+				Dialog selected = MappingBirdDialog.createSelectPlaceKindDialog(mContext, width, height
+						, mMyLocation.latitude, mMyLocation.longitude);
 				selected.show();
 				break;
 			}
