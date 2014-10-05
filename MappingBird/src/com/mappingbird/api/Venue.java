@@ -3,6 +3,8 @@ package com.mappingbird.api;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.mappingbird.common.DeBug;
+
 public class Venue implements Serializable{
 
 	private static final String TAG = Venue.class.getName();
@@ -23,6 +25,7 @@ public class Venue implements Serializable{
 	private String mCountry = null;
 	private ArrayList<String> mFormattedAddress = null;
 	private String mUrl = null;
+	private String msFormattedAddress = null;
 	
 	Venue(String name, String phone, String address, double latitude, double longitude, String url, ArrayList<String> formattedAddress, long distance){
 		mName = name;
@@ -59,12 +62,26 @@ public class Venue implements Serializable{
 		return mUrl;
 	}
 	
-	public ArrayList<String> getFormattedAddress() {
+	public ArrayList<String> getFormattedAddressArray() {
 		return mFormattedAddress;
 	}
 	
 	public long getDistance() {
 		return mDistance;
+	}
+	
+	public String getFormattedAddress(){
+		msFormattedAddress = "";
+		for (int i=0; i< mFormattedAddress.size();i++){
+			if (i == mFormattedAddress.size() -1) {
+				msFormattedAddress = msFormattedAddress + mFormattedAddress.get(i);
+			}
+			else {
+				msFormattedAddress = msFormattedAddress + mFormattedAddress.get(i) + " ";
+			}
+		}
+		DeBug.i("[Venue] FormattedAddress =" + msFormattedAddress);
+		return msFormattedAddress;
 	}
 	
 }
