@@ -2,7 +2,9 @@ package com.mappingbird.widget;
 
 
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.mappingbird.R;
 import com.mappingbird.common.DeBug;
+import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
 
 public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 
@@ -26,6 +29,9 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 	private int mMarginLeft = 0;
 	private int mMarginRight = 0;
 	private int mMarginBottom = 0;
+	private int mCancelYPosition = 0;
+	private Dialog mDialog;
+
 	public MappingbirdSelectPleaceKindLayout(Context context) {
 		super(context);
 	}
@@ -50,6 +56,14 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 		mCancel 		= (ImageView) findViewById(R.id.select_cancel);
 		mHintText		= (TextView) findViewById(R.id.select_title);
 		
+		mIconScene.setOnClickListener(mIconClickListener);
+		mIconBar.setOnClickListener(mIconClickListener);
+		mIconHotel.setOnClickListener(mIconClickListener);
+		mIconRestaunt.setOnClickListener(mIconClickListener);
+		mIconMall.setOnClickListener(mIconClickListener);
+		mIconDefult.setOnClickListener(mIconClickListener);
+		
+		mCancel.setOnClickListener(mCancelClickListener);
 		mIconScene.setAlpha(0f);
 		mIconBar.setAlpha(0f);
 		mIconHotel.setAlpha(0f);
@@ -57,30 +71,65 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 		mIconMall.setAlpha(0f);
 		mIconDefult.setAlpha(0f);
 		mHintText.setAlpha(0f);
+	}
 
-		this.setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
-			
-			@Override
-			public void onSystemUiVisibilityChange(int visibility) {
-				DeBug.i("Test", "onSystemUiVisibilityChange : visibility = "+visibility);
-				if(visibility == View.VISIBLE) {
-					DeBug.i("Test", "dialog show");
-					ObjectAnimator objectAnimation = ObjectAnimator.ofFloat(this, "AnimationTime", 0, 1);
-					objectAnimation.start();
-				}
+	private OnClickListener mIconClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			int type = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
+			switch(v.getId()) {
+			case R.id.select_scene:
+				type = MappingBirdPickPlaceActivity.TYPE_SCENE;
+				break;
+			case R.id.select_bar:
+				type = MappingBirdPickPlaceActivity.TYPE_BAR;
+				break;
+			case R.id.select_hotel:
+				type = MappingBirdPickPlaceActivity.TYPE_HOTEL;
+				break;
+			case R.id.select_restaurant:
+				type = MappingBirdPickPlaceActivity.TYPE_RESTURANT;
+				break;
+			case R.id.select_mall:
+				type = MappingBirdPickPlaceActivity.TYPE_MALL;
+				break;
+			case R.id.select_default:
+				type = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
+				break;
 			}
-		});
+			
+			if(mDialog != null && mDialog.isShowing())
+				mDialog.dismiss();
+			Intent intent = new Intent(getContext(), MappingBirdPickPlaceActivity.class);
+			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_TYPE, type);
+			getContext().startActivity(intent);
+		}
+	};
+
+	private OnClickListener mCancelClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			if(mDialog != null && mDialog.isShowing())
+				mDialog.dismiss();
+		}
+	};
+
+	public void setDialig(Dialog dialog) {
+		mDialog = dialog;
 	}
 
 	public void initView(int width, int height) {
-		DeBug.d("Test", "icon width = "+mIconScene.getWidth());
 		mMarginLeft = (int) getResources().getDimension(R.dimen.select_category_margin_left);
 		mMarginRight = (int) getResources().getDimension(R.dimen.select_category_margin_right);
 		mMarginBottom = (int) getResources().getDimension(R.dimen.select_category_margin_bottom);
 		
+		
 		Drawable drawable = getResources().getDrawable(R.drawable.category_icon_mall);
 		int radius = width/2 - mMarginLeft -  drawable.getIntrinsicWidth()/2;
-		
+		mCancelYPosition = drawable.getIntrinsicHeight();
+
 		RelativeLayout.LayoutParams lp;
 		double angle;
 		lp = (RelativeLayout.LayoutParams) mIconRestaunt.getLayoutParams();
@@ -108,13 +157,52 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 		mIconBar.setLayoutParams(lp);
 	}
 
-	public void setAnimationTime(float vale) {
-		mIconScene.setAlpha(vale);
-		mIconBar.setAlpha(vale);
-		mIconHotel.setAlpha(vale);
-		mIconRestaunt.setAlpha(vale);
-		mIconMall.setAlpha(vale);
-		mIconDefult.setAlpha(vale);
-		mHintText.setAlpha(vale);
+	public void startAnimation() {
+		ObjectAnimator objectAnimation = ObjectAnimator.ofFloat(this, "AnimationTime", 0, 1);
+		objectAnimation.setDuration(900);
+		objectAnimation.start();
+	}
+
+	public void setAnimationTime(float value) {
+		if(value < 0.1)
+			mCancel.setY(getHeight() - mCancelYPosition * value * 10);
+		else {
+			mCancel.setY(getHeight() - mCancelYPosition);
+		}
+		if(value > 0.1f)
+			mIconScene.setAlpha((float)((value - 0.1) / 0.3f));
+		else if(value >= 0.4f)
+			mIconScene.setAlpha(1.0f);
+		
+		if(value > 0.2f) 
+			mIconRestaunt.setAlpha((float)((value - 0.2) / 0.3f));
+		else if(value >= 0.5f)
+			mIconRestaunt.setAlpha(1.0f);
+		
+		if(value > 0.3f)
+			mIconHotel.setAlpha((float)((value - 0.3) / 0.3f));
+		else if(value >= 0.6f)
+			mIconHotel.setAlpha(1.0f);
+		
+		if(value > 0.4f)
+			mIconBar.setAlpha((float)((value - 0.4) / 0.3f));
+		else if(value >= 0.7f)
+			mIconBar.setAlpha(1.0f);
+		
+		if(value > 0.5f)
+			mIconMall.setAlpha((float)((value - 0.5) / 0.3f));
+		else if(value >= 0.8f)
+			mIconMall.setAlpha(1.0f);
+		
+		if(value > 0.6f)
+			mIconDefult.setAlpha((float)((value - 0.6) / 0.3f));
+		else if(value >= 0.9f)
+			mIconDefult.setAlpha(1.0f);
+		
+		if(value > 0.7f)
+			mHintText.setAlpha((float)((value - 0.7) / 0.3f));
+		else if(value >= 1.0f)
+			mHintText.setAlpha(1.0f);
+
 	}
 }

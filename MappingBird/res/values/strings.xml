@@ -38,4 +38,7 @@
     
     <!-- Add place -->
     <string name="add_place_pick_category">Pick a category for the place you are going to save.</string>
+    
+    <!-- Pick place -->
+    <string name="pick_place_title">Pick A Place</string>
 </resources>

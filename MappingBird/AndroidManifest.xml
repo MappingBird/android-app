@@ -67,7 +67,11 @@
             android:name="com.mappingbird.MappingBirdProfileActivity"
             android:screenOrientation="portrait" >
         </activity>
-
+        <activity
+            android:name="com.mappingbird.saveplace.MappingBirdPickPlaceActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

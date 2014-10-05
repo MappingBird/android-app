@@ -52,10 +52,12 @@ class MappingBirdDialog {
 		Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
 		LayoutInflater inflater = LayoutInflater.from(context);
 		MappingbirdSelectPleaceKindLayout layout = (MappingbirdSelectPleaceKindLayout)
-				inflater.inflate(R.layout.mappingbird_select_place_kind_layout,
+				inflater.inflate(R.layout.dialog_select_place_kind_layout,
 						null, false);
 		layout.initView(width, height);
 		dialog.setContentView(layout);
+		layout.startAnimation();
+		layout.setDialig(dialog);
 		return dialog;
 	}
 
