@@ -426,9 +426,10 @@ class MapParse {
 				DeBug.i(TAG, "[venue json] url=" + url);
 				DeBug.i(TAG,
 						"=========================================================");
-				collection.add(new Venue(vname, phone, address, lat, lng, url, formattedA));
+				collection.add(new Venue(vname, phone, address, lat, lng, url, formattedA, distance));
 			}
 		}
+		collection.sort();
 		return collection;
 	}
 
@@ -542,11 +543,12 @@ class MapParse {
 					DeBug.i(TAG, "[venue json] url=" + url);
 					DeBug.i(TAG,
 							"=========================================================");
-					collection.add(new Venue(vname, phone, address, lat, lng, url, formattedA));
+					collection.add(new Venue(vname, phone, address, lat, lng, url, formattedA, distance));
 				}
 				
 			}
 		}
+		collection.sort();
 		return collection;
 	}
 }

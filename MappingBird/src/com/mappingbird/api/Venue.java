@@ -24,7 +24,7 @@ public class Venue implements Serializable{
 	private ArrayList<String> mFormattedAddress = null;
 	private String mUrl = null;
 	
-	Venue(String name, String phone, String address, double latitude, double longitude, String url, ArrayList<String> formattedAddress){
+	Venue(String name, String phone, String address, double latitude, double longitude, String url, ArrayList<String> formattedAddress, long distance){
 		mName = name;
 		mPhone = phone;
 		mAddress = address;
@@ -32,6 +32,7 @@ public class Venue implements Serializable{
 		mLongitude = longitude;
 		mUrl = url;
 		mFormattedAddress = formattedAddress;
+		mDistance = distance;
 	}
 	
 	public String getName() {
@@ -60,6 +61,10 @@ public class Venue implements Serializable{
 	
 	public ArrayList<String> getFormattedAddress() {
 		return mFormattedAddress;
+	}
+	
+	public long getDistance() {
+		return mDistance;
 	}
 	
 }

@@ -2,8 +2,10 @@ package com.mappingbird.api;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class VenueCollection implements Serializable{
+public class VenueCollection implements Serializable {
 	private static final String TAG = VenueCollection.class.getName();
 	private ArrayList<Venue> mVenues = new ArrayList<Venue>();
 
@@ -23,5 +25,18 @@ public class VenueCollection implements Serializable{
 
 	void clear() {
 		mVenues.clear();
+	}
+
+	void sort() {
+		Collections.sort(mVenues, new Comparator<Venue>() {
+
+			@Override
+			public int compare(Venue lhs, Venue rhs) {
+				// >:1/ <:-1/=:0
+				int distanceCompare = lhs.getDistance() == rhs.getDistance() ? 0
+						: lhs.getDistance() > rhs.getDistance() ? 1 : -1;
+				return distanceCompare;
+			}
+		});
 	}
 }
