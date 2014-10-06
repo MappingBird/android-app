@@ -23,7 +23,7 @@ import com.mappingbird.api.OnExploreFourSquareListener;
 import com.mappingbird.api.VenueCollection;
 import com.mappingbird.common.DeBug;
 
-public class MappingBirdPickPlaceActivity extends FragmentActivity  {
+public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 
 	public static final int TYPE_SCENE 		= 0;
 	public static final int TYPE_BAR 		= 1;
@@ -85,10 +85,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 		@Override
 		public void OnExploreFourSquare(int statusCode, VenueCollection collection) {
 			mLoadingDialog.dismiss();
-			if(collection != null)
-				DeBug.d("[Pick Place] request place , status = "+statusCode+", data size = "+collection.getCount());
-			else
-				DeBug.d("[Pick Place] request place , status = "+statusCode+", data is null");
+			DeBug.d("[Pick Place] request place , status = "+statusCode+", data size = "+collection.getCount());
 			if(statusCode == MappingBirdAPI.RESULT_OK) {
 				mRequestPlace.clear();
 				for(int i = 0; i < collection.getCount(); i++) {

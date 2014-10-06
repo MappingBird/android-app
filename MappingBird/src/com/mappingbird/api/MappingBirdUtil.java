@@ -652,8 +652,10 @@ final class MappingBirdUtil {
 		}
 		
 		public void setExploreFourSquarehListener() {
-			for (OnExploreFourSquareListener listener : mOnExploreFourSquareListenerArray)
-				listener.OnExploreFourSquare(mStatus, mVenues);
+			for (OnExploreFourSquareListener listener : mOnExploreFourSquareListenerArray) {
+				if(listener != null)
+					listener.OnExploreFourSquare(mStatus, mVenues);
+			}
 		}
 	}
 

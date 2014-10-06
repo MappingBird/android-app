@@ -20,8 +20,7 @@ public class MappingBirdPlaceItem  {
 	public MappingBirdPlaceItem(int type, Venue data, double latitude, double longitude) {
 		mType = type;
 		mData = data;
-		mDistance = Utils.getDistance(latitude, longitude, mData.getLatitude(), mData.getLongitude());
-		mDistanceStr = Utils.getDistanceString(mDistance);
+		mDistanceStr = Utils.getDistanceString(mData.getDistance());
 	}
 
 	public int getType() {
@@ -32,7 +31,7 @@ public class MappingBirdPlaceItem  {
 		return mData.getName();
 	}
 	public String getAddress() {
-		return mData.getAddress();
+		return mData.getFormattedAddress();
 	}
 
 	public SpannableString getDistance() {
