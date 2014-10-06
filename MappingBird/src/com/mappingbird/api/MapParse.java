@@ -339,7 +339,7 @@ class MapParse {
 		}
 		return new Collection(cid, userId, name, points);
 	}
-	
+
 	public static long parseErrorResult(String rsp) throws JSONException {
 		JSONObject obj = new JSONObject(rsp);
 		JSONObject meta = obj.getJSONObject("meta");
@@ -354,97 +354,120 @@ class MapParse {
 		return code;
 	}
 
-	public static VenueCollection parseSearchResult(String rsp) throws JSONException {
+	public static VenueCollection parseSearchResult(String rsp)
+			throws JSONException {
 		JSONObject obj = new JSONObject(rsp);
 		JSONObject meta = obj.getJSONObject("meta");
 		long code = meta.optLong("code");
 		DeBug.i(TAG, "[meta json] code=" + code);
 
-//		String errorType = meta.optString("errorType");
-//		DeBug.i(TAG, "[meta json] errorType=" + errorType);
-//
-//		String errorDetail = meta.optString("errorDetail");
-//		DeBug.i(TAG, "[meta json] errorDetail=" + errorDetail);
+		// String errorType = meta.optString("errorType");
+		// DeBug.i(TAG, "[meta json] errorType=" + errorType);
+		//
+		// String errorDetail = meta.optString("errorDetail");
+		// DeBug.i(TAG, "[meta json] errorDetail=" + errorDetail);
 
 		VenueCollection collection = new VenueCollection();
 		collection.clear();
 		if (code == 200) {
 			JSONObject response = obj.getJSONObject("response");
-			JSONArray venues = response.getJSONArray("venues");
-			for (int i = 0; i < venues.length(); i++) {
-				JSONObject venue = venues.getJSONObject(i);
-				String vname = venue.optString("name");
-				DeBug.i(TAG, "[venue json] vname=" + vname);
+			if (response != null) {
+				JSONArray venues = response.getJSONArray("venues");
+				if (venues != null) {
+					for (int i = 0; i < venues.length(); i++) {
+						JSONObject venue = venues.getJSONObject(i);
+						String vname = null;
+						String phone = null;
+						String address = null;
+						double lat = 0;
+						double lng = 0;
+						long distance = 0;
+						String url = null;
+						ArrayList<String> formattedA = new ArrayList<String>();
+						formattedA.clear();
+						
+						vname = venue.optString("name");
+						DeBug.i(TAG, "[venue json] vname=" + vname);
 
-				JSONObject contact = venue.getJSONObject("contact");
-				String phone = contact.optString("phone");
-				DeBug.i(TAG, "[venue json] phone=" + phone);
-				String formattedPhone = contact.optString("formattedPhone");
-				DeBug.i(TAG, "[venue json] formattedPhone=" + formattedPhone);
+						JSONObject contact = venue.getJSONObject("contact");
+						if (contact != null) {
+							phone = contact.optString("phone");
+							DeBug.i(TAG, "[venue json] phone=" + phone);
+							String formattedPhone = contact
+									.optString("formattedPhone");
+							DeBug.i(TAG, "[venue json] formattedPhone="
+									+ formattedPhone);
+						}
 
-				JSONObject location = venue.getJSONObject("location");
-				String address = location.optString("address");
-				DeBug.i(TAG, "[venue json] address=" + address);
+						JSONObject location = venue.getJSONObject("location");
+						if (location != null) {
+							address = location.optString("address");
+							DeBug.i(TAG, "[venue json] address=" + address);
 
-				double lat = location.optDouble("lat");
-				DeBug.i(TAG, "[venue json] lat=" + lat);
+							lat = location.optDouble("lat");
+							DeBug.i(TAG, "[venue json] lat=" + lat);
 
-				double lng = location.optDouble("lng");
-				DeBug.i(TAG, "[venue json] lng=" + lng);
+							lng = location.optDouble("lng");
+							DeBug.i(TAG, "[venue json] lng=" + lng);
 
-				long distance = location.optLong("distance");
-				DeBug.i(TAG, "[venue json] distance=" + distance);
+							distance = location.optLong("distance");
+							DeBug.i(TAG, "[venue json] distance=" + distance);
 
-				long postalCode = location.optLong("postalCode");
-				DeBug.i(TAG, "[venue json] postalCode=" + postalCode);
+							long postalCode = location.optLong("postalCode");
+							DeBug.i(TAG, "[venue json] postalCode="
+									+ postalCode);
 
-				String cc = location.optString("cc");
-				DeBug.i(TAG, "[venue json] cc=" + cc);
+							String cc = location.optString("cc");
+							DeBug.i(TAG, "[venue json] cc=" + cc);
 
-				String city = location.optString("city");
-				DeBug.i(TAG, "[venue json] city=" + city);
+							String city = location.optString("city");
+							DeBug.i(TAG, "[venue json] city=" + city);
 
-				String state = location.optString("state");
-				DeBug.i(TAG, "[venue json] state=" + state);
+							String state = location.optString("state");
+							DeBug.i(TAG, "[venue json] state=" + state);
 
-				String country = location.optString("country");
-				DeBug.i(TAG, "[venue json] country=" + country);
+							String country = location.optString("country");
+							DeBug.i(TAG, "[venue json] country=" + country);
 
-				JSONArray formattedAddress = location
-						.getJSONArray("formattedAddress");
-				
-				ArrayList<String> formattedA = new ArrayList<String>();
-				formattedA.clear();
-				
-				for (int j = 0; j < formattedAddress.length(); j++) {
-					String a = formattedAddress.getString(j);
-					DeBug.i(TAG, "[venue json] a=" + a);
-					formattedA.add(a);
+							JSONArray formattedAddress = location
+									.getJSONArray("formattedAddress");
+
+							if (formattedAddress != null) {
+								for (int j = 0; j < formattedAddress.length(); j++) {
+									String a = formattedAddress.getString(j);
+									DeBug.i(TAG, "[venue json] a=" + a);
+									formattedA.add(a);
+								}
+							}
+						}
+
+						url = venue.optString("url");
+						DeBug.i(TAG, "[venue json] url=" + url);
+						DeBug.i(TAG,
+								"=========================================================");
+						collection.add(new Venue(vname, phone, address, lat,
+								lng, url, formattedA, distance));
+					}
 				}
-
-				String url = venue.optString("url");
-				DeBug.i(TAG, "[venue json] url=" + url);
-				DeBug.i(TAG,
-						"=========================================================");
-				collection.add(new Venue(vname, phone, address, lat, lng, url, formattedA, distance));
 			}
 		}
 		collection.sort();
 		return collection;
 	}
 
-	public static VenueCollection parseExploreResult(String rsp) throws JSONException {
+	public static VenueCollection parseExploreResult(String rsp)
+			throws JSONException {
 		JSONObject obj = new JSONObject(rsp);
 		JSONObject meta = obj.getJSONObject("meta");
 		long code = meta.optLong("code");
 		DeBug.i(TAG, "[meta json] code=" + code);
 
-//		String errorType = meta.optString("errorType");
-//		DeBug.i(TAG, "[meta json] errorType=" + errorType);
-//
-//		String errorDetail = meta.optString("errorDetail");
-//		DeBug.i(TAG, "[meta json] errorDetail=" + errorDetail);
-		
+		// String errorType = meta.optString("errorType");
+		// DeBug.i(TAG, "[meta json] errorType=" + errorType);
+		//
+		// String errorDetail = meta.optString("errorDetail");
+		// DeBug.i(TAG, "[meta json] errorDetail=" + errorDetail);
+
 		VenueCollection collection = new VenueCollection();
 		collection.clear();
 
@@ -477,75 +500,131 @@ class MapParse {
 			// double swlng = sw.optDouble("lng");
 			// DeBug.i(TAG, "[tag json] swlat=" + swlat);
 			// DeBug.i(TAG, "[tag json] swlng=" + swlng);
+			if (response != null) {
+				JSONArray agroups = response.getJSONArray("groups");
+				if (agroups != null) {
+					for (int k = 0; k < agroups.length(); k++) {
+						JSONObject groups = agroups.getJSONObject(k);
+						// String type = groups.optString("type");
+						// DeBug.i(TAG, "[tag json] type=" + type);
+						// String name = groups.optString("name");
+						// DeBug.i(TAG, "[tag json] name=" + name);
 
-			JSONArray agroups = response.getJSONArray("groups");
-			for (int k = 0; k < agroups.length(); k++) {
-				JSONObject groups = agroups.getJSONObject(k);
-				// String type = groups.optString("type");
-				// DeBug.i(TAG, "[tag json] type=" + type);
-				// String name = groups.optString("name");
-				// DeBug.i(TAG, "[tag json] name=" + name);
+						JSONArray items = groups.getJSONArray("items");
 
-				JSONArray items = groups.getJSONArray("items");
-				
-				for (int i = 0; i < items.length(); i++) {
-					JSONObject item = items.getJSONObject(i);
-					JSONObject venue = item.getJSONObject("venue");
-					String vname = venue.optString("name");
-					DeBug.i(TAG, "[venue json] vname=" + vname);
+						if (items != null) {
+							for (int i = 0; i < items.length(); i++) {
+								JSONObject item = items.getJSONObject(i);
+								if (item != null) {
+									JSONObject venue = item
+											.getJSONObject("venue");
+									if (venue != null) {
+										String vname = null;
+										String phone = null;
+										String address = null;
+										double lat = 0;
+										double lng = 0;
+										long distance = 0;
+										String url = null;
+										ArrayList<String> formattedA = new ArrayList<String>();
+										formattedA.clear();
 
-					JSONObject contact = venue.getJSONObject("contact");
-					String phone = contact.optString("phone");
-					DeBug.i(TAG, "[venue json] phone=" + phone);
-					String formattedPhone = contact.optString("formattedPhone");
-					DeBug.i(TAG, "[venue json] formattedPhone="
-							+ formattedPhone);
+										vname = venue.optString("name");
+										DeBug.i(TAG, "[venue json] vname="
+												+ vname);
 
-					JSONObject location = venue.getJSONObject("location");
-					String address = location.optString("address");
-					DeBug.i(TAG, "[venue json] address=" + address);
+										JSONObject contact = venue
+												.getJSONObject("contact");
+										if (contact != null) {
+											phone = contact.optString("phone");
+											DeBug.i(TAG, "[venue json] phone="
+													+ phone);
+											String formattedPhone = contact
+													.optString("formattedPhone");
 
-					double lat = location.optDouble("lat");
-					DeBug.i(TAG, "[venue json] lat=" + lat);
+											DeBug.i(TAG,
+													"[venue json] formattedPhone="
+															+ formattedPhone);
+										}
 
-					double lng = location.optDouble("lng");
-					DeBug.i(TAG, "[venue json] lng=" + lng);
+										JSONObject location = venue
+												.getJSONObject("location");
+										if (location != null) {
+											address = location
+													.optString("address");
+											DeBug.i(TAG,
+													"[venue json] address="
+															+ address);
 
-					long distance = location.optLong("distance");
-					DeBug.i(TAG, "[venue json] distance=" + distance);
+											lat = location.optDouble("lat");
+											DeBug.i(TAG, "[venue json] lat="
+													+ lat);
 
-					long postalCode = location.optLong("postalCode");
-					DeBug.i(TAG, "[venue json] postalCode=" + postalCode);
+											lng = location.optDouble("lng");
+											DeBug.i(TAG, "[venue json] lng="
+													+ lng);
 
-					String cc = location.optString("cc");
-					DeBug.i(TAG, "[venue json] cc=" + cc);
+											distance = location
+													.optLong("distance");
+											DeBug.i(TAG,
+													"[venue json] distance="
+															+ distance);
 
-					String city = location.optString("city");
-					DeBug.i(TAG, "[venue json] city=" + city);
+											long postalCode = location
+													.optLong("postalCode");
+											DeBug.i(TAG,
+													"[venue json] postalCode="
+															+ postalCode);
 
-					String state = location.optString("state");
-					DeBug.i(TAG, "[venue json] state=" + state);
+											String cc = location
+													.optString("cc");
+											DeBug.i(TAG, "[venue json] cc="
+													+ cc);
 
-					String country = location.optString("country");
-					DeBug.i(TAG, "[venue json] country=" + country);
+											String city = location
+													.optString("city");
+											DeBug.i(TAG, "[venue json] city="
+													+ city);
 
-					JSONArray formattedAddress = location
-							.getJSONArray("formattedAddress");
-					ArrayList<String> formattedA = new ArrayList<String>();
-					formattedA.clear();
-					for (int j = 0; j < formattedAddress.length(); j++) {
-						String a = formattedAddress.getString(j);
-						DeBug.i(TAG, "[venue json] a=" + a);
-						formattedA.add(a);
+											String state = location
+													.optString("state");
+											DeBug.i(TAG, "[venue json] state="
+													+ state);
+
+											String country = location
+													.optString("country");
+											DeBug.i(TAG,
+													"[venue json] country="
+															+ country);
+
+											JSONArray formattedAddress = location
+													.getJSONArray("formattedAddress");
+											if (formattedAddress != null) {
+												for (int j = 0; j < formattedAddress
+														.length(); j++) {
+													String a = formattedAddress
+															.getString(j);
+													DeBug.i(TAG,
+															"[venue json] a="
+																	+ a);
+													formattedA.add(a);
+												}
+											}
+										}
+
+										url = venue.optString("url");
+										DeBug.i(TAG, "[venue json] url=" + url);
+										DeBug.i(TAG,
+												"=========================================================");
+										collection.add(new Venue(vname, phone,
+												address, lat, lng, url,
+												formattedA, distance));
+									}
+								}
+							}
+						}
 					}
-
-					String url = venue.optString("url");
-					DeBug.i(TAG, "[venue json] url=" + url);
-					DeBug.i(TAG,
-							"=========================================================");
-					collection.add(new Venue(vname, phone, address, lat, lng, url, formattedA, distance));
 				}
-				
 			}
 		}
 		collection.sort();
