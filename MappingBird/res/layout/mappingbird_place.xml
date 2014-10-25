@@ -128,8 +128,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/direction_selector"
                         android:gravity="center_vertical"
+                        android:drawableLeft="@drawable/direction_selector"
                         android:text="@string/get_direction"
                         android:textColor="@color/direction_text_color"
                         android:textSize="18sp" >

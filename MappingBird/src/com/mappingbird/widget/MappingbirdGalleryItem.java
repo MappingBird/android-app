@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Debug;
 
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;

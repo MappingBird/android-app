@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mappingbird.widget.MappingbirdAddPlaceInfoLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/add_place_collection_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="#DDDDDD" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="#DDDDDD" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="#DDDDDD" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#DDDDDD" />
+
+        <EditText
+            android:id="@+id/add_place_collection_input"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="#00000000"
+            android:hint="@string/add_place_new_collection"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="#000"
+            android:textColorHint="#DDDDDD"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/add_place_collection_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="16dp"
+            android:src="@drawable/icon_arrow_down" />
+
+        <TextView
+            android:id="@+id/add_place_collection_text"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/add_place_collection_arrow"
+            android:background="#00000000"
+            android:hint="@string/add_place_new_collection"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="#000"
+            android:textColorHint="#DDDDDD"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="144dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" >
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="#DDDDDD" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="#DDDDDD" />
+
+        <EditText
+            android:id="@+id/add_place_about"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:hint="@string/add_place_about_place"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:textColorHint="#DDDDDD" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="#DDDDDD" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="#DDDDDD" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="#DDDDDD" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#DDDDDD" />
+
+        <EditText
+            android:id="@+id/add_place_tag"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="#00000000"
+            android:hint="@string/add_place_add_tags"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColorHint="#DDDDDD" />
+    </RelativeLayout>
+
+</com.mappingbird.widget.MappingbirdAddPlaceInfoLayout>

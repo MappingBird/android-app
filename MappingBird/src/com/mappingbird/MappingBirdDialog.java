@@ -1,5 +1,7 @@
 package com.mappingbird;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -48,13 +50,14 @@ public class MappingBirdDialog {
 	}
 
 	public static Dialog createSelectPlaceKindDialog(Context context, int width, int height,
-			double latitude, double longitude) {
+			double latitude, double longitude, ArrayList<String> list) {
 
 		Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
 		LayoutInflater inflater = LayoutInflater.from(context);
 		MappingbirdSelectPleaceKindLayout layout = (MappingbirdSelectPleaceKindLayout)
 				inflater.inflate(R.layout.dialog_select_place_kind_layout,
 						null, false);
+		layout.setCollection(list);
 		layout.initView(width, height);
 		layout.setLocation(latitude, longitude);
 		dialog.setContentView(layout);

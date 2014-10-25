@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/photo_1_layout"
+        android:layout_width="0dp"
+        android:layout_height="118dp"
+        android:layout_margin="1dp"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/photo_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/photo_1_check"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/select_pic_checkbox_bg"
+            android:gravity="center"
+            android:textColor="#fff" />
+
+        <View
+            android:id="@+id/photo_1_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/select_pic_mask"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/photo_2_layout"
+        android:layout_width="0dp"
+        android:layout_height="118dp"
+        android:layout_margin="1dp"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/photo_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/photo_2_check"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/select_pic_checkbox_bg"
+            android:gravity="center"
+            android:textColor="#fff" />
+
+        <View
+            android:id="@+id/photo_2_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/select_pic_mask"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/photo_3_layout"
+        android:layout_width="0dp"
+        android:layout_height="118dp"
+        android:layout_margin="1dp"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/photo_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/photo_3_check"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/select_pic_checkbox_bg"
+            android:gravity="center"
+            android:textColor="#fff" />
+
+        <View
+            android:id="@+id/photo_3_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/select_pic_mask"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</LinearLayout>

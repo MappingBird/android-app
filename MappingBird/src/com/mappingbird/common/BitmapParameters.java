@@ -46,6 +46,7 @@ public class BitmapParameters {
 	}
 
 	public static BitmapParameters getFileBitmap(String path) {
+		DeBug.d("Test", "getFileBitmap : "+path);
 		BitmapParameters params = new BitmapParameters();
 		params.mType = TYPE_LOAD_FROM_FILE;
 		params.mUrl = path;

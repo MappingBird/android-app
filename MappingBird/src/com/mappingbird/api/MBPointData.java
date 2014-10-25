@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.mappingbird.MappingBirdItem;
 
 public class MBPointData implements Serializable {
 

@@ -1,6 +1,8 @@
 package com.mappingbird.widget;
 
 
+import java.util.ArrayList;
+
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mappingbird.R;
-import com.mappingbird.common.DeBug;
 import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
 
 public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
@@ -34,6 +35,8 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 
 	private double mLatitude = 0;
 	private double mLongitude = 0;
+
+	private ArrayList<String> mCollectionList = new ArrayList<String>();
 
 	public MappingbirdSelectPleaceKindLayout(Context context) {
 		super(context);
@@ -76,6 +79,11 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 		mHintText.setAlpha(0f);
 	}
 
+	public void setCollection(ArrayList<String> list) {
+		mCollectionList.clear();
+		mCollectionList.addAll(list);
+	}
+
 	private OnClickListener mIconClickListener = new OnClickListener() {
 		
 		@Override
@@ -105,6 +113,7 @@ public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 			if(mDialog != null && mDialog.isShowing())
 				mDialog.dismiss();
 			Intent intent = new Intent(getContext(), MappingBirdPickPlaceActivity.class);
+			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_COLLECTION_LIST, mCollectionList);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_TYPE, type);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LAT, mLatitude);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LONG, mLongitude);

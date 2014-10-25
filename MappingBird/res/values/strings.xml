@@ -38,6 +38,11 @@
     
     <!-- Add place -->
     <string name="add_place_pick_category">Pick a category for the place you are going to save.</string>
+    <string name="add_place_save">Save</string>
+    <string name="add_place_create">Create</string>
+    <string name="add_place_new_collection">Create a new collection</string>
+    <string name="add_place_about_place">What about this place...</string>
+    <string name="add_place_add_tags">Add tags</string>
     
     <!-- Pick place -->
     <string name="pick_place_title">Pick A Place</string>

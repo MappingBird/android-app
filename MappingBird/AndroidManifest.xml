@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mappingbird"
-    android:versionCode="100106"
-    android:versionName="1.1.6" >
+    android:versionCode="100107"
+    android:versionName="1.1.7" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -71,6 +71,11 @@
             android:name="com.mappingbird.saveplace.MappingBirdPickPlaceActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.mappingbird.saveplace.MappingBirdAddPlaceActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        
         
         <meta-data
             android:name="com.google.android.gms.version"

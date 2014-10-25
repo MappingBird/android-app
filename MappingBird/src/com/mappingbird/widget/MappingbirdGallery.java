@@ -84,7 +84,6 @@ public class MappingbirdGallery extends ViewGroup {
 	public void setData(ArrayList<String> list) {
 		mItems.clear();
 		mItems.addAll(list);
-		DeBug.i("Test", "setData, mItems size ="+mItems.size());
 		refreshData();
 	}
 

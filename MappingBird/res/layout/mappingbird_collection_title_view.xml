@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/title_btn_people"
         android:scaleType="center"
+        android:visibility="gone"
         android:src="@drawable/please_add_icon" />
 
     <TextView 

@@ -26,7 +26,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -1229,7 +1228,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 			TextView title = (TextView) convertView.findViewById(R.id.card_title);
 			String imagePath = null;
 			if(item.mPoint.getImageDetails().size() > 0) {
-				imagePath = item.mPoint.getImageDetails().get(0).getThumbPath();
+//				imagePath = item.mPoint.getImageDetails().get(0).getThumbPath();
 				if(TextUtils.isEmpty(imagePath))
 					imagePath = item.mPoint.getImageDetails().get(0).getUrl();
 				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
