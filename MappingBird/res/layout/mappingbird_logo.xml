@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/logo"
             android:layout_centerHorizontal="true"
+            style="@style/TextStyle_Comment"
             android:text="@string/loadig_main"
             android:textColor="#FFFFFF" />
 
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/loadig_main"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/icon_loading" />
     </RelativeLayout>
 

@@ -8,6 +8,7 @@ import android.os.Message;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
@@ -19,9 +20,9 @@ public class MappingBirdLogoActivity extends Activity {
 	private ImageView mLoading = null;
 
 	private static final int MSG_CHECK_LOGIN = 0;
-	private AnimationSet animationSet = null;
 	private MappingBirdAPI mApi = null;
 
+	private RotateAnimation mRotateAnimation;
 	private Handler mHandler = new Handler() {
 
 		@Override
@@ -56,15 +57,12 @@ public class MappingBirdLogoActivity extends Activity {
 		setContentView(R.layout.mappingbird_logo);
 		mLoading = (ImageView) findViewById(R.id.logo_loading);
 		mHandler.sendEmptyMessageDelayed(MSG_CHECK_LOGIN, 1000);
-		animationSet = new AnimationSet(true);
-		RotateAnimation rotateAnimation = new RotateAnimation(0, 359,
+		mRotateAnimation = new RotateAnimation(0, 359,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);
-		rotateAnimation.setDuration(1000);
-		rotateAnimation.setRepeatCount(-1);
-		// rotateAnimation.setInterpolator( new LinearInterpolator());
-		// rotateAnimation.setRepeatMode(Animation.)
-		animationSet.addAnimation(rotateAnimation);
+		mRotateAnimation.setDuration(1000);
+		mRotateAnimation.setRepeatCount(-1);
+		mRotateAnimation.setInterpolator( new LinearInterpolator());
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 		isLogin = mApi.getCurrentUser() == null ? false : true;
 	}
@@ -78,7 +76,7 @@ public class MappingBirdLogoActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mLoading.startAnimation(animationSet);
+		mLoading.startAnimation(mRotateAnimation);
 	}
 
 }
