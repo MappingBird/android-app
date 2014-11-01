@@ -51,6 +51,7 @@ public class MappingbirdGallery extends ViewGroup {
 	private int mBubbleWidth = 0;
 	private int mBubbleHeight = 0;
 	private int mBubblePadding = 0;
+	private int mBubbleMarginBottom = 0;
 	private int mBubblePositionX = -1;
 	
 	@Override
@@ -59,11 +60,12 @@ public class MappingbirdGallery extends ViewGroup {
 		mBitmapLoader = new BitmapLoader(this.getContext());
 		mBitmapLoader.setBMPDownLoadListener(mBitmapDownloadListener);
 		
-		mBubbleReset = getResources().getDrawable(R.drawable.pagination_icon);
-		mBubbleSelected = getResources().getDrawable(R.drawable.pagination_icon_selected);
+		mBubbleReset = getResources().getDrawable(R.drawable.icon_nav_default);
+		mBubbleSelected = getResources().getDrawable(R.drawable.icon_nav_selected);
 		mBubbleReset.setBounds(0, 0, mBubbleReset.getIntrinsicWidth(), mBubbleReset.getIntrinsicHeight());
 		mBubbleSelected.setBounds(0, 0, mBubbleSelected.getIntrinsicWidth(), mBubbleSelected.getIntrinsicHeight());
 		mBubblePadding = (int) getResources().getDimension(R.dimen.gallery_bubble_padding);
+		mBubbleMarginBottom = (int) getResources().getDimension(R.dimen.gallery_bubble_margin_bottom);
 		mBubbleWidth = mBubbleReset.getIntrinsicWidth()+mBubblePadding;
 		mBubbleHeight = mBubbleReset.getIntrinsicHeight();
 	}
@@ -180,7 +182,7 @@ public class MappingbirdGallery extends ViewGroup {
 		if(mBubblePositionX < 0) {
 			mBubblePositionX = (getWidth() - mItems.size()*mBubbleWidth)/2;
 		}
-		canvas.translate(mBubblePositionX, getHeight() - mBubbleHeight * 1.5f);
+		canvas.translate(mBubblePositionX, getHeight() - mBubbleMarginBottom);
 		for(int i = 0; i < mItems.size(); i++) {
 			if(i != mCurrentIndex) 
 				mBubbleReset.draw(canvas);

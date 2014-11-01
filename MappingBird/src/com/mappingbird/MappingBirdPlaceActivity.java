@@ -45,6 +45,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private ImageView mPinIcon = null;
 	private ImageView mShareIcon = null;
 	private TextView mPlaceAddress = null;
+	private TextView mPlaceAddressOnMap = null;
 	private ImageView mTripMapView = null;
 	private MappingbirdScrollView mScrollView = null;
 	
@@ -64,7 +65,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private Context mContext = null;
 	private Dialog mLoadingDialog = null;
 
-	private int mTitleBarHeight = 0;
+	private int mTitleScrollHeight = 0;
 	private BitmapLoader mBitmapLoader;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mDescription = (TextView) findViewById(R.id.trip_place_description);
 		mPlacePhoto = (MappingbirdGallery) findViewById(R.id.trip_photo);
 		mPlaceAddress = (TextView) findViewById(R.id.trip_place_address);
+		mPlaceAddressOnMap = (TextView) findViewById(R.id.trip_map_address);
 		mPinIcon = (ImageView) findViewById(R.id.pin_icon);
 		mShareIcon = (ImageView) findViewById(R.id.share_icon);
 		mShareIcon.setOnClickListener(mShareClickListener);
@@ -95,7 +97,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mScrollView
 				.setOverScrollMode(ScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS);
 
-		mTitleBarHeight = (int) getResources().getDimension(R.dimen.place_gallery_height);
+		mTitleScrollHeight = (int) getResources().getDimension(R.dimen.place_gallery_height)
+				- (int) getResources().getDimension(R.dimen.title_bar_height);
 
 		mBack.setOnClickListener(this);
 		mGetDirection.setOnClickListener(this);
@@ -146,9 +149,10 @@ public class MappingBirdPlaceActivity extends Activity implements
 		@Override
 		public void onScrollChanged(MappingbirdScrollView v, int l, int t,
 				int oldl, int oldt) {
-			DeBug.e("Scroll", "onScrollChanged , scroll Y = "+v.getScrollY()+", mTitleBarHeight = "+mTitleBarHeight);
-			if(mTitleBarHeight > Math.abs(v.getScrollY())) {
-				mTitleBack.setAlpha(Math.abs(v.getScrollY())/(float)mTitleBarHeight);
+			if(DeBug.DEBUG)
+				DeBug.e("Scroll", "onScrollChanged , scroll Y = "+v.getScrollY()+", mGalleryHeight = "+mTitleScrollHeight);
+			if(mTitleScrollHeight > Math.abs(v.getScrollY()) && mTitleScrollHeight != 0) {
+				mTitleBack.setAlpha(Math.abs(v.getScrollY())/(float)mTitleScrollHeight);
 			} else {
 				mTitleBack.setAlpha(1.0f);
 			}
@@ -166,6 +170,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 				mPlaceName.setText(point.getLocation().getPlaceName());
 				mDescription.setText(point.getDescription());
 				mPlaceAddress.setText(point.getLocation().getPlaceAddress());
+				mPlaceAddressOnMap.setText(point.getLocation().getPlaceAddress());
 				mPlaceTag.setText(point.getType());
 				mPlaceDate.setText(point.getCreateTime());
 			} else {
