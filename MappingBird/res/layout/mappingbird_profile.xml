@@ -7,10 +7,9 @@
     <RelativeLayout
         android:id="@+id/profile_title"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="228dp"
         android:background="#DDDDDD" >
-        
+
         <ImageView
             android:id="@+id/back_icon"
             android:layout_width="40dp"
@@ -19,22 +18,24 @@
             android:src="@drawable/icon_back_dark" />
 
         <ImageView
-            android:layout_width="144dp" 
-            android:layout_height="138dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/img_account_bg"
-            android:layout_alignParentBottom="true" />
-
-        <TextView
-            android:id="@+id/profile_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:textColor="#4E4E4E"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp" >
+            android:src="@drawable/img_account_bg" />
+
+        <TextView
+            android:id="@+id/profile_email"
+            style="@style/TextStyle_Hero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:singleLine="true"
+            android:textColor="#4E4E4E" >
         </TextView>
     </RelativeLayout>
 
@@ -43,8 +44,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/profile_title"
+        android:layout_marginTop="8dp"
         android:layout_weight="2"
-        android:padding="10dp" >
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" >
 
         <LinearLayout
             android:id="@+id/profile_item"
@@ -55,15 +58,7 @@
             <RelativeLayout
                 android:id="@+id/profile_item_one"
                 android:layout_width="match_parent"
-                android:layout_height="45dp" >
-
-                <TextView
-                    android:id="@+id/edit_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/edit_profile"
-                    android:textSize="18sp" />
+                android:layout_height="48dp" >
 
                 <ImageView
                     android:id="@+id/enter_edit"
@@ -72,20 +67,23 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/icon_next" />
+                
+                <TextView
+                    android:id="@+id/edit_profile"
+                    style="@style/TextStyle_Body"
+                    android:layout_toLeftOf="@id/enter_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/edit_profile"
+                    android:textColor="#707070" />
+
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/profile_item_two"
                 android:layout_width="match_parent"
-                android:layout_height="45dp" >
-
-                <TextView
-                    android:id="@+id/change_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/change_password"
-                    android:textSize="18sp" />
+                android:layout_height="48dp" >
 
                 <ImageView
                     android:id="@+id/enter_change_password"
@@ -94,6 +92,16 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/icon_next" />
+
+                <TextView
+                    android:id="@+id/change_password"
+                    style="@style/TextStyle_Body"
+                    android:layout_toLeftOf="@id/enter_change_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/change_password"
+                    android:textColor="#707070" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -103,6 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/logout_selector"
             android:text="@string/logout"
             android:textColor="#FFFFFF" />

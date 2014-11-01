@@ -18,12 +18,14 @@ import com.mappingbird.api.User;
 public class MappingBirdProfileActivity extends Activity implements
 		OnClickListener {
 
+	public static final String EXTRA_COME_FROM_LOGIN = "EXTRA_COME_FROM_LOGIN";
 	private ImageView mBackIcon = null;
 	private Button mLogOut = null;
 	private MappingBirdAPI mApi = null;
 	private TextView mEmail = null;
 
 	private User user = null;
+	private boolean comeFromLogin = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,9 @@ public class MappingBirdProfileActivity extends Activity implements
 		user = mApi.getCurrentUser();
 		if (user != null) {
 			mEmail.setText(user.getEmail());
+		}
+		if(getIntent() != null) {
+			comeFromLogin = getIntent().getBooleanExtra(EXTRA_COME_FROM_LOGIN, false);
 		}
 	}
 
@@ -65,14 +70,18 @@ public class MappingBirdProfileActivity extends Activity implements
 	}
 
 	private void startCollectionActivity() {
-		Intent intent = new Intent();
-		intent.setClass(this,
-				com.mappingbird.MappingBirdCollectionActivity.class);
-
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		this.startActivity(intent);
+		if(comeFromLogin) {
+			Intent intent = new Intent();
+			intent.setClass(this,
+					com.mappingbird.MappingBirdCollectionActivity.class);
+	
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+					| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			this.startActivity(intent);
+		} else {
+			finish();
+		}
 	}
 
 	@Override

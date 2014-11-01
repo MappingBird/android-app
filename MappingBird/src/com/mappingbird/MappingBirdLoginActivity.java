@@ -115,6 +115,7 @@ public class MappingBirdLoginActivity extends Activity implements
 				Intent intent = new Intent();
 				intent.setClass(MappingBirdLoginActivity.this,
 						com.mappingbird.MappingBirdProfileActivity.class);
+				intent.putExtra(MappingBirdProfileActivity.EXTRA_COME_FROM_LOGIN, true);
 				MappingBirdLoginActivity.this.startActivity(intent);
 			} else if (statusCode == MappingBirdAPI.RESULT_NETWORK_ERROR) {
 				mEmail.setEnabled(true);
