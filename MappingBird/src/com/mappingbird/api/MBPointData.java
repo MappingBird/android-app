@@ -3,6 +3,8 @@ package com.mappingbird.api;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.text.TextUtils;
+
 import com.google.android.gms.maps.model.LatLng;
 
 public class MBPointData implements Serializable {
@@ -136,6 +138,21 @@ public class MBPointData implements Serializable {
 
 	public ArrayList<Tag> getTags() {
 		return mTags;
+	}
+
+	public String getTagsString() {
+		String tag = "";
+		if(mTags.size() == 0)
+			return tag;
+		
+		for(int i = 0; i < mTags.size(); i++) {
+			if(!TextUtils.isEmpty(mTags.get(i).getName())) {
+				tag += mTags.get(i).getName();
+				if(i < mTags.size()-1)
+					tag += ", ";
+			}
+		}
+		return tag;
 	}
 
 	public long getCollectionId() {

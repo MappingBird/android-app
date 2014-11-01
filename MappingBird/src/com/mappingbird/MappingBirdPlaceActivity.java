@@ -171,7 +171,10 @@ public class MappingBirdPlaceActivity extends Activity implements
 				mDescription.setText(point.getDescription());
 				mPlaceAddress.setText(point.getLocation().getPlaceAddress());
 				mPlaceAddressOnMap.setText(point.getLocation().getPlaceAddress());
-				mPlaceTag.setText(point.getType());
+				if(point.getTags().size() == 0)
+					mPlaceTag.setText("");
+				else
+					mPlaceTag.setText(point.getTagsString());
 				mPlaceDate.setText(point.getCreateTime());
 			} else {
 				String title = "";

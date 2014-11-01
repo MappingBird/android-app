@@ -21,17 +21,6 @@
             android:layout_height="match_parent"
             android:background="#00000000" >
 
-            <!--
-            <RelativeLayout
-                android:id="@+id/item_back2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/cards_background"
-                android:visibility="gone" />
-            -->
-
             <include
                 android:id="@+id/item_back2"
                 android:layout_width="match_parent"

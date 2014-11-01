@@ -1226,6 +1226,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 			ListItem item = mItems.get(position);
 			ImageView image = (ImageView) convertView.findViewById(R.id.card_icon);
 			TextView title = (TextView) convertView.findViewById(R.id.card_title);
+			TextView tag = (TextView) convertView.findViewById(R.id.card_subtitle);
 			String imagePath = null;
 			if(item.mPoint.getImageDetails().size() > 0) {
 //				imagePath = item.mPoint.getImageDetails().get(0).getThumbPath();
@@ -1238,7 +1239,13 @@ public class MappingbirdListLayout extends RelativeLayout {
 			}
 
 			title.setText(item.mPoint.getTitle());
-			
+			if(item.mPoint.getTags().size() == 0)
+				tag.setVisibility(View.GONE);
+			else {
+				tag.setVisibility(View.VISIBLE);
+				tag.setText(item.mPoint.getTagsString());
+			}
+
 			TextView dis = (TextView) convertView.findViewById(R.id.card_distance);
 			// dis 
 			if(mMyLocation != null) {

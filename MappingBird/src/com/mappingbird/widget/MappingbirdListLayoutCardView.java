@@ -41,6 +41,7 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 	private TextView mItemAddress;
 	private View mItemLayout;
 	private TextView mItemName;
+	private TextView mItemTag;
 	private TextView mItemDistance;
 
 	private int mParentHeight = 0;
@@ -76,6 +77,7 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 		mItemAddress = (TextView) findViewById(R.id.item_address);
 		mItemLayout = findViewById(R.id.item_info_layout);
 		mItemName = (TextView) findViewById(R.id.item_title);
+		mItemTag = (TextView) findViewById(R.id.item_subtitle);
 		mItemDistance = (TextView) findViewById(R.id.item_distance);
 	}
 
@@ -117,6 +119,10 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 		}
 		mTitle.setText(mPoint.getTitle());
 		mItemName.setText(mPoint.getTitle());
+		if(mPoint.getTags().size() == 0)
+			mItemTag.setVisibility(View.GONE);
+		else
+			mItemTag.setVisibility(View.VISIBLE);
 		mSubTitle.setText(mPoint.getLocation().getPlaceAddress());
 		mItemAddress.setText(mPoint.getLocation().getPlaceAddress());
 		if(mylocation != null) {
