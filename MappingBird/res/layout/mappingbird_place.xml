@@ -166,11 +166,9 @@
 
         <ImageView
             android:id="@+id/back_icon_back"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:scaleType="center"
             android:src="@drawable/icon_back" />
 
         <ImageView
@@ -203,11 +201,9 @@
 
         <ImageView
             android:id="@+id/back_icon"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:scaleType="center"
             android:src="@drawable/icon_back" />
 
         <ImageView
