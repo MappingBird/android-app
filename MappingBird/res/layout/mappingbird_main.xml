@@ -11,7 +11,7 @@
         <RelativeLayout
             android:id="@+id/main_title"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="@dimen/title_bar_height"
             android:background="#F6892A" >
 
             <TextView
@@ -50,45 +50,40 @@
         android:layout_height="match_parent"
         android:background="#A0000000" >
 
-        <RelativeLayout
-            android:id="@+id/main_login_title"
-            android:layout_width="match_parent"
-            android:layout_height="45dp" >
+        <ImageView
+            android:id="@+id/circle_login_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_account_tutorial" />
 
-            <ImageView
-                android:id="@+id/login_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/icon_account_circle" />
-
-            <ImageView
-                android:id="@+id/arrow_sign_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/login_icon"
-                android:src="@drawable/arrow_sign_in"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="5dp" />
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/arrow_sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/circle_login_icon"
+            android:src="@drawable/arrow_sign_in"
+            android:layout_marginTop="36dp"
+            android:layout_marginRight="6dp" />
 
         <TextView
             android:id="@+id/login_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/main_login_title"
+            android:layout_below="@id/circle_login_icon"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            style="@style/TextStyle_Body"
             android:text="@string/login_description"
             android:textColor="#FFFFFF" />
         <FrameLayout 
             android:id="@+id/login_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/main_login_title"
+            android:layout_below="@id/circle_login_icon"
             />
     </RelativeLayout>
 

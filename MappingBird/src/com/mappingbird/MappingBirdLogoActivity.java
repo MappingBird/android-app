@@ -40,10 +40,9 @@ public class MappingBirdLogoActivity extends Activity {
 							com.mappingbird.MappingBirdCollectionActivity.class);
 				}
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-						| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				MappingBirdLogoActivity.this.startActivity(intent);
 				overridePendingTransition(R.anim.activity_open_enter_animation, R.anim.activity_open_exit_animation);
+				finish();
 				break;
 			}
 		}

@@ -7,7 +7,12 @@
     <string name="get_start">Get Started</string>
     <string name="account">Account</string>
     <string name="login_content_title">Log In Mappingbird Account</string>
-    <string name="login_content"><![CDATA[<font color=#000000>Once you log your account, you can view all your saved places on Mappingbird. If you haven\'t signed up, please visit </font><font color=#01A9E7>www.mappingbird.com</font>]]></string>
+    <string name="login_content">
+        <![CDATA[
+        Once you log your account, you can view all your saved places on Mappingbird. If you haven\'t signed up, please visit 
+        <font color=#01A9E7><a href="https://mappingbird.com/">www.mappingbird.com</a></font>
+        ]]>
+        </string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">LOG IN</string>

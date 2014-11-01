@@ -1,12 +1,15 @@
 package com.mappingbird;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,10 +53,16 @@ public class MappingBirdLoginActivity extends Activity implements
 		mBackIcon.setOnClickListener(this);
 		mQuestionIcon.setOnClickListener(this);
 		mLogIn.setOnClickListener(this);
+		mLoginDescription.setMovementMethod(LinkMovementMethod.getInstance());
 		mLoginDescription.setText(Html
 				.fromHtml(getString(R.string.login_content)));
-
 		mApi = new MappingBirdAPI(this.getApplicationContext());
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		closeIME();
 	}
 
 	private void isLoaing(boolean isLoading) {
@@ -84,6 +93,9 @@ public class MappingBirdLoginActivity extends Activity implements
 			mPasswords = mPassword.getText().toString();
 			isLoaing(true);
 			if (!mEmails.equals("") && !mPasswords.equals("")) {
+				closeIME();
+				mEmail.setEnabled(false);
+				mPassword.setEnabled(false);
 				mApi.logIn(mLoginListener, mEmails, mPasswords);
 			} else {
 				isLoaing(false);
@@ -105,13 +117,27 @@ public class MappingBirdLoginActivity extends Activity implements
 						com.mappingbird.MappingBirdProfileActivity.class);
 				MappingBirdLoginActivity.this.startActivity(intent);
 			} else if (statusCode == MappingBirdAPI.RESULT_NETWORK_ERROR) {
+				mEmail.setEnabled(true);
+				mPassword.setEnabled(true);
 				Toast.makeText(getApplicationContext(),
 						getResources().getString(R.string.login_fail_network_error), Toast.LENGTH_SHORT).show();
 			} else if (statusCode == MappingBirdAPI.RESULT_ACCOUNT_ERROR) {
+				mEmail.setEnabled(true);
+				mPassword.setEnabled(true);
 				Toast.makeText(getApplicationContext(),
 						getResources().getString(R.string.login_fail_accout_error),
 						Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
+
+	private void closeIME() {
+		if(this.getCurrentFocus() != null) {
+			InputMethodManager inputManager = (InputMethodManager) this
+					.getSystemService(Context.INPUT_METHOD_SERVICE);
+		
+			inputManager.hideSoftInputFromWindow(this.getCurrentFocus()
+				.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		}
+	}
 }
