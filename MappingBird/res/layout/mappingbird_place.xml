@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
+        android:scrollbars="none"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
         android:scrollbarAlwaysDrawVerticalTrack="false" >
 
