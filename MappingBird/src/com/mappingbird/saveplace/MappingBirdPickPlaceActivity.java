@@ -77,7 +77,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	}
 
 	private void prepareData() {
-		mLoadingDialog = MappingBirdDialog.createMessageDialog(this, null,
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this, null,
 				true);
 		mLoadingDialog.show();
 //		mApi.explorefromFourSquare(mOnExploreFourSquareListener, mLatitude, mLongitude, 35);

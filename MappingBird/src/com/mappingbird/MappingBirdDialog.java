@@ -18,10 +18,10 @@ import com.mappingbird.widget.MappingbirdSelectPleaceKindLayout;
 
 public class MappingBirdDialog {
 
-	public static Dialog createMessageDialog(Context context, String message,
+	public static Dialog createLoadingDialog(Context context, String message,
 			boolean isLoading) {
 
-		Dialog dialog = new Dialog(context, R.style.LoadingDialog);
+		Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
 		dialog.setContentView(R.layout.mappingbird_dailog);
 
 		TextView msg = (TextView) dialog.findViewById(R.id.message);
@@ -34,16 +34,12 @@ public class MappingBirdDialog {
 			msg.setVisibility(View.GONE);
 		}
 
-		if (isLoading) {
-			image.setVisibility(View.VISIBLE);
-			image.setBackgroundResource(R.anim.loading_animation_white);
-			AnimationDrawable animationDrawable = (AnimationDrawable) image
-					.getBackground();
+		image.setVisibility(View.VISIBLE);
+		image.setImageResource(R.anim.loading_animation_white);
+		AnimationDrawable animationDrawable = (AnimationDrawable) image
+				.getDrawable();
 
-			animationDrawable.start();
-		} else {
-			image.setVisibility(View.GONE);
-		}
+		animationDrawable.start();
 
 		return dialog;
 

@@ -169,7 +169,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mLoadBitmap = new MappingBirdBitmap(this.getApplicationContext());
 		mContext = this;
 
-		mLoadingDialog = MappingBirdDialog.createMessageDialog(mContext, null,
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext, null,
 				true);
 		mLoadingDialog.setCancelable(false);
 	}

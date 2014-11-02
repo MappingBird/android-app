@@ -99,7 +99,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		mAdapter.setPhotoAdapterListener(mPhotoAdapterListener);
 		mListView.setAdapter(mAdapter);
 		
-		mLoadingDialog = MappingBirdDialog.createMessageDialog(this, null,
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this, null,
 				true);
 		mLoadingDialog.show();
 		mHandler.sendEmptyMessageDelayed(MSG_START_SCANE, 200);
