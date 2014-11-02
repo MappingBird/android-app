@@ -23,7 +23,7 @@
     <TextView 
         android:id="@+id/title_text"
         style="@style/TextStyle_Caption"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/title_btn_add"
         android:layout_centerVertical="true"

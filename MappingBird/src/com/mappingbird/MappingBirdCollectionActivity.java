@@ -137,6 +137,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		getActionBar().setCustomView(titlelayout);
 		titlelayout.findViewById(R.id.title_btn_people).setOnClickListener(mTitleClickListener);
 		titlelayout.findViewById(R.id.title_btn_add).setOnClickListener(mTitleClickListener);
+		titlelayout.findViewById(R.id.title_text).setOnClickListener(mTitleClickListener);
 		mTitleText = (TextView) findViewById(R.id.title_text);
 
 		mMappingbirdListLayout = (MappingbirdListLayout) findViewById(R.id.item_list_layout);
@@ -294,6 +295,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			switch(v.getId()) {
+			case R.id.title_text:
+				if(mDrawerLayout.isDrawerOpen(mDrawerList))
+					mDrawerLayout.closeDrawer(mDrawerList);
+				else
+					mDrawerLayout.openDrawer(mDrawerList);
+				break;
 			case R.id.title_btn_people:
 				Intent intent = new Intent();
 				intent.setClass(MappingBirdCollectionActivity.this,
