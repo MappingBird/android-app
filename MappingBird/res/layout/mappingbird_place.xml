@@ -104,7 +104,7 @@
 
                 <TextView
                     android:id="@+id/trip_place_description"
-                    style="@style/TextStyle_Caption"
+                    style="@style/TextStyle_Regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/gray_line"
@@ -182,15 +182,14 @@
 
         <TextView
             android:id="@+id/trip_detail_title_name"
+            style="@style/TextStyle_Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/share_icon_back"
             android:layout_toRightOf="@id/back_icon_back"
             android:singleLine="true"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" >
+            android:textColor="@color/white" >
         </TextView>
     </RelativeLayout>
 

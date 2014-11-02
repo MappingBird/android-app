@@ -77,4 +77,8 @@
     <style name="TextStyle_Attribute">
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="TextStyle_Regular">
+        <item name="android:textSize">18sp</item>
+    </style>
+    
 </resources>
