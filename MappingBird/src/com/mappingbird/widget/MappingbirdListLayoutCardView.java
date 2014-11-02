@@ -93,7 +93,7 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 
 	void setInfoLayoutBackground(Drawable drawable) {
 		if(mItemLayout != null)
-			mItemLayout.setBackground(drawable);
+			mItemLayout.setBackgroundDrawable(drawable);
 	}
 
 	public MBPointData getPoint() {

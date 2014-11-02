@@ -1238,7 +1238,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 			TextView title = (TextView) convertView.findViewById(R.id.card_title);
 			TextView tag = (TextView) convertView.findViewById(R.id.card_subtitle);
 			String imagePath = null;
-			convertView.findViewById(R.id.card_info_layout).setBackground(mDrawable);
+			convertView.findViewById(R.id.card_info_layout).setBackgroundDrawable(mDrawable);
 			if(item.mPoint.getImageDetails().size() > 0) {
 //				imagePath = item.mPoint.getImageDetails().get(0).getThumbPath();
 				if(TextUtils.isEmpty(imagePath))

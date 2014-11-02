@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 	        	DeBug.i(TAG, "mMap is available.");	        		    			    		
 	        		        		       
 	        	
-	        	new MapTileDownloaderTask().execute(new String[]{"•x•_•´"});
+	        	new MapTileDownloaderTask().execute(new String[]{"Âè∞ÂåóÂ∏Ç"});
 	        	
 	        	LatLng ll = new LatLng(25.023262, 121.548273); 	    			        	        
 	    		map_.moveCamera(CameraUpdateFactory.newLatLngZoom(ll, Constants.DEFAULT_MAP_ZOOM));

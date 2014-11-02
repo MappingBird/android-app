@@ -24,9 +24,9 @@ final class MappingBirdUtil {
 	private static final int MSG_UPLOAD_IMAGE_FINISH = 6;
 	private static final int MSG_SEARCH_FS_FINISH = 8;
 	private static final int MSG_EXPLORE_FS_FINISH = 9;
-
+ 
 	private final static int LOADING_THREAD_MAX = 1;
-	// ¦P¤@­Ó©Î¤À¶}³£¥i¥H
+	// åŒä¸€å€‹æˆ–åˆ†é–‹éƒ½å¯ä»¥
 	private HashMap<String, LoadInfoThread> mLoadingThreadHashMap = new HashMap<String, LoadInfoThread>();
 	private HashMap<String, Info> mWaitHaspMap = new HashMap<String, Info>();
 	private ArrayList<String> mWaitIndexArray = new ArrayList<String>();
