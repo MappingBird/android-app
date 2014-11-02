@@ -9,6 +9,7 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -96,6 +97,8 @@ public class MappingbirdListLayout extends RelativeLayout {
 	
 	private boolean mTouchEventFling = false;
 	private float mVelocityY = 0;
+	
+	private GradientDrawable mDrawable;
 	public MappingbirdListLayout(Context context) {
 		super(context);
 	}
@@ -132,6 +135,13 @@ public class MappingbirdListLayout extends RelativeLayout {
 		mItemMaxHeight = (int) getResources().getDimension(R.dimen.place_item_card_max_position);
 		isInited = false;
 		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
+		
+		mDrawable = new GradientDrawable(  
+		          GradientDrawable.Orientation.BOTTOM_TOP, new int[] { 0x90000000, 0x10000000});
+		
+		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+		mCard0.setInfoLayoutBackground(mDrawable);
+		mCardAnim.setInfoLayoutBackground(mDrawable);
 	}
 
 	private OnGestureListener mGestureListener = new OnGestureListener() {
@@ -1228,6 +1238,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 			TextView title = (TextView) convertView.findViewById(R.id.card_title);
 			TextView tag = (TextView) convertView.findViewById(R.id.card_subtitle);
 			String imagePath = null;
+			convertView.findViewById(R.id.card_info_layout).setBackground(mDrawable);
 			if(item.mPoint.getImageDetails().size() > 0) {
 //				imagePath = item.mPoint.getImageDetails().get(0).getThumbPath();
 				if(TextUtils.isEmpty(imagePath))

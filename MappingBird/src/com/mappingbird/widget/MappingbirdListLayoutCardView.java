@@ -3,6 +3,7 @@ package com.mappingbird.widget;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -88,6 +89,11 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 		
 		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
 		mGradientView.setBackgroundDrawable(mDrawable);
+	}
+
+	void setInfoLayoutBackground(Drawable drawable) {
+		if(mItemLayout != null)
+			mItemLayout.setBackground(drawable);
 	}
 
 	public MBPointData getPoint() {

@@ -27,8 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_layout_item_info_height"
         android:layout_above="@id/item_address"
-        android:visibility="gone"
-        android:background="#60000000" >
+        android:visibility="gone" >
 
         <TextView
             android:id="@+id/item_distance"
