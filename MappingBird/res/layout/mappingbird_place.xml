@@ -10,6 +10,7 @@
         android:fadingEdge="none"
         android:fadingEdgeLength="0dp"
         android:scrollbars="none"
+        android:background="#fff"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
         android:scrollbarAlwaysDrawVerticalTrack="false" >
 
@@ -153,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#707070"
                     android:padding="16dp"
-                    android:background="#90FFFFFF"
+                    android:background="#B2FFFFFF"
                     />
             </RelativeLayout>
         </LinearLayout>
