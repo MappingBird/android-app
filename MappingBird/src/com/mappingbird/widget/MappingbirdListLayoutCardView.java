@@ -120,8 +120,14 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 //			imagePath = mPoint.getImageDetails().get(0).getThumbPath();
 			if(TextUtils.isEmpty(imagePath))
 				imagePath = mPoint.getImageDetails().get(0).getUrl();
-			BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
-			mBitmapLoader.getBitmap(mIcon, params);
+			if(!TextUtils.isEmpty(imagePath)) {
+				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
+				mBitmapLoader.getBitmap(mIcon, params);
+			} else {
+				mIcon.setImageDrawable(null);
+			}
+		} else {
+			mIcon.setImageDrawable(null);
 		}
 		mTitle.setText(mPoint.getTitle());
 		mItemName.setText(mPoint.getTitle());
