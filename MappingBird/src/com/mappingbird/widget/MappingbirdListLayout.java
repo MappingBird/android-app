@@ -889,7 +889,6 @@ public class MappingbirdListLayout extends RelativeLayout {
 				switchMode(MODE_ITEM_CHANGE_ITEM);
 			} else {
 				mCard0.setData(mMyLocation, point);
-				switchMode(MODE_ITEM_NORMAL);
 			}
 		}
 	}
