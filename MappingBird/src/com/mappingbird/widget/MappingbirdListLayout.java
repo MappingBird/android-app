@@ -137,7 +137,7 @@ public class MappingbirdListLayout extends RelativeLayout {
 		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
 		
 		mDrawable = new GradientDrawable(  
-		          GradientDrawable.Orientation.BOTTOM_TOP, new int[] { 0x90000000, 0x10000000});
+		          GradientDrawable.Orientation.BOTTOM_TOP, new int[] { 0xCC000000, 0x00000000});
 		
 		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
 		mCard0.setInfoLayoutBackground(mDrawable);
