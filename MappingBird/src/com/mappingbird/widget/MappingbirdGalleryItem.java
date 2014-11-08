@@ -42,9 +42,10 @@ public class MappingbirdGalleryItem {
 		if(mWidth == 0 || mHeight == 0)
 			isNeedRecountBound = true;
 		if(mWidth != width || mHeight != height) {
+			isNeedRecountBound = true;
 			mWidth = width;
 			mHeight = height;
-			mDrawBound = new Rect(0,0,mWidth, mHeight);
+//			mDrawBound = new Rect(0,0,mWidth, mHeight);
 		}
 	}
 
@@ -59,25 +60,6 @@ public class MappingbirdGalleryItem {
 	public void setMode(int mode) {
 		mMode = mode;
 	}
-
-//	public void setMove(int moveX, int moveY) {
-//		mPositionX += moveX;
-//		if(mMode == MODE_CURRENT) {
-//			if(mIndex == 0 && mPositionX > 0)
-//				mPositionX = 0;
-//			if(mIndex == (mTotal-1) && mPositionX < 0)
-//				mPositionX = 0;
-//				
-//		}
-//		if(mMode == MODE_NEXT && mPositionX > 0)
-//			mPositionX = 0;
-//
-//		if(mPositionX > mWidth)
-//			mPositionX = mWidth;
-//		if(mPositionX < -mWidth)
-//			mPositionX = -mWidth;
-//		mPositionY += moveY;
-//	}
 
 	public void setMove(int positionX) {
 		mPositionX = positionX;
@@ -106,7 +88,8 @@ public class MappingbirdGalleryItem {
 				float rate = (float)mWidth / mHeight;
 				int bmpWidth = mBitmap.getWidth();
 				int bmpHeight = mBitmap.getHeight();
-				mBitmapBound = getCenterBound(mWidth, mHeight, bmpWidth, bmpHeight);
+				mBitmapBound = new Rect(0, 0, bmpWidth, bmpHeight);
+				mDrawBound = getCenterBound(mWidth, mHeight, bmpWidth, bmpHeight);
 			}
 			canvas.save();
 			switch(mMode) {
@@ -145,22 +128,23 @@ public class MappingbirdGalleryItem {
 		int width = 0;
 		int height = 0;
 		
-		float rateWH = ((float)rectWidth)/rectHeight;
-		width = (int)(rateWH * picHeight);
-		height = picHeight;
-		if(width < rectWidth) {
-			float rateHW = ((float)rectHeight)/rectWidth;
-			width = picWidth;
-			height = (int)(rateHW * picWidth);
-		}
-		rect.left = -(width - picWidth)/2;
-		rect.right = width-(width - picWidth)/2;
-		rect.top = -(height - picHeight)/2;
-		rect.bottom = height - (height - picHeight)/2;
-
 		DeBug.i("rect = ("+rectWidth+","+rectHeight+")");
 		DeBug.i("pic = ("+picWidth+","+picHeight+")");
-		DeBug.i("new = ("+width+","+height+")");
+		float rateWH = ((float)picWidth)/picHeight;
+		width = (int)(rateWH * rectHeight);
+		height = rectHeight;
+		DeBug.i("new1 = ("+width+","+height+")");
+		if(width < rectWidth) {
+			float rateHW = ((float)picHeight)/picWidth;
+			width = rectWidth;
+			height = (int)(rateHW * rectWidth);
+			DeBug.i("new2 = ("+width+","+height+")");
+		}
+		rect.left = -(width - rectWidth)/2;
+		rect.right = width-(width - rectWidth)/2;
+		rect.top = -(height - rectHeight)/2;
+		rect.bottom = height - (height - rectHeight)/2;
+
 		DeBug.i("outRect = "+rect.toString());
 		return rect;
 	}
