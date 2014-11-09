@@ -6,8 +6,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+import android.view.GestureDetector.OnGestureListener;
 
 import com.mappingbird.R;
 import com.mappingbird.common.BitmapLoader;
@@ -49,11 +51,14 @@ public class MappingbirdGallery extends ViewGroup {
 	private Drawable mBubbleReset;
 	private Drawable mBubbleSelected;
 	private int mBubbleWidth = 0;
-	private int mBubbleHeight = 0;
 	private int mBubblePadding = 0;
 	private int mBubbleMarginBottom = 0;
 	private int mBubblePositionX = -1;
-	
+
+	private GestureDetector mGestureDetector = null;
+	private boolean mTouchEventFling = false;
+	private float mVelocityX = 0;
+
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
@@ -67,7 +72,8 @@ public class MappingbirdGallery extends ViewGroup {
 		mBubblePadding = (int) getResources().getDimension(R.dimen.gallery_bubble_padding);
 		mBubbleMarginBottom = (int) getResources().getDimension(R.dimen.gallery_bubble_margin_bottom);
 		mBubbleWidth = mBubbleReset.getIntrinsicWidth()+mBubblePadding;
-		mBubbleHeight = mBubbleReset.getIntrinsicHeight();
+		
+		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
 	}
 
 	private void refreshData() {
@@ -82,6 +88,45 @@ public class MappingbirdGallery extends ViewGroup {
 		}
 
 	}
+
+	private OnGestureListener mGestureListener = new OnGestureListener() {
+		
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+			return false;
+		}
+		
+		@Override
+		public void onShowPress(MotionEvent e) {
+		}
+		
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+				float distanceY) {
+			return false;
+		}
+		
+		@Override
+		public void onLongPress(MotionEvent e) {
+		}
+		
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			DeBug.d("Test", "onFling !!! ");
+			mTouchEventFling = true;
+			mVelocityX = velocityX;
+			return false;
+		}
+		
+		@Override
+		public boolean onDown(MotionEvent e) {
+			DeBug.d("Test", "onDown !!! ");
+			mTouchEventFling = false;
+			mVelocityX = 0;
+			return false;
+		}
+	};
 
 	public void setData(ArrayList<String> list) {
 		mItems.clear();
@@ -113,6 +158,7 @@ public class MappingbirdGallery extends ViewGroup {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		mGestureDetector.onTouchEvent(event);
 		switch(event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				mTouchLastX = event.getX();
@@ -153,7 +199,6 @@ public class MappingbirdGallery extends ViewGroup {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		DeBug.d("Test", "w = "+getWidth()+", h = "+getHeight());
 		if(mNextItem != null) {
 			if(isAnimation) {
 				mNextItem.setMove(mPositionX);
@@ -203,9 +248,9 @@ public class MappingbirdGallery extends ViewGroup {
 	}
 
 	private void onTouchUp() {
-		DeBug.d("Test", "onTouchUp");
-		
-		if(Math.abs(mPositionX) != getWidth()) {
+		if(mPositionX == 0) {
+			
+		} else if(Math.abs(mPositionX) != getWidth()) {
 			changeAnimation();
 		} else {
 			// next
@@ -214,7 +259,7 @@ public class MappingbirdGallery extends ViewGroup {
 	}
 
 	private void changeAnimation() {
-		DeBug.d("Test", "changeAnimation");
+		DeBug.d("Test", "changeAnimation, mTouchEventFling = "+mTouchEventFling);
 		isAnimation = true;
 		startScrollAnimation();
 		postInvalidate();
@@ -222,7 +267,9 @@ public class MappingbirdGallery extends ViewGroup {
 
 	public void startScrollAnimation() {
 		mCount = 0;
-		if(Math.abs(mPositionX) < getWidth()/2) {
+		if(mTouchEventFling) {
+			mAnimationMode = ANIMATION_NEXT;
+		} else if(Math.abs(mPositionX) < getWidth()/2) {
 			mAnimationMode = ANIMATION_BACK;
 		} else {
 			mAnimationMode = ANIMATION_NEXT;
@@ -255,6 +302,7 @@ public class MappingbirdGallery extends ViewGroup {
 		else
 			return false;
 	}
+
 	private void changedPosition() {
 		DeBug.d("Test", "changedPosition, mPositionX = "+mPositionX+", mCurrentIndex = "+mCurrentIndex);
 		if(Math.abs(mPositionX) > getWidth()/6) {
