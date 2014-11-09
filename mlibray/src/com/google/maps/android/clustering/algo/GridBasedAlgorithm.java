@@ -56,7 +56,8 @@ public class GridBasedAlgorithm<T extends ClusterItem> implements Algorithm<T> {
 
                 StaticCluster<T> cluster = sparseArray.get(coord);
                 if (cluster == null) {
-                    cluster = new StaticCluster<T>(proj.toLatLng(new Point(Math.floor(p.x) + .5, Math.floor(p.y) + .5)));
+                	// HL: for change cluster area change .5 => .3
+                    cluster = new StaticCluster<T>(proj.toLatLng(new Point(Math.floor(p.x) + .3, Math.floor(p.y) + .3)));
                     sparseArray.put(coord, cluster);
                     clusters.add(cluster);
                 }
