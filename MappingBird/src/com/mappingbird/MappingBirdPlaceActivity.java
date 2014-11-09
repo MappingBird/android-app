@@ -34,6 +34,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 	public static final String EXTRA_MBPOINT = "mb_point";
 	private static final String TAG = MappingBirdPlaceActivity.class.getName();
+
 	ImageView mBack = null;
 	RelativeLayout mGetDirection = null;
 	private MBPointData mCurrentPoint;
@@ -67,6 +68,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 	private int mTitleScrollHeight = 0;
 	private BitmapLoader mBitmapLoader;
+	private String mIconUrl = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -137,8 +139,10 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mLoadingDialog.show();
 		
 		String mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center="+mPlaceLatitude+","+mPlaceLongitude+
-				"&zoom=16&size=720x400"
-				+"&markers=color:red%7Ccolor:red%7Clabel:C%7C"+mPlaceLatitude+","+mPlaceLongitude;
+				"&zoom=16&size=720x400"+
+				"&markers=icon:"+mIconUrl
+				+"%7C"+mPlaceLatitude+","+mPlaceLongitude;
+		DeBug.i("Test", "mapUrl = "+mapUrl);
 		mBitmapLoader = new BitmapLoader(this);
 		BitmapParameters params = BitmapParameters.getUrlBitmap(mapUrl);
 		mBitmapLoader.getBitmap(mTripMapView, params);
@@ -250,24 +254,31 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 	private int getPinIcon(int type) {
 		int iconRes = -1;
+		mIconUrl = "http://www.mappingbird.com/static/img/pin-scenicspot.png";
 		switch (type) {
 		case MBPointData.TYPE_RESTAURANT:
 			iconRes = R.drawable.category_icon_restaurant;
+			mIconUrl = "http://www.mappingbird.com/static/img/pin-restaurant.png";
 			break;
 		case MBPointData.TYPE_HOTEL:
 			iconRes = R.drawable.category_icon_hotel;
+			mIconUrl = "http://www.mappingbird.com/static/img/pin-hotel.png";
 			break;
 		case MBPointData.TYPE_MALL:
 			iconRes = R.drawable.category_icon_mall;
+			mIconUrl = "http://www.mappingbird.com/static/img/pin-mall.png";
 			break;
 		case MBPointData.TYPE_BAR:
 			iconRes = R.drawable.category_icon_bar;
+			mIconUrl = "http://www.mappingbird.com/static/img/pin-bar.png";
 			break;
 		case MBPointData.TYPE_MISC:
 			iconRes = R.drawable.category_icon_default;
+			mIconUrl = "http://www.mappingbird.com/static/img/pin-misc.png";
 			break;
 		case MBPointData.TYPE_SCENICSPOT:
 			iconRes = R.drawable.category_icon_scene;
+			mIconUrl = "http://www.mappingbird.com/static/img/pin-scenicspot.png";
 			break;
 		}
 		return iconRes;
