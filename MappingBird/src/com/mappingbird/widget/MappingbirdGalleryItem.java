@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
@@ -32,10 +34,12 @@ public class MappingbirdGalleryItem {
 	private int mPositionX = 0;
 	private Paint mBitmapPaint;
 	private int mCount = 0;
+	private Drawable mBackground;
 	public MappingbirdGalleryItem(BitmapLoader bitmapLoader, String url) {
 		mBitmapLoader = bitmapLoader;
 		mBitmapPaint = new Paint();
 		setData(url);
+		mBackground = new ColorDrawable(0xff4e4e4e);
 	}
 
 	public void setViewBound(int width, int height) {
@@ -45,7 +49,7 @@ public class MappingbirdGalleryItem {
 			isNeedRecountBound = true;
 			mWidth = width;
 			mHeight = height;
-//			mDrawBound = new Rect(0,0,mWidth, mHeight);
+			mBackground.setBounds(0, 0, mWidth, mHeight);
 		}
 	}
 
@@ -85,12 +89,11 @@ public class MappingbirdGalleryItem {
 		if(mBitmap != null) {
 			if(isNeedRecountBound) {
 				isNeedRecountBound = false;
-				float rate = (float)mWidth / mHeight;
 				int bmpWidth = mBitmap.getWidth();
 				int bmpHeight = mBitmap.getHeight();
-				mBitmapBound = new Rect(0, 0, bmpWidth, bmpHeight);
-				mDrawBound = getCenterBound(mWidth, mHeight, bmpWidth, bmpHeight);
+				getCenterBound(mWidth, mHeight, bmpWidth, bmpHeight);
 			}
+		}
 			canvas.save();
 			switch(mMode) {
 			case MODE_CURRENT:
@@ -100,27 +103,36 @@ public class MappingbirdGalleryItem {
 					float rate = 1.0f - Math.abs(((float)mPositionX)/mWidth)*0.6f;
 					canvas.scale(rate, rate, mWidth/2, mHeight/2);
 					mBitmapPaint.setAlpha((int)(255*rate));
+					
 				}
-				canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
+				mBackground.draw(canvas);
+				if(mBitmap != null) {
+					canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
+				}
 				break;
 			case MODE_NEXT:
-//				DeBug.i("Test", "x = "+mPositionX+", Scale = "+(((float)mPositionX)/mWidth));
 				if(mPositionX <= 0) {
 					float rate = Math.abs(((float)mPositionX)/mWidth)*0.6f + 0.4f;
 					canvas.scale(rate, rate, mWidth/2, mHeight/2);
 					mBitmapPaint.setAlpha((int)(255*rate));
-					canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
+					mBackground.draw(canvas);
+					if(mBitmap != null) {
+						canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
+					}
 				}
 				break;
 			case MODE_PREVIOUS:
 				if(mPositionX > 0) {
 					canvas.translate(mPositionX - mWidth, 0);
+					mBackground.draw(canvas);
+					if(mBitmap != null) {
 					canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
+					}
 				}
 				break;
 			}
 			canvas.restore();
-		}
+
 	}
 
 	public Rect getCenterBound(int rectWidth, int rectHeight, int picWidth, int picHeight) {
@@ -130,23 +142,75 @@ public class MappingbirdGalleryItem {
 		
 		DeBug.i("rect = ("+rectWidth+","+rectHeight+")");
 		DeBug.i("pic = ("+picWidth+","+picHeight+")");
-		float rateWH = ((float)picWidth)/picHeight;
-		width = (int)(rateWH * rectHeight);
-		height = rectHeight;
-		DeBug.i("new1 = ("+width+","+height+")");
-		if(width < rectWidth) {
-			float rateHW = ((float)picHeight)/picWidth;
-			width = rectWidth;
-			height = (int)(rateHW * rectWidth);
-			DeBug.i("new2 = ("+width+","+height+")");
-		}
-		rect.left = -(width - rectWidth)/2;
-		rect.right = width-(width - rectWidth)/2;
-		rect.top = -(height - rectHeight)/2;
-		rect.bottom = height - (height - rectHeight)/2;
+		
+		if(picWidth > picHeight) {
+			//橫的
+			float rateWH = ((float)picWidth)/picHeight;
+			width = (int)(rateWH * rectHeight);
+			height = rectHeight;
 
-		DeBug.i("outRect = "+rect.toString());
+			if(width < rectWidth) {
+				float rateHW = ((float)rectHeight)/rectWidth;
+				width = picWidth;
+				height = (int)(rateHW * picWidth);
+			}
+
+			rect.left = -(width - picWidth)/2;
+			rect.right = width-(width - picWidth)/2;
+			rect.top = -(height - picHeight)/2;
+			rect.bottom = height - (height - picHeight)/2;
+			mBitmapBound = rect;
+			mDrawBound = new Rect(0, 0, rectWidth, rectHeight);
+		} else {
+			float rateWH = ((float)picWidth)/picHeight;
+			width = (int)(rateWH * rectHeight);
+			height = rectHeight;
+			DeBug.i("new1 = ("+width+","+height+")");
+
+			// 直的
+			if(width > rectWidth) {
+				float rateHW = ((float)picHeight)/picWidth;
+				width = rectWidth;
+				height = (int)(rateHW * rectWidth);
+				DeBug.i("new2 = ("+width+","+height+")");
+			}
+			rect.left = -(width - rectWidth)/2;
+			rect.right = width-(width - rectWidth)/2;
+			rect.top = -(height - rectHeight)/2;
+			rect.bottom = height - (height - rectHeight)/2;
+
+			mBitmapBound = new Rect(0, 0, picWidth, picHeight);
+			mDrawBound = rect;
+
+			DeBug.i("outRect = "+rect.toString());
+		}
 		return rect;
 	}
+
+//	public Rect getCenterBound(int rectWidth, int rectHeight, int picWidth, int picHeight) {
+//		Rect rect = new Rect();
+//		int width = 0;
+//		int height = 0;
+//		
+//		DeBug.i("rect = ("+rectWidth+","+rectHeight+")");
+//		DeBug.i("pic = ("+picWidth+","+picHeight+")");
+//		float rateWH = ((float)picWidth)/picHeight;
+//		width = (int)(rateWH * rectHeight);
+//		height = rectHeight;
+//		DeBug.i("new1 = ("+width+","+height+")");
+//		if(width < rectWidth) {
+//			float rateHW = ((float)picHeight)/picWidth;
+//			width = rectWidth;
+//			height = (int)(rateHW * rectWidth);
+//			DeBug.i("new2 = ("+width+","+height+")");
+//		}
+//		rect.left = -(width - rectWidth)/2;
+//		rect.right = width-(width - rectWidth)/2;
+//		rect.top = -(height - rectHeight)/2;
+//		rect.bottom = height - (height - rectHeight)/2;
+//
+//		DeBug.i("outRect = "+rect.toString());
+//		return rect;
+//	}
 
 }
