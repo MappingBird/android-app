@@ -55,4 +55,13 @@
     <string name="icon_people">&#58904;</string>
     <string name="icon_add_place">&#58895;</string>
     <string name="icon_title_menu">&#58905;</string>
+    
+    <!-- Place type -->
+    <string name="icon_type_restaurant">&#58900;</string>
+    <string name="icon_type_hotel">&#58897;</string>
+    <string name="icon_type_mall">&#58901;</string>
+    <string name="icon_type_bar">&#58902;</string>
+    <string name="icon_type_misc">&#58899;</string>
+    <string name="icon_type_scenicspot">&#58898;</string>
+    <string name="icon_type_new">&#58899;</string>
 </resources>

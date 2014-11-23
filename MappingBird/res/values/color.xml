@@ -28,4 +28,8 @@
 	<color name="font_normal">#6f6f6f</color>
 	<color name="font_hint">#dddddd</color>
 	<color name="font_white">#ffffff</color>
+	
+	<!-- Collection List -->
+	<color name="item_blue_activated">#270000ff</color>
+	<color name="item_blue_pressed">#27000000</color>
 </resources>

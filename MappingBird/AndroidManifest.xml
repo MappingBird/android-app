@@ -60,7 +60,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mappingbird.MappingBirdCollectionActivity"
+            android:name="com.mappginbird.collection.MappingBirdCollectionActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity

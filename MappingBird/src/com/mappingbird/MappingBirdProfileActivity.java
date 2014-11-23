@@ -73,7 +73,7 @@ public class MappingBirdProfileActivity extends Activity implements
 		if(comeFromLogin) {
 			Intent intent = new Intent();
 			intent.setClass(this,
-					com.mappingbird.MappingBirdCollectionActivity.class);
+					com.mappginbird.collection.MappingBirdCollectionActivity.class);
 	
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP

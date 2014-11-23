@@ -1,4 +1,4 @@
-package com.mappingbird;
+package com.mappginbird.collection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -49,7 +48,13 @@ import com.google.maps.android.clustering.ClusterManager.OnClusterClickListener;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
+import com.mappingbird.MappingBirdBitmap;
 import com.mappingbird.MappingBirdBitmap.MappingBirdBitmapListner;
+import com.mappingbird.MappingBirdDialog;
+import com.mappingbird.MappingBirdItem;
+import com.mappingbird.MappingBirdPlaceActivity;
+import com.mappingbird.MultiDrawable;
+import com.mappingbird.R;
 import com.mappingbird.api.Collection;
 import com.mappingbird.api.Collections;
 import com.mappingbird.api.LocationService;
@@ -72,15 +77,14 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private CharSequence mTitle;
-	private ArrayList<String> mTripTitles;
-	private TextView mTitleText;
+	private MBCollectionListItem mCurrentCollectionListItem;
+	private TextView mTitleText, mTitleNumber;
 
 	private GoogleMap mMap;
 	private ArrayList<LatLng> mLatLngs = new ArrayList<LatLng>();
 
 	private MappingBirdAPI mApi = null;
-	private ArrayAdapter<String> mAdapter;
+	private MBCollectionListAdapter mCollectionListAdapter;
 	private Collections mCollections = null;
 	private Collection mCollection = null;
 	private ArrayList<MBPointData> mPositionItems = new ArrayList<MBPointData>();
@@ -94,6 +98,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private Dialog mLoadingDialog = null;
 
 	private ClusterManager<MappingBirdItem> mClusterManager;
+	private MappingBirdRender mMappingBirdRender;
 	private MappingBirdItem mClickedClusterItem;
 	private Marker mClickedMarker = null;
 	private Cluster<MappingBirdItem> mClickedCluster;
@@ -108,17 +113,13 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mappingbird_collection);
 
-		mTripTitles = new ArrayList<String>();
-		mTripTitles.clear();
-		mTripTitles.add(this.getResources().getString(R.string.no_data));
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.collection_list);
 
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
-		mAdapter = new ArrayAdapter<String>(this,
-				R.layout.collection_list_item, mTripTitles);
-		mDrawerList.setAdapter(mAdapter);
+		mCollectionListAdapter = new MBCollectionListAdapter(this);
+		mDrawerList.setAdapter(mCollectionListAdapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
@@ -140,6 +141,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		titlelayout.findViewById(R.id.title_btn_add).setOnClickListener(mTitleClickListener);
 		titlelayout.findViewById(R.id.title_text).setOnClickListener(mTitleClickListener);
 		mTitleText = (TextView) findViewById(R.id.title_text);
+		mTitleNumber = (TextView) findViewById(R.id.title_number);
 
 		mMappingbirdListLayout = (MappingbirdListLayout) findViewById(R.id.item_list_layout);
 		mMappingbirdListLayout.setCardClickListener(mCardClickListener);
@@ -150,7 +152,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			public void onDrawerClosed(View view) {
 				DeBug.v("onDrawerClosed");
 //				getActionBar().setTitle(mTitle);
-				mTitleText.setText(mTitle);
+				setTitle(mCurrentCollectionListItem);
 				invalidateOptionsMenu();
 
 			}
@@ -158,7 +160,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			public void onDrawerOpened(View drawerView) {
 				DeBug.v("onDrawerOpened");
 //				getActionBar().setTitle(mTitle);
-				mTitleText.setText(mTitle);
+				setTitle(mCurrentCollectionListItem);
 				invalidateOptionsMenu();
 
 			}
@@ -183,15 +185,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
 				mCollections = collection;
 				if (collection.getCount() > 0) {
-					mTripTitles.clear();
-					for (int i = 0; i < collection.getCount(); i++) {
-						mTripTitles.add(collection.get(i).getName() + "("
-								+ collection.get(i).getPoints().size() + ")");
-					}
-					mAdapter = new ArrayAdapter<String>(
-							MappingBirdCollectionActivity.this,
-							R.layout.collection_list_item, mTripTitles);
-					mDrawerList.setAdapter(mAdapter);
+					mCollectionListAdapter.setData(collection);
 					selectItem(MappingBirdPref.getIns().getIns().getCollectionPosition());
 				} else {
 					setTitle(R.string.no_data);
@@ -252,9 +246,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 	private void selectItem(int position) {
 
-		if (mTripTitles.size() > 0) {
+		if (mCollectionListAdapter.getCount() > 0) {
 			mDrawerList.setItemChecked(position, true);
-			setTitle(mTripTitles.get(position));
+			setTitle((MBCollectionListItem)mCollectionListAdapter.getItem(position));
 			mDrawerLayout.closeDrawer(mDrawerList);
 		}
 		if (mCollections != null && mCollections.getCount() > 0) {
@@ -336,11 +330,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 	};
 
-	@Override
-	public void setTitle(CharSequence title) {
-		mTitle = title;
-//		getActionBar().setTitle(mTitle);
-		mTitleText.setText(mTitle);
+	public void setTitle(MBCollectionListItem item) {
+		if(item == null)
+			return;
+		mCurrentCollectionListItem = item;
+		mTitleText.setText(item.getName());
+		mTitleNumber.setText(item.getItemNumber());
 	}
 
 	@Override
@@ -396,7 +391,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		// add cluster
 		mClusterManager = new ClusterManager<MappingBirdItem>(this, mMap);
-		mClusterManager.setRenderer(new MappingBirdRender());
+		mMappingBirdRender = new MappingBirdRender();
+		mClusterManager.setRenderer(mMappingBirdRender);
 		mMap.setOnMarkerClickListener(mClusterManager);
 		mMap.setOnCameraChangeListener(mClusterManager);
 		mMap.setOnInfoWindowClickListener(mClusterManager);
@@ -422,21 +418,19 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					@Override
 					public boolean onClusterItemClick(MappingBirdItem item, Marker marker) {
 						if(mClickedMarker != null) {
-							mClickedMarker.setIcon(BitmapDescriptorFactory
-									.fromResource(mClickedClusterItem.mPinIcon));
+							mMappingBirdRender.setFontIcon(mClickedClusterItem.mPinIcon, mClickedMarker);
 						}
 						mClickedMarker = marker;
-						marker.setIcon(BitmapDescriptorFactory
-								.fromResource(item.mPinIconSelected));
 						mClickedClusterItem = item;
+						mMappingBirdRender.setFontIconInFoucs(mClickedClusterItem.mPinIcon, mClickedMarker);
 						mMappingbirdListLayout.clickItem(item);
 						mMap.setInfoWindowAdapter(mInfoWindowAdapter);
 						return true;
 					}
 				});
 
-		final View mapView = getSupportFragmentManager().findFragmentById(
-				R.id.trip_map).getView();
+//		final View mapView = getSupportFragmentManager().findFragmentById(
+//				R.id.trip_map).getView();
 
 		if (mLatLngs != null && mLatLngs.size() != 0) {
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -500,7 +494,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			if (!isSame) {
 				mLatLngs.add(latlng);
 				MappingBirdItem offsetItem = new MappingBirdItem(i, latlng,
-						title, getPinIcon(type), getPinIconSelected(type), sdistance);
+						title, getPinIcon(type), sdistance);
 				mPositionItems.add(point);
 				mClusterManager.addItem(offsetItem);
 			}
@@ -596,53 +590,25 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		int iconRes = -1;
 		switch (type) {
 		case MBPointData.TYPE_RESTAURANT:
-			iconRes = R.drawable.pin_restaurant;
+			iconRes = R.string.icon_type_restaurant;
 			break;
 		case MBPointData.TYPE_HOTEL:
-			iconRes = R.drawable.pin_bed;
+			iconRes = R.string.icon_type_hotel;
 			break;
 		case MBPointData.TYPE_MALL:
-			iconRes = R.drawable.pin_shopcart;
+			iconRes = R.string.icon_type_mall;
 			break;
 		case MBPointData.TYPE_BAR:
-			iconRes = R.drawable.pin_bar;
+			iconRes = R.string.icon_type_bar;
 			break;
 		case MBPointData.TYPE_MISC:
-			iconRes = R.drawable.pin_general;
+			iconRes = R.string.icon_type_misc;
 			break;
 		case MBPointData.TYPE_SCENICSPOT:
-			iconRes = R.drawable.pin_camera;
+			iconRes = R.string.icon_type_scenicspot;
 			break;
 		default :
-			iconRes = R.drawable.pin_new;
-			break;
-		}
-		return iconRes;
-	}
-
-	private int getPinIconSelected(int type) {
-		int iconRes = -1;
-		switch (type) {
-		case MBPointData.TYPE_RESTAURANT:
-			iconRes = R.drawable.pin_restaurant_selected;
-			break;
-		case MBPointData.TYPE_HOTEL:
-			iconRes = R.drawable.pin_bed_selected;
-			break;
-		case MBPointData.TYPE_MALL:
-			iconRes = R.drawable.pin_shopcart_selected;
-			break;
-		case MBPointData.TYPE_BAR:
-			iconRes = R.drawable.pin_bar_selected;
-			break;
-		case MBPointData.TYPE_MISC:
-			iconRes = R.drawable.pin_general_selected;
-			break;
-		case MBPointData.TYPE_SCENICSPOT:
-			iconRes = R.drawable.pin_camera_selected;
-			break;
-		default :
-			iconRes = R.drawable.pin_new_selected;
+			iconRes = R.string.icon_type_new;
 			break;
 		}
 		return iconRes;
@@ -659,15 +625,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 		// enter another activity
 		if (position > -1) {
-//			Intent intent = new Intent();
-//			intent.putExtra("position", position);
-//			intent.putExtra("collection", mCollection);
-//			intent.putExtra("myLatitude", mMyLocation.latitude);
-//			intent.putExtra("myLongitude", mMyLocation.longitude);
-//
-//			intent.setClass(this,
-//					com.mappingbird.MappingBirdPlaceActivity.class);
-//			this.startActivity(intent);
 		}
 
 	}
@@ -688,14 +645,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 	class MappingBirdRender extends DefaultClusterRenderer<MappingBirdItem> {
 
-		private final IconGenerator mIconGenerator = new IconGenerator(
-				getApplicationContext());
 		private final IconGenerator mClusterIconGenerator = new IconGenerator(
 				getApplicationContext());
-		private final ImageView mImageView;
-//		private final ImageView mClusterImageView;
-		private final int mDimension;
-
+		private final IconGenerator mFocusIconGenerator = new IconGenerator(
+				getApplicationContext());
 
 		/*
 		 * Gmap Mark layout
@@ -704,47 +657,39 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			super(getApplicationContext(), mMap, mClusterManager);
 
 			View multiProfile = getLayoutInflater().inflate(
-					R.layout.mappingbird_multi_pins, null);
+					R.layout.mappingbird_pin_normal, null);
 			mClusterIconGenerator.setContentView(multiProfile);
-//			mClusterImageView = (ImageView) multiProfile
-//					.findViewById(R.id.image);
+			multiProfile = getLayoutInflater().inflate(
+					R.layout.mappingbird_pin_focus, null);
+			mFocusIconGenerator.setContentView(multiProfile);
+		}
 
-			mImageView = new ImageView(getApplicationContext());
-			mDimension = (int) getResources().getDimension(
-					R.dimen.custom_profile_image);
-			mImageView.setLayoutParams(new ViewGroup.LayoutParams(
-					ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT));
-			mIconGenerator.setContentView(mImageView);
+		public void setFontIconInFoucs(int strId, Marker markerOptions) {
+			String iconStr = getResources().getString(strId);
+			Bitmap icon = mFocusIconGenerator.makeIcon(iconStr);
+			markerOptions.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+		}
+
+		public void setFontIcon(int strId, Marker markerOptions) {
+			String iconStr = getResources().getString(strId);
+			Bitmap icon = mClusterIconGenerator.makeIcon(iconStr);
+			markerOptions.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+		}
+
+		public void setFontIcon(int strId, MarkerOptions markerOptions) {
+			String iconStr = getResources().getString(strId);
+			Bitmap icon = mClusterIconGenerator.makeIcon(iconStr);
+			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
 		}
 
 		protected void onBeforeClusterItemRendered(MappingBirdItem place,
 				MarkerOptions markerOptions) {
-			mImageView.setImageResource(place.mPinIcon);
-			Bitmap icon = mIconGenerator.makeIcon();
-			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon))
-					.title(place.mTitle).snippet(place.mSnippet.toString());
+			setFontIcon(place.mPinIcon, markerOptions);
 		}
 
 		@Override
 		protected void onBeforeClusterRendered(
 				Cluster<MappingBirdItem> cluster, MarkerOptions markerOptions) {
-			List<Drawable> profilePhotos = new ArrayList<Drawable>(Math.min(4,
-					cluster.getSize()));
-			int width = mDimension;
-			int height = mDimension;
-
-			for (MappingBirdItem p : cluster.getItems()) {
-				if (profilePhotos.size() == 4)
-					break;
-				Drawable drawable = getResources().getDrawable(p.mPinIcon);
-				drawable.setBounds(0, 0, width, height);
-				profilePhotos.add(drawable);
-			}
-			MultiDrawable multiDrawable = new MultiDrawable(profilePhotos);
-			multiDrawable.setBounds(0, 0, width, height);
-
-//			mClusterImageView.setImageDrawable(multiDrawable);
 			String size = String.valueOf(cluster.getSize());
 			if(cluster.getSize() > 100) {
 				size = "99+";

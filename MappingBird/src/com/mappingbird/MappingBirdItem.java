@@ -10,18 +10,14 @@ public class MappingBirdItem implements ClusterItem {
 	public final LatLng mPosition;
 	public final String mTitle;
 	public final int mPinIcon;
-	public final int mPinIconSelected;
 	public final int mIndex;
 	public SpannableString mSnippet;
 
-	public final int mIcon;
 	public MappingBirdItem(int index, LatLng position, String title,
-			int pinicon, int piniconSelected, SpannableString snippet) {
+			int pinicon, SpannableString snippet) {
 		mIndex = index;
 		this.mTitle = title;
 		mPinIcon = pinicon;
-		mPinIconSelected = piniconSelected;
-		mIcon = pinicon;
 		mPosition = position;
 		mSnippet = snippet;
 	}

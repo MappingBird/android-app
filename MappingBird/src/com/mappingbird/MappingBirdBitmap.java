@@ -24,7 +24,7 @@ import android.widget.ImageView;
 
 import com.mappingbird.common.DeBug;
 
-class MappingBirdBitmap {
+public class MappingBirdBitmap {
 	private static final String TAG = MappingBirdBitmap.class.getName();
 
 	public static final int ICON_TYPE_CONTENT_INFO_ICON = 0101;
