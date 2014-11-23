@@ -35,7 +35,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 	public static final String EXTRA_MBPOINT = "mb_point";
 	private static final String TAG = MappingBirdPlaceActivity.class.getName();
 
-	ImageView mBack = null;
 	RelativeLayout mGetDirection = null;
 	private MBPointData mCurrentPoint;
 	private TextView mTitle = null;
@@ -73,7 +72,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mappingbird_place);
-		mBack = (ImageView) findViewById(R.id.back_icon);
 		mGetDirection = (RelativeLayout) findViewById(R.id.get_direction);
 		mTitle = (TextView) findViewById(R.id.trip_detail_title_name);
 		mPlaceName = (TextView) findViewById(R.id.palce_name);
@@ -101,7 +99,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mTitleScrollHeight = (int) getResources().getDimension(R.dimen.place_gallery_height)
 				- (int) getResources().getDimension(R.dimen.title_bar_height);
 
-		mBack.setOnClickListener(this);
+		findViewById(R.id.back_icon).setOnClickListener(this);
 		mGetDirection.setOnClickListener(this);
 
 		Intent intent = this.getIntent();

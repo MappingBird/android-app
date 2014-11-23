@@ -9,13 +9,12 @@
         android:layout_height="45dp"
         android:background="#F6892A" >
 
-        <ImageView
-            android:id="@+id/back_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
+	    <com.mappingbird.widget.MappingbirdButton
+	        android:id="@+id/back_icon"
+	        style="@style/TitleButtonStyle"
+	        android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/icon_back" />
+	        android:text="@string/icon_back_arrow" />
 
         <TextView
             android:id="@+id/map_title_name"
@@ -24,7 +23,6 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/back_icon"
-            android:text="French Trip"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" >

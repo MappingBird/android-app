@@ -10,12 +10,12 @@
         android:layout_height="228dp"
         android:background="#DDDDDD" >
 
-        <ImageView
+        <com.mappingbird.widget.MappingbirdButton
             android:id="@+id/back_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="center"
-            android:src="@drawable/icon_back_dark" />
+            style="@style/TitleButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="@string/icon_back_arrow" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -67,17 +67,16 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/icon_next" />
-                
+
                 <TextView
                     android:id="@+id/edit_profile"
                     style="@style/TextStyle_Body"
-                    android:layout_toLeftOf="@id/enter_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/enter_edit"
                     android:text="@string/edit_profile"
                     android:textColor="#707070" />
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -96,10 +95,10 @@
                 <TextView
                     android:id="@+id/change_password"
                     style="@style/TextStyle_Body"
-                    android:layout_toLeftOf="@id/enter_change_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/enter_change_password"
                     android:text="@string/change_password"
                     android:textColor="#707070" />
             </RelativeLayout>

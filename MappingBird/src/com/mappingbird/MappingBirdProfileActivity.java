@@ -19,7 +19,6 @@ public class MappingBirdProfileActivity extends Activity implements
 		OnClickListener {
 
 	public static final String EXTRA_COME_FROM_LOGIN = "EXTRA_COME_FROM_LOGIN";
-	private ImageView mBackIcon = null;
 	private Button mLogOut = null;
 	private MappingBirdAPI mApi = null;
 	private TextView mEmail = null;
@@ -32,11 +31,10 @@ public class MappingBirdProfileActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mappingbird_profile);
-		mBackIcon = (ImageView) findViewById(R.id.back_icon);
 		mLogOut = (Button) findViewById(R.id.logout);
 		mEmail = (TextView) findViewById(R.id.profile_email);
 		mLogOut.setOnClickListener(this);
-		mBackIcon.setOnClickListener(this);
+		findViewById(R.id.back_icon).setOnClickListener(this);
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 		user = mApi.getCurrentUser();
 		if (user != null) {
