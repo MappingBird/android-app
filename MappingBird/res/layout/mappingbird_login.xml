@@ -9,22 +9,19 @@
         android:layout_height="@dimen/title_bar_height"
         android:background="#F6892A" >
 
-        <ImageView
+        <com.mappingbird.widget.MappingbirdButton
             android:id="@+id/back_icon"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/icon_back" />
+            style="@style/TitleButtonStyle"
+            android:text="@string/icon_back_arrow" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/login_title_name"
             style="@style/TextStyle_Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/back_icon"
-            android:text="@string/account"
+            android:text="@string/login_content_title"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -39,31 +36,19 @@
             android:id="@+id/login_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp" >
+            android:paddingTop="16dp" >
 
-            <TextView
-                android:id="@+id/login_content_title"
-                style="@style/TextStyle_Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="@string/login_content_title"
-                android:textColor="#4E4E4E" >
-            </TextView>
-
-            <TextView
+            <com.mappingbird.widget.MappingbirdTextView
                 android:id="@+id/login_content_text"
                 style="@style/TextStyle_Body_Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/login_content_title"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                android:textColor="#707070" >
-            </TextView>
+                android:textColor="#707070" />
 
             <RelativeLayout
                 android:id="@+id/input_email_layout"
@@ -72,25 +57,7 @@
                 android:layout_below="@id/login_content_text"
                 android:layout_marginTop="21dp" >
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_alignParentTop="true"
-                    android:background="#DDDDDD" />
-
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:background="#DDDDDD" />
-
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:background="#DDDDDD" />
-
-                <EditText
+                <com.mappingbird.widget.MappingbirdEditText
                     android:id="@+id/input_email"
                     style="@style/TextStyle_Body_Small"
                     android:layout_width="match_parent"
@@ -118,34 +85,17 @@
                 android:layout_height="50dp"
                 android:layout_below="@id/field_divider" >
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="#DDDDDD" />
-
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:background="#DDDDDD" />
-
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:background="#DDDDDD" />
-
-                <ImageView
+                <com.mappingbird.widget.MappingbirdButton
                     android:id="@+id/question_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
-                    android:src="@drawable/icon_question_mark" />
+                    android:text="@string/icon_question"
+                    android:textSize="24sp" />
 
-                <EditText
+                <com.mappingbird.widget.MappingbirdEditText
                     android:id="@+id/input_password"
                     style="@style/TextStyle_Body_Small"
                     android:layout_width="match_parent"
@@ -178,8 +128,8 @@
                         android:id="@+id/login_loading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/icon_loading"
                         android:paddingRight="8dp"
+                        android:src="@drawable/icon_loading"
                         android:visibility="visible" />
 
                     <TextView

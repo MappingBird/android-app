@@ -147,7 +147,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mMappingbirdListLayout.setCardClickListener(mCardClickListener);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.account,
+				R.drawable.ic_drawer, R.string.action_settings,
 				R.string.action_settings) {
 			public void onDrawerClosed(View view) {
 				DeBug.v("onDrawerClosed");

@@ -24,8 +24,6 @@ import com.mappingbird.api.User;
 public class MappingBirdLoginActivity extends Activity implements
 		OnClickListener {
 
-	private ImageView mBackIcon = null;
-	private ImageView mQuestionIcon = null;
 	private RelativeLayout mLogIn = null;
 	private EditText mEmail = null;
 	private EditText mPassword = null;
@@ -41,8 +39,6 @@ public class MappingBirdLoginActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mappingbird_login);
-		mBackIcon = (ImageView) findViewById(R.id.back_icon);
-		mQuestionIcon = (ImageView) findViewById(R.id.question_icon);
 		mLogIn = (RelativeLayout) findViewById(R.id.login);
 		mEmail = (EditText) findViewById(R.id.input_email);
 		mPassword = (EditText) findViewById(R.id.input_password);
@@ -50,8 +46,8 @@ public class MappingBirdLoginActivity extends Activity implements
 		mLoginText = (TextView) findViewById(R.id.login_loading_text);
 		mLoginLoadingIcon = (ImageView) findViewById(R.id.login_loading);
 		isLoaing(false);
-		mBackIcon.setOnClickListener(this);
-		mQuestionIcon.setOnClickListener(this);
+		findViewById(R.id.back_icon).setOnClickListener(this);
+		findViewById(R.id.question_icon).setOnClickListener(this);
 		mLogIn.setOnClickListener(this);
 		mLoginDescription.setMovementMethod(LinkMovementMethod.getInstance());
 		mLoginDescription.setText(Html

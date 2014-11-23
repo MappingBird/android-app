@@ -14,7 +14,7 @@
             android:layout_height="@dimen/title_bar_height"
             android:background="#F6892A" >
 
-            <TextView
+            <com.mappingbird.widget.MappingbirdTextView
                 android:id="@+id/main_title_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -23,8 +23,7 @@
                 android:text="@string/get_start"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
-                android:textStyle="bold" >
-            </TextView>
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/login_icon"
@@ -68,7 +67,7 @@
             android:layout_marginTop="36dp"
             android:layout_marginRight="6dp" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/login_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
