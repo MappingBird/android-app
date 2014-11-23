@@ -16,21 +16,11 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/logo" />
 
-        <TextView
-            android:id="@+id/loadig_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/logo"
-            android:layout_centerHorizontal="true"
-            style="@style/TextStyle_Comment"
-            android:text="@string/loadig_main"
-            android:textColor="#FFFFFF" />
-
         <ImageView
             android:id="@+id/logo_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/loadig_main"
+            android:layout_below="@id/logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:src="@drawable/icon_loading" />

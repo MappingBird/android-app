@@ -21,7 +21,6 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="change_password">Change Password</string>
     <string name="get_direction">Get Direction</string>
-    <string name="loadig_main">Remember places for later.</string>
     <string name="login_description">Log in your MappingBird account to view the places yo save on www.mappingbird.com.</string>
 	<string name="no_data">No Data</string>
 	<string name="error">Error</string>
