@@ -30,6 +30,6 @@
 	<color name="font_white">#ffffff</color>
 	
 	<!-- Collection List -->
-	<color name="item_blue_activated">#270000ff</color>
-	<color name="item_blue_pressed">#27000000</color>
+	<color name="item_blue_activated">#d9f1fb</color>
+	<color name="item_blue_pressed">#d9d9d9</color>
 </resources>
