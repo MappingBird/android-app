@@ -75,6 +75,40 @@ public class Utils {
 			return ss;
 		}		
 	}
+
+	public static DistanceObject getDistanceObject(float distance) {
+		DistanceObject object = new DistanceObject();
+		if(distance < 1) {
+			// < 1m
+			object.mDistance = MappingBirdApplication.instance().getString(R.string.distance_less_one_meter);
+			object.mUnit = MappingBirdApplication.instance().getString(R.string.distance_meter);
+			return object;
+		} else if(distance > 1000) {
+			// km
+			distance = distance / 1000;
+			if(distance > 10000) {
+				object.mDistance = "9999";
+				object.mUnit = MappingBirdApplication.instance().getString(R.string.distance_max_kilometer);
+				return object;				
+			} else {
+				DecimalFormat df = new DecimalFormat();
+				String style = "#,###,###";
+				df.applyPattern(style);
+				object.mDistance = df.format(distance);
+				object.mUnit = MappingBirdApplication.instance().getString(R.string.distance_kilometer);
+				return object;				
+			}
+		} else {
+			// m
+			DecimalFormat df = new DecimalFormat();
+			String style = "#,###,###";
+			df.applyPattern(style);
+			object.mDistance = df.format(distance);
+			object.mUnit = MappingBirdApplication.instance().getString(R.string.distance_meter);
+			return object;				
+		}		
+	}
+
 	public static float getDistance(double lat1, double lon1, double lat2, double lon2) {
 		float[] results = new float[1];
 		Location.distanceBetween(lat1, lon1, lat2, lon2, results);

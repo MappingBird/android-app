@@ -19,6 +19,7 @@ import com.mappingbird.R;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
+import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.Utils;
 
@@ -27,12 +28,10 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 	public static final int MODE_ITEM = 0;
 	public static final int MODE_DRAG = 1;
 
-	private int mMode = MODE_ITEM;
-
 	private ImageView mIcon;
 	private BitmapLoader mBitmapLoader;
 	private MBPointData mPoint;
-	private TextView mTitle, mSubTitle, mDistance;
+	private TextView mTitle, mSubTitle, mDistance, mUnit;
 	private View mGradientView;
 	private GradientDrawable mDrawable;
 	private View mContentLayout;
@@ -67,6 +66,7 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 		mTitle = (TextView) findViewById(R.id.card_title);
 		mSubTitle = (TextView) findViewById(R.id.card_subtitle);
 		mDistance = (TextView) findViewById(R.id.card_distance);
+		mUnit = (TextView) findViewById(R.id.card_unit);
 		mBitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
 		mGradientView = findViewById(R.id.card_gradient);
 		mContentLayout = findViewById(R.id.card_content_layout);
@@ -88,7 +88,7 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 		          GradientDrawable.Orientation.RIGHT_LEFT, new int[] { 0xFFFFFFFF, 0x00000000});
 		
 		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-		mGradientView.setBackgroundDrawable(mDrawable);
+//		mGradientView.setBackgroundDrawable(mDrawable);
 	}
 
 	void setInfoLayoutBackground(Drawable drawable) {
@@ -105,6 +105,7 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 		mIcon.setImageDrawable(null);
 		mTitle.setText("");
 		mDistance.setText("");
+		mUnit.setText("");
 	}
 
 	public void setHeight() {
@@ -138,12 +139,18 @@ public class MappingbirdListLayoutCardView extends RelativeLayout {
 		mSubTitle.setText(mPoint.getLocation().getPlaceAddress());
 		mItemAddress.setText(mPoint.getLocation().getPlaceAddress());
 		if(mylocation != null) {
+			DistanceObject disObject = Utils.getDistanceObject(
+					Utils.getDistance(mylocation.latitude,
+					mylocation.longitude, 
+					mPoint.getLocation().getLatitude(), 
+					mPoint.getLocation().getLongitude()));
 			SpannableString dis = Utils.getDistanceString(
 					Utils.getDistance(mylocation.latitude,
 					mylocation.longitude, 
 					mPoint.getLocation().getLatitude(), 
 					mPoint.getLocation().getLongitude()));
-			mDistance.setText(dis);
+			mDistance.setText(disObject.mDistance);
+			mUnit.setText(disObject.mUnit);
 			mItemDistance.setText(dis);
 		} else {
 			mDistance.setText("");

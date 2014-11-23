@@ -36,4 +36,25 @@
     
     <!-- Dialog -->
     <dimen name="dialog_loading_margin_top">112dp</dimen>
+    
+    <!-- Text Size -->
+    <dimen name="header_title_text_size">18sp</dimen>
+    <dimen name="header_title_number_size">14sp</dimen>
+    
+    <!-- Collection card -->
+    <dimen name="card_headline_text_size">16sp</dimen>
+    <dimen name="card_address_text_size">13sp</dimen>
+    <dimen name="card_distance_text_size">32sp</dimen>
+    <dimen name="card_unit_text_size">16sp</dimen>
+
+    <!-- Collection list item -->
+    <dimen name="coll_list_item_headline_text_size">16sp</dimen>
+    <dimen name="coll_list_item_address_text_size">13sp</dimen>
+    <dimen name="coll_list_item_distance_text_size">32sp</dimen>
+    <dimen name="coll_list_item_unit_text_size">16sp</dimen>
+    <dimen name="coll_list_item_tag_text_size">12sp</dimen>
+    
+    <!-- Place -->
+    <dimen name="place_headline_text_size">20sp</dimen>
+    <dimen name="place_description_text_size">14sp</dimen>
 </resources>

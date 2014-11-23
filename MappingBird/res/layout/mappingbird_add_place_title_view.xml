@@ -33,7 +33,7 @@
         android:layout_toLeftOf="@id/title_btn_save"
         android:singleLine="true"
         android:textColor="#FFF"
-        android:hint="@string/add_place_new_collection"
-        android:textSize="18sp" />
+        style="@style/TextStyle_Title"
+        android:hint="@string/add_place_new_collection" />
 
 </RelativeLayout>

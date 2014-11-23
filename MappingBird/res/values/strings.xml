@@ -51,4 +51,8 @@
     
     <!-- Pick place -->
     <string name="pick_place_title">Pick A Place</string>
+    
+    <string name="icon_people">&#58904;</string>
+    <string name="icon_add_place">&#58895;</string>
+    <string name="icon_title_menu">&#58905;</string>
 </resources>

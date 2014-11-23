@@ -21,7 +21,7 @@ public class BitmapLoader {
 	private static final int MSG_REFRESH_DATA = 0x00010;
 	private static final int MSG_DOWNLOAD_FINISHED = 0x00011;
 	public static final int NO_SCALE_REQUIRED = -1;
-	private static final int DEFAULT_MAX_LOADING_THREADS = 3;
+	private static final int DEFAULT_MAX_LOADING_THREADS = 1;
 	private static final int MAX_SIZE = 1024;
 
 	private String LOG_PREFIX = "";

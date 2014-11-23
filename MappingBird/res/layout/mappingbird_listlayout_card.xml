@@ -84,25 +84,49 @@
         android:layout_height="@dimen/list_layout_card_icon_height"
         android:layout_marginLeft="@dimen/list_layout_card_icon_width" >
 
-        <TextView
-            android:id="@+id/card_distance"
-            style="@style/TextStyle_Quote"
-            android:layout_width="@dimen/list_layout_card_distance_width"
+        <RelativeLayout
+            android:id="@+id/card_distance_layout"
+            android:layout_width="@dimen/place_item_card_distance_width"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:gravity="center"
-            android:textColor="#4E4E4E"
-            android:textStyle="normal" />
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/card_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:singleLine="true"
+                    android:textColor="#0298c1"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:id="@+id/card_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|top"
+                    android:layout_marginTop="-10dp"
+                    android:singleLine="true"
+                    android:textColor="#0298c1"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/card_divider"
             android:layout_width="1dp"
             android:layout_height="@dimen/list_layout_card_icon_height"
-            android:layout_toLeftOf="@id/card_distance"
+            android:layout_toLeftOf="@id/card_distance_layout"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:src="#707070" />
+            android:src="#00000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -115,23 +139,20 @@
 
             <TextView
                 android:id="@+id/card_title"
-                style="@style/TextStyle_Subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="none"
                 android:singleLine="true"
-                android:textColor="#4E4E4E"
-                android:textStyle="normal" />
+                android:textSize="16sp"
+                android:textColor="#0298c1" />
 
             <TextView
                 android:id="@+id/card_subtitle"
-                style="@style/TextStyle_Body_Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ellipsize="none"
                 android:paddingTop="6dp"
+                android:textSize="13sp"
                 android:singleLine="true"
-                android:textColor="#707070" />
+                android:textColor="#6f6f6f" />
         </LinearLayout>
 
         <View
@@ -140,6 +161,7 @@
             android:layout_height="@dimen/list_layout_card_icon_height"
             android:layout_marginRight="4dp"
             android:layout_toLeftOf="@id/card_divider"
+            android:visibility="gone"
             android:background="@drawable/card_white_gradient" />
     </RelativeLayout>
 

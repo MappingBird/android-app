@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
-    <ImageView
+    <com.mappingbird.widget.MappingbirdButton
         android:id="@+id/title_btn_people"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TitleButtonStyle"
         android:layout_alignParentRight="true"
-        android:scaleType="center"
-        android:src="@drawable/account_selector" />
+        android:text="@string/icon_people" />
 
-    <ImageView
+    <com.mappingbird.widget.MappingbirdButton
         android:id="@+id/title_btn_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TitleButtonStyle"
         android:layout_toLeftOf="@id/title_btn_people"
-        android:scaleType="center"
-        android:visibility="gone"
-        android:src="@drawable/please_add_icon" />
+        android:text="@string/icon_add_place" />
 
-    <TextView 
+    <TextView
         android:id="@+id/title_text"
-        style="@style/TextStyle_Caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/title_btn_add"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/title_btn_add"
         android:singleLine="true"
-        android:textColor="#FFF" />
+        android:textSize="@dimen/header_title_text_size"
+        android:textColor="@color/font_white" />
+
+    <TextView
+        android:id="@+id/title_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/title_text"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/title_btn_add"
+        android:singleLine="true"
+        android:textSize="@dimen/header_title_number_size"
+        android:textColor="@color/font_white" />
+
 </RelativeLayout>

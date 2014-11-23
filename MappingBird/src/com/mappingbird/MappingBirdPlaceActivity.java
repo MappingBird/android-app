@@ -60,7 +60,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private double mMyLatitude = 0;
 	private double mMyLongitude = 0;
 
-	private MappingBirdBitmap mLoadBitmap = null;
 	private MappingBirdAPI mApi = null;
 	private MBPointData mPoint = null;
 	private Context mContext = null;
@@ -116,17 +115,12 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mTitle.setText(mCurrentPoint.getTitle());
 		mPinIcon.setImageResource(getPinIcon(mCurrentPoint.getTypeInt()));
 
-		mLoadBitmap = new MappingBirdBitmap(this.getApplicationContext());
 		ArrayList<ImageDetail> imagelist = mCurrentPoint.getImageDetails();
 		ArrayList<String> list = new ArrayList<String>();
 		for(ImageDetail item : imagelist) {
 			list.add(item.getUrl());
 		}
 		mPlacePhoto.setData(list);
-//		mLoadBitmap.getBitmapByURL(mPlacePhoto,
-//				mCollection.getPointsObj().get(mPosition).getImageDetails()
-//						.get(0).getUrl(),
-//				mLoadBitmap.ICON_TYPE_CONTENT_INFO_ICON);
 
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 
