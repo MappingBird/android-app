@@ -7,19 +7,19 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class MappingbirdButton extends TextView {
+public class MappingbirdFontIcon extends TextView {
 
-	public MappingbirdButton(Context context) {
+	public MappingbirdFontIcon(Context context) {
 		super(context);
 		setDefaultTextStyle();
 	}
 
-	public MappingbirdButton(Context context, AttributeSet attrs) {
+	public MappingbirdFontIcon(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setDefaultTextStyle();
 	}
 
-	public MappingbirdButton(Context context, AttributeSet attrs,
+	public MappingbirdFontIcon(Context context, AttributeSet attrs,
 			int defStyle) {
 		super(context, attrs, defStyle);
 		setDefaultTextStyle();

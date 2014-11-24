@@ -57,6 +57,11 @@
     <string name="icon_question">&#58882;</string>
     <string name="icon_back_arrow">&#58893;</string>
     
+    <!-- Place icon -->
+    <string name="icon_place_place">&#58896;</string>
+    <string name="icon_place_tag">&#58890;</string>
+    <string name="icon_place_time">&#58889;</string>
+
     <!-- Place type -->
     <string name="icon_type_restaurant">&#58900;</string>
     <string name="icon_type_hotel">&#58897;</string>

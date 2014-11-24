@@ -9,7 +9,7 @@
         android:layout_height="45dp"
         android:background="#F6892A" >
 
-	    <com.mappingbird.widget.MappingbirdButton
+	    <com.mappingbird.widget.MappingbirdFontIcon
 	        android:id="@+id/back_icon"
 	        style="@style/TitleButtonStyle"
 	        android:layout_alignParentLeft="true"

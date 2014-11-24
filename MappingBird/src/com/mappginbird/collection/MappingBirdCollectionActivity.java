@@ -494,7 +494,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			if (!isSame) {
 				mLatLngs.add(latlng);
 				MappingBirdItem offsetItem = new MappingBirdItem(i, latlng,
-						title, getPinIcon(type), sdistance);
+						title, Utils.getPinIconFont(type), sdistance);
 				mPositionItems.add(point);
 				mClusterManager.addItem(offsetItem);
 			}
@@ -584,34 +584,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		public View getInfoContents(Marker marker) {
 			return null;
 		}
-	}
-
-	private int getPinIcon(int type) {
-		int iconRes = -1;
-		switch (type) {
-		case MBPointData.TYPE_RESTAURANT:
-			iconRes = R.string.icon_type_restaurant;
-			break;
-		case MBPointData.TYPE_HOTEL:
-			iconRes = R.string.icon_type_hotel;
-			break;
-		case MBPointData.TYPE_MALL:
-			iconRes = R.string.icon_type_mall;
-			break;
-		case MBPointData.TYPE_BAR:
-			iconRes = R.string.icon_type_bar;
-			break;
-		case MBPointData.TYPE_MISC:
-			iconRes = R.string.icon_type_misc;
-			break;
-		case MBPointData.TYPE_SCENICSPOT:
-			iconRes = R.string.icon_type_scenicspot;
-			break;
-		default :
-			iconRes = R.string.icon_type_new;
-			break;
-		}
-		return iconRes;
 	}
 
 	@Override

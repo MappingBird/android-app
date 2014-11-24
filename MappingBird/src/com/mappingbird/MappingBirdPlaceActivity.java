@@ -25,6 +25,7 @@ import com.mappingbird.api.OnGetPointsListener;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
+import com.mappingbird.common.Utils;
 import com.mappingbird.widget.MappingbirdGallery;
 import com.mappingbird.widget.MappingbirdScrollView;
 import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
@@ -42,7 +43,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private TextView mPlaceTag = null;
 	private TextView mPlaceDate = null;
 	private TextView mDescription = null;
-	private ImageView mPinIcon = null;
+	private TextView mPinIcon = null;
 	private ImageView mShareIcon = null;
 	private TextView mPlaceAddress = null;
 	private TextView mPlaceAddressOnMap = null;
@@ -84,7 +85,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mPlacePhoto = (MappingbirdGallery) findViewById(R.id.trip_photo);
 		mPlaceAddress = (TextView) findViewById(R.id.trip_place_address);
 		mPlaceAddressOnMap = (TextView) findViewById(R.id.trip_map_address);
-		mPinIcon = (ImageView) findViewById(R.id.pin_icon);
+		mPinIcon = (TextView) findViewById(R.id.pin_icon);
 		mShareIcon = (ImageView) findViewById(R.id.share_icon);
 		mShareIcon.setOnClickListener(mShareClickListener);
 
@@ -111,7 +112,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mPlaceLongitude = mCurrentPoint.getLocation().getLongitude();
 
 		mTitle.setText(mCurrentPoint.getTitle());
-		mPinIcon.setImageResource(getPinIcon(mCurrentPoint.getTypeInt()));
+		mPinIcon.setText(Utils.getPinIconFont(mCurrentPoint.getTypeInt()));
 
 		ArrayList<ImageDetail> imagelist = mCurrentPoint.getImageDetails();
 		ArrayList<String> list = new ArrayList<String>();

@@ -12,6 +12,7 @@ import android.text.style.AbsoluteSizeSpan;
 import android.util.TypedValue;
 
 import com.mappingbird.R;
+import com.mappingbird.api.MBPointData;
 
 public class Utils {
 	public static boolean isNetworkAvailable(Context context) {
@@ -113,5 +114,33 @@ public class Utils {
 		float[] results = new float[1];
 		Location.distanceBetween(lat1, lon1, lat2, lon2, results);
 		return results[0];
+	}
+
+	public static int getPinIconFont(int type) {
+		int iconRes = -1;
+		switch (type) {
+		case MBPointData.TYPE_RESTAURANT:
+			iconRes = R.string.icon_type_restaurant;
+			break;
+		case MBPointData.TYPE_HOTEL:
+			iconRes = R.string.icon_type_hotel;
+			break;
+		case MBPointData.TYPE_MALL:
+			iconRes = R.string.icon_type_mall;
+			break;
+		case MBPointData.TYPE_BAR:
+			iconRes = R.string.icon_type_bar;
+			break;
+		case MBPointData.TYPE_MISC:
+			iconRes = R.string.icon_type_misc;
+			break;
+		case MBPointData.TYPE_SCENICSPOT:
+			iconRes = R.string.icon_type_scenicspot;
+			break;
+		default :
+			iconRes = R.string.icon_type_new;
+			break;
+		}
+		return iconRes;
 	}
 }

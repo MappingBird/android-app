@@ -3,13 +3,13 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent" >
 
-    <com.mappingbird.widget.MappingbirdButton
+    <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/title_btn_people"
         style="@style/TitleButtonStyle"
         android:layout_alignParentRight="true"
         android:text="@string/icon_people" />
 
-    <com.mappingbird.widget.MappingbirdButton
+    <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/title_btn_add"
         style="@style/TitleButtonStyle"
         android:layout_toLeftOf="@id/title_btn_people"
