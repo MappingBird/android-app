@@ -6,7 +6,7 @@
     android:paddingLeft="54dp"
     android:paddingRight="16dp" >
 
-    <TextView
+    <com.mappingbird.widget.MappingbirdTextView
         android:id="@+id/collection_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         android:textColor="@color/font_normal"
         android:textSize="16sp" />
 
-    <TextView
+    <com.mappingbird.widget.MappingbirdTextView
         android:id="@+id/collection_item_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

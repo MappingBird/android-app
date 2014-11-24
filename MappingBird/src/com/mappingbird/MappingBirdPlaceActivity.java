@@ -44,7 +44,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private TextView mPlaceDate = null;
 	private TextView mDescription = null;
 	private TextView mPinIcon = null;
-	private ImageView mShareIcon = null;
 	private TextView mPlaceAddress = null;
 	private TextView mPlaceAddressOnMap = null;
 	private ImageView mTripMapView = null;
@@ -86,8 +85,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mPlaceAddress = (TextView) findViewById(R.id.trip_place_address);
 		mPlaceAddressOnMap = (TextView) findViewById(R.id.trip_map_address);
 		mPinIcon = (TextView) findViewById(R.id.pin_icon);
-		mShareIcon = (ImageView) findViewById(R.id.share_icon);
-		mShareIcon.setOnClickListener(mShareClickListener);
+		findViewById(R.id.share_icon).setOnClickListener(mShareClickListener);
 
 		mTripMapView = (ImageView) findViewById(R.id.trip_map_view);
 

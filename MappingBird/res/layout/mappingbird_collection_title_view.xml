@@ -23,7 +23,7 @@
         android:layout_toLeftOf="@id/title_btn_add"
         android:orientation="horizontal" >
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:textColor="@color/font_white"
             android:textSize="@dimen/header_title_text_size" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/title_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

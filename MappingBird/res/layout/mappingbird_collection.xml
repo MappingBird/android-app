@@ -70,15 +70,58 @@
                 android:scrollbars="none" />
         </com.mappingbird.widget.MappingbirdListLayout>
 
-        <ListView
-            android:id="@+id/collection_list"
+        <RelativeLayout
+            android:id="@+id/collection_list_layout"
             android:layout_width="296dp"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="#FFFFFF"
-            android:choiceMode="singleChoice"
-            android:scrollbars="none"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp" />
+            android:layout_gravity="start" >
+
+            <RelativeLayout
+                android:id="@+id/collection_help_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/collection_item_bg"
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#cccccc" />
+
+                <com.mappingbird.widget.MappingbirdFontIcon
+                    android:id="@+id/collection_help_icon"
+                    android:layout_width="54dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+		            android:gravity="center"
+                    android:textColor="@color/font_normal"
+                    android:text="@string/icon_question"
+                    android:textSize="24dp" />
+
+                <com.mappingbird.widget.MappingbirdTextView
+                    android:id="@+id/collection_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="16dp" 
+                    android:layout_toRightOf="@id/collection_help_icon"
+                    android:textColor="@color/font_normal"
+                    android:text="@string/str_question"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/collection_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/collection_help_layout"
+                android:background="#FFFFFF"
+                android:choiceMode="singleChoice"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="0dp"
+                android:scrollbars="none" />
+        </RelativeLayout>
     </android.support.v4.widget.DrawerLayout>
+
 </RelativeLayout>

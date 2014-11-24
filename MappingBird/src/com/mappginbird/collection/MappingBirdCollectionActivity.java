@@ -76,6 +76,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
+	private View mDrawerContentLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private MBCollectionListItem mCurrentCollectionListItem;
 	private TextView mTitleText, mTitleNumber;
@@ -115,6 +116,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.collection_list);
+		mDrawerContentLayout = findViewById(R.id.collection_list_layout);
 
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
@@ -249,7 +251,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if (mCollectionListAdapter.getCount() > 0) {
 			mDrawerList.setItemChecked(position, true);
 			setTitle((MBCollectionListItem)mCollectionListAdapter.getItem(position));
-			mDrawerLayout.closeDrawer(mDrawerList);
+			mDrawerLayout.closeDrawer(mDrawerContentLayout);
 		}
 		if (mCollections != null && mCollections.getCount() > 0) {
 			if (mLoadingDialog != null)
@@ -291,10 +293,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		public void onClick(View v) {
 			switch(v.getId()) {
 			case R.id.title_text:
-				if(mDrawerLayout.isDrawerOpen(mDrawerList))
-					mDrawerLayout.closeDrawer(mDrawerList);
+				if(mDrawerLayout.isDrawerOpen(mDrawerContentLayout))
+					mDrawerLayout.closeDrawer(mDrawerContentLayout);
 				else
-					mDrawerLayout.openDrawer(mDrawerList);
+					mDrawerLayout.openDrawer(mDrawerContentLayout);
 				break;
 			case R.id.title_btn_people:
 				Intent intent = new Intent();

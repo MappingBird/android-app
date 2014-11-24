@@ -132,7 +132,7 @@
                         android:src="@drawable/icon_loading"
                         android:visibility="visible" />
 
-                    <TextView
+                    <com.mappingbird.widget.MappingbirdTextView
                         android:id="@+id/login_loading_text"
                         style="@style/TextStyle_Label"
                         android:layout_width="wrap_content"
@@ -140,8 +140,7 @@
                         android:layout_toRightOf="@id/login_loading"
                         android:text="@string/login"
                         android:textColor="#FFFFFF"
-                        android:textSize="18sp" >
-                    </TextView>
+                        android:textSize="18sp" />
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
