@@ -44,11 +44,15 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private TextView mPlaceDate = null;
 	private TextView mDescription = null;
 	private TextView mPinIcon = null;
-	private TextView mPlaceAddress = null;
 	private TextView mPlaceAddressOnMap = null;
 	private ImageView mTripMapView = null;
 	private MappingbirdScrollView mScrollView = null;
-	
+
+	private View mPlaceAddressLayout;
+	private TextView mPlaceAddress = null;
+	private View mPlaceTagLayout;
+	private View mPlaceDateLayout;
+
 	private View mTitleBack = null;
 	
 	private MappingbirdGallery mPlacePhoto;
@@ -66,7 +70,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 	private int mTitleScrollHeight = 0;
 	private BitmapLoader mBitmapLoader;
-	private String mIconUrl = "";
+	private String mIconUrl = "http://stage.mappingbird.com/static/img/testimage.png";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -129,9 +133,10 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
 		
+		getPinIcon(mCurrentPoint.getTypeInt());
 		String mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center="+mPlaceLatitude+","+mPlaceLongitude+
 				"&zoom=16&size=720x400"+
-				"&markers=icon:"+mIconUrl
+				"&markers=icon:"+"http://stage.mappingbird.com/static/img/testimage.png"
 				+"%7C"+mPlaceLatitude+","+mPlaceLongitude;
 		DeBug.i("Test", "mapUrl = "+mapUrl);
 		mBitmapLoader = new BitmapLoader(this);

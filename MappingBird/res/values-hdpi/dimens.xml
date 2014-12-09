@@ -54,6 +54,13 @@
     <dimen name="coll_list_item_unit_text_size">16sp</dimen>
     <dimen name="coll_list_item_tag_text_size">12sp</dimen>
     
+    <!-- Collection new list layout -->
+    <dimen name="coll_card_icon_height">70dp</dimen>
+    <dimen name="coll_card_marge_left">4dp</dimen>
+    <dimen name="coll_card_marge_right">4dp</dimen>
+    <dimen name="coll_card_marge_bottom">10dp</dimen>
+    <dimen name="coll_card_marge_bottom_other">8dp</dimen>
+    <dimen name="coll_card_shadow_height">6dp</dimen>
     <!-- Place -->
     <dimen name="place_headline_text_size">20sp</dimen>
     <dimen name="place_description_text_size">14sp</dimen>

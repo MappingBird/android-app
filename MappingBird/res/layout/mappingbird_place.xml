@@ -198,6 +198,7 @@
                     android:layout_height="wrap_content"
                     android:background="#B2FFFFFF"
                     android:padding="16dp"
+                    android:visibility="gone"
                     android:textColor="#707070" />
             </RelativeLayout>
         </LinearLayout>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mappingbird.collection.widget.MBListLayoutCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cards_background" >
+
+    <TextView
+        android:id="@+id/item_address"
+        style="@style/TextStyle_Body_Small"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_layout_item_address_height"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:textColor="#707070"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/card_icon"
+        android:layout_width="76dp"
+        android:layout_height="70dp"
+        android:background="@drawable/default_thumbnail"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:id="@+id/item_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_layout_item_info_height"
+        android:layout_above="@id/item_address"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/item_distance"
+            style="@style/TextStyle_Quote"
+            android:layout_width="@dimen/list_layout_item_distance_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textStyle="normal" />
+
+        <ImageView
+            android:id="@+id/item_divider"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/list_layout_item_info_height"
+            android:layout_toLeftOf="@id/item_distance"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:src="#b7b7b7" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toLeftOf="@id/item_divider"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/item_title"
+                style="@style/TextStyle_Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/item_subtitle"
+                style="@style/TextStyle_Body_Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="none"
+                android:singleLine="true"
+                android:textColor="#707070" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/card_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginLeft="76dp" >
+
+        <RelativeLayout
+            android:id="@+id/card_distance_layout"
+            android:layout_width="@dimen/place_item_card_distance_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/card_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:singleLine="true"
+                    android:textColor="#0298c1"
+                    android:textSize="32sp" />
+
+                <TextView
+                    android:id="@+id/card_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|top"
+                    android:layout_marginTop="-10dp"
+                    android:singleLine="true"
+                    android:textColor="#0298c1"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/card_divider"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/list_layout_card_icon_height"
+            android:layout_toLeftOf="@id/card_distance_layout"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:src="#00000000" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@id/card_divider"
+            android:orientation="vertical"
+            
+            android:paddingLeft="8dp" >
+
+            <TextView
+                android:id="@+id/card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:textColor="#0298c1" />
+
+            <TextView
+                android:id="@+id/card_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:textSize="13sp"
+                android:singleLine="true"
+                android:textColor="#6f6f6f" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/card_gradient"
+            android:layout_width="60dp"
+            android:layout_height="@dimen/list_layout_card_icon_height"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@id/card_divider"
+            android:visibility="gone"
+            android:background="@drawable/card_white_gradient" />
+    </RelativeLayout>
+
+</com.mappingbird.collection.widget.MBListLayoutCardView>

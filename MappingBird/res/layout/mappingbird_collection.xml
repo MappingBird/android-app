@@ -15,6 +15,13 @@
             android:layout_height="match_parent"
             class="com.google.android.gms.maps.SupportMapFragment" />
 
+        <include
+            android:id="@+id/collection_card_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            layout="@layout/mappingbird_collection_list_layout" />
+
         <com.mappingbird.widget.MappingbirdListLayout
             android:id="@+id/item_list_layout"
             android:layout_width="match_parent"
@@ -81,8 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/collection_item_bg"
-                >
+                android:background="@drawable/collection_item_bg" >
 
                 <View
                     android:layout_width="match_parent"
@@ -94,9 +100,9 @@
                     android:layout_width="54dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-		            android:gravity="center"
-                    android:textColor="@color/font_normal"
+                    android:gravity="center"
                     android:text="@string/icon_question"
+                    android:textColor="@color/font_normal"
                     android:textSize="24dp" />
 
                 <com.mappingbird.widget.MappingbirdTextView
@@ -104,10 +110,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:paddingRight="16dp" 
                     android:layout_toRightOf="@id/collection_help_icon"
-                    android:textColor="@color/font_normal"
+                    android:paddingRight="16dp"
                     android:text="@string/str_question"
+                    android:textColor="@color/font_normal"
                     android:textSize="16sp" />
             </RelativeLayout>
 

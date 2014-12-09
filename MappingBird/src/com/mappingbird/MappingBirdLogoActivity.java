@@ -37,7 +37,7 @@ public class MappingBirdLogoActivity extends Activity {
 							com.mappingbird.MappingBirdMainActivity.class);
 				} else {
 					intent.setClass(MappingBirdLogoActivity.this,
-							com.mappginbird.collection.MappingBirdCollectionActivity.class);
+							com.mappingbird.collection.MappingBirdCollectionActivity.class);
 				}
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				MappingBirdLogoActivity.this.startActivity(intent);

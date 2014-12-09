@@ -23,6 +23,7 @@
     <string name="login_description">Log in your MappingBird account to view the places yo save on www.mappingbird.com.</string>
 	<string name="no_data">No Data</string>
 	<string name="error">Error</string>
+	<string name="location_error">Location Error</string>
     <string name="internal_error">Internal Error</string>
     <string name="network_error">Network Error</string>
     <string name="unknow_error">Unknow Error</string> 
@@ -33,6 +34,8 @@
     <string name="data_incomplete">The data is incomplete!</string>
     <string name="ok">OK</string>
     
+    <string name="str_retry">Retry</string>
+    <string name="str_cancel">Cancel</string>
     <!-- Distance -->
     <string name="distance_less_one_meter">&#060;1</string>
     <string name="distance_meter">M</string>

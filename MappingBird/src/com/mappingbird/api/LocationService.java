@@ -34,10 +34,9 @@ public class LocationService implements LocationListener {
 
     protected LocationManager locationManager;
 
-    private CountDownTimer timer = new CountDownTimer(5 * 1000, 1000) {
+    private CountDownTimer timer = new CountDownTimer(5 * 1000, 5000) {
 
         public void onTick(long millisUntilFinished) {
-
         }
 
         public void onFinish() {
@@ -52,10 +51,9 @@ public class LocationService implements LocationListener {
 
     public void start() {
         if (Utils.isNetworkAvailable(mContext)) {
-
             try {
                 timer.start();
-
+                DeBug.i("LocationService start");
                 locationManager = (LocationManager) mContext
                         .getSystemService(Context.LOCATION_SERVICE);
 
@@ -97,8 +95,10 @@ public class LocationService implements LocationListener {
                             location = tempLocation;
                     }
                 }
-                if(mLocationServiceListener != null && location != null)
+                DeBug.d("Location = "+ location);
+                if(mLocationServiceListener != null)
                 	mLocationServiceListener.onLocationChanged(location);
+                
             } catch (Exception e) {
 //                onTaskError(e.getMessage());
                 e.printStackTrace();
