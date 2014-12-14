@@ -1,38 +1,70 @@
 package com.mappingbird.collection.widget;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.MappingBirdItem;
 import com.mappingbird.R;
 import com.mappingbird.api.MBPointData;
+import com.mappingbird.common.BitmapLoader;
+import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
+import com.mappingbird.common.Utils;
 
 public class MBCollectionListLayout extends RelativeLayout {
 	
-	private MBListLayoutCardView mCard;
 	private boolean isInited = false;
 
-	private MBListLayoutCardMashObject mCurrentObject;
-	private MBListLayoutCardMashObject mFirstObject;
-	private MBListLayoutCardMashObject mSecondObject;
-	private MBListLayoutCardMashObject mThreeObject;
+	// Touch
+	private GestureDetector mGestureDetector = null;
+	private boolean mTouchEventFling = false;
+	private float mVelocityY = 0;
+
+	// Card
+	private MBListLayoutCardView mCard;
+	private int mCardDefaultPositionY = 0;
+	private float mCardMaxHeight = 0;
+
+	private MBListLayoutChangeCardObject mChangeCardAnimBoj; 
 	// Location
 	private LatLng mMyLocation = null;
+	
+	// ListView
+	private boolean mListViewTop = false;
+	private ListView mListView;
+	private ItemAdapter mItemAdapter;
 
+	//Bitmap loader
+	private BitmapLoader mBitmapLoader;
+	
+	private float mDragY = 0;
+	private float mStartY = 0, mEndY = 0;
+
+	// TouchLock
+	// 1. Change card animaiont
+	private boolean lockTouchEvent = false;
 	public MBCollectionListLayout(Context context) {
 		super(context);
 	}
@@ -50,10 +82,15 @@ public class MBCollectionListLayout extends RelativeLayout {
 	protected void onFinishInflate() {
 		super.onFinishInflate();
 		mCard = (MBListLayoutCardView) findViewById(R.id.item_card);
-		mCurrentObject = new MBListLayoutCardMashObject();
-		mFirstObject = new MBListLayoutCardMashObject();
-		mSecondObject = new MBListLayoutCardMashObject();
-		mThreeObject = new MBListLayoutCardMashObject();
+		mChangeCardAnimBoj = new MBListLayoutChangeCardObject();
+		
+		mListView = (ListView) findViewById(R.id.item_list);
+		mListView.setVisibility(View.INVISIBLE);
+		mBitmapLoader = new BitmapLoader(getContext());
+		mItemAdapter = new ItemAdapter(getContext());
+		mListView.setAdapter(mItemAdapter);
+		
+		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
 	}
 
 	public void setCardClickListener() {
@@ -75,30 +112,20 @@ public class MBCollectionListLayout extends RelativeLayout {
 
 		int marge_bottom_other = (int) getResources().getDimension(R.dimen.coll_card_marge_bottom_other);
 		int marge_left = (int) getResources().getDimension(R.dimen.coll_card_marge_left);
-		int marge_bottom = (int) getResources().getDimension(R.dimen.coll_card_marge_bottom);
-		mCard.setY(getHeight() - marge_bottom_other * 2 - mCard.getHeight() + mCard.getPaddingBottom());
+		int card_position = marge_bottom_other * 2 + mCard.getHeight() - mCard.getPaddingBottom();
+		mCardDefaultPositionY = getHeight() - card_position;
+		mCard.setY(mCardDefaultPositionY);
 		mCard.setParentHeight(getHeight());
-		
-		DeBug.e("Test", "H = "+getHeight()+", vh = "+mCard.getHeight()+", m = "+marge_bottom);
-		DeBug.e("Test", "PaddingBottom = "+mCard.getPaddingBottom());
+		mCard.setCardPosition(card_position);
+		mCardMaxHeight = getHeight() - ((int) getResources().getDimension(R.dimen.place_item_card_max_position));
 
-		
-		int shadow_height = mCard.getPaddingBottom();//(int) getResources().getDimension(R.dimen.coll_card_shadow_height);
-		mFirstObject.setPosition(marge_left, getHeight() - marge_bottom_other, shadow_height);
-		mSecondObject.setPosition(marge_left, getHeight(), shadow_height);
-		mThreeObject.setPosition(marge_left, getHeight() + marge_bottom_other, shadow_height);
+		int shadow_height = mCard.getPaddingBottom();
+		mChangeCardAnimBoj.setPosition(getHeight(), marge_left, shadow_height, marge_bottom_other);
 		isInited = true;
 	}
 
 	private void initDefaultBitmap() {
-		if(!mFirstObject.isInit()) {
-			mCard.setDrawingCacheEnabled(true);
-			mCard.buildDrawingCache();
-			Bitmap bmp = Bitmap.createBitmap(mCard.getDrawingCache());
-			mCard.setDrawingCacheEnabled(false);
-			mFirstObject.buildBmp(bmp);
-			mSecondObject.buildBmp(bmp);
-			mThreeObject.buildBmp(bmp);
+		if(mChangeCardAnimBoj.init(mCard)) {
 			postInvalidate();
 		}
 //		if(mDefaultBmp == null) {
@@ -118,14 +145,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 //			mCard.setData(mMyLocation, point);
 //			}
 //		}
-		mCard.buildDrawingCache();
-		Bitmap bmp = Bitmap.createBitmap(mCard.getDrawingCache());
-		mCurrentObject.buildBmp(bmp);
-		mCard.destroyDrawingCache();
-		int marge_left = (int) getResources().getDimension(R.dimen.coll_card_marge_left);
-		int marge_bottom = (int) getResources().getDimension(R.dimen.coll_card_marge_bottom);
-		DeBug.e("Test", "view Y = "+mCard.getY()+", h = "+mCard.getHeight());
-		mCurrentObject.setPosition(marge_left, (int)mCard.getY() + mCard.getHeight(), 0);
+		mChangeCardAnimBoj.prepareChangeCard(mCard);
 		mCard.setVisibility(View.INVISIBLE);
 		ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchAnimation", 0.0f, 1.0f);
 		obj.addListener(mListener);
@@ -135,10 +155,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 	}
 
 	public void setSwitchAnimation(float value) {
-		mCurrentObject.count(MBListLayoutCardMashObject.ANIM_MODE_MOVE_NEXT, value);
-		mFirstObject.count(MBListLayoutCardMashObject.ANIM_MODE_MOVE_CENTER, value);
-		mSecondObject.count(MBListLayoutCardMashObject.ANIM_MODE_ONLY_MOVE_UP, value);
-		mThreeObject.count(MBListLayoutCardMashObject.ANIM_MODE_ONLY_MOVE_UP, value);
+		mChangeCardAnimBoj.onChangedCardAnimation(value);
 		postInvalidate();
 	}
 
@@ -146,16 +163,15 @@ public class MBCollectionListLayout extends RelativeLayout {
 
 		@Override
 		public void onAnimationCancel(Animator animation) {
+			lockTouchEvent = false;
 		}
 
 		@Override
 		public void onAnimationEnd(Animator animation) {
-			mCurrentObject.clean();
-			mFirstObject.count(MBListLayoutCardMashObject.ANIM_MODE_MOVE_CENTER, 0);
-			mSecondObject.count(MBListLayoutCardMashObject.ANIM_MODE_ONLY_MOVE_UP, 0);
-			mThreeObject.count(MBListLayoutCardMashObject.ANIM_MODE_ONLY_MOVE_UP, 0);
+			mChangeCardAnimBoj.restoreCardPosition();
 			mCard.setVisibility(View.VISIBLE);
 			postInvalidate();
+			lockTouchEvent = false;
 		}
 
 		@Override
@@ -164,14 +180,23 @@ public class MBCollectionListLayout extends RelativeLayout {
 
 		@Override
 		public void onAnimationStart(Animator animation) {
+			lockTouchEvent = true;
 		}
 	};
 
 	public void setPositionData(ArrayList<MBPointData> items) {
+		mItemAdapter.setItem(items);
+		if(mItemAdapter.getCount() > 0) {
+			ListItem first = (ListItem)mItemAdapter.getItem(0);
+			mItemAdapter.clickItem(first);
+		} else {
+			
+		}
 		init();
 		initDefaultBitmap();
 		if(items.size() > 0) {
-			mCard.setData(mMyLocation, items.get(0));
+			ListItem first = (ListItem)mItemAdapter.getItem(0);
+			mCard.setData(mMyLocation, first.mPoint);
 			mCard.setVisibility(View.VISIBLE);
 		}
 //		mItemAdapter.setItem(items);
@@ -211,43 +236,556 @@ public class MBCollectionListLayout extends RelativeLayout {
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 				float velocityY) {
+			mTouchEventFling = true;
+			mVelocityY = velocityY;
 			return false;
 		}
 		
 		@Override
 		public boolean onDown(MotionEvent e) {
+			mTouchEventFling = false;
+			mVelocityY = 0;
 			return false;
 		}
 	};
+	private static final int MOVE_POSITION_ANIMATION = 300;
 
+	private static final int MODE_NONE = 0;
+	private static final int MODE_SMALL_CARD = 10;
+	private static final int MODE_DRAGE_SMALL_CARD = 11;
+	private static final int MODE_ANIM_TO_SMALL_CARD = 12;
+	private static final int MODE_MIDDLE = 20;
+	private static final int MODE_MIDDLE_DRAGE = 21;
+	private static final int MODE_MIDDLE_ANIM = 22;
+	private static final int MODE_ALL = 30;
+	private static final int MODE_ALL_DRAGE = 31;
+	private static final int MODE_ALL_ANIM = 32;
+	
+	private static final float RATE_SMALL = 0.5f;
+	private static final float RATE_MIDDLE = 0.5f;
+
+	private int mMode = MODE_SMALL_CARD;
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 		
-		return false;//super.dispatchTouchEvent(ev);
+		if(lockTouchEvent)
+			return true;
+
+		mGestureDetector.onTouchEvent(ev);
+		switch(mMode) {
+			case MODE_SMALL_CARD:
+				if(handleSmallCardTouchEvent(ev))
+					return true;
+				break;
+			case MODE_DRAGE_SMALL_CARD:
+				if(handleDraggedSmallCardTouchEvent(ev))
+					return true;
+				break;
+			case MODE_MIDDLE:
+				if(handleMiddleTouchEvent(ev))
+					return true;
+				break;
+			case MODE_MIDDLE_DRAGE:
+				if(handleDraggedMiddleTouchEvent(ev))
+					return true;
+				break;
+			case MODE_ALL:
+				if(handleAllEvent(ev))
+					return true;
+				break;
+			case MODE_ALL_DRAGE:
+				if(handleDraggedAllTouchEvent(ev))
+					return true;
+				break;
+		}
+		return super.dispatchTouchEvent(ev);
 	}
+
+	private boolean isPressCardInItemMode = false;
+	private int mTouchDownX = 0;
+	private int mTouchDownY = 0;
+	
+	private boolean handleSmallCardTouchEvent(MotionEvent ev) {
+		switch(ev.getAction()) {
+			case MotionEvent.ACTION_DOWN: {
+				if(mCard.isTouchCard(ev.getX(), ev.getY())) {
+					isPressCardInItemMode = true;
+				} else {
+					isPressCardInItemMode = false;
+				}
+				mTouchDownX = (int)ev.getX();
+				mTouchDownY = (int)ev.getY();
+				if(isPressCardInItemMode)
+					return true;
+				break;
+			}
+			case MotionEvent.ACTION_MOVE: {
+				if(isPressCardInItemMode) {
+					int diffX = (int)(ev.getX() - mTouchDownX);
+					int diffY = (int)(ev.getY() - mTouchDownY);
+					if(diffX*diffX + diffY*diffY > 80) {
+						isPressCardInItemMode = false;
+						mCard.perpareDragCardParameter();
+						switchMode(MODE_DRAGE_SMALL_CARD);
+					}
+					return true;
+				}
+				break;
+			}
+			case MotionEvent.ACTION_UP: {
+				isPressCardInItemMode = false;
+				if(isPressCardInItemMode) {
+					// Click event
+//					if(mCardClickListener != null)
+//						mCardClickListener.onClickCard(mItemAdapter.getSelectPoint());
+					return true;
+				}
+				break;
+			}
+			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_OUTSIDE:
+				isPressCardInItemMode = false;
+				break;
+			}
+		return false;
+	}
+
+	private boolean handleDraggedSmallCardTouchEvent(MotionEvent ev) {
+		switch(ev.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_MOVE:
+				float touchY = mCardDefaultPositionY - (int)(mTouchDownY - ev.getY());
+				// 下限
+				if(touchY > mCardDefaultPositionY)
+					touchY = mCardDefaultPositionY;
+				// 上限
+				if(touchY < mCardMaxHeight)
+					touchY = mCardMaxHeight;
+				// 行為
+				setCardAndListViewY(touchY);
+				return true;
+			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_OUTSIDE: {
+				checkTouchUp();
+				break;
+			}
+		}
+		return true;
+	}
+
+	private boolean handleMiddleTouchEvent(MotionEvent ev) {
+		switch(ev.getAction()) {
+			case MotionEvent.ACTION_DOWN: {
+				if(isListView(ev.getX(), ev.getY())) {
+					isPressCardInItemMode = true;
+				} else {
+					isPressCardInItemMode = false;
+				}
+				mTouchDownX = (int)ev.getX();
+				mTouchDownY = (int)ev.getY();
+				if(isPressCardInItemMode)
+					return true;
+				break;
+			}
+			case MotionEvent.ACTION_MOVE: {
+				if(isPressCardInItemMode) {
+					int diffX = (int)(ev.getX() - mTouchDownX);
+					int diffY = (int)(ev.getY() - mTouchDownY);
+					if(diffX*diffX + diffY*diffY > 80) {
+						isPressCardInItemMode = false;
+						switchMode(MODE_MIDDLE_DRAGE);
+					}
+					return true;
+				}
+				break;
+			}
+			case MotionEvent.ACTION_UP: {
+				isPressCardInItemMode = false;
+				if(isPressCardInItemMode) {
+					// Click event
+					return true;
+				}
+				break;
+			}
+			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_OUTSIDE:
+				isPressCardInItemMode = false;
+				break;
+			}
+		return false;
+	}
+
+	private boolean handleDraggedMiddleTouchEvent(MotionEvent ev) {
+		switch(ev.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_MOVE:
+				float touchY = mCardMaxHeight - (int)(mTouchDownY - ev.getY());
+				// 下限
+				if(touchY > mCardDefaultPositionY)
+					touchY = mCardDefaultPositionY;
+				// 上限
+				if(touchY < 0)
+					touchY = 0;
+				// 行為
+				setCardAndListViewY(touchY);
+				return true;
+			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_OUTSIDE: {
+				checkTouchUp();
+				break;
+			}
+		}
+		return true;
+	}
+
+	private boolean handleAllEvent(MotionEvent ev) {
+		switch(ev.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			mListViewTop = false;
+			mTouchDownX = (int)ev.getX();
+			mTouchDownY = (int)ev.getY();						
+			if(mListView.getFirstVisiblePosition() == 0) {
+				View v = mListView.getChildAt(0);
+				int top = (v == null) ? 0 : v.getTop();
+				if(top == 0) {
+					mListViewTop = true;
+				}
+			}
+			break;
+		case MotionEvent.ACTION_MOVE:
+			if(mListViewTop && (ev.getY() - mTouchDownY) > 0) {
+				DeBug.v("Test", "handleListTopNormal change to MODE_LIST_TOP_DRAGING_DOWN");
+				switchMode(MODE_ALL_DRAGE);
+				return true;
+			}
+			break;
+		case MotionEvent.ACTION_CANCEL:
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_OUTSIDE:
+			break;
+		}
+		return false;
+	}
+
+	private boolean handleDraggedAllTouchEvent(MotionEvent ev) {
+		switch(ev.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				break;
+			case MotionEvent.ACTION_MOVE:
+				float touchY = (int)(ev.getY() - mTouchDownY);
+				// 下限
+				if(touchY > mCardDefaultPositionY)
+					touchY = mCardDefaultPositionY;
+				// 上限
+				if(touchY < 0)
+					touchY = 0;
+				// 行為
+				setCardAndListViewY(touchY);
+				return true;
+			case MotionEvent.ACTION_CANCEL:
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_OUTSIDE: {
+				checkTouchUp();
+				break;
+			}
+		}
+		return true;
+	}
+
+	private void checkTouchUp() {
+		mStartY = mDragY;
+		if(!mTouchEventFling || Math.abs(mVelocityY) < 2500) {
+			// 動量不足, 不是大力滑動
+			if(mDragY < (mCardMaxHeight*RATE_MIDDLE)) {
+				// 進入All
+				switchMode(MODE_ALL_ANIM);
+				mEndY = 0;
+			} else if(mDragY > (mCardMaxHeight*RATE_MIDDLE) &&
+					mDragY < (mCardDefaultPositionY - (mCardDefaultPositionY - mCardMaxHeight)*RATE_SMALL)) {
+				// 回到Middle
+				switchMode(MODE_MIDDLE_ANIM);
+				mEndY = mCardMaxHeight;
+			} else {
+				// 回到Small
+				switchMode(MODE_ANIM_TO_SMALL_CARD);
+				mEndY = mCardDefaultPositionY;
+			}
+		} else {
+			// 大力滑動
+			if(mVelocityY > 0) {
+				switchMode(MODE_ANIM_TO_SMALL_CARD);
+				mEndY = mCardDefaultPositionY;
+			} else {
+				switchMode(MODE_ALL_ANIM);
+				mEndY = 0;
+			}
+		}		
+		ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchModeAnimation", 0.0f, 1.0f);
+		obj.addListener(mSwitchModeAnimationListener);
+		obj.setInterpolator(new  DecelerateInterpolator());
+		obj.setDuration(300);
+		obj.start();
+	}
+
+	private AnimatorListener mSwitchModeAnimationListener = new AnimatorListener() {
+
+		@Override
+		public void onAnimationCancel(Animator animation) {
+			lockTouchEvent = false;
+		}
+
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			switch (mMode) {
+			case MODE_ALL_ANIM:
+				switchMode(MODE_ALL);
+				break;
+			case MODE_MIDDLE_ANIM:
+				switchMode(MODE_MIDDLE);
+				break;
+			case MODE_ANIM_TO_SMALL_CARD:
+				switchMode(MODE_SMALL_CARD);
+				break;
+			}
+			postInvalidate();
+			lockTouchEvent = false;
+		}
+
+		@Override
+		public void onAnimationRepeat(Animator animation) {
+		}
+
+		@Override
+		public void onAnimationStart(Animator animation) {
+			lockTouchEvent = true;
+		}
+	};
+
+	public void setSwitchModeAnimation(float vaule) {
+		float positionY = mStartY + (mEndY - mStartY)*vaule;
+		setCardAndListViewY(positionY);
+	}
+
+	private void switchMode(int mode) {
+		mMode = mode;
+		switch(mMode) {
+		case MODE_SMALL_CARD:
+			break;
+		case MODE_MIDDLE:
+			mCard.setVisibility(View.INVISIBLE);
+			mChangeCardAnimBoj.setVisiable(false);
+			mListView.setVisibility(View.VISIBLE);
+			mListView.setY(mCardMaxHeight);
+			break;
+		case MODE_ALL:
+			mCard.setVisibility(View.INVISIBLE);
+			mChangeCardAnimBoj.setVisiable(false);
+			break;
+		}
+	}
+
+	private void setCardAndListViewY(float touchY) {
+		mDragY = touchY;
+		if(mDragY >= mCardMaxHeight) {
+			if(mListView.getVisibility() == View.VISIBLE
+					|| mCard.getVisibility() != View.VISIBLE) {
+				mCard.setVisibility(View.VISIBLE);
+				mChangeCardAnimBoj.setVisiable(true);
+				mListView.setVisibility(View.INVISIBLE);
+			}
+			mCard.setY(mDragY);
+		} else {
+			if(mListView.getVisibility() != View.VISIBLE
+					|| mCard.getVisibility() == View.VISIBLE) {
+				mCard.setVisibility(View.INVISIBLE);
+				mChangeCardAnimBoj.setVisiable(false);
+				mListView.setVisibility(View.VISIBLE);
+			}
+			mListView.setY(mDragY);
+		}
+	}
+
+	private boolean isListView(float x, float y) {
+		if(mListView.getVisibility() != View.VISIBLE)
+			return false;
+
+		if(mListView.getY() < y)
+			return true;
+
+		return false;
+	}
+
+	
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		DeBug.i("Test", "onDraw, "+mFirstObject.isInit());
-		DeBug.e("Test", "------------------------------------");
+		mChangeCardAnimBoj.onDraw(canvas);
+	}
 
-		if(mThreeObject.isInit()) {
-			mThreeObject.draw(canvas);
+	private class ItemAdapter extends BaseAdapter {
+
+		private ArrayList<ListItem> mAllPoints = new ArrayList<ListItem>();
+		private ArrayList<ListItem> mItems = new ArrayList<ListItem>();
+		private ListItem mSelectPoint = null;
+		private LayoutInflater mInflater;
+		private Context mContext;
+
+		public ItemAdapter(Context context) {
+			mInflater = LayoutInflater.from(context);
+			mContext = context;
 		}
 
-		if(mSecondObject.isInit()) {
-			mSecondObject.draw(canvas);
+		public synchronized void setItem(ArrayList<MBPointData> items) {
+			mAllPoints.clear();
+			for(MBPointData item : items) {
+				mAllPoints.add(new ListItem(item));
+			}
+			countDistance();
+			mItems.clear();
+			mItems.addAll(mAllPoints);
+			notifyDataSetChanged();
 		}
 
-		if(mFirstObject.isInit()) {
-			mFirstObject.draw(canvas);
+		public synchronized void countDistance() {
+			if(mMyLocation == null)
+				return;
+			for(ListItem item : mAllPoints) {
+				item.countDistance(mMyLocation);
+			}
+			Collections.sort(mAllPoints, new Comparator<ListItem>() {
+
+				@Override
+				public int compare(ListItem lhs, ListItem rhs) {
+					return (int)(lhs.mDistance - rhs.mDistance);
+				}
+				
+			});
+		}
+
+		public MBPointData getSelectPoint(int index) {
+			if(index >= mItems.size())
+				return null;
+			return mItems.get(index).mPoint;
 		}
 		
-		if(mCurrentObject.isInit()) {
-			mCurrentObject.draw(canvas);
+		public MBPointData getSelectPoint() {
+			if(mSelectPoint == null)
+				return null;
+			return mSelectPoint.mPoint;
+		}
+
+		public synchronized void clickItem(ListItem item) {
+			mItems.clear();
+			for(ListItem point : mAllPoints) {
+				if(point.equals(item.mPoint.getLatLng())) {
+					mSelectPoint = point;
+					mItems.add(0, point);
+				} else {
+					mItems.add(point);
+				}
+			}
+			notifyDataSetChanged();			
+		}
+
+		public synchronized MBPointData clickItem(MappingBirdItem item) {
+			mItems.clear();
+			MBPointData clickPoint = null;
+			for(ListItem point : mAllPoints) {
+				if(point.equals(item.mPosition)) {
+					clickPoint = point.mPoint;
+					DeBug.d("Click item : "+item.mTitle);
+					mSelectPoint = point;
+					mItems.add(0, point);
+				} else {
+					mItems.add(point);
+				}
+			}
+			notifyDataSetChanged();
+			return clickPoint;
+		}
+
+		@Override
+		public int getCount() {
+			return mItems.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return mItems.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if(convertView == null) {
+				convertView = mInflater.inflate(R.layout.mappingbird_place_item, parent, false);
+			}
+			ListItem item = mItems.get(position);
+			ImageView image = (ImageView) convertView.findViewById(R.id.card_icon);
+			TextView title = (TextView) convertView.findViewById(R.id.card_title);
+			TextView tag = (TextView) convertView.findViewById(R.id.card_subtitle);
+			String imagePath = null;
+//			convertView.findViewById(R.id.card_info_layout).setBackgroundDrawable(mDrawable);
+			if(item.mPoint.getImageDetails().size() > 0) {
+//				imagePath = item.mPoint.getImageDetails().get(0).getThumbPath();
+				if(TextUtils.isEmpty(imagePath))
+					imagePath = item.mPoint.getImageDetails().get(0).getUrl();
+				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
+				mBitmapLoader.getBitmap(image, params);
+			} else {
+				image.setImageDrawable(null);
+			}
+
+			title.setText(item.mPoint.getTitle());
+			if(item.mPoint.getTags().size() == 0)
+				tag.setVisibility(View.GONE);
+			else {
+				tag.setVisibility(View.VISIBLE);
+				tag.setText(item.mPoint.getTagsString());
+			}
+
+			TextView dis = (TextView) convertView.findViewById(R.id.card_distance);
+			// dis 
+			if(mMyLocation != null) {
+				dis.setText(
+						Utils.getDistanceString(
+								item.mDistance));
+			} else {
+				dis.setText("");
+			}
+			
+			TextView address = (TextView) convertView.findViewById(R.id.card_address);
+			address.setText(item.mPoint.getLocation().getPlaceAddress());
+			DeBug.i("Test", "height = "+convertView.getHeight());
+			return convertView;
 		}
 	}
-	
-	
+
+	private class ListItem {
+		final MBPointData mPoint;
+		float mDistance = 0;
+		public ListItem(MBPointData point){
+			mPoint = point;
+		}
+
+		public void countDistance(LatLng location) {
+			mDistance = Utils.getDistance(mMyLocation.latitude,
+					mMyLocation.longitude, 
+					mPoint.getLocation().getLatitude(), 
+					mPoint.getLocation().getLongitude());
+		}
+
+		public boolean equals(LatLng latlng) {
+			return mPoint.getLatLng().equals(latlng);
+		}
+	}
 }

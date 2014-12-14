@@ -19,6 +19,7 @@ import com.mappingbird.R;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.Utils;
@@ -47,6 +48,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private int mParentHeight = 0;
 	private float mCard0_Position = 0;
 	private float mCardMaxHeight = 0;
+	private float mCardPoisition = 0;
 	public MBListLayoutCardView(Context context) {
 		super(context);
 	}
@@ -72,7 +74,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mContentLayout = findViewById(R.id.card_content_layout);
 		createGradientView();
 		mCard0_Position = (int)getResources().getDimension(R.dimen.list_layout_card0_position_height);
-		mCardMaxHeight = (int) getResources().getDimension(R.dimen.place_item_card_max_position) - mCard0_Position;
 		mContentMarginLeft = (int) getResources().getDimension(R.dimen.list_layout_card_icon_width);
 		
 		mItemAddress = (TextView) findViewById(R.id.item_address);
@@ -80,6 +81,16 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mItemName = (TextView) findViewById(R.id.item_title);
 		mItemTag = (TextView) findViewById(R.id.item_subtitle);
 		mItemDistance = (TextView) findViewById(R.id.item_distance);
+	}
+
+	boolean isTouchCard(float x, float y) {
+		if(getVisibility() != View.VISIBLE)
+			return false;
+
+		if(getY() < y)
+			return true;
+
+		return false;
 	}
 
 	private void createGradientView() {
@@ -226,19 +237,43 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mParentHeight = height;
 	}
 
+	public void setCardPosition(int position) {
+		mCardPoisition = position;
+		mCardMaxHeight = (int) getResources().getDimension(R.dimen.place_item_card_max_position) - mCardPoisition;
+	}
+
+	public void perpareDragCardParameter() {
+		mIconStartWidth = mIcon.getWidth();
+		mIconStartHeight = mIcon.getHeight();
+		mIconEndWidth = this.getWidth() - getPaddingLeft() - getPaddingRight();
+		mIconEndHeight = (int) getResources().getDimension(R.dimen.list_layout_item_icon_height);
+		mIconXStarted = (int) mIcon.getX();
+		mIconXEnd = getPaddingLeft();
+		mStartHeight = getHeight();
+		mEndHeight = (int) getResources().getDimension(R.dimen.list_layout_item_height);
+	}
+
 	@Override
 	public void setY(float y) {
 		super.setY(y);
 		if(mParentHeight > 0) {
-			float dis = mParentHeight - mCard0_Position - y;
+			float dis = mParentHeight - mCardPoisition - y;
 			if(dis < 0)
 				dis = 0;
 			else if(dis > mCardMaxHeight)
 				dis = mCardMaxHeight;
 			float rate = dis/ mCardMaxHeight;
-			int disX = (int)((getWidth()-mIcon.getWidth())*rate/2);
-			mIcon.setX(disX);
-//			mContentLayout.setX(mContentMarginLeft+disX);
+//			int disX = (int)((getWidth()-mIcon.getWidth())*rate/2);
+//			mIcon.setX(disX);
+			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mIcon.getLayoutParams();
+			lp.width = (int)(mIconStartWidth + (mIconEndWidth - mIconStartWidth) * rate);
+			lp.height = (int)(mIconStartHeight + (mIconEndHeight - mIconStartHeight) * rate);
+			mIcon.setLayoutParams(lp);
+			mIcon.setX((int)(mIconXStarted + (mIconXEnd - mIconXStarted)*rate));
+			lp = (RelativeLayout.LayoutParams)this.getLayoutParams();
+			lp.height = (int)(mStartHeight + (mEndHeight - mStartHeight) * rate);
+			this.setLayoutParams(lp);
+
 			float alpha = 1.0f - rate*2;
 			if(alpha < 0)
 				alpha = 0;

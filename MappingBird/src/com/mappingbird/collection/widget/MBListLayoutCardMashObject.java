@@ -128,15 +128,15 @@ public class MBListLayoutCardMashObject {
 		mPositionX = posX;
 		mPaddingBottom = paddingBottom;
 		mPositionY = posY;
-		DeBug.e("Test", " Object onDraw, posX = "+posX+", posY = "+posY);
+//		DeBug.e("Test", " Object onDraw, posX = "+posX+", posY = "+posY);
 	}
 
 	public void draw(Canvas canvas) {
-		DeBug.i("Test", " Object onDraw, ("+mPositionX+","+mPositionY+") : "+mBmp);
-		DeBug.e("Test", " Object onDraw, h = "+mCurrentVerts[mCurrentVerts.length-1]+", y = "
-				+(mPositionY - mPreviousVerts[mNextVerts.length-1] - mYDetal));
-		DeBug.e("Test", " Object onDraw, mPositionY = "+mPositionY+", mYDetal = "+mYDetal+
-				", m = "+(mPaddingBottom * mPaddingBottomRate));
+//		DeBug.i("Test", " Object onDraw, ("+mPositionX+","+mPositionY+") : "+mBmp);
+//		DeBug.e("Test", " Object onDraw, h = "+mCurrentVerts[mCurrentVerts.length-1]+", y = "
+//				+(mPositionY - mPreviousVerts[mNextVerts.length-1] - mYDetal));
+//		DeBug.e("Test", " Object onDraw, mPositionY = "+mPositionY+", mYDetal = "+mYDetal+
+//				", m = "+(mPaddingBottom * mPaddingBottomRate));
 		if(mBmp != null) {
 			canvas.save();
 			mPaint.setAlpha(mAlpha);

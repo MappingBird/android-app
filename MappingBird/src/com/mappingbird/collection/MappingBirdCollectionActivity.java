@@ -263,8 +263,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if (mCollections != null && mCollections.getCount() > 0) {
 			if (mLoadingDialog != null)
 				mLoadingDialog.show();
-			mMappingbirdListLayout.closeLayout();
-			mMBCollectionListLayout.closeLayout();
+			if(!isNewListLayout)
+				mMappingbirdListLayout.closeLayout();
+			else
+				mMBCollectionListLayout.closeLayout();
 			mApi.getCollectionInfo(getCollectionInfoListener,
 					mCollections.get(position).getId());
 		}
@@ -425,8 +427,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mMyLocation = new LatLng(location.getLatitude(),
 						location.getLongitude());
 				setUpMap();
-				mMappingbirdListLayout.setMyLocation(mMyLocation);
-				mMBCollectionListLayout.setMyLocation(mMyLocation);
+				if(!isNewListLayout)
+					mMappingbirdListLayout.setMyLocation(mMyLocation);
+				else
+					mMBCollectionListLayout.setMyLocation(mMyLocation);
 				if (mMyMarker != null) {
 					mMyMarker.setPosition(mMyLocation);
 					mMyMarker.setIcon(BitmapDescriptorFactory
@@ -477,8 +481,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 						mClickedMarker = marker;
 						mClickedClusterItem = item;
 						mMappingBirdRender.setFontIconInFoucs(mClickedClusterItem.mPinIcon, mClickedMarker);
-						mMappingbirdListLayout.clickItem(item);
-						mMBCollectionListLayout.clickItem(item);
+						if(!isNewListLayout)
+							mMappingbirdListLayout.clickItem(item);
+						else
+							mMBCollectionListLayout.clickItem(item);
 						mMap.setInfoWindowAdapter(mInfoWindowAdapter);
 						return true;
 					}
@@ -555,8 +561,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mClusterManager.addItem(offsetItem);
 			}
 		}
-		mMappingbirdListLayout.setPositionData(mPositionItems);
-		mMBCollectionListLayout.setPositionData(mPositionItems);
+		if(!isNewListLayout)
+			mMappingbirdListLayout.setPositionData(mPositionItems);
+		else
+			mMBCollectionListLayout.setPositionData(mPositionItems);
 	}
 
 	// ====================================================
