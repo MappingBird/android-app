@@ -9,6 +9,7 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector.OnGestureListener;
@@ -18,11 +19,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.MappingBirdItem;
@@ -32,11 +35,12 @@ import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.Utils;
+import com.mappingbird.widget.MappingbirdListLayout.CardClickListener;
 
 public class MBCollectionListLayout extends RelativeLayout {
+	private final static float MAX_ALPHA = 0.8f;
 	
 	private boolean isInited = false;
-
 	// Touch
 	private GestureDetector mGestureDetector = null;
 	private boolean mTouchEventFling = false;
@@ -62,6 +66,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 	private float mDragY = 0;
 	private float mStartY = 0, mEndY = 0;
 
+	private MBPointData mCurrentPoint = null;
+
 	// TouchLock
 	// 1. Change card animaiont
 	private boolean lockTouchEvent = false;
@@ -85,6 +91,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mChangeCardAnimBoj = new MBListLayoutChangeCardObject();
 		
 		mListView = (ListView) findViewById(R.id.item_list);
+		mListView.setOnItemClickListener(mListViewItemClickListener);
 		mListView.setVisibility(View.INVISIBLE);
 		mBitmapLoader = new BitmapLoader(getContext());
 		mItemAdapter = new ItemAdapter(getContext());
@@ -102,7 +109,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 	}
 
 	public void setMyLocation(LatLng location) {
-		// TODO : Location
 		mMyLocation = location;
 	}
 
@@ -128,30 +134,34 @@ public class MBCollectionListLayout extends RelativeLayout {
 		if(mChangeCardAnimBoj.init(mCard)) {
 			postInvalidate();
 		}
-//		if(mDefaultBmp == null) {
-//			mCard.buildDrawingCache();
-//			mDefaultBmp = mCard.getDrawingCache();
-//			DeBug.d("Test", "card = "+mDefaultBmp.getWidth()+"x"+mDefaultBmp.getHeight());
-//		}
 	}
+
+	public void setPositionData(ArrayList<MBPointData> items) {
+		mItemAdapter.setItem(items);
+		init();
+		initDefaultBitmap();
+		if(mItemAdapter.getCount() > 0) {
+			ListItem first = (ListItem)mItemAdapter.getItem(0);
+			mItemAdapter.clickItem(first);
+			mCurrentPoint = first.mPoint;
+			mCard.setData(mMyLocation, first.mPoint);
+			mCard.setVisibility(View.VISIBLE);
+		}
+	}
+
 	public void clickItem(MappingBirdItem item) {
-//		initDefaultBitmap();
-//		MBPointData point = mItemAdapter.clickItem(item);
-//		if(!mCurrentPoint.equals(point)) {
-//			mCurrentPoint = point;
-//			if(mMode == MODE_ITEM_NORMAL) {
-//				switchMode(MODE_ITEM_CHANGE_ITEM);
-//			} else {
-//			mCard.setData(mMyLocation, point);
-//			}
-//		}
-		mChangeCardAnimBoj.prepareChangeCard(mCard);
-		mCard.setVisibility(View.INVISIBLE);
-		ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchAnimation", 0.0f, 1.0f);
-		obj.addListener(mListener);
-		obj.setInterpolator(new  DecelerateInterpolator());
-		obj.setDuration(500);
-		obj.start();
+		MBPointData point = mItemAdapter.clickItem(item);
+		if(!mCurrentPoint.equals(point)) {
+			mCurrentPoint = point;
+			mChangeCardAnimBoj.prepareChangeCard(mCard);
+			mCard.setVisibility(View.INVISIBLE);
+			ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchAnimation", 0.0f, 1.0f);
+			obj.addListener(mListener);
+			obj.setInterpolator(new  DecelerateInterpolator());
+			obj.setDuration(500);
+			obj.start();
+			mCard.setData(mMyLocation, point);
+		}
 	}
 
 	public void setSwitchAnimation(float value) {
@@ -183,34 +193,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 			lockTouchEvent = true;
 		}
 	};
-
-	public void setPositionData(ArrayList<MBPointData> items) {
-		mItemAdapter.setItem(items);
-		if(mItemAdapter.getCount() > 0) {
-			ListItem first = (ListItem)mItemAdapter.getItem(0);
-			mItemAdapter.clickItem(first);
-		} else {
-			
-		}
-		init();
-		initDefaultBitmap();
-		if(items.size() > 0) {
-			ListItem first = (ListItem)mItemAdapter.getItem(0);
-			mCard.setData(mMyLocation, first.mPoint);
-			mCard.setVisibility(View.VISIBLE);
-		}
-//		mItemAdapter.setItem(items);
-//		init();
-//		if(mItemAdapter.getCount() > 0) {
-//			ListItem first = (ListItem)mItemAdapter.getItem(0);
-//			mItemAdapter.clickItem(first);
-//			mCurrentPoint = first.mPoint;
-//			mCard0.setData(mMyLocation, mCurrentPoint);
-//			switchMode(MODE_ITEM_NORMAL);
-//		} else {
-//			
-//		}
-	}
 
 	private OnGestureListener mGestureListener = new OnGestureListener() {
 		
@@ -248,9 +230,28 @@ public class MBCollectionListLayout extends RelativeLayout {
 			return false;
 		}
 	};
+
+	private NewCardClickListener mNewCardClickListener = null;
+
+	public void setCardClickListener(NewCardClickListener listener) {
+		mNewCardClickListener = listener;
+	}
+
+	private OnItemClickListener mListViewItemClickListener = new OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			if(mNewCardClickListener != null) {
+				mNewCardClickListener.onClickCard(mItemAdapter.getSelectPoint(position));
+			}
+		}
+	};
+
+	public interface NewCardClickListener {
+		public void onClickCard(MBPointData point);
+	}
+
 	private static final int MOVE_POSITION_ANIMATION = 300;
 
-	private static final int MODE_NONE = 0;
 	private static final int MODE_SMALL_CARD = 10;
 	private static final int MODE_DRAGE_SMALL_CARD = 11;
 	private static final int MODE_ANIM_TO_SMALL_CARD = 12;
@@ -323,7 +324,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 				if(isPressCardInItemMode) {
 					int diffX = (int)(ev.getX() - mTouchDownX);
 					int diffY = (int)(ev.getY() - mTouchDownY);
-					if(diffX*diffX + diffY*diffY > 80) {
+					if(diffX*diffX + diffY*diffY > 100) {
 						isPressCardInItemMode = false;
 						mCard.perpareDragCardParameter();
 						switchMode(MODE_DRAGE_SMALL_CARD);
@@ -333,13 +334,14 @@ public class MBCollectionListLayout extends RelativeLayout {
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
-				isPressCardInItemMode = false;
 				if(isPressCardInItemMode) {
+					isPressCardInItemMode = false;
 					// Click event
-//					if(mCardClickListener != null)
-//						mCardClickListener.onClickCard(mItemAdapter.getSelectPoint());
+					if(mNewCardClickListener != null)
+						mNewCardClickListener.onClickCard(mItemAdapter.getSelectPoint());
 					return true;
 				}
+				isPressCardInItemMode = false;
 				break;
 			}
 			case MotionEvent.ACTION_CANCEL:
@@ -527,7 +529,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchModeAnimation", 0.0f, 1.0f);
 		obj.addListener(mSwitchModeAnimationListener);
 		obj.setInterpolator(new  DecelerateInterpolator());
-		obj.setDuration(300);
+		obj.setDuration(MOVE_POSITION_ANIMATION);
 		obj.start();
 	}
 
@@ -596,6 +598,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 				mCard.setVisibility(View.VISIBLE);
 				mChangeCardAnimBoj.setVisiable(true);
 				mListView.setVisibility(View.INVISIBLE);
+				setBackgroundColor(0x00000000);
 			}
 			mCard.setY(mDragY);
 		} else {
@@ -606,6 +609,13 @@ public class MBCollectionListLayout extends RelativeLayout {
 				mListView.setVisibility(View.VISIBLE);
 			}
 			mListView.setY(mDragY);
+			float alpha = mDragY * 1.0f / (getHeight() -  mCardMaxHeight);
+			if(alpha > 1)
+				alpha = 1;
+			else if(alpha < 0)
+				alpha = 0;
+			int bgColor = Color.argb((int)(0xff*(MAX_ALPHA*(1 - alpha))), 0x00, 0x00, 0x00);
+			setBackgroundColor(bgColor);
 		}
 	}
 

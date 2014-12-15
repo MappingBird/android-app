@@ -59,6 +59,7 @@ import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetCollectionInfoListener;
 import com.mappingbird.api.OnGetCollectionsListener;
 import com.mappingbird.collection.widget.MBCollectionListLayout;
+import com.mappingbird.collection.widget.MBCollectionListLayout.NewCardClickListener;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.common.Utils;
@@ -146,6 +147,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mMBCollectionListLayout = (MBCollectionListLayout) findViewById(R.id.collection_card_list_layout);
 		mMappingbirdListLayout = (MappingbirdListLayout) findViewById(R.id.item_list_layout);
 		mMappingbirdListLayout.setCardClickListener(mCardClickListener);
+		mMBCollectionListLayout.setCardClickListener(mNewCardClickListener);
 		
 		if(isNewListLayout) {
 			mMBCollectionListLayout.setVisibility(View.VISIBLE);
@@ -669,6 +671,21 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private CardClickListener mCardClickListener = new CardClickListener() {
 		@Override
 		public void onClickCard(MBPointData point) {
+			Intent intent = new Intent();
+			intent.putExtra(MappingBirdPlaceActivity.EXTRA_MBPOINT, point);
+			intent.putExtra("myLatitude", mMyLocation.latitude);
+			intent.putExtra("myLongitude", mMyLocation.longitude);
+
+			intent.setClass(MappingBirdCollectionActivity.this,
+					com.mappingbird.MappingBirdPlaceActivity.class);
+			MappingBirdCollectionActivity.this.startActivity(intent);
+		}
+	};
+
+	private NewCardClickListener mNewCardClickListener = new NewCardClickListener() {
+		@Override
+		public void onClickCard(MBPointData point) {
+			DeBug.d("Test","onClickCard - ");
 			Intent intent = new Intent();
 			intent.putExtra(MappingBirdPlaceActivity.EXTRA_MBPOINT, point);
 			intent.putExtra("myLatitude", mMyLocation.latitude);
