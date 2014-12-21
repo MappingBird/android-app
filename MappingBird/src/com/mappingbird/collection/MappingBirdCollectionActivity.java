@@ -701,6 +701,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		private final IconGenerator mClusterIconGenerator = new IconGenerator(
 				getApplicationContext());
+		private final IconGenerator mClusterNumberGenerator = new IconGenerator(
+				getApplicationContext());
 		private final IconGenerator mFocusIconGenerator = new IconGenerator(
 				getApplicationContext());
 
@@ -716,6 +718,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			multiProfile = getLayoutInflater().inflate(
 					R.layout.mappingbird_pin_focus, null);
 			mFocusIconGenerator.setContentView(multiProfile);
+			multiProfile = getLayoutInflater().inflate(
+					R.layout.mappingbird_pin_number_normal, null);
+			mClusterNumberGenerator.setContentView(multiProfile);
 		}
 
 		public void setFontIconInFoucs(int strId, Marker markerOptions) {
@@ -748,7 +753,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			if(cluster.getSize() > 100) {
 				size = "99+";
 			}
-			Bitmap icon = mClusterIconGenerator.makeIcon(size);
+			Bitmap icon = mClusterNumberGenerator.makeIcon(size);
 			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
 		}
 

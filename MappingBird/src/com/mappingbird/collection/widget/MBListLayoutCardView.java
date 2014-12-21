@@ -99,7 +99,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 		          GradientDrawable.Orientation.RIGHT_LEFT, new int[] { 0xFFFFFFFF, 0x00000000});
 		
 		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-//		mGradientView.setBackgroundDrawable(mDrawable);
+		mGradientView.setBackgroundDrawable(mDrawable);
 	}
 
 	void setInfoLayoutBackground(Drawable drawable) {
@@ -149,6 +149,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 			mItemTag.setVisibility(View.VISIBLE);
 		mSubTitle.setText(mPoint.getLocation().getPlaceAddress());
 		mItemAddress.setText(mPoint.getLocation().getPlaceAddress());
+		mGradientView.setVisibility(View.VISIBLE);
 		if(mylocation != null) {
 			DistanceObject disObject = Utils.getDistanceObject(
 					Utils.getDistance(mylocation.latitude,
@@ -263,8 +264,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 			else if(dis > mCardMaxHeight)
 				dis = mCardMaxHeight;
 			float rate = dis/ mCardMaxHeight;
-//			int disX = (int)((getWidth()-mIcon.getWidth())*rate/2);
-//			mIcon.setX(disX);
 			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mIcon.getLayoutParams();
 			lp.width = (int)(mIconStartWidth + (mIconEndWidth - mIconStartWidth) * rate);
 			lp.height = (int)(mIconStartHeight + (mIconEndHeight - mIconStartHeight) * rate);
@@ -274,10 +273,29 @@ public class MBListLayoutCardView extends RelativeLayout {
 			lp.height = (int)(mStartHeight + (mEndHeight - mStartHeight) * rate);
 			this.setLayoutParams(lp);
 
-			float alpha = 1.0f - rate*2;
-			if(alpha < 0)
-				alpha = 0;
-			mContentLayout.setAlpha(alpha);
+			if(rate < 0.5f) {
+				float alpha = 1.0f - rate*4;
+				if(alpha < 0)
+					alpha = 0;
+				mContentLayout.setAlpha(alpha);
+				if(mItemAddress.getVisibility() == View.VISIBLE) {
+					mItemAddress.setVisibility(View.GONE);
+					mItemLayout.setVisibility(View.GONE);
+				}
+			} else {
+				float alpha = rate;
+				if(alpha < 0)
+					alpha = 0;
+				if(alpha > 1)
+					alpha = 1;
+				mContentLayout.setAlpha(0);
+				if(mItemAddress.getVisibility() != View.VISIBLE) {
+					mItemAddress.setVisibility(View.VISIBLE);
+					mItemLayout.setVisibility(View.VISIBLE);
+				}
+				mItemAddress.setAlpha((alpha-0.5f)*2);
+				mItemLayout.setAlpha((alpha-0.5f)*2);
+			}
 		}
 	}
 }

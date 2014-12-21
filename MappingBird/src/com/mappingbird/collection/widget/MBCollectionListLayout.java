@@ -117,7 +117,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 			return;
 
 		int marge_bottom_other = (int) getResources().getDimension(R.dimen.coll_card_marge_bottom_other);
-		int marge_left = (int) getResources().getDimension(R.dimen.coll_card_marge_left);
 		int card_position = marge_bottom_other * 2 + mCard.getHeight() - mCard.getPaddingBottom();
 		mCardDefaultPositionY = getHeight() - card_position;
 		mCard.setY(mCardDefaultPositionY);
@@ -126,7 +125,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mCardMaxHeight = getHeight() - ((int) getResources().getDimension(R.dimen.place_item_card_max_position));
 
 		int shadow_height = mCard.getPaddingBottom();
-		mChangeCardAnimBoj.setPosition(getHeight(), marge_left, shadow_height, marge_bottom_other);
+		mChangeCardAnimBoj.setPosition(getHeight(), 0, shadow_height, marge_bottom_other);
 		isInited = true;
 	}
 

@@ -86,7 +86,7 @@
 
         <RelativeLayout
             android:id="@+id/card_distance_layout"
-            android:layout_width="@dimen/place_item_card_distance_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -96,74 +96,76 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="8dp" >
 
-                <TextView
-                    android:id="@+id/card_distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:singleLine="true"
-                    android:textColor="#0298c1"
-                    android:textSize="32sp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp" >
 
-                <TextView
-                    android:id="@+id/card_unit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|top"
-                    android:layout_marginTop="-10dp"
-                    android:singleLine="true"
-                    android:textColor="#0298c1"
-                    android:textSize="16sp" />
+                    <com.mappingbird.widget.MappingbirdTextViewLight
+                        android:id="@+id/card_distance"
+                        android:layout_width="@dimen/place_item_card_distance_width"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:paddingRight="8dp"
+                        android:singleLine="true"
+                        android:textColor="#0298c1"
+                        android:textSize="32dp" />
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:id="@+id/card_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_toLeftOf="@id/card_distance"
+                        android:singleLine="true"
+                        android:textColor="#0298c1"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
+                    android:layout_marginTop="-10dp">
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:id="@+id/card_unit"
+                        android:layout_width="@dimen/place_item_card_distance_width"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:paddingRight="8dp"
+                        android:singleLine="true"
+                        android:textColor="#0298c1"
+                        android:textSize="16dp" />
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:id="@+id/card_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_toLeftOf="@id/card_unit"
+                        android:singleLine="true"
+                        android:textColor="#6f6f6f"
+                        android:textSize="13sp" />
+                </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/card_divider"
-            android:layout_width="1dp"
-            android:layout_height="@dimen/list_layout_card_icon_height"
-            android:layout_toLeftOf="@id/card_distance_layout"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:src="#00000000" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@id/card_divider"
-            android:orientation="vertical"
-            
-            android:paddingLeft="8dp" >
-
-            <TextView
-                android:id="@+id/card_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textSize="16sp"
-                android:textColor="#0298c1" />
-
-            <TextView
-                android:id="@+id/card_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="6dp"
-                android:textSize="13sp"
-                android:singleLine="true"
-                android:textColor="#6f6f6f" />
-        </LinearLayout>
 
         <View
             android:id="@+id/card_gradient"
             android:layout_width="60dp"
+            android:layout_alignParentRight="true"
             android:layout_height="@dimen/list_layout_card_icon_height"
-            android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@id/card_divider"
-            android:visibility="gone"
-            android:background="@drawable/card_white_gradient" />
+            android:layout_marginRight="@dimen/place_item_card_distance_width"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </com.mappingbird.collection.widget.MBListLayoutCardView>

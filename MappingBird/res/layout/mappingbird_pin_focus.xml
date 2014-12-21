@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.mappingbird.widget.MappingbirdFontIcon
+    <com.mappingbird.widget.MappingbirdTextView
         android:id="@id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/pin_focused_bg"
+        android:background="@drawable/map_mark_focused"
         android:textColor="@color/white"
         android:gravity="center"
         android:textStyle="bold" />

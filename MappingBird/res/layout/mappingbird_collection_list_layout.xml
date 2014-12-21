@@ -8,9 +8,7 @@
     <include
         android:id="@+id/item_card"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_layout_card_height"
-        android:layout_marginLeft="@dimen/coll_card_marge_left"
-        android:layout_marginRight="@dimen/coll_card_marge_right"
+        android:layout_height="wrap_content"
         android:visibility="invisible"
         layout="@layout/mb_listlayout_card" />
 
