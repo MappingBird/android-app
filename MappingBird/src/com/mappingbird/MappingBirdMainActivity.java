@@ -33,7 +33,7 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 		OnClickListener, ConnectionCallbacks, OnConnectionFailedListener,
 		LocationListener {
 
-	ImageView mLogInIcon = null;
+	private View mLogInIcon = null;
 	private GoogleMap mMap;
 	private LocationClient mLocationClient;
 	private static final LocationRequest REQUEST = LocationRequest.create()
@@ -53,7 +53,7 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mappingbird_main);
-		mLogInIcon = (ImageView) findViewById(R.id.login_icon);
+		mLogInIcon = findViewById(R.id.circle_login_icon);
 		mLogInIcon.setOnClickListener(this);
 
 		mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -128,7 +128,7 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.login_icon:
+		case R.id.circle_login_icon:
 			Intent intent = new Intent();
 			intent.setClass(this,
 					com.mappingbird.MappingBirdLoginActivity.class);

@@ -2,8 +2,8 @@
 <resources>
 
     <color name="login">#01A9E7</color>
-    <color name="login_press">#E5E5E5</color>
-    <color name="login_unable">#E5E5E5</color>
+    <color name="login_press">#0387b9</color>
+    <color name="login_unable">#3f000000</color>
     <color name="logout">#707070</color>
     <color name="logout_press">#E5E5E5</color>
     <color name="item_text">#000000</color>
@@ -26,7 +26,7 @@
 	<color name="font_deep_blue">#0298c1</color>
 	<color name="font_dark">#4e4e4e</color>
 	<color name="font_normal">#6f6f6f</color>
-	<color name="font_hint">#dddddd</color>
+	<color name="font_hint">#b2b2b2</color>
 	<color name="font_white">#ffffff</color>
 	
 	<!-- Collection List -->

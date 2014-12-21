@@ -12,6 +12,7 @@
     <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/title_btn_add"
         style="@style/TitleButtonStyle"
+        android:visibility="gone"
         android:layout_toLeftOf="@id/title_btn_people"
         android:text="@string/icon_add_place" />
 

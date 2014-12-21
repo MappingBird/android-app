@@ -7,7 +7,7 @@
         android:id="@+id/login_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
-        android:background="#F6892A" >
+        android:background="@color/graphic_orange" >
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/back_icon"
@@ -39,76 +39,77 @@
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:paddingTop="16dp" >
+            android:paddingTop="20dp" >
 
             <com.mappingbird.widget.MappingbirdTextView
                 android:id="@+id/login_content_text"
-                style="@style/TextStyle_Body_Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
-                android:textColor="#707070" />
+                android:textSize="14dp"
+                android:textColor="@color/font_normal" />
 
             <RelativeLayout
                 android:id="@+id/input_email_layout"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="48dp"
                 android:layout_below="@id/login_content_text"
-                android:layout_marginTop="21dp" >
+                android:layout_marginTop="16dp" >
 
                 <com.mappingbird.widget.MappingbirdEditText
                     android:id="@+id/input_email"
-                    style="@style/TextStyle_Body_Small"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:background="#00000000"
                     android:gravity="center_vertical"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:textColor="#707070"
-                    android:textColorHint="#DDDDDD" />
+                    android:textColor="@color/font_normal"
+                    android:textSize="16dp"
+                    android:textColorHint="@color/font_hint" />
             </RelativeLayout>
 
             <View
                 android:id="@+id/field_divider"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_below="@id/input_email_layout"
                 android:background="#DDDDDD" />
 
             <RelativeLayout
                 android:id="@+id/input_password_layout"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="48dp"
                 android:layout_below="@id/field_divider" >
 
                 <com.mappingbird.widget.MappingbirdFontIcon
                     android:id="@+id/question_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:gravity="center_vertical"
                     android:text="@string/icon_question"
-                    android:textSize="24sp" />
+                    android:background="@drawable/btn_question_bg"
+                    android:textSize="24dp" />
 
                 <com.mappingbird.widget.MappingbirdEditText
                     android:id="@+id/input_password"
-                    style="@style/TextStyle_Body_Small"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_toLeftOf="@id/question_icon"
                     android:background="#00000000"
                     android:gravity="center_vertical"
                     android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:textColor="#707070"
-                    android:textColorHint="#DDDDDD" />
+                    android:textSize="16dp"
+                    android:textColor="@color/font_normal"
+                    android:textColorHint="@color/font_hint" />
             </RelativeLayout>
 
             <RelativeLayout
