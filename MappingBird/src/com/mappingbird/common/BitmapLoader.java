@@ -78,8 +78,8 @@ public class BitmapLoader {
 						object.mBmp = checkBitmapSize(object.mBmp);
 						// save to cache
 						putBitmapToCache(object.mParameters.getKey(), object.mBmp);
-						if(object.mParameters.mBitmapDownloaded != null)
-							object.mParameters.mBitmapDownloaded.onDownloadComplete(object.mParameters.getKey(), object.mBmp, object.mParameters);
+//						if(object.mParameters.mBitmapDownloaded != null)
+//							object.mParameters.mBitmapDownloaded.onDownloadComplete(object.mParameters.getKey(), object.mBmp, object.mParameters);
 						if (DeBug.DEBUG) Log.i(DeBug.TAG, LOG_PREFIX + "Bitmap size / bytes: " + object.mBmp.getWidth() + "x" + object.mBmp.getHeight() + " / " + (object.mBmp.getRowBytes() * object.mBmp.getHeight()));
 					} else {
 						if (mMissBmp == null) {
@@ -91,6 +91,8 @@ public class BitmapLoader {
 						if (iv != null && iv.getTag() != null && iv.getTag().equals(object.mParameters.getKey())) {
 							if(hasImage) {
 								iv.setImageBitmap(object.mBmp);								
+								if(object.mParameters.mBitmapDownloaded != null)
+									object.mParameters.mBitmapDownloaded.onDownloadComplete(object.mParameters.getKey(), iv, object.mBmp, object.mParameters);
 							} else {
 							}
 						}
@@ -229,6 +231,10 @@ public class BitmapLoader {
 	}
 
 	public Bitmap getBitmap(ImageView targetView, BitmapParameters param) {
+		return getBitmap(targetView, param, true);
+	}
+
+	public Bitmap getBitmap(ImageView targetView, BitmapParameters param, boolean cleanBmp) {
 		if(!param.isValid()) {
 			return null;
 		}
@@ -246,9 +252,9 @@ public class BitmapLoader {
 			if(targetView != null)
 				targetView.setImageBitmap(cachedBmp);
 			if(param.mBitmapDownloaded != null)
-				param.mBitmapDownloaded.onDownloadComplete(param.getKey(), cachedBmp, param);
+				param.mBitmapDownloaded.onDownloadComplete(param.getKey(), targetView, cachedBmp, param);
 		}else {
-			if(targetView != null)
+			if(targetView != null && cleanBmp)
 				targetView.setImageDrawable(null);
 			BMPDownLoadObject object = new BMPDownLoadObject(targetView, param);
 			putInDownloadArray(object);
@@ -477,7 +483,8 @@ public class BitmapLoader {
 	}
 
 	public interface BitmapDownloadedListener {
-		public void onDownloadComplete(String url, Bitmap bmp, BitmapParameters params);
+		public void onDownloadComplete(String url, ImageView icon, Bitmap bmp, BitmapParameters params);
+		public void onDownloadFaild(String url, ImageView icon, BitmapParameters params);
 	}
 
 	private class BMPDownLoadObject {

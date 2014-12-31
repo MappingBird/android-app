@@ -260,7 +260,8 @@ class NetwokConnection {
 					(char) Integer.parseInt(matcher.group(1), 16) + "");
 		}
 		matcher.appendTail(sb);
-		return sb.toString().replace("\\", "");
+		return sb.toString();
+//		return sb.toString().replace("\\", "");
 	}
 
 	private String getB64Auth(String login, String pass) {

@@ -3,9 +3,15 @@ package com.mappingbird.api;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import android.graphics.Point;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.BackgroundColorSpan;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.mappingbird.collection.widget.MBSpannBackground;
 
 public class MBPointData implements Serializable {
 
@@ -153,6 +159,36 @@ public class MBPointData implements Serializable {
 			}
 		}
 		return tag;
+	}
+
+	public Spannable getTagsStringSpan() {
+		String tag = "";
+		if(mTags.size() == 0) {
+			SpannableString ss = new SpannableString(tag);
+			return ss;
+		}
+		
+		ArrayList<Point> positionList = new ArrayList<Point>();
+		
+		for(int i = 0; i < mTags.size(); i++) {
+			if(!TextUtils.isEmpty(mTags.get(i).getName())) {
+				Point position = new Point();
+				position.x = tag.length();
+				tag += mTags.get(i).getName();
+				position.y = tag.length();
+				positionList.add(position);
+				if(i < mTags.size()-1)
+					tag += " ";
+			}
+		}
+
+		SpannableString ss = new SpannableString(tag);
+		if(positionList.size() > 0) {
+			for(Point position : positionList)
+				ss.setSpan(new MBSpannBackground(0xC0191919), position.x, position.y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+
+		return ss;
 	}
 
 	public long getCollectionId() {

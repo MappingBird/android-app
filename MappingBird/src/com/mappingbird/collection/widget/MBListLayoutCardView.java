@@ -3,6 +3,7 @@ package com.mappingbird.collection.widget;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.text.SpannableString;
@@ -11,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,8 +20,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.R;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.BitmapLoader;
+import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
-import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.Utils;
@@ -44,6 +46,8 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private TextView mItemName;
 	private TextView mItemTag;
 	private TextView mItemDistance;
+	private TextView mItemUnit;
+	private TextView mItemSinglerName;
 
 	private int mParentHeight = 0;
 	private float mCard0_Position = 0;
@@ -76,11 +80,13 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mCard0_Position = (int)getResources().getDimension(R.dimen.list_layout_card0_position_height);
 		mContentMarginLeft = (int) getResources().getDimension(R.dimen.list_layout_card_icon_width);
 		
-		mItemAddress = (TextView) findViewById(R.id.item_address);
-		mItemLayout = findViewById(R.id.item_info_layout);
-		mItemName = (TextView) findViewById(R.id.item_title);
-		mItemTag = (TextView) findViewById(R.id.item_subtitle);
-		mItemDistance = (TextView) findViewById(R.id.item_distance);
+		mItemAddress 		= (TextView) findViewById(R.id.item_address);
+		mItemLayout 		= findViewById(R.id.item_info_layout);
+		mItemName 			= (TextView) findViewById(R.id.item_title);
+		mItemTag 			= (TextView) findViewById(R.id.item_subtitle);
+		mItemDistance 		= (TextView) findViewById(R.id.item_distance);
+		mItemUnit 			= (TextView) findViewById(R.id.item_unit);
+		mItemSinglerName 	= (TextView) findViewById(R.id.item_title_single);
 	}
 
 	boolean isTouchCard(float x, float y) {
@@ -99,7 +105,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 		          GradientDrawable.Orientation.RIGHT_LEFT, new int[] { 0xFFFFFFFF, 0x00000000});
 		
 		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-		mGradientView.setBackgroundDrawable(mDrawable);
+//		mGradientView.setBackgroundDrawable(mDrawable);
 	}
 
 	void setInfoLayoutBackground(Drawable drawable) {
@@ -129,44 +135,71 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mPoint = point;
 		if(mPoint.getImageDetails().size() > 0) {
 			String imagePath = null;
-//			imagePath = mPoint.getImageDetails().get(0).getThumbPath();
 			if(TextUtils.isEmpty(imagePath))
 				imagePath = mPoint.getImageDetails().get(0).getUrl();
 			if(!TextUtils.isEmpty(imagePath)) {
+				mIcon.setScaleType(ScaleType.CENTER);
+				mIcon.setImageResource(R.drawable.default_thumbnail);
 				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
-				mBitmapLoader.getBitmap(mIcon, params);
+				params.mBitmapDownloaded = new BitmapDownloadedListener() {
+					
+					@Override
+					public void onDownloadFaild(String url, ImageView icon,
+							BitmapParameters params) {
+						if(mIcon != null && icon != null && mIcon.getTag().equals(icon.getTag())) {
+							mIcon.setScaleType(ScaleType.CENTER);
+							mIcon.setImageResource(R.drawable.default_problem);
+						}
+					}
+					
+					@Override
+					public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
+							BitmapParameters params) {
+						if(mIcon != null && icon != null && mIcon.getTag().equals(icon.getTag()))
+							mIcon.setScaleType(ScaleType.CENTER_CROP);
+					}
+				};
+				mBitmapLoader.getBitmap(mIcon, params, false);
 			} else {
-				mIcon.setImageDrawable(null);
+				mIcon.setScaleType(ScaleType.CENTER);
+				mIcon.setImageResource(R.drawable.default_problem);
 			}
 		} else {
-			mIcon.setImageDrawable(null);
+			mIcon.setScaleType(ScaleType.CENTER);
+			mIcon.setImageResource(R.drawable.default_problem);
 		}
 		mTitle.setText(mPoint.getTitle());
 		mItemName.setText(mPoint.getTitle());
-		if(mPoint.getTags().size() == 0)
+		if(mPoint.getTags().size() == 0) {
+			mItemSinglerName.setVisibility(View.VISIBLE);
+			mItemSinglerName.setText(mPoint.getTitle());
+			mItemName.setVisibility(View.GONE);
 			mItemTag.setVisibility(View.GONE);
-		else
+		} else {
+			mItemSinglerName.setVisibility(View.GONE);
+			mItemName.setText(mPoint.getTitle());
+			mItemTag.setText(mPoint.getTagsStringSpan());
+			mItemName.setVisibility(View.VISIBLE);
 			mItemTag.setVisibility(View.VISIBLE);
+		}
 		mSubTitle.setText(mPoint.getLocation().getPlaceAddress());
 		mItemAddress.setText(mPoint.getLocation().getPlaceAddress());
-		mGradientView.setVisibility(View.VISIBLE);
+//		mGradientView.setVisibility(View.VISIBLE);
 		if(mylocation != null) {
 			DistanceObject disObject = Utils.getDistanceObject(
 					Utils.getDistance(mylocation.latitude,
 					mylocation.longitude, 
 					mPoint.getLocation().getLatitude(), 
 					mPoint.getLocation().getLongitude()));
-			SpannableString dis = Utils.getDistanceString(
-					Utils.getDistance(mylocation.latitude,
-					mylocation.longitude, 
-					mPoint.getLocation().getLatitude(), 
-					mPoint.getLocation().getLongitude()));
 			mDistance.setText(disObject.mDistance);
 			mUnit.setText(disObject.mUnit);
-			mItemDistance.setText(dis);
+			mItemDistance.setText(disObject.mDistance);
+			mItemUnit.setText(disObject.mUnit);
 		} else {
 			mDistance.setText("");
+			mUnit.setText("");
 			mItemDistance.setText("");
+			mItemUnit.setText("");
 		}
 	}
 

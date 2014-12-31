@@ -21,6 +21,7 @@
 	<color name="graphic_gray_out">#b2000000</color>
 	<color name="graphic_shade_normal">#3f000000</color>
 	<color name="graphic_shade_small">#27000000</color>
+	<color name="graphic_default_background">#cccccc</color>
 	
 	<!-- font -->
 	<color name="font_deep_blue">#0298c1</color>

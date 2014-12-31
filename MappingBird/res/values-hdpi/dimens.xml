@@ -17,9 +17,9 @@
     <dimen name="list_layout_card1_position_height">82dp</dimen>
     <dimen name="list_layout_card2_position_height">88dp</dimen>
 
-    <dimen name="list_layout_item_height">190dp</dimen>
-    <dimen name="list_layout_item_icon_height">144dp</dimen>
-    <dimen name="list_layout_item_info_height">56dp</dimen>
+    <dimen name="list_layout_item_height">186dp</dimen>
+    <dimen name="list_layout_item_icon_height">180dp</dimen>
+    <dimen name="list_layout_item_info_height">63dp</dimen>
     <dimen name="list_layout_item_distance_width">80dp</dimen>
     <dimen name="list_layout_item_address_height">36dp</dimen>
     <dimen name="place_item_card_max_position">210dp</dimen>
@@ -28,6 +28,9 @@
     <dimen name="list_layout_new_card_icon_width">76dp</dimen>
     <dimen name="list_layout_new_card_icon_height">70dp</dimen>
     <dimen name="list_layout_new_card_height">75dp</dimen>
+    
+    <dimen name="list_layout_item_distance_less_three">32sp</dimen>
+    <dimen name="list_layout_item_distance_more_three">18sp</dimen>
     <!-- body small -->
     <dimen name="body_small_text_size">14px</dimen>
     
@@ -56,6 +59,11 @@
     <dimen name="coll_list_item_unit_text_size">16sp</dimen>
     <dimen name="coll_list_item_tag_text_size">12sp</dimen>
     
+    <dimen name="coll_list_item_tag_span_padding_top">2dp</dimen>
+    <dimen name="coll_list_item_tag_span_padding_botton">2dp</dimen>
+    <dimen name="coll_list_item_tag_span_padding_left">6dp</dimen>
+    <dimen name="coll_list_item_tag_span_padding_right">6dp</dimen>
+    
     <!-- Collection new list layout -->
     <dimen name="coll_card_icon_height">70dp</dimen>
     <dimen name="coll_card_marge_left">4dp</dimen>
@@ -63,6 +71,7 @@
     <dimen name="coll_card_marge_bottom">10dp</dimen>
     <dimen name="coll_card_marge_bottom_other">8dp</dimen>
     <dimen name="coll_card_shadow_height">6dp</dimen>
+    
     <!-- Place -->
     <dimen name="place_headline_text_size">20sp</dimen>
     <dimen name="place_description_text_size">14sp</dimen>

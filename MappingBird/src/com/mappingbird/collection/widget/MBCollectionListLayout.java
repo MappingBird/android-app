@@ -8,34 +8,38 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.text.Spannable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.MappingBirdItem;
 import com.mappingbird.R;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.BitmapLoader;
+import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
+import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.Utils;
-import com.mappingbird.widget.MappingbirdListLayout.CardClickListener;
 
 public class MBCollectionListLayout extends RelativeLayout {
 	private final static float MAX_ALPHA = 0.8f;
@@ -272,6 +276,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 			return true;
 
 		mGestureDetector.onTouchEvent(ev);
+		DeBug.d("Test", "mMode = "+mMode);
 		switch(mMode) {
 			case MODE_SMALL_CARD:
 				if(handleSmallCardTouchEvent(ev))
@@ -361,8 +366,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 				if(touchY > mCardDefaultPositionY)
 					touchY = mCardDefaultPositionY;
 				// 上限
-				if(touchY < mCardMaxHeight)
-					touchY = mCardMaxHeight;
+//				if(touchY < mCardMaxHeight)
+//					touchY = mCardMaxHeight;
 				// 行為
 				setCardAndListViewY(touchY);
 				return true;
@@ -742,39 +747,76 @@ public class MBCollectionListLayout extends RelativeLayout {
 			ImageView image = (ImageView) convertView.findViewById(R.id.card_icon);
 			TextView title = (TextView) convertView.findViewById(R.id.card_title);
 			TextView tag = (TextView) convertView.findViewById(R.id.card_subtitle);
+			TextView titleSingle = (TextView) convertView.findViewById(R.id.card_title_single);
 			String imagePath = null;
-//			convertView.findViewById(R.id.card_info_layout).setBackgroundDrawable(mDrawable);
 			if(item.mPoint.getImageDetails().size() > 0) {
-//				imagePath = item.mPoint.getImageDetails().get(0).getThumbPath();
+				image.setScaleType(ScaleType.CENTER);
+				image.setImageResource(R.drawable.default_thumbnail);
 				if(TextUtils.isEmpty(imagePath))
 					imagePath = item.mPoint.getImageDetails().get(0).getUrl();
 				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
-				mBitmapLoader.getBitmap(image, params);
+				params.mBitmapDownloaded = new BitmapDownloadedListener() {
+					
+					@Override
+					public void onDownloadFaild(String url, ImageView icon,
+							BitmapParameters params) {
+						if(icon != null && icon.getTag().equals(params.getKey())) {
+							icon.setScaleType(ScaleType.CENTER);
+							icon.setImageResource(R.drawable.default_problem);
+						}
+					}
+					
+					@Override
+					public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
+							BitmapParameters params) {
+						if(icon != null && icon.getTag().equals(params.getKey())) {
+							icon.setScaleType(ScaleType.CENTER_CROP);
+						}
+					}
+				};
+				mBitmapLoader.getBitmap(image, params, false);
 			} else {
-				image.setImageDrawable(null);
+				image.setScaleType(ScaleType.CENTER);
+				image.setImageResource(R.drawable.default_problem);
 			}
 
-			title.setText(item.mPoint.getTitle());
-			if(item.mPoint.getTags().size() == 0)
+			
+			if(item.mPoint.getTags().size() == 0) {
 				tag.setVisibility(View.GONE);
-			else {
+				title.setVisibility(View.GONE);
+				titleSingle.setVisibility(View.VISIBLE);
+				titleSingle.setText(item.mPoint.getTitle());
+			} else {
+				title.setVisibility(View.VISIBLE);
+				titleSingle.setVisibility(View.GONE);
 				tag.setVisibility(View.VISIBLE);
-				tag.setText(item.mPoint.getTagsString());
+				tag.setText(item.mPoint.getTagsStringSpan(), TextView.BufferType.SPANNABLE);
+				title.setText(item.mPoint.getTitle());
 			}
 
 			TextView dis = (TextView) convertView.findViewById(R.id.card_distance);
+			TextView util = (TextView) convertView.findViewById(R.id.card_unit);
 			// dis 
 			if(mMyLocation != null) {
-				dis.setText(
-						Utils.getDistanceString(
-								item.mDistance));
+				Spannable dis_str = Utils.getDistanceString(
+						item.mDistance);
+				dis.setText(dis_str);
 			} else {
 				dis.setText("");
 			}
 			
+			if(mMyLocation != null) {
+				DistanceObject disObject = Utils.getDistanceObject(
+						item.mDistance);
+				dis.setText(disObject.mDistance);
+				util.setText(disObject.mUnit);
+			} else {
+				dis.setText("");
+				util.setText("");
+			}
+
 			TextView address = (TextView) convertView.findViewById(R.id.card_address);
 			address.setText(item.mPoint.getLocation().getPlaceAddress());
-			DeBug.i("Test", "height = "+convertView.getHeight());
 			return convertView;
 		}
 	}

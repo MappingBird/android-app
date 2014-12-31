@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.widget.ImageView;
 
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
@@ -90,13 +91,18 @@ public class MappingbirdPleaceCardItem {
 	private BitmapLoader.BitmapDownloadedListener mListener = new BitmapLoader.BitmapDownloadedListener() {
 		
 		@Override
-		public void onDownloadComplete(String url, Bitmap bmp,
+		public void onDownloadComplete(String url, ImageView view, Bitmap bmp,
 				BitmapParameters params) {
 			if(url.equals(mUrl)) {
 				mBitmap = bmp;
 				mBitmapBound = null;
 				isNeedRecountBound = true;
 			}
+		}
+
+		@Override
+		public void onDownloadFaild(String url, ImageView icon,
+				BitmapParameters params) {
 		}
 	};
 	public void onDraw(Canvas canvas) {

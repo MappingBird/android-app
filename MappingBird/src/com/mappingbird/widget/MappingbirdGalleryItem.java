@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
@@ -74,9 +75,8 @@ public class MappingbirdGalleryItem {
 	}
 
 	private BitmapLoader.BitmapDownloadedListener mListener = new BitmapLoader.BitmapDownloadedListener() {
-		
 		@Override
-		public void onDownloadComplete(String url, Bitmap bmp,
+		public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
 				BitmapParameters params) {
 			if(url.equals(mUrl)) {
 				mBitmap = bmp;
@@ -84,7 +84,13 @@ public class MappingbirdGalleryItem {
 				isNeedRecountBound = true;
 			}
 		}
+
+		@Override
+		public void onDownloadFaild(String url, ImageView icon,
+				BitmapParameters params) {
+		}
 	};
+
 	public void onDraw(Canvas canvas) {
 		if(mBitmap != null) {
 			if(isNeedRecountBound) {

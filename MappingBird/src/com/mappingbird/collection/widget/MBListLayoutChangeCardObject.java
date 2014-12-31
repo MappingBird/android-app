@@ -25,7 +25,7 @@ public class MBListLayoutChangeCardObject {
 		mSecondObject = new MBListLayoutCardMashObject();
 		mThreeObject = new MBListLayoutCardMashObject();
 
-		mMargeLeft = (int) MappingBirdApplication.instance().getResources().getDimension(R.dimen.coll_card_marge_left);
+//		mMargeLeft = (int) MappingBirdApplication.instance().getResources().getDimension(R.dimen.coll_card_marge_left);
 		mMargeBottom = (int) MappingBirdApplication.instance().getResources().getDimension(R.dimen.coll_card_marge_bottom);
 	}
 

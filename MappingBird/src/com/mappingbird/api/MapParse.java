@@ -162,6 +162,7 @@ class MapParse {
 
 		String description = obj.optString("description");
 		DeBug.i(TAG, "[point json] description=" + description);
+		DeBug.i(TAG, "[point json] description index =" + description.indexOf("\n"));
 
 		String place_name = obj.optString("place_name");
 		DeBug.i(TAG, "[point json] place_name=" + place_name);

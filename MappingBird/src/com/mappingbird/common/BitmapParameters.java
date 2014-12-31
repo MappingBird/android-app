@@ -1,5 +1,7 @@
 package com.mappingbird.common;
 
+import android.widget.ImageView.ScaleType;
+
 import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 
 
@@ -27,6 +29,7 @@ public class BitmapParameters {
 
 	public boolean isBigBmp = false;
 	public byte[] mArray;
+	public ScaleType mCustomScaleType = null;
 	public BitmapDownloadedListener mBitmapDownloaded = null;
 
 	public boolean isValid() {
