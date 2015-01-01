@@ -153,6 +153,7 @@
                     android:layout_below="@id/trip_place_date_layout"
                     android:layout_marginTop="18dp"
                     android:lineSpacingExtra="6dp"
+                    android:autoLink="all"
                     android:textColor="@color/font_normal"
                     android:textSize="14sp" />
 
