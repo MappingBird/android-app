@@ -10,6 +10,8 @@
     <dimen name="place_title_bar_show_destince">40dp</dimen>
     <dimen name="place_gallery_height">240dp</dimen>
     <dimen name="place_gallery_layout_height">274dp</dimen>
+    
+    <dimen name="place_point_padding">8dp</dimen>
     <!-- Gallery -->
     <dimen name="gallery_bubble_padding">3dp</dimen>
     <dimen name="gallery_bubble_margin_bottom">16dp</dimen>

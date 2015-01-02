@@ -11,8 +11,6 @@ import android.graphics.Point;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.View;
@@ -33,7 +31,9 @@ import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.Utils;
+import com.mappingbird.widget.MBImageCountView;
 import com.mappingbird.widget.MappingbirdGallery;
+import com.mappingbird.widget.MappingbirdGallery.MBGalleryListener;
 import com.mappingbird.widget.MappingbirdScrollView;
 import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
 
@@ -80,6 +80,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private int mPlaceDirectTrigger = 0; 
 
 	private MappingbirdGallery mPlacePhoto;
+	private MBImageCountView mPlacePhotoCountPoint;
+	private TextView mPlacePhotoCountText;
 
 	private double mPlaceLatitude = 0;
 	private double mPlaceLongitude = 0;
@@ -127,6 +129,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mTitleBack.setAlpha(0);
 		mDescription = (TextView) findViewById(R.id.trip_place_description);
 		mPlacePhoto = (MappingbirdGallery) findViewById(R.id.trip_photo);
+		mPlacePhotoCountPoint = (MBImageCountView) findViewById(R.id.trip_photo_count_point);
+		mPlacePhotoCountText = (TextView) findViewById(R.id.trip_photo_count_text);
 		
 		mPlaceAddressOnMap = (TextView) findViewById(R.id.trip_map_address);
 		mPinIcon = (TextView) findViewById(R.id.pin_icon);
@@ -166,6 +170,16 @@ public class MappingBirdPlaceActivity extends Activity implements
 			list.add(item.getUrl());
 		}
 		mPlacePhoto.setData(list);
+		mPlacePhoto.setGalleryListener(mGalleryListener);
+		if(list.size() <= 15) {
+			mPlacePhotoCountPoint.setVisibility(View.VISIBLE);
+			mPlacePhotoCountPoint.setSize(list.size());
+			mPlacePhotoCountText.setVisibility(View.GONE);
+		} else {
+			mPlacePhotoCountPoint.setVisibility(View.GONE);
+			mPlacePhotoCountText.setVisibility(View.VISIBLE);
+			mPlacePhotoCountText.setText("1/"+list.size());
+		}
 
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 
@@ -188,13 +202,16 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mBitmapLoader.getBitmap(mTripMapView, params);
 	}
 
-	private Handler mHandler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-		}
+	private MBGalleryListener mGalleryListener = new MBGalleryListener() {
 		
+		@Override
+		public void changeIndex(int index, int size) {
+			if(mPlacePhotoCountPoint.getVisibility() == View.VISIBLE) {
+				mPlacePhotoCountPoint.setSelectIndex(index);
+			} else {
+				mPlacePhotoCountText.setText((index+1)+"/"+size);
+			}
+		}
 	};
 
 	private OnScrollViewListener mOnScrollViewListener = new OnScrollViewListener() {

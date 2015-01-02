@@ -44,6 +44,26 @@
                     android:textColor="@color/white"
                     android:textSize="24dp"
                     android:textStyle="bold" />
+                
+                <com.mappingbird.widget.MBImageCountView
+                    android:id="@+id/trip_photo_count_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/trip_photo"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"                    
+                    />
+                <com.mappingbird.widget.MappingbirdTextViewLight
+                    android:id="@+id/trip_photo_count_text" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/trip_photo"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#000"
+                    android:textSize="18dp"
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <LinearLayout

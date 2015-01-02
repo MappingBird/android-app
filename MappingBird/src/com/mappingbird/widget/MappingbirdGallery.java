@@ -59,6 +59,7 @@ public class MappingbirdGallery extends ViewGroup {
 	private boolean mTouchEventFling = false;
 	private float mVelocityX = 0;
 
+	private MBGalleryListener mGalleryListener;
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
@@ -223,19 +224,19 @@ public class MappingbirdGallery extends ViewGroup {
 		}
 
 		// point
-		canvas.save();
-		if(mBubblePositionX < 0) {
-			mBubblePositionX = (getWidth() - mItems.size()*mBubbleWidth)/2;
-		}
-		canvas.translate(mBubblePositionX, getHeight() - mBubbleMarginBottom);
-		for(int i = 0; i < mItems.size(); i++) {
-			if(i != mCurrentIndex) 
-				mBubbleReset.draw(canvas);
-			else
-				mBubbleSelected.draw(canvas);
-			canvas.translate(mBubbleWidth, 0);
-		}
-		canvas.restore();
+//		canvas.save();
+//		if(mBubblePositionX < 0) {
+//			mBubblePositionX = (getWidth() - mItems.size()*mBubbleWidth)/2;
+//		}
+//		canvas.translate(mBubblePositionX, getHeight() - mBubbleMarginBottom);
+//		for(int i = 0; i < mItems.size(); i++) {
+//			if(i != mCurrentIndex) 
+//				mBubbleReset.draw(canvas);
+//			else
+//				mBubbleSelected.draw(canvas);
+//			canvas.translate(mBubbleWidth, 0);
+//		}
+//		canvas.restore();
 		if(isAnimation) {
 			isAnimation = isCount();
 			if(!isAnimation)
@@ -338,6 +339,8 @@ public class MappingbirdGallery extends ViewGroup {
 				} else
 					mNextItem = null;
 			}
+			if(mGalleryListener != null)
+				mGalleryListener.changeIndex(mCurrentIndex, mItems.size());
 		}
 		mPositionX = 0;
 		postInvalidate();
@@ -354,6 +357,14 @@ public class MappingbirdGallery extends ViewGroup {
 		public void downloadFinish() {
 		}
 		
+	};
+
+	public void setGalleryListener(MBGalleryListener listener) {
+		mGalleryListener = listener;
+	}
+
+	public interface MBGalleryListener {
+		public void changeIndex(int index, int size);
 	};
 
 	@Override
