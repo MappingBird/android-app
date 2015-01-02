@@ -40,9 +40,6 @@ import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
 public class MappingBirdPlaceActivity extends Activity implements
 		OnClickListener {
 
-	private static final int MSG_SHOW_DIRECTION_BUTTON = 0;
-	private static final int MSG_HIDE_DIRECTION_BUTTON = 1;
-	
 	public static final String EXTRA_MBPOINT = "mb_point";
 	private static final String TAG = MappingBirdPlaceActivity.class.getName();
 
@@ -169,13 +166,18 @@ public class MappingBirdPlaceActivity extends Activity implements
 		for(ImageDetail item : imagelist) {
 			list.add(item.getUrl());
 		}
-		mPlacePhoto.setData(list);
-		mPlacePhoto.setGalleryListener(mGalleryListener);
-		if(list.size() <= 15) {
+		if(list.size() == 0) {
+			mPlacePhoto.setVisibility(View.GONE);
+			findViewById(R.id.trip_no_photo).setVisibility(View.VISIBLE);
+		} else if(list.size() <= 15) {
+			mPlacePhoto.setData(list);
+			mPlacePhoto.setGalleryListener(mGalleryListener);
 			mPlacePhotoCountPoint.setVisibility(View.VISIBLE);
 			mPlacePhotoCountPoint.setSize(list.size());
 			mPlacePhotoCountText.setVisibility(View.GONE);
 		} else {
+			mPlacePhoto.setData(list);
+			mPlacePhoto.setGalleryListener(mGalleryListener);
 			mPlacePhotoCountPoint.setVisibility(View.GONE);
 			mPlacePhotoCountText.setVisibility(View.VISIBLE);
 			mPlacePhotoCountText.setText("1/"+list.size());

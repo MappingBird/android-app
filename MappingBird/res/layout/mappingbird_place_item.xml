@@ -18,7 +18,7 @@
                 android:id="@+id/card_icon"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/list_layout_item_icon_height"
-                android:background="@drawable/default_thumbnail"
+                android:background="#cccccc"
                 android:scaleType="centerCrop" />
 
             <RelativeLayout

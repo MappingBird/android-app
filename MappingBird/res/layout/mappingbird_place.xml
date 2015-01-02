@@ -26,6 +26,13 @@
                 android:layout_height="@dimen/place_gallery_layout_height"
                 android:background="#FFFFFF" >
 
+                <ImageView 
+                    android:id="@+id/trip_no_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/place_gallery_height"
+                    android:background="@drawable/default_noimages"
+                    android:visibility="gone"
+                    />
                 <com.mappingbird.widget.MappingbirdGallery
                     android:id="@+id/trip_photo"
                     android:layout_width="match_parent"
@@ -231,28 +238,6 @@
                     android:lineSpacingExtra="6dp"
                     android:textColor="@color/font_normal"
                     android:textSize="14sp" />
-
-                <RelativeLayout
-                    android:id="@+id/get_direction"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/direction_bg_selector"
-                    android:visibility="gone" >
-
-                    <TextView
-                        android:id="@+id/get_direction_text"
-                        style="@style/TextStyle_Label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:drawableLeft="@drawable/direction_selector"
-                        android:drawablePadding="8dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/get_direction"
-                        android:textColor="@color/direction_text_color" >
-                    </TextView>
-                </RelativeLayout>
             </LinearLayout>
 
             <RelativeLayout

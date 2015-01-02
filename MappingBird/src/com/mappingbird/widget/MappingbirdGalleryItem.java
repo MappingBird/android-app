@@ -8,9 +8,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import com.mappingbird.R;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
+import com.mappingbird.common.MappingBirdApplication;
 
 
 public class MappingbirdGalleryItem {
@@ -36,11 +38,18 @@ public class MappingbirdGalleryItem {
 	private Paint mBitmapPaint;
 	private int mCount = 0;
 	private Drawable mBackground;
+	private static Drawable mLoadingDrawable = null;
+	private static Drawable mNoImageDrawable = null;
+
 	public MappingbirdGalleryItem(BitmapLoader bitmapLoader, String url) {
 		mBitmapLoader = bitmapLoader;
 		mBitmapPaint = new Paint();
 		setData(url);
-		mBackground = new ColorDrawable(0xff4e4e4e);
+		mBackground = new ColorDrawable(0xffcccccc);
+		if(mLoadingDrawable == null) {
+			mLoadingDrawable = MappingBirdApplication.instance().getResources().getDrawable(R.drawable.default_thumbnail);
+			mNoImageDrawable = MappingBirdApplication.instance().getResources().getDrawable(R.drawable.default_problem);
+		}
 	}
 
 	public void setViewBound(int width, int height) {
@@ -51,6 +60,12 @@ public class MappingbirdGalleryItem {
 			mWidth = width;
 			mHeight = height;
 			mBackground.setBounds(0, 0, mWidth, mHeight);
+			mLoadingDrawable.setBounds(
+					(width-mLoadingDrawable.getIntrinsicWidth())/2, 
+					(height- mLoadingDrawable.getIntrinsicHeight())/2,
+					(width + mLoadingDrawable.getIntrinsicWidth())/2, 
+					(height+ mLoadingDrawable.getIntrinsicHeight())/2);
+			mNoImageDrawable.setBounds(0, 0, mWidth, mHeight);
 		}
 	}
 
@@ -114,6 +129,8 @@ public class MappingbirdGalleryItem {
 				mBackground.draw(canvas);
 				if(mBitmap != null) {
 					canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
+				} else {
+					mLoadingDrawable.draw(canvas);
 				}
 				break;
 			case MODE_NEXT:
@@ -124,6 +141,8 @@ public class MappingbirdGalleryItem {
 					mBackground.draw(canvas);
 					if(mBitmap != null) {
 						canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
+					} else {
+						mLoadingDrawable.draw(canvas);
 					}
 				}
 				break;
@@ -132,7 +151,9 @@ public class MappingbirdGalleryItem {
 					canvas.translate(mPositionX - mWidth, 0);
 					mBackground.draw(canvas);
 					if(mBitmap != null) {
-					canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
+						canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
+					} else {
+						mLoadingDrawable.draw(canvas);
 					}
 				}
 				break;
