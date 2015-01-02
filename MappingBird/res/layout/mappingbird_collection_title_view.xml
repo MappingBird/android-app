@@ -7,14 +7,14 @@
         android:id="@+id/title_btn_people"
         style="@style/TitleButtonStyle"
         android:layout_alignParentRight="true"
-        android:text="@string/icon_people" />
+        android:text="@string/iconfont_account" />
 
     <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/title_btn_add"
         style="@style/TitleButtonStyle"
         android:visibility="gone"
         android:layout_toLeftOf="@id/title_btn_people"
-        android:text="@string/icon_add_place" />
+        android:text="@string/iconfont_map_plus" />
 
     <LinearLayout
         android:layout_width="match_parent"

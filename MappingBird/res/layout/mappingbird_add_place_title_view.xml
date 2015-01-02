@@ -7,7 +7,7 @@
         android:id="@+id/title_btn_back"
         style="@style/TitleButtonStyle"
         android:layout_alignParentLeft="true"
-        android:text="@string/icon_back_arrow" />
+        android:text="@string/iconfont_arrow_left" />
 
     <TextView
         android:id="@+id/title_btn_save"

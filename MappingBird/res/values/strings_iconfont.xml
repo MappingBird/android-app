@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="iconfont_account" translatable="false">\uE618</string>
+    <string name="iconfont_map_plus" translatable="false">\uE60F</string>
+    <string name="iconfont_menu" translatable="false">\uE619</string>
+    <string name="iconfont_help_circle" translatable="false">\uE602</string>
+    <string name="iconfont_arrow_left" translatable="false">\uE60D</string>
+    <string name="iconfont_share" translatable="false">\uE60B</string>
+    
+    <!-- Place icon -->
+    <string name="iconfont_map_maker" translatable="false">\uE610</string>
+    <string name="iconfont_tag" translatable="false">\uE60A</string>
+    <string name="iconfont_clock" translatable="false">\uE609</string>
+	<string name="iconfont_phone" translatable="false">\uE61e</string>
+	<string name="iconfont_link" translatable="false">\uE61d</string>
+	<string name="iconfont_directions" translatable="false">\uE608</string>
+
+    <!-- Place type -->
+    <string name="iconfont_restaurant" translatable="false">\uE614</string>
+    <string name="iconfont_hotel" translatable="false">\uE611</string>
+    <string name="iconfont_shopping" translatable="false">\uE615</string>
+    <string name="iconfont_bar" translatable="false">\uE616</string>
+    <string name="iconfont_general" translatable="false">\uE613</string>
+    <string name="iconfont_camera" translatable="false">\uE612</string>
+</resources>

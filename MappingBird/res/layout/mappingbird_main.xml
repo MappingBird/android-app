@@ -50,7 +50,7 @@
 	        style="@style/TitleButtonStyle"
 	        android:layout_alignParentRight="true"
 	        android:layout_height="@dimen/title_bar_height"
-	        android:text="@string/icon_people" />
+	        android:text="@string/iconfont_account" />
         
         <ImageView
             android:id="@+id/arrow_sign_in"

@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:gravity="center"
-                    android:text="@string/icon_question"
+                    android:text="@string/iconfont_help_circle"
                     android:textColor="@color/font_normal"
                     android:textSize="24dp" />
 

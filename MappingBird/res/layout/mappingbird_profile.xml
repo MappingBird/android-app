@@ -15,7 +15,7 @@
             style="@style/TitleButtonStyle"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="@string/icon_back_arrow" />
+            android:text="@string/iconfont_arrow_left" />
 
         <ImageView
             android:layout_width="wrap_content"

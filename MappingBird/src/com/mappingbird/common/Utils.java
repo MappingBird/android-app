@@ -120,25 +120,25 @@ public class Utils {
 		int iconRes = -1;
 		switch (type) {
 		case MBPointData.TYPE_RESTAURANT:
-			iconRes = R.string.icon_type_restaurant;
+			iconRes = R.string.iconfont_restaurant;
 			break;
 		case MBPointData.TYPE_HOTEL:
-			iconRes = R.string.icon_type_hotel;
+			iconRes = R.string.iconfont_hotel;
 			break;
 		case MBPointData.TYPE_MALL:
-			iconRes = R.string.icon_type_mall;
+			iconRes = R.string.iconfont_shopping;
 			break;
 		case MBPointData.TYPE_BAR:
-			iconRes = R.string.icon_type_bar;
+			iconRes = R.string.iconfont_bar;
 			break;
 		case MBPointData.TYPE_MISC:
-			iconRes = R.string.icon_type_misc;
+			iconRes = R.string.iconfont_general;
 			break;
 		case MBPointData.TYPE_SCENICSPOT:
-			iconRes = R.string.icon_type_scenicspot;
+			iconRes = R.string.iconfont_camera;
 			break;
 		default :
-			iconRes = R.string.icon_type_new;
+			iconRes = R.string.iconfont_general;
 			break;
 		}
 		return iconRes;

@@ -5,8 +5,11 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Place -->
+    <dimen name="place_title_bar_show_start">180dp</dimen>
+    <dimen name="place_title_bar_show_end">220dp</dimen>
+    <dimen name="place_title_bar_show_destince">40dp</dimen>
     <dimen name="place_gallery_height">240dp</dimen>
-    <dimen name="place_gallery_layout_height">264dp</dimen>
+    <dimen name="place_gallery_layout_height">274dp</dimen>
     <!-- Gallery -->
     <dimen name="gallery_bubble_padding">3dp</dimen>
     <dimen name="gallery_bubble_margin_bottom">16dp</dimen>

@@ -55,25 +55,4 @@
     
     <!--  -->
     <string name="str_question">Help &#038; feedback</string>
-
-    <string name="icon_people" translatable="false">&#58904;</string>
-    <string name="icon_add_place" translatable="false">&#58895;</string>
-    <string name="icon_title_menu" translatable="false">&#58905;</string>
-    <string name="icon_question" translatable="false">&#58882;</string>
-    <string name="icon_back_arrow" translatable="false">&#58893;</string>
-    <string name="icon_back_share" translatable="false">&#58891;</string>
-    
-    <!-- Place icon -->
-    <string name="icon_place_place" translatable="false">&#58896;</string>
-    <string name="icon_place_tag" translatable="false">&#58890;</string>
-    <string name="icon_place_time" translatable="false">&#58889;</string>
-
-    <!-- Place type -->
-    <string name="icon_type_restaurant" translatable="false">&#58900;</string>
-    <string name="icon_type_hotel" translatable="false">&#58897;</string>
-    <string name="icon_type_mall" translatable="false">&#58901;</string>
-    <string name="icon_type_bar" translatable="false">&#58902;</string>
-    <string name="icon_type_misc" translatable="false">&#58899;</string>
-    <string name="icon_type_scenicspot" translatable="false">&#58898;</string>
-    <string name="icon_type_new" translatable="false">&#58899;</string>
 </resources>

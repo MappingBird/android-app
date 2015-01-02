@@ -14,7 +14,7 @@
 	        style="@style/TitleButtonStyle"
 	        android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
-	        android:text="@string/icon_back_arrow" />
+	        android:text="@string/iconfont_arrow_left" />
 
         <TextView
             android:id="@+id/map_title_name"

@@ -12,7 +12,7 @@
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/back_icon"
             style="@style/TitleButtonStyle"
-            android:text="@string/icon_back_arrow" />
+            android:text="@string/iconfont_arrow_left" />
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/login_title_name"
@@ -93,7 +93,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:gravity="center_vertical"
-                    android:text="@string/icon_question"
+                    android:text="@string/iconfont_help_circle"
                     android:background="@drawable/btn_question_bg"
                     android:textSize="24dp" />
 
