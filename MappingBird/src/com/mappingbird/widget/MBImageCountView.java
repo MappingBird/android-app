@@ -1,13 +1,12 @@
 package com.mappingbird.widget;
 
-import com.mappingbird.R;
-
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.mappingbird.R;
 
 public class MBImageCountView extends View {
 

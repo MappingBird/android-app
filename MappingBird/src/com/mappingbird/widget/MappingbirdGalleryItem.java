@@ -21,11 +21,6 @@ public class MappingbirdGalleryItem {
 	public static final int MODE_CURRENT 	= 0x00000;
 	public static final int MODE_PREVIOUS 	= 0x00002;
 	
-	private static final int MAX_COUNT = 20;
-	private static final int ANIMATION_BACK = 0;
-	private static final int ANIMATION_NEXT = 1;
-	private int mAnimationMode = -1;
-
 	private int mMode = MODE_CURRENT;
 	private BitmapLoader mBitmapLoader;
 	private String mUrl = null;
@@ -36,7 +31,6 @@ public class MappingbirdGalleryItem {
 	private Rect mDrawBound = new Rect();
 	private int mPositionX = 0;
 	private Paint mBitmapPaint;
-	private int mCount = 0;
 	private Drawable mBackground;
 	private static Drawable mLoadingDrawable = null;
 	private static Drawable mNoImageDrawable = null;

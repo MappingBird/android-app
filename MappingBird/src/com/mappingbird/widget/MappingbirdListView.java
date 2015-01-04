@@ -9,11 +9,6 @@ import com.mappingbird.R;
 
 public class MappingbirdListView extends ListView {
 
-	private int mItemBottomHeight = 0;
-
-	private static final float MAX_ALPHA = 0.8f;
-	private int mParentHeight = 0;
-	private int mMaxHeight = 0;
 	public MappingbirdListView(Context context) {
 		super(context);
 	}
@@ -30,7 +25,6 @@ public class MappingbirdListView extends ListView {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		mItemBottomHeight = (int) getResources().getDimension(R.dimen.place_item_card_max_position);
 	}
 
 	@Override
@@ -44,15 +38,10 @@ public class MappingbirdListView extends ListView {
 	}
 
 	public void setParentHeight(int height) {
-		mParentHeight = height;
-		mMaxHeight = height - mItemBottomHeight;
 	}
 
 	@Override
 	public void setY(float y) {
 		super.setY(y);
-//		float rate = y/ mMaxHeight;
-//		int bgColor = Color.argb((int)(0xff*(MAX_ALPHA*(1-rate))), 0xff, 0xff, 0xff);
-//		setBackgroundColor(bgColor);
 	}
 }

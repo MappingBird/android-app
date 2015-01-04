@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mappingbird.R;

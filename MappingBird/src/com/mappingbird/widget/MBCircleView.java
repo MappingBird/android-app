@@ -1,7 +1,5 @@
 package com.mappingbird.widget;
 
-import com.mappingbird.R;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;

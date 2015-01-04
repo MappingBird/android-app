@@ -17,11 +17,6 @@ public class MappingbirdPleaceCardItem {
 	public static final int MODE_CURRENT 	= 0x00000;
 	public static final int MODE_PREVIOUS 	= 0x00002;
 	
-	private static final int MAX_COUNT = 20;
-	private static final int ANIMATION_BACK = 0;
-	private static final int ANIMATION_NEXT = 1;
-	private int mAnimationMode = -1;
-
 	private int mMode = MODE_CURRENT;
 	private BitmapLoader mBitmapLoader;
 	private String mUrl = null;
@@ -32,7 +27,7 @@ public class MappingbirdPleaceCardItem {
 	private Rect mDrawBound = new Rect();
 	private int mPositionX = 0;
 	private Paint mBitmapPaint;
-	private int mCount = 0;
+
 	public MappingbirdPleaceCardItem(BitmapLoader bitmapLoader, String url) {
 		mBitmapLoader = bitmapLoader;
 		mBitmapPaint = new Paint();
@@ -109,7 +104,6 @@ public class MappingbirdPleaceCardItem {
 		if(mBitmap != null) {
 			if(isNeedRecountBound) {
 				isNeedRecountBound = false;
-				float rate = (float)mWidth / mHeight;
 				int bmpWidth = mBitmap.getWidth();
 				int bmpHeight = mBitmap.getHeight();
 				mBitmapBound = getCenterBound(mWidth, mHeight, bmpWidth, bmpHeight);

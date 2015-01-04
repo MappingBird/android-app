@@ -1,12 +1,11 @@
 package com.mappingbird.widget;
 
-import com.mappingbird.common.MappingBirdApplication;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.mappingbird.common.MappingBirdApplication;
 
 public class MappingbirdEditText extends EditText {
 

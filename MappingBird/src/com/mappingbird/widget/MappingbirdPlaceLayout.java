@@ -3,12 +3,10 @@ package com.mappingbird.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.GestureDetector.OnGestureListener;
-import android.widget.ListView;
+import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
-import com.mappingbird.R;
 import com.mappingbird.common.DeBug;
 
 public class MappingbirdPlaceLayout extends RelativeLayout {

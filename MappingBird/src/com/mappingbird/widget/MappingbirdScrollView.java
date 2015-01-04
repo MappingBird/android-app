@@ -1,7 +1,5 @@
 package com.mappingbird.widget;
 
-import com.mappingbird.common.DeBug;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ScrollView;

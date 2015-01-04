@@ -59,7 +59,6 @@ import com.mappingbird.collection.widget.MBCollectionListLayout.NewCardClickList
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.common.Utils;
-import com.mappingbird.widget.MappingbirdListLayout.CardClickListener;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
@@ -630,20 +629,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 
 	}
-
-	private CardClickListener mCardClickListener = new CardClickListener() {
-		@Override
-		public void onClickCard(MBPointData point) {
-			Intent intent = new Intent();
-			intent.putExtra(MappingBirdPlaceActivity.EXTRA_MBPOINT, point);
-			intent.putExtra("myLatitude", mMyLocation.latitude);
-			intent.putExtra("myLongitude", mMyLocation.longitude);
-
-			intent.setClass(MappingBirdCollectionActivity.this,
-					com.mappingbird.MappingBirdPlaceActivity.class);
-			MappingBirdCollectionActivity.this.startActivity(intent);
-		}
-	};
 
 	private NewCardClickListener mNewCardClickListener = new NewCardClickListener() {
 		@Override
