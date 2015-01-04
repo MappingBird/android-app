@@ -35,8 +35,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/card_gradient"
-                    android:orientation="vertical"
-                    android:paddingLeft="8dp" >
+                    android:paddingLeft="8dp"
+                    android:orientation="vertical" >
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -48,6 +48,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:gravity="right"
+                            android:paddingTop="8dp"
                             android:paddingRight="8dp"
                             android:textColor="#fff"
                             android:textSize="32dp" />
@@ -58,7 +59,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_marginBottom="6dp"
+                            android:layout_marginBottom="4dp"
                             android:layout_marginRight="4dp"
                             android:layout_toLeftOf="@id/card_distance"
                             android:singleLine="true"
@@ -68,15 +69,16 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="29dp"
-                        android:layout_marginTop="-10dp" >
+                        android:layout_height="26dp" >
 
                         <com.mappingbird.widget.MappingbirdTextView
                             android:id="@+id/card_unit"
                             android:layout_width="@dimen/place_item_card_distance_width"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:gravity="right"
+                            android:layout_alignParentTop="true"
+                            android:gravity="right|top"
+                            android:layout_marginTop="-3dp"
                             android:paddingRight="8dp"
                             android:singleLine="true"
                             android:textColor="#fff"
@@ -85,12 +87,10 @@
                         <com.mappingbird.widget.MappingbirdTextView
                             android:id="@+id/card_subtitle"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="18dp"
                             android:layout_alignParentLeft="true"
-                            android:gravity="top"
+                            android:gravity="center_vertical"
                             android:layout_marginRight="4dp"
-                            android:paddingBottom="4dp"
-                            android:paddingTop="4dp"
                             android:layout_toLeftOf="@id/card_unit"
                             android:singleLine="true"
                             android:textColor="#fff"
@@ -104,9 +104,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_alignParentLeft="true"
-                    android:gravity="center_vertical"
                     android:layout_marginRight="@dimen/place_item_card_distance_width"
-					android:layout_centerVertical="true"                   	
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="8dp"
                     android:singleLine="true"
                     android:textColor="#fff"
                     android:textSize="16sp"

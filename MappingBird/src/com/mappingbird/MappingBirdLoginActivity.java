@@ -65,7 +65,7 @@ public class MappingBirdLoginActivity extends Activity implements
 		if (isLoading) {
 			mLoginText
 					.setText(this.getResources().getString(R.string.logining));
-			mLoginText.setTextColor(Color.BLACK);
+			mLoginText.setTextColor(Color.WHITE);
 			mLoginLoadingIcon.setVisibility(View.VISIBLE);
 			mLogIn.setEnabled(false);
 		} else {
@@ -106,13 +106,7 @@ public class MappingBirdLoginActivity extends Activity implements
 
 		@Override
 		public void onLogIn(int statusCode, User user) {
-			isLoaing(false);
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
-//				Intent intent = new Intent();
-//				intent.setClass(MappingBirdLoginActivity.this,
-//						com.mappingbird.MappingBirdProfileActivity.class);
-//				intent.putExtra(MappingBirdProfileActivity.EXTRA_COME_FROM_LOGIN, true);
-//				MappingBirdLoginActivity.this.startActivity(intent);
 				Intent intent = new Intent();
 				intent.setClass(MappingBirdLoginActivity.this,
 						com.mappingbird.collection.MappingBirdCollectionActivity.class);
@@ -122,11 +116,13 @@ public class MappingBirdLoginActivity extends Activity implements
 						| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				MappingBirdLoginActivity.this.startActivity(intent);
 			} else if (statusCode == MappingBirdAPI.RESULT_NETWORK_ERROR) {
+				isLoaing(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
 				Toast.makeText(getApplicationContext(),
 						getResources().getString(R.string.login_fail_network_error), Toast.LENGTH_SHORT).show();
 			} else if (statusCode == MappingBirdAPI.RESULT_ACCOUNT_ERROR) {
+				isLoaing(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
 				Toast.makeText(getApplicationContext(),

@@ -11,7 +11,6 @@ import android.view.View;
 
 public class MBImageCountView extends View {
 
-	private Paint mPaint;
 	private Drawable mNormalDrawable;
 	private Drawable mFocusedDrawable;
 	private int mSize = 0;

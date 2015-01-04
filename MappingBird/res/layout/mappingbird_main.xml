@@ -120,7 +120,7 @@
         android:layout_height="@dimen/title_bar_height"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/main_title"
-        android:textColor="#000"
+        android:textColor="@color/font_normal"
         android:text="@string/iconfont_account_circle" />
 
     <ImageView
@@ -136,10 +136,10 @@
         android:id="@+id/login_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/circle_login_icon"
+        android:layout_below="@id/arrow_sign_in"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="3dp"
         android:text="@string/login_description"
         android:textColor="@color/font_white"
         android:textSize="14dp" />

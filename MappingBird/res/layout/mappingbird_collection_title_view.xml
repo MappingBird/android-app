@@ -7,22 +7,30 @@
         android:id="@+id/title_btn_people"
         style="@style/TitleButtonStyle"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
-        android:text="@string/iconfont_account" />
+        android:text="@string/iconfont_account"
+        android:visibility="gone" />
 
     <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/title_btn_add"
         style="@style/TitleButtonStyle"
-        android:visibility="gone"
         android:layout_toLeftOf="@id/title_btn_people"
-        android:text="@string/iconfont_map_plus" />
+        android:text="@string/iconfont_map_plus"
+        android:visibility="gone" />
+
+    <com.mappingbird.widget.MappingbirdFontIcon
+        android:id="@+id/title_btn_menu"
+        android:layout_width="30dp"
+        android:layout_alignParentLeft="true"
+        style="@style/TitleButtonStyle"
+        android:text="@string/iconfont_menu" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/title_btn_menu"
         android:layout_toLeftOf="@id/title_btn_add"
+        android:paddingLeft="4dp"
         android:orientation="horizontal" >
 
         <com.mappingbird.widget.MappingbirdTextView

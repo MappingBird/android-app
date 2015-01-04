@@ -93,6 +93,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:gravity="center_vertical"
+                    android:textColor="@color/font_normal"
                     android:text="@string/iconfont_help_circle"
                     android:background="@drawable/btn_question_bg"
                     android:textSize="24dp" />

@@ -17,6 +17,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.text.SpannableString;
 import android.view.Display;
 import android.view.Gravity;
@@ -50,7 +51,6 @@ import com.mappingbird.MappingBirdBitmap.MappingBirdBitmapListner;
 import com.mappingbird.MappingBirdDialog;
 import com.mappingbird.MappingBirdItem;
 import com.mappingbird.MappingBirdPlaceActivity;
-import com.mappingbird.MappingBirdProfileActivity;
 import com.mappingbird.R;
 import com.mappingbird.api.Collection;
 import com.mappingbird.api.Collections;
@@ -80,6 +80,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private ActionBarDrawerToggle mDrawerToggle;
 	private MBCollectionListItem mCurrentCollectionListItem;
 	private TextView mTitleText, mTitleNumber;
+	private View mMenuButton;
 
 	private GoogleMap mMap;
 	private ArrayList<LatLng> mLatLngs = new ArrayList<LatLng>();
@@ -129,7 +130,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xfff6892a));
-		getActionBar().setIcon(R.drawable.icon_collections);
+		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setDisplayHomeAsUpEnabled(false);
+		getActionBar().setDisplayUseLogoEnabled(false);;
+//		getActionBar().setIcon(R.drawable.icon_collections);
 
 		getActionBar().setDisplayOptions(
 				getActionBar().getDisplayOptions()
@@ -146,6 +150,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		titlelayout.findViewById(R.id.title_btn_add).setOnClickListener(mTitleClickListener);
 		titlelayout.findViewById(R.id.title_text).setOnClickListener(mTitleClickListener);
 		findViewById(R.id.collection_logout_icon).setOnClickListener(mTitleClickListener);
+		titlelayout.findViewById(R.id.title_btn_menu).setOnClickListener(mTitleClickListener);
+		mMenuButton = titlelayout.findViewById(R.id.title_btn_menu);
+
 		mTitleText = (TextView) findViewById(R.id.title_text);
 		mTitleNumber = (TextView) findViewById(R.id.title_number);
 		
@@ -164,26 +171,52 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mMappingbirdListLayout.setVisibility(View.VISIBLE);
 		}
 
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.action_settings,
-				R.string.action_settings) {
-			public void onDrawerClosed(View view) {
-				DeBug.v("onDrawerClosed");
-//				getActionBar().setTitle(mTitle);
-				setTitle(mCurrentCollectionListItem);
-				invalidateOptionsMenu();
-
+//		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+//				R.drawable.ic_drawer, R.string.action_settings,
+//				R.string.action_settings) {
+//			public void onDrawerClosed(View view) {
+//				DeBug.v("onDrawerClosed");
+//				setTitle(mCurrentCollectionListItem);
+//				invalidateOptionsMenu();
+//
+//			}
+//
+//			public void onDrawerOpened(View drawerView) {
+//				DeBug.v("onDrawerOpened");
+//				setTitle(mCurrentCollectionListItem);
+//				invalidateOptionsMenu();
+//			}
+//		};
+//		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		
+		mDrawerLayout.setDrawerListener(new DrawerListener() {
+			
+			@Override
+			public void onDrawerStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
 			}
-
-			public void onDrawerOpened(View drawerView) {
+			
+			@Override
+			public void onDrawerSlide(View arg0, float arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onDrawerOpened(View v) {
 				DeBug.v("onDrawerOpened");
-//				getActionBar().setTitle(mTitle);
 				setTitle(mCurrentCollectionListItem);
 				invalidateOptionsMenu();
-
 			}
-		};
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+			
+			@Override
+			public void onDrawerClosed(View v) {
+				DeBug.v("onDrawerClosed");
+				setTitle(mCurrentCollectionListItem);
+				invalidateOptionsMenu();
+			}
+		});
 
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 		mApi.getCollections(getCollectionListener);
@@ -314,6 +347,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			switch(v.getId()) {
+			case R.id.title_btn_menu:
+				if(mDrawerLayout.isDrawerOpen(mDrawerContentLayout))
+					mDrawerLayout.closeDrawer(mDrawerContentLayout);
+				else
+					mDrawerLayout.openDrawer(mDrawerContentLayout);
+				break;
 			case R.id.collection_logout_icon:
 				// logout
 				if (mApi.logOut()) {
@@ -398,13 +437,13 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		mDrawerToggle.syncState();
+//		mDrawerToggle.syncState();
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		mDrawerToggle.onConfigurationChanged(newConfig);
+//		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
 	private void setUpMapIfNeeded() {
