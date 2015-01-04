@@ -121,10 +121,10 @@ public class MappingbirdListLayout extends RelativeLayout {
 		mItemAdapter = new ItemAdapter(getContext());
 		mListView.setAdapter(mItemAdapter);
 		
-		mCard0 = (MappingbirdListLayoutCardView)findViewById(R.id.item_back0);
-		mCardAnim = (MappingbirdListLayoutCardView) findViewById(R.id.item_back_anim);
-		mCard1 = (MappingbirdListLayoutCardView)findViewById(R.id.item_back1);
-		mCard2 = (MappingbirdListLayoutCardView)findViewById(R.id.item_back2);
+//		mCard0 = (MappingbirdListLayoutCardView)findViewById(R.id.item_back0);
+//		mCardAnim = (MappingbirdListLayoutCardView) findViewById(R.id.item_back_anim);
+//		mCard1 = (MappingbirdListLayoutCardView)findViewById(R.id.item_back1);
+//		mCard2 = (MappingbirdListLayoutCardView)findViewById(R.id.item_back2);
 		
 		mBitmapLoader = new BitmapLoader(getContext());
 		

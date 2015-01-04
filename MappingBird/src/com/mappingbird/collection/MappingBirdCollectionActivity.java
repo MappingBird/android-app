@@ -2,29 +2,23 @@ package com.mappingbird.collection;
 
 import java.util.ArrayList;
 
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.text.SpannableString;
 import android.view.Display;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -65,22 +59,18 @@ import com.mappingbird.collection.widget.MBCollectionListLayout.NewCardClickList
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.common.Utils;
-import com.mappingbird.widget.MappingbirdListLayout;
 import com.mappingbird.widget.MappingbirdListLayout.CardClickListener;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
 
-	private static final boolean isNewListLayout = true;
 	private static final String TAG = "MappingBird";
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private View mDrawerContentLayout;
-	private ActionBarDrawerToggle mDrawerToggle;
 	private MBCollectionListItem mCurrentCollectionListItem;
 	private TextView mTitleText, mTitleNumber;
-	private View mMenuButton;
 
 	private GoogleMap mMap;
 	private ArrayList<LatLng> mLatLngs = new ArrayList<LatLng>();
@@ -108,7 +98,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private LocationService mLocationService;
 	
 	private CustomInfoWindowAdapter mInfoWindowAdapter;
-	private MappingbirdListLayout mMappingbirdListLayout;
 	private MBCollectionListLayout mMBCollectionListLayout;
 
 	private TextView mAccountTextView;
@@ -116,6 +105,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mappingbird_collection);
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -127,80 +117,28 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mCollectionListAdapter = new MBCollectionListAdapter(this);
 		mDrawerList.setAdapter(mCollectionListAdapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setBackgroundDrawable(new ColorDrawable(0xfff6892a));
-		getActionBar().setDisplayShowHomeEnabled(false);
-		getActionBar().setDisplayHomeAsUpEnabled(false);
-		getActionBar().setDisplayUseLogoEnabled(false);;
-//		getActionBar().setIcon(R.drawable.icon_collections);
 
-		getActionBar().setDisplayOptions(
-				getActionBar().getDisplayOptions()
-						| ActionBar.DISPLAY_SHOW_CUSTOM);
-		LayoutInflater inflater = LayoutInflater.from(getActionBar().getThemedContext());
-		View titlelayout = inflater.inflate(R.layout.mappingbird_collection_title_view, null, false);
-		ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
-				ActionBar.LayoutParams.WRAP_CONTENT,
-				ActionBar.LayoutParams.WRAP_CONTENT, Gravity.RIGHT
-						| Gravity.CENTER_VERTICAL);
-		titlelayout.setLayoutParams(layoutParams);
-		getActionBar().setCustomView(titlelayout);
-		titlelayout.findViewById(R.id.title_btn_people).setOnClickListener(mTitleClickListener);
-		titlelayout.findViewById(R.id.title_btn_add).setOnClickListener(mTitleClickListener);
-		titlelayout.findViewById(R.id.title_text).setOnClickListener(mTitleClickListener);
 		findViewById(R.id.collection_logout_icon).setOnClickListener(mTitleClickListener);
-		titlelayout.findViewById(R.id.title_btn_menu).setOnClickListener(mTitleClickListener);
-		mMenuButton = titlelayout.findViewById(R.id.title_btn_menu);
 
 		mTitleText = (TextView) findViewById(R.id.title_text);
 		mTitleNumber = (TextView) findViewById(R.id.title_number);
+		findViewById(R.id.title_text).setOnClickListener(mTitleClickListener);
+		findViewById(R.id.title_btn_menu).setOnClickListener(mTitleClickListener);
 		
 		mAccountTextView = (TextView) findViewById(R.id.collection_account);
 
 		mMBCollectionListLayout = (MBCollectionListLayout) findViewById(R.id.collection_card_list_layout);
-		mMappingbirdListLayout = (MappingbirdListLayout) findViewById(R.id.item_list_layout);
-		mMappingbirdListLayout.setCardClickListener(mCardClickListener);
 		mMBCollectionListLayout.setCardClickListener(mNewCardClickListener);
 		
-		if(isNewListLayout) {
-			mMBCollectionListLayout.setVisibility(View.VISIBLE);
-			mMappingbirdListLayout.setVisibility(View.GONE);
-		} else {
-			mMBCollectionListLayout.setVisibility(View.GONE);
-			mMappingbirdListLayout.setVisibility(View.VISIBLE);
-		}
+		mMBCollectionListLayout.setVisibility(View.VISIBLE);
 
-//		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-//				R.drawable.ic_drawer, R.string.action_settings,
-//				R.string.action_settings) {
-//			public void onDrawerClosed(View view) {
-//				DeBug.v("onDrawerClosed");
-//				setTitle(mCurrentCollectionListItem);
-//				invalidateOptionsMenu();
-//
-//			}
-//
-//			public void onDrawerOpened(View drawerView) {
-//				DeBug.v("onDrawerOpened");
-//				setTitle(mCurrentCollectionListItem);
-//				invalidateOptionsMenu();
-//			}
-//		};
-//		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
 		mDrawerLayout.setDrawerListener(new DrawerListener() {
-			
 			@Override
 			public void onDrawerStateChanged(int arg0) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void onDrawerSlide(View arg0, float arg1) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
@@ -271,19 +209,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mLocationService.stopUsingGPS();
 	}
 
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
-		// Handle action buttons
-		switch (item.getItemId()) {
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
 		@Override
@@ -308,10 +233,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if (mCollections != null && mCollections.getCount() > 0) {
 			if (mLoadingDialog != null)
 				mLoadingDialog.show();
-			if(!isNewListLayout)
-				mMappingbirdListLayout.closeLayout();
-			else
-				mMBCollectionListLayout.closeLayout();
+			mMBCollectionListLayout.closeLayout();
 			mApi.getCollectionInfo(getCollectionInfoListener,
 					mCollections.get(position).getId());
 		}
@@ -434,18 +356,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mTitleNumber.setText(item.getItemNumber());
 	}
 
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-//		mDrawerToggle.syncState();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-//		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
-
 	private void setUpMapIfNeeded() {
 		if (mMap == null) {
 			mMap = ((SupportMapFragment) getSupportFragmentManager()
@@ -491,10 +401,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mMyLocation = new LatLng(location.getLatitude(),
 						location.getLongitude());
 				setUpMap();
-				if(!isNewListLayout)
-					mMappingbirdListLayout.setMyLocation(mMyLocation);
-				else
-					mMBCollectionListLayout.setMyLocation(mMyLocation);
+				mMBCollectionListLayout.setMyLocation(mMyLocation);
 				if (mMyMarker != null) {
 					mMyMarker.setPosition(mMyLocation);
 					mMyMarker.setIcon(BitmapDescriptorFactory
@@ -545,10 +452,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 						mClickedMarker = marker;
 						mClickedClusterItem = item;
 						mMappingBirdRender.setFontIconInFoucs(mClickedClusterItem.mPinIcon, mClickedMarker);
-						if(!isNewListLayout)
-							mMappingbirdListLayout.clickItem(item);
-						else
-							mMBCollectionListLayout.clickItem(item);
+						mMBCollectionListLayout.clickItem(item);
 						mMap.setInfoWindowAdapter(mInfoWindowAdapter);
 						return true;
 					}
@@ -625,10 +529,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mClusterManager.addItem(offsetItem);
 			}
 		}
-		if(!isNewListLayout)
-			mMappingbirdListLayout.setPositionData(mPositionItems);
-		else
-			mMBCollectionListLayout.setPositionData(mPositionItems);
+		mMBCollectionListLayout.setPositionData(mPositionItems);
 	}
 
 	// ====================================================
