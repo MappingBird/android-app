@@ -235,14 +235,15 @@ public class MappingBirdPlaceActivity extends Activity implements
 			}
 
 			if(mPlaceDirectTrigger == 0) {
-				mPlaceDirectTrigger = mPlaceDetailLayout.getHeight() - mTripMapView.getHeight() - getWindowHeight();
+				mPlaceDirectTrigger = mPlaceDetailLayout.getHeight() - mTripMapView.getHeight() - getWindowHeight()
+						+ (int)mContext.getResources().getDimension(R.dimen.place_map_trigger);
 			}
 			if(mPlaceDirectTrigger != 0) {
 				if(mDirectionAnimation != null && !mDirectionAnimation.hasEnded())
 					return;
 
-				if(DeBug.DEBUG)
-					DeBug.e("Test", "onScrollChanged , scroll Y = "+v.getScrollY()+", mPlaceDirectTrigger = "+mPlaceDirectTrigger);
+//				if(DeBug.DEBUG)
+//					DeBug.e("Test", "onScrollChanged , scroll Y = "+v.getScrollY()+", mPlaceDirectTrigger = "+mPlaceDirectTrigger);
 				if(mGetDirection.getVisibility() == View.GONE && mPlaceDirectTrigger < Math.abs(v.getScrollY())) {
 					// Show
 					mDirectionAnimation = AnimationUtils.loadAnimation(MappingBirdPlaceActivity.this,

@@ -11,6 +11,7 @@
     <dimen name="place_gallery_height">240dp</dimen>
     <dimen name="place_gallery_layout_height">274dp</dimen>
     
+    <dimen name="place_map_trigger">75dp</dimen>
     <dimen name="place_point_padding">4dp</dimen>
     <!-- Gallery -->
     <dimen name="gallery_bubble_padding">3dp</dimen>
