@@ -76,6 +76,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private View mPlaceDetailLayout = null;
 	private int mPlaceDirectTrigger = 0; 
 
+	private TextView mLastEditText = null;
+
 	private MappingbirdGallery mPlacePhoto;
 	private MBImageCountView mPlacePhotoCountPoint;
 	private TextView mPlacePhotoCountText;
@@ -121,6 +123,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 		mPlaceLinkLayout = findViewById(R.id.trip_place_link_layout);
 		mPlaceLink = (TextView) findViewById(R.id.trip_place_link);
+
+		mLastEditText = (TextView) findViewById(R.id.trip_place_last_edit);
 
 		mTitleBack = findViewById(R.id.trip_detail_title_back);
 		mTitleBack.setAlpha(0);
@@ -308,6 +312,14 @@ public class MappingBirdPlaceActivity extends Activity implements
 				setDataInLayout(point.getTagsString(), mPlaceTagLayout, mPlaceTag);
 				// Link
 				setDataInLayout(point.getUrl(), mPlaceLinkLayout, mPlaceLink);
+				
+				if(TextUtils.isEmpty(point.getUpdateTime())) {
+					mLastEditText.setVisibility(View.GONE);
+				} else {
+					mLastEditText.setVisibility(View.VISIBLE);
+					mLastEditText.setText(String.format(
+								getString(R.string.place_last_update), point.getUpdateTime()));
+				}
 			} else {
 				String title = "";
 				title = getResources().getString(R.string.error);

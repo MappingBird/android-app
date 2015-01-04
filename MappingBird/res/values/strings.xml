@@ -37,6 +37,9 @@
     
     <string name="str_retry">Retry</string>
     <string name="str_cancel">Cancel</string>
+    <!--  -->
+    <string name="place_last_update">Last edit - %s</string>
+    
     <!-- Distance -->
     <string name="distance_less_one_meter">&#060;1</string>
     <string name="distance_meter">M</string>
