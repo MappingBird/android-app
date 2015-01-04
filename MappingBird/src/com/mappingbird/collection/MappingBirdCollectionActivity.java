@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,6 +50,7 @@ import com.mappingbird.MappingBirdBitmap.MappingBirdBitmapListner;
 import com.mappingbird.MappingBirdDialog;
 import com.mappingbird.MappingBirdItem;
 import com.mappingbird.MappingBirdPlaceActivity;
+import com.mappingbird.MappingBirdProfileActivity;
 import com.mappingbird.R;
 import com.mappingbird.api.Collection;
 import com.mappingbird.api.Collections;
@@ -108,6 +110,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private MappingbirdListLayout mMappingbirdListLayout;
 	private MBCollectionListLayout mMBCollectionListLayout;
 
+	private TextView mAccountTextView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -141,8 +145,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		titlelayout.findViewById(R.id.title_btn_people).setOnClickListener(mTitleClickListener);
 		titlelayout.findViewById(R.id.title_btn_add).setOnClickListener(mTitleClickListener);
 		titlelayout.findViewById(R.id.title_text).setOnClickListener(mTitleClickListener);
+		findViewById(R.id.collection_logout_icon).setOnClickListener(mTitleClickListener);
 		mTitleText = (TextView) findViewById(R.id.title_text);
 		mTitleNumber = (TextView) findViewById(R.id.title_number);
+		
+		mAccountTextView = (TextView) findViewById(R.id.collection_account);
 
 		mMBCollectionListLayout = (MBCollectionListLayout) findViewById(R.id.collection_card_list_layout);
 		mMappingbirdListLayout = (MappingbirdListLayout) findViewById(R.id.item_list_layout);
@@ -180,6 +187,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 		mApi.getCollections(getCollectionListener);
+		mAccountTextView.setText(mApi.getCurrentUser().getEmail());
 
 		mLoadBitmap = new MappingBirdBitmap(this.getApplicationContext());
 		mContext = this;
@@ -187,6 +195,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext, null,
 				true);
 		mLoadingDialog.setCancelable(false);
+		
+		
 	}
 
 	OnGetCollectionsListener getCollectionListener = new OnGetCollectionsListener() {
@@ -304,6 +314,19 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			switch(v.getId()) {
+			case R.id.collection_logout_icon:
+				// logout
+				if (mApi.logOut()) {
+					Intent intent = new Intent();
+					intent.setClass(MappingBirdCollectionActivity.this,
+							com.mappingbird.MappingBirdMainActivity.class);
+					MappingBirdCollectionActivity.this.startActivity(intent);
+					finish();
+				} else {
+					Toast.makeText(getApplicationContext(), "Logout Fail!",
+							Toast.LENGTH_SHORT).show();
+				}
+				break;
 			case R.id.title_text:
 				if(mDrawerLayout.isDrawerOpen(mDrawerContentLayout))
 					mDrawerLayout.closeDrawer(mDrawerContentLayout);

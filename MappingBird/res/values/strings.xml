@@ -16,6 +16,7 @@
     <string name="password">Password</string>
     <string name="login">LOG IN</string>
     <string name="logining">LOGING IN...</string>
+    <string name="login1">Login</string>
     <string name="logout">LOG OUT</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="change_password">Change Password</string>

@@ -108,10 +108,18 @@ public class MappingBirdLoginActivity extends Activity implements
 		public void onLogIn(int statusCode, User user) {
 			isLoaing(false);
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
+//				Intent intent = new Intent();
+//				intent.setClass(MappingBirdLoginActivity.this,
+//						com.mappingbird.MappingBirdProfileActivity.class);
+//				intent.putExtra(MappingBirdProfileActivity.EXTRA_COME_FROM_LOGIN, true);
+//				MappingBirdLoginActivity.this.startActivity(intent);
 				Intent intent = new Intent();
 				intent.setClass(MappingBirdLoginActivity.this,
-						com.mappingbird.MappingBirdProfileActivity.class);
-				intent.putExtra(MappingBirdProfileActivity.EXTRA_COME_FROM_LOGIN, true);
+						com.mappingbird.collection.MappingBirdCollectionActivity.class);
+		
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+						| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				MappingBirdLoginActivity.this.startActivity(intent);
 			} else if (statusCode == MappingBirdAPI.RESULT_NETWORK_ERROR) {
 				mEmail.setEnabled(true);

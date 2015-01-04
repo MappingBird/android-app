@@ -19,8 +19,8 @@
             android:id="@+id/collection_card_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            layout="@layout/mappingbird_collection_list_layout" />
+            layout="@layout/mappingbird_collection_list_layout"
+            android:visibility="gone" />
 
         <com.mappingbird.widget.MappingbirdListLayout
             android:id="@+id/item_list_layout"
@@ -84,6 +84,51 @@
             android:layout_gravity="start" >
 
             <RelativeLayout
+                android:id="@+id/collection_account_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/collection_item_bg" >
+
+                <com.mappingbird.widget.MappingbirdFontIcon
+                    android:id="@+id/collection_account_icon"
+                    android:layout_width="54dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/iconfont_account_circle"
+                    android:textColor="@color/font_normal"
+                    android:textSize="26dp" />
+
+                <com.mappingbird.widget.MappingbirdFontIcon
+                    android:id="@+id/collection_logout_icon"
+                    android:layout_width="54dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:text="@string/iconfont_logout"
+                    android:textColor="@color/font_normal"
+                    android:textSize="26dp" />
+
+                <com.mappingbird.widget.MappingbirdTextView
+                    android:id="@+id/collection_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/collection_account_icon"
+                    android:layout_toLeftOf="@id/collection_logout_icon"
+                    android:paddingRight="16dp"
+                    android:textColor="@color/font_normal"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="#cccccc" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/collection_help_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -103,7 +148,7 @@
                     android:gravity="center"
                     android:text="@string/iconfont_help_circle"
                     android:textColor="@color/font_normal"
-                    android:textSize="24dp" />
+                    android:textSize="26dp" />
 
                 <com.mappingbird.widget.MappingbirdTextView
                     android:id="@+id/collection_help"
@@ -122,6 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@id/collection_help_layout"
+                android:layout_below="@id/collection_account_layout"
                 android:background="#FFFFFF"
                 android:choiceMode="singleChoice"
                 android:divider="@android:color/transparent"

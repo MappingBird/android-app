@@ -2,12 +2,14 @@
 <resources>
     
     <string name="iconfont_account" translatable="false">\uE618</string>
+    <string name="iconfont_account_circle" translatable="false">\ue617</string>
     <string name="iconfont_map_plus" translatable="false">\uE60F</string>
     <string name="iconfont_menu" translatable="false">\uE619</string>
     <string name="iconfont_help_circle" translatable="false">\uE602</string>
     <string name="iconfont_arrow_left" translatable="false">\uE60D</string>
     <string name="iconfont_share" translatable="false">\uE60B</string>
-    
+    <string name="iconfont_logout" translatable="false">\uE61F</string>
+
     <!-- Place icon -->
     <string name="iconfont_map_maker" translatable="false">\uE610</string>
     <string name="iconfont_tag" translatable="false">\uE60A</string>

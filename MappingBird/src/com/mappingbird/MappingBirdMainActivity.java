@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,8 +33,7 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 		LocationListener {
 
 	private View mLogInIcon = null;
-	private GoogleMap mMap;
-	private LocationClient mLocationClient;
+//	private GoogleMap mMap;
 	private static final LocationRequest REQUEST = LocationRequest.create()
 			.setInterval(5000) // 5 seconds
 			.setFastestInterval(16) // 16ms = 60fps
@@ -109,20 +107,20 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 	private void moveCameraToLocation(LatLng lng) {
 		CameraPosition cameraPosition = new CameraPosition.Builder()
 				.target(lng).zoom(17.0f).bearing(0).tilt(0).build();
-		if (mMap != null) {
-			mMap.animateCamera(
-					CameraUpdateFactory.newCameraPosition(cameraPosition), null);
-			if (myLocation != null) {
-				myLocation.remove();
-				myLocation = null;
-			}
-			myLocation = mMap.addMarker(new MarkerOptions()
-					.position(lng)
-					.title("My Location")
-					.icon(BitmapDescriptorFactory
-							.fromResource(R.drawable.icon_current_location)));
-
-		}
+//		if (mMap != null) {
+//			mMap.animateCamera(
+//					CameraUpdateFactory.newCameraPosition(cameraPosition), null);
+//			if (myLocation != null) {
+//				myLocation.remove();
+//				myLocation = null;
+//			}
+//			myLocation = mMap.addMarker(new MarkerOptions()
+//					.position(lng)
+//					.title("My Location")
+//					.icon(BitmapDescriptorFactory
+//							.fromResource(R.drawable.icon_current_location)));
+//
+//		}
 	}
 
 	@Override
@@ -142,37 +140,29 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 		super.onResume();
 		setUpMapIfNeeded();
 		setUpLocationClientIfNeeded();
-		mLocationClient.connect();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (mLocationClient != null) {
-			mLocationClient.disconnect();
-		}
 	}
 
 	private void setUpMapIfNeeded() {
 		// Do a null check to confirm that we have not already instantiated the
 		// map.
-		if (mMap == null) {
-			// Try to obtain the map from the SupportMapFragment.
-			mMap = ((SupportMapFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.map)).getMap();
-			// Check if we were successful in obtaining the map.
-			// if (mMap != null) {
-			// mMap.setMyLocationEnabled(true);
-			// mMap.setOnMyLocationButtonClickListener(this);
-			// }
-		}
+//		if (mMap == null) {
+//			// Try to obtain the map from the SupportMapFragment.
+//			mMap = ((SupportMapFragment) getSupportFragmentManager()
+//					.findFragmentById(R.id.map)).getMap();
+//			// Check if we were successful in obtaining the map.
+//			// if (mMap != null) {
+//			// mMap.setMyLocationEnabled(true);
+//			// mMap.setOnMyLocationButtonClickListener(this);
+//			// }
+//		}
 	}
 
 	private void setUpLocationClientIfNeeded() {
-		if (mLocationClient == null) {
-			mLocationClient = new LocationClient(getApplicationContext(), this, // ConnectionCallbacks
-					this); // OnConnectionFailedListener
-		}
 	}
 
 	/**
@@ -180,11 +170,6 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 	 * Location as required without needing to register a LocationListener.
 	 */
 	public void showMyLocation(View view) {
-		if (mLocationClient != null && mLocationClient.isConnected()) {
-			String msg = "Location = " + mLocationClient.getLastLocation();
-			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-					.show();
-		}
 	}
 
 	/**
@@ -201,7 +186,7 @@ public class MappingBirdMainActivity extends FragmentActivity implements
 	 */
 	@Override
 	public void onConnected(Bundle connectionHint) {
-		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
+//		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
 	}
 
 	/**

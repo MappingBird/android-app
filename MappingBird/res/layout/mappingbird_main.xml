@@ -4,34 +4,101 @@
     android:layout_height="match_parent" >
 
     <RelativeLayout
-        android:id="@+id/main_screen"
+        android:id="@+id/main_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/graphic_orange" >
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/main_title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:text="@string/get_start"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <!--
+     <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/main_title"
+        class="com.google.android.gms.maps.SupportMapFragment" />
+    -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/main_title"
+        android:background="#000" >
 
         <RelativeLayout
-            android:id="@+id/main_title"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/title_bar_height"
-            android:background="@color/graphic_orange" >
-
-            <com.mappingbird.widget.MappingbirdTextView
-                android:id="@+id/main_title_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:text="@string/get_start"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <fragment
-            android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/main_title"
-            class="com.google.android.gms.maps.SupportMapFragment" />
+            android:layout_marginRight="60dp"
+            android:background="#fff" >
+
+            <RelativeLayout
+                android:id="@+id/collection_Login_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_bar_height"
+                android:background="@drawable/collection_item_bg" >
+
+                <com.mappingbird.widget.MappingbirdTextView
+                    android:id="@+id/collection_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="70dp"
+                    android:text="@string/login1"
+                    android:textColor="@color/font_normal"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/collection_Login_layout"
+                android:background="#cccccc" />
+
+            <RelativeLayout
+                android:id="@+id/collection_help_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/collection_item_bg" >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#cccccc" />
+
+                <com.mappingbird.widget.MappingbirdFontIcon
+                    android:id="@+id/collection_help_icon"
+                    android:layout_width="54dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/iconfont_help_circle"
+                    android:textColor="@color/font_normal"
+                    android:textSize="24dp" />
+
+                <com.mappingbird.widget.MappingbirdTextView
+                    android:id="@+id/collection_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/collection_help_icon"
+                    android:paddingRight="16dp"
+                    android:text="@string/str_question"
+                    android:textColor="@color/font_normal"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -39,45 +106,48 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/graphic_gray_out" >
-
-        <com.mappingbird.widget.MBCircleView
-            android:layout_width="48dp"
-            android:layout_height="@dimen/title_bar_height" 
-          	android:layout_alignParentRight="true"
-            />
-        <com.mappingbird.widget.MappingbirdFontIcon
-	        android:id="@+id/circle_login_icon"
-	        style="@style/TitleButtonStyle"
-	        android:layout_alignParentRight="true"
-	        android:layout_height="@dimen/title_bar_height"
-	        android:text="@string/iconfont_account" />
-        
-        <ImageView
-            android:id="@+id/arrow_sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/circle_login_icon"
-            android:src="@drawable/arrow_sign_in"
-            android:layout_marginTop="42dp"
-            android:layout_marginRight="6dp" />
-
-        <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/login_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/circle_login_icon"
-            android:layout_marginTop="13dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textSize="14dp"
-            android:text="@string/login_description"
-            android:textColor="@color/font_white" />
-        <FrameLayout 
-            android:id="@+id/login_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/circle_login_icon"
-            />
     </RelativeLayout>
+
+    <com.mappingbird.widget.MBCircleView
+        android:layout_width="48dp"
+        android:layout_height="@dimen/title_bar_height"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/main_title" />
+
+    <com.mappingbird.widget.MappingbirdFontIcon
+        android:id="@+id/circle_login_icon"
+        style="@style/TitleButtonStyle"
+        android:layout_height="@dimen/title_bar_height"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/main_title"
+        android:textColor="#000"
+        android:text="@string/iconfont_account_circle" />
+
+    <ImageView
+        android:id="@+id/arrow_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="95dp"
+        android:layout_toRightOf="@id/circle_login_icon"
+        android:src="@drawable/arrow_sign_in" />
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/login_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/circle_login_icon"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="13dp"
+        android:text="@string/login_description"
+        android:textColor="@color/font_white"
+        android:textSize="14dp" />
+
+    <FrameLayout
+        android:id="@+id/login_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/circle_login_icon" />
 
 </RelativeLayout>

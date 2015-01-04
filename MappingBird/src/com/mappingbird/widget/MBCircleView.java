@@ -29,7 +29,7 @@ public class MBCircleView extends View {
 
 	private void init() {
 		mPaint = new Paint();
-		mPaint.setColor(getResources().getColor(R.color.graphic_orange));
+		mPaint.setColor(0xffffffff);
 	}
 	
 	@Override

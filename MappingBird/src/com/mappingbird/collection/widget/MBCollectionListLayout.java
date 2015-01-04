@@ -43,6 +43,7 @@ import com.mappingbird.common.Utils;
 
 public class MBCollectionListLayout extends RelativeLayout {
 	private final static float MAX_ALPHA = 0.8f;
+	private final static String TAG = "MB.Collection.List";
 	
 	private boolean isInited = false;
 	// Touch
@@ -104,10 +105,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
 	}
 
-	public void setCardClickListener() {
-		// TODO : Card clicked
-	}
-
 	public void closeLayout() {
 		// TODO : 關閉Layout
 	}
@@ -140,6 +137,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 	}
 
 	public void setPositionData(ArrayList<MBPointData> items) {
+		if(DeBug.DEBUG)
+			DeBug.d(TAG, "setPositionData, size = "+items.size());
 		mItemAdapter.setItem(items);
 		init();
 		initDefaultBitmap();
@@ -153,6 +152,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 	}
 
 	public void clickItem(MappingBirdItem item) {
+		if(DeBug.DEBUG)
+			DeBug.d(TAG, "clickItem,  item = "+item.mTitle);
 		MBPointData point = mItemAdapter.clickItem(item);
 		if(!mCurrentPoint.equals(point)) {
 			mCurrentPoint = point;
