@@ -87,6 +87,8 @@ public class BitmapLoader {
 						}
 					}
 
+					object.mImageArray.remove(null);
+					if(object.mImageArray.size() > 0) {
 					for (ImageView iv : object.mImageArray) {
 						if (iv != null && iv.getTag() != null && iv.getTag().equals(object.mParameters.getKey())) {
 							if(hasImage) {
@@ -97,6 +99,13 @@ public class BitmapLoader {
 							}
 						}
 					}
+					} else {
+						if(hasImage) {
+							if(object.mParameters.mBitmapDownloaded != null)
+								object.mParameters.mBitmapDownloaded.onDownloadComplete(object.mParameters.getKey(), null, object.mBmp, object.mParameters);
+						}
+					}
+
 
 					object.mImageArray.clear();
 					mDownloadingArray.remove(object.mParameters.getKey());

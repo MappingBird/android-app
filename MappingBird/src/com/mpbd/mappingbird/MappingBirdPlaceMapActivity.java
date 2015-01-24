@@ -1,4 +1,4 @@
-package com.mappingbird;
+package com.mpbd.mappingbird;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;

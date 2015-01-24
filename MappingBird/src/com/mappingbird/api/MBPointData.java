@@ -8,10 +8,10 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.BackgroundColorSpan;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.collection.widget.MBSpannBackground;
+import com.mappingbird.common.MBLocation;
 
 public class MBPointData implements Serializable {
 
@@ -34,14 +34,14 @@ public class MBPointData implements Serializable {
 	private ArrayList<ImageDetail> mImages;
 	private ArrayList<Tag> mTags;
 	private long CollectionId;
-	private Location mLocation;
+	private MBLocation mLocation;
 	private String mCreateTime;
 	private String mUpdateTime;
 	private double mLatitude;
 	private double mLongitude;
 
 	MBPointData(long id, String title, String coordinates, String type,
-			ArrayList<ImageDetail> images, ArrayList<Tag> tags, Location location) {
+			ArrayList<ImageDetail> images, ArrayList<Tag> tags, MBLocation location) {
 		mId = id;
 		mTitle = title;
 		mCoordinates = coordinates;
@@ -56,7 +56,7 @@ public class MBPointData implements Serializable {
 	MBPointData(long id, String title, String url, String type, String description,
 			String address, String phone, String name, String coordinates,
 			ArrayList<ImageDetail> images, ArrayList<Tag> tags,
-			long collectionId, Location location, String createTime,
+			long collectionId, MBLocation location, String createTime,
 			String updateTime) {
 		mId = id;
 		mTitle = title;
@@ -195,7 +195,7 @@ public class MBPointData implements Serializable {
 		return CollectionId;
 	}
 
-	public Location getLocation() {
+	public MBLocation getLocation() {
 		return mLocation;
 	}
 

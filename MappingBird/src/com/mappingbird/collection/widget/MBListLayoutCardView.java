@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.mappingbird.R;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
@@ -25,6 +23,7 @@ import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.Utils;
+import com.mpbd.mappingbird.R;
 
 public class MBListLayoutCardView extends RelativeLayout {
 

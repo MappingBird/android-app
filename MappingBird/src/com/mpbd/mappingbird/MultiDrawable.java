@@ -1,4 +1,4 @@
-package com.mappingbird;
+package com.mpbd.mappingbird;
 
 import java.util.List;
 

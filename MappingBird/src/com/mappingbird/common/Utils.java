@@ -11,8 +11,8 @@ import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.util.TypedValue;
 
-import com.mappingbird.R;
 import com.mappingbird.api.MBPointData;
+import com.mpbd.mappingbird.R;
 
 public class Utils {
 	public static boolean isNetworkAvailable(Context context) {

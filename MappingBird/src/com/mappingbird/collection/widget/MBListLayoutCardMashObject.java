@@ -6,9 +6,9 @@ import android.graphics.Paint;
 import android.os.Debug;
 import android.view.View;
 
-import com.mappingbird.R;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.mappingbird.R;
 
 
 public class MBListLayoutCardMashObject {

@@ -27,12 +27,12 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.mappingbird.MappingBirdDialog;
-import com.mappingbird.R;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPhotoAdapter.PhotoAdapterListener;
 import com.mappingbird.widget.MappingbirdAddPlaceInfoLayout;
+import com.mpbd.mappingbird.MappingBirdDialog;
+import com.mpbd.mappingbird.R;
 
 public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 

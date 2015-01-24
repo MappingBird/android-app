@@ -1,8 +1,8 @@
-package com.mappingbird.api;
+package com.mappingbird.common;
 
 import java.io.Serializable;
 
-public class Location implements Serializable{
+public class MBLocation implements Serializable{
 
 	private long mLId;
 	private String mLPlaceAddress;
@@ -14,13 +14,13 @@ public class Location implements Serializable{
 	private String mLCreateTime;
 	private String mLUpdateTime;
 
-	Location(long id, String coordinates, String address) {
+	public MBLocation(long id, String coordinates, String address) {
 		mLId = id;
 		mLCoordinates = coordinates;
 		mLPlaceAddress = address;
 	}
 	
-	Location(long id, String address, String phone, String name,
+	public MBLocation(long id, String address, String phone, String name,
 			String coordinates, String category, String createTime,
 			String updateTime) {
 		mLId = id;
@@ -75,7 +75,7 @@ public class Location implements Serializable{
 		return mLUpdateTime;
 	}
 
-	public boolean equals(Location o) {
+	public boolean equals(MBLocation o) {
 		return mLCoordinates.equals(o.mLCoordinates);
 	}
 }

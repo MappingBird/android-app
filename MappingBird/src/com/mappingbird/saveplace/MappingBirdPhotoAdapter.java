@@ -12,10 +12,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mappingbird.R;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.mappingbird.R;
 
 public class MappingBirdPhotoAdapter extends BaseAdapter  {
 	

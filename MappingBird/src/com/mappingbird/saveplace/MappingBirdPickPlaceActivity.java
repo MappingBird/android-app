@@ -16,13 +16,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.mappingbird.MappingBirdDialog;
-import com.mappingbird.R;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnExploreFourSquareListener;
 import com.mappingbird.api.OnSearchFourSquareListener;
 import com.mappingbird.api.VenueCollection;
 import com.mappingbird.common.DeBug;
+import com.mpbd.mappingbird.MappingBirdDialog;
+import com.mpbd.mappingbird.R;
 
 public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 

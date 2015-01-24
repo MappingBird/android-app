@@ -1,4 +1,4 @@
-package com.mappingbird.api;
+package com.common.location;
 
 import android.content.Context;
 import android.location.Location;
@@ -7,8 +7,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import com.mappingbird.common.DeBug;
-import com.mappingbird.common.Utils;
+import com.hlrt.common.DeBug;
+import com.hlrt.common.Utils;
 
 public class LocationService implements LocationListener {
 
@@ -18,6 +18,8 @@ public class LocationService implements LocationListener {
     boolean isNetworkEnabled = false;
 
     boolean canGetLocation = false;
+    
+    boolean mStartLocationService = false;
 
     final static long MIN_TIME_INTERVAL = 10 * 1000L;
 
@@ -30,13 +32,14 @@ public class LocationService implements LocationListener {
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 10
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 2000; // 1 minute
 
     protected LocationManager locationManager;
 
     private CountDownTimer timer = new CountDownTimer(5 * 1000, 5000) {
 
         public void onTick(long millisUntilFinished) {
+
         }
 
         public void onFinish() {
@@ -50,10 +53,13 @@ public class LocationService implements LocationListener {
 
 
     public void start() {
+    	if(mStartLocationService)
+    		return;
         if (Utils.isNetworkAvailable(mContext)) {
+        	mStartLocationService = true;
             try {
                 timer.start();
-                DeBug.i("LocationService start");
+                DeBug.i(TAG, "LocationService start");
                 locationManager = (LocationManager) mContext
                         .getSystemService(Context.LOCATION_SERVICE);
 
@@ -68,7 +74,7 @@ public class LocationService implements LocationListener {
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    DeBug.d(TAG, "Network");
+                    DeBug.d(TAG, "Network Enabled");
                     if (locationManager != null) {
                         Location tempLocation = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -95,11 +101,12 @@ public class LocationService implements LocationListener {
                             location = tempLocation;
                     }
                 }
-                DeBug.d("Location = "+ location);
+                DeBug.d(TAG, "Location = "+ location);
                 if(mLocationServiceListener != null)
                 	mLocationServiceListener.onLocationChanged(location);
-                
+                timer.cancel();
             } catch (Exception e) {
+            	mStartLocationService = false;
 //                onTaskError(e.getMessage());
                 e.printStackTrace();
             }
@@ -109,6 +116,9 @@ public class LocationService implements LocationListener {
     }
 
     public void stopUsingGPS() {
+    	if(DeBug.DEBUG)
+    		DeBug.e(TAG, "stopUsingGPS");
+    	mStartLocationService = false;
         if (locationManager != null) {
             locationManager.removeUpdates(LocationService.this);
         }
@@ -128,10 +138,12 @@ public class LocationService implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-    	DeBug.i("onLocationChanged : "+location.toString());
+    	timer.cancel();
+    	DeBug.i(TAG, "onLocationChanged : "+location.toString());
         if (location != null
                 && isBetterLocation(location, this.location)) {
             this.location = location;
+            DeBug.i(TAG, "onLocationChanged : loation changed");
             if(mLocationServiceListener != null)
             	mLocationServiceListener.onLocationChanged(location);
         }

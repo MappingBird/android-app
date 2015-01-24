@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mappingbird"
-    android:versionCode="100205"
-    android:versionName="1.2.5" >
+    package="com.mpbd.mappingbird"
+    android:versionCode="100300"
+    android:versionName="1.3.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -35,7 +35,7 @@
         </activity>
         -->
         <activity
-            android:name="com.mappingbird.MappingBirdLogoActivity"
+            android:name="com.mpbd.mappingbird.MappingBirdLogoActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,19 +44,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mappingbird.MappingBirdPlaceActivity"
+            android:name="com.mpbd.mappingbird.MappingBirdPlaceActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mappingbird.MappingBirdPlaceMapActivity"
+            android:name="com.mpbd.mappingbird.MappingBirdPlaceMapActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mappingbird.MappingBirdMainActivity"
+            android:name="com.mpbd.mappingbird.MappingBirdMainActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mappingbird.MappingBirdLoginActivity"
+            android:name="com.mpbd.mappingbird.MappingBirdLoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -64,7 +64,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mappingbird.MappingBirdProfileActivity"
+            android:name="com.mpbd.mappingbird.MappingBirdProfileActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -75,19 +75,25 @@
             android:name="com.mappingbird.saveplace.MappingBirdAddPlaceActivity"
             android:screenOrientation="portrait" >
         </activity>
-        
+
+        <service 
+            android:name="com.hlrt.common.services.CommonService"
+            android:exported="true">
+            
+        </service>
         
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyB2D1EcbKy9ffARb9auHuEWhC5hwqGTFnw" />
+            android:value="AIzaSyBlbCWPNXgMkH6f8v1Q3ZLJs_yAAAX6aS0" />
         <!--
         formal
-        AIzaSyAOoW4gqgCyPTGaXZj0-y3jkC3VfsNNbN0
+        AIzaSyAOoW4gqgCyPTGaXZj0-y3jkC3VfsNNbN0 - old
+        AIzaSyBZOPwIEZHVHegsqb5MDjT-tm3upt_cqnk
         Test
-        AIzaSyB2D1EcbKy9ffARb9auHuEWhC5hwqGTFnw
+        AIzaSyBlbCWPNXgMkH6f8v1Q3ZLJs_yAAAX6aS0
          -->
     </application>
 

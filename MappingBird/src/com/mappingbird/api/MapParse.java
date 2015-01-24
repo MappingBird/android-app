@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.content.Context;
 
 import com.mappingbird.common.DeBug;
+import com.mappingbird.common.MBLocation;
 
 class MapParse {
 
@@ -256,7 +257,7 @@ class MapParse {
 
 		return new MBPointData(pid, title, url, type, description,
 				place_address, place_phone, place_name, coordinates, images,
-				tags, collectionId, new Location(lId, placeaddress, placephone,
+				tags, collectionId, new MBLocation(lId, placeaddress, placephone,
 						placename, lcoordinates, category, lcreateTime,
 						lupdateTime), pcreateTime, pupdateTime);
 	}
@@ -336,7 +337,7 @@ class MapParse {
 			}
 
 			points.add(new MBPointData(pid, title, coordinates, type, images,
-					tags, new Location(lId, lcoordinates, address)));
+					tags, new MBLocation(lId, lcoordinates, address)));
 		}
 		return new Collection(cid, userId, name, points);
 	}

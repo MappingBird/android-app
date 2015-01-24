@@ -1,7 +1,7 @@
 package com.mappingbird.collection.widget;
 
-import com.mappingbird.R;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.mappingbird.R;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

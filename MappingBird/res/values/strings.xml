@@ -15,13 +15,13 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">LOG IN</string>
-    <string name="logining">LOGING IN...</string>
+    <string name="logining">Logging In</string>
     <string name="login1">Login</string>
     <string name="logout">LOG OUT</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="change_password">Change Password</string>
     <string name="get_direction">Get Direction</string>
-    <string name="login_description">Log in your MappingBird account to view the places yo save on www.mappingbird.com.</string>
+    <string name="login_description">Log into your MappingBird account to view the places you\'ve saved on www.mappingbird.com.</string>
 	<string name="no_data">No Data</string>
 	<string name="error">Error</string>
 	<string name="location_error">Location Error</string>

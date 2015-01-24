@@ -118,7 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#cccccc" />
+                    android:background="#e5e5e5" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -131,7 +131,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#cccccc" />
+                    android:background="#e5e5e5" />
 
                 <com.mappingbird.widget.MappingbirdFontIcon
                     android:id="@+id/collection_help_icon"

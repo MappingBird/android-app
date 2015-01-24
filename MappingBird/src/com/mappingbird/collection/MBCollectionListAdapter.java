@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.mappingbird.R;
 import com.mappingbird.api.Collections;
+import com.mpbd.mappingbird.R;
 
 class MBCollectionListAdapter extends BaseAdapter {
 	private ArrayList<MBCollectionListItem> mItems = new ArrayList<MBCollectionListItem>();

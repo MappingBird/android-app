@@ -1,4 +1,4 @@
-package com.mappingbird;
+package com.mpbd.mappingbird;
 
 import android.app.Activity;
 import android.content.Context;

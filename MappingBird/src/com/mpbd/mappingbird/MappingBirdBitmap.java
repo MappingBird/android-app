@@ -1,4 +1,4 @@
-package com.mappingbird;
+package com.mpbd.mappingbird;
 
 import java.io.InputStream;
 import java.net.URL;

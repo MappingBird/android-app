@@ -11,8 +11,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.mappingbird.R;
 import com.mappingbird.common.DeBug;
+import com.mpbd.mappingbird.R;
 
 public class MainActivity extends Activity {
 	static String TAG = "MainActivity";

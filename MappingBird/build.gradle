@@ -12,9 +12,9 @@ android {
 
 signingConfigs {
    myConfig{
-     storeFile file("Mappingbird.keystore")
+     storeFile file("MPBD_mappingbird.keystore")
     	storePassword "mappingbird"
-    	keyAlias "mappingbird"
+    	keyAlias "mpbd"
     	keyPassword "mappingbird"
     }
 }

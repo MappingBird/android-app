@@ -8,11 +8,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import com.mappingbird.R;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.mappingbird.R;
 
 
 public class MappingbirdGalleryItem {

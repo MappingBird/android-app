@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
-import com.mappingbird.R;
 import com.mappingbird.common.MappingBirdPref;
+import com.mpbd.mappingbird.R;
 
 public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 

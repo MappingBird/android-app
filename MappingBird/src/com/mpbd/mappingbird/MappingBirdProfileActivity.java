@@ -1,4 +1,4 @@
-package com.mappingbird;
+package com.mpbd.mappingbird;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -53,7 +53,7 @@ public class MappingBirdProfileActivity extends Activity implements
 			if (mApi.logOut()) {
 				Intent intent = new Intent();
 				intent.setClass(MappingBirdProfileActivity.this,
-						com.mappingbird.MappingBirdMainActivity.class);
+						com.mpbd.mappingbird.MappingBirdMainActivity.class);
 				MappingBirdProfileActivity.this.startActivity(intent);
 			} else {
 				Toast.makeText(getApplicationContext(), "Logout Fail!",

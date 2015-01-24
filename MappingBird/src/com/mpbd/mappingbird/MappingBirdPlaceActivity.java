@@ -1,4 +1,4 @@
-package com.mappingbird;
+package com.mpbd.mappingbird;
 
 import java.util.ArrayList;
 
@@ -93,7 +93,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private Context mContext = null;
 	private Dialog mLoadingDialog = null;
 
-	private int mTitleScrollHeight = 0;
 	private int mTitleScrollStart = 0;
 	private int mTitleScrollEnd = 0;
 	private int mTitleScrollDistance = 0;
@@ -145,8 +144,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mScrollView
 				.setOverScrollMode(ScrollView.OVER_SCROLL_IF_CONTENT_SCROLLS);
 
-		mTitleScrollHeight = (int) getResources().getDimension(R.dimen.place_gallery_height)
-				- (int) getResources().getDimension(R.dimen.title_bar_height);
 		mTitleScrollStart = (int)getResources().getDimension(R.dimen.place_title_bar_show_start);
 		mTitleScrollEnd = (int)getResources().getDimension(R.dimen.place_title_bar_show_end);
 		mTitleScrollDistance = (int)getResources().getDimension(R.dimen.place_title_bar_show_destince);

@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ListView;
 
-import com.mappingbird.R;
+import com.mpbd.mappingbird.R;
 
 public class MappingbirdListView extends ListView {
 

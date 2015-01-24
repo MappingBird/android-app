@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.Debug;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.GestureDetector.OnGestureListener;
 
-import com.mappingbird.R;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.DeBug;
+import com.mpbd.mappingbird.R;
 
 public class MappingbirdGallery extends ViewGroup {
 

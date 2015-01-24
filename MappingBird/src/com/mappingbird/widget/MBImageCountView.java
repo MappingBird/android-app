@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.mappingbird.R;
+import com.mpbd.mappingbird.R;
 
 public class MBImageCountView extends View {
 

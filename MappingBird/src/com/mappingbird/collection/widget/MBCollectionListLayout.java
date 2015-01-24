@@ -31,8 +31,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.mappingbird.MappingBirdItem;
-import com.mappingbird.R;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
@@ -40,6 +38,8 @@ import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.Utils;
+import com.mpbd.mappingbird.MappingBirdItem;
+import com.mpbd.mappingbird.R;
 
 public class MBCollectionListLayout extends RelativeLayout {
 	private final static float MAX_ALPHA = 0.8f;

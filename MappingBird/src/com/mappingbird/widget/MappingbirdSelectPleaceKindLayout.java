@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mappingbird.R;
 import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
+import com.mpbd.mappingbird.R;
 
 public class MappingbirdSelectPleaceKindLayout extends RelativeLayout {
 

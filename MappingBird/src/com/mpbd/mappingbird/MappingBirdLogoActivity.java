@@ -1,4 +1,6 @@
-package com.mappingbird;
+package com.mpbd.mappingbird;
+
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,12 +9,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Window;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.mappingbird.api.MappingBirdAPI;
+import com.mappingbird.common.DeBug;
 
 public class MappingBirdLogoActivity extends Activity {
 
@@ -34,7 +36,7 @@ public class MappingBirdLogoActivity extends Activity {
 				// get token from db
 				if (!isLogin) {
 					intent.setClass(MappingBirdLogoActivity.this,
-							com.mappingbird.MappingBirdMainActivity.class);
+							com.mpbd.mappingbird.MappingBirdMainActivity.class);
 				} else {
 					intent.setClass(MappingBirdLogoActivity.this,
 							com.mappingbird.collection.MappingBirdCollectionActivity.class);
@@ -77,5 +79,4 @@ public class MappingBirdLogoActivity extends Activity {
 		super.onResume();
 		mLoading.startAnimation(mRotateAnimation);
 	}
-
 }
