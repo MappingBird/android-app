@@ -97,7 +97,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private int mTitleScrollEnd = 0;
 	private int mTitleScrollDistance = 0;
 	private BitmapLoader mBitmapLoader;
-	private String mIconUrl = "http://stage.mappingbird.com/static/img/testimage.png";
+	private String mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_restaurant.png";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -193,11 +193,11 @@ public class MappingBirdPlaceActivity extends Activity implements
 				true);
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
-		
+
 		getPinIcon(mCurrentPoint.getTypeInt());
 		String mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center="+mPlaceLatitude+","+mPlaceLongitude+
 				"&zoom=16&size=720x400"+
-				"&markers=icon:"+"http://stage.mappingbird.com/static/img/testimage.png"
+				"&markers=icon:"+mIconUrl
 				+"%7C"+mPlaceLatitude+","+mPlaceLongitude;
 		DeBug.i("Test", "mapUrl = "+mapUrl);
 		mBitmapLoader = new BitmapLoader(this);
@@ -399,31 +399,31 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 	private int getPinIcon(int type) {
 		int iconRes = -1;
-		mIconUrl = "http://www.mappingbird.com/static/img/pin-scenicspot.png";
+		mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_general.png";
 		switch (type) {
 		case MBPointData.TYPE_RESTAURANT:
 			iconRes = R.drawable.category_icon_restaurant;
-			mIconUrl = "http://www.mappingbird.com/static/img/pin-restaurant.png";
+			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_restaurant.png";
 			break;
 		case MBPointData.TYPE_HOTEL:
 			iconRes = R.drawable.category_icon_hotel;
-			mIconUrl = "http://www.mappingbird.com/static/img/pin-hotel.png";
+			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_hotel.png";
 			break;
 		case MBPointData.TYPE_MALL:
 			iconRes = R.drawable.category_icon_mall;
-			mIconUrl = "http://www.mappingbird.com/static/img/pin-mall.png";
+			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_shopping.png";
 			break;
 		case MBPointData.TYPE_BAR:
 			iconRes = R.drawable.category_icon_bar;
-			mIconUrl = "http://www.mappingbird.com/static/img/pin-bar.png";
+			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_bar.png";
 			break;
 		case MBPointData.TYPE_MISC:
 			iconRes = R.drawable.category_icon_default;
-			mIconUrl = "http://www.mappingbird.com/static/img/pin-misc.png";
+			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_general.png";
 			break;
 		case MBPointData.TYPE_SCENICSPOT:
 			iconRes = R.drawable.category_icon_scene;
-			mIconUrl = "http://www.mappingbird.com/static/img/pin-scenicspot.png";
+			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_camera.png";
 			break;
 		}
 		return iconRes;
