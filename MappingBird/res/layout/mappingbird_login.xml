@@ -96,6 +96,7 @@
                     android:textColor="@color/font_normal"
                     android:text="@string/iconfont_help_circle"
                     android:background="@drawable/btn_question_bg"
+                    android:visibility="gone"
                     android:textSize="24dp" />
 
                 <com.mappingbird.widget.MappingbirdEditText
