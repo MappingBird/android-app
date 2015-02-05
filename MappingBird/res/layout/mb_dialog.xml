@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg_general"
+    android:orientation="vertical" >
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="#333"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:textSize="20dp" />
+
+    <View 
+        android:id="@+id/dialog_title_padding_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        />
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/dialog_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
+        android:paddingTop="8dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:visibility="gone"
+        android:textColor="#7f7f7f"
+        android:textSize="14dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal" >
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/dialog_negative"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#7f7f7f"
+            android:textSize="16dp"
+            android:visibility="gone"
+            android:background="@drawable/btn_dialog_bg" />
+
+        <View
+            android:id="@+id/dialog_divider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="#e5e5e5"
+            android:visibility="gone" />
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/dialog_positive"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#7f7f7f"
+            android:textSize="16dp"
+            android:visibility="gone"
+            android:background="@drawable/btn_dialog_bg" />
+    </LinearLayout>
+
+</LinearLayout>

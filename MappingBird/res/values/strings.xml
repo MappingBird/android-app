@@ -37,6 +37,11 @@
     
     <string name="str_retry">Retry</string>
     <string name="str_cancel">Cancel</string>
+    
+    <!-- Dialog -->
+    <string name="dialog_sign_out_title">Sign out!</string>
+    <string name="dialog_sign_out_description">Signing out will remove all your cached files from your device. Do you want to sign out?</string>
+
     <!--  -->
     <string name="place_last_update">Last edit - %s</string>
     

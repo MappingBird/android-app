@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.User;
+import com.mpbd.mappingbird.common.MBDialog;
 
 public class MappingBirdLoginActivity extends Activity implements
 		OnClickListener {
@@ -34,6 +35,7 @@ public class MappingBirdLoginActivity extends Activity implements
 	private String mEmails = null;
 	private String mPasswords = null;
 
+	private MBDialog mErrorDialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -119,16 +121,40 @@ public class MappingBirdLoginActivity extends Activity implements
 				isLoaing(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
-				Toast.makeText(getApplicationContext(),
-						getResources().getString(R.string.login_fail_network_error), Toast.LENGTH_SHORT).show();
+				onLoginError(getResources().getString(R.string.login_fail_network_error));
+//				Toast.makeText(getApplicationContext(),
+//						getResources().getString(R.string.login_fail_network_error), Toast.LENGTH_SHORT).show();
+				
 			} else if (statusCode == MappingBirdAPI.RESULT_ACCOUNT_ERROR) {
 				isLoaing(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
-				Toast.makeText(getApplicationContext(),
-						getResources().getString(R.string.login_fail_accout_error),
-						Toast.LENGTH_SHORT).show();
+				onLoginError(getResources().getString(R.string.login_fail_accout_error));
+//				Toast.makeText(getApplicationContext(),
+//						getResources().getString(R.string.login_fail_accout_error),
+//						Toast.LENGTH_SHORT).show();
+			} else {
+				isLoaing(false);
+				mEmail.setEnabled(true);
+				mPassword.setEnabled(true);
+				onLoginError(getResources().getString(R.string.login_fail_accout_error));
 			}
+		}
+	};
+
+	private void onLoginError(String message) {
+		mErrorDialog = new MBDialog(MappingBirdLoginActivity.this);
+		mErrorDialog.setTitle(getString(R.string.dialog_sign_out_title));
+		mErrorDialog.setDescription(getString(R.string.dialog_sign_out_description));
+		mErrorDialog.setPositiveBtn(getString(R.string.ok), 
+				mLoginOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
+		mErrorDialog.show();
+	}
+
+	private OnClickListener mLoginOkClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
 		}
 	};
 

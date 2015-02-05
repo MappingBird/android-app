@@ -66,6 +66,7 @@ import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.MappingBirdPlaceActivity;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.common.MBDialog;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
@@ -113,6 +114,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private Point mPositionEnd;
 
 	private Handler mHandler = new Handler();
+	
+	private MBDialog mDialog = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -280,11 +283,53 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				String error = "";
 				error = MappingBirdDialog.setError(statusCode, mContext);
 
-				MappingBirdDialog.createMessageDialog(mContext, title, error,
-						getResources().getString(R.string.ok),
-						positiveListener, null, null).show();
+//				MappingBirdDialog.createMessageDialog(mContext, title, error,
+//						getResources().getString(R.string.ok),
+//						positiveListener, null, null).show();
+				
+				mDialog = new MBDialog(mContext);
+				mDialog.setTitle(title);
+				mDialog.setDescription(error);
+				mDialog.setPositiveBtn(getString(R.string.ok), 
+						mErrorDialogOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.setCanceledOnTouchOutside(false);
+				mDialog.show();
 			}
 		};
+	};
+
+	private OnClickListener mErrorDialogOkClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			mDialog.dismiss();
+		}
+	};
+
+	private OnClickListener mSignOutOkClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			mDialog.dismiss();
+			// logout
+			if (mApi.logOut()) {
+				Intent intent = new Intent();
+				intent.setClass(MappingBirdCollectionActivity.this,
+						com.mpbd.mappingbird.MappingBirdMainActivity.class);
+				MappingBirdCollectionActivity.this.startActivity(intent);
+				finish();
+			} else {
+				Toast.makeText(getApplicationContext(), "Logout Fail!",
+						Toast.LENGTH_SHORT).show();
+			}			
+		}
+	};
+
+	private OnClickListener mSignOutCancelClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			mDialog.dismiss();
+		}
 	};
 
 	private OnClickListener mMenuClickListener = new OnClickListener() {
@@ -297,22 +342,18 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				intent.setData(Uri.parse("mailto:"));
 				intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "mapping@mappingbird.com" });
 				intent.putExtra(Intent.EXTRA_SUBJECT, "MappingBird Feedback , ");
-
 				startActivity(intent);
 				break;
 			}
 			case R.id.collection_logout_icon: {
-				// logout
-				if (mApi.logOut()) {
-					Intent intent = new Intent();
-					intent.setClass(MappingBirdCollectionActivity.this,
-							com.mpbd.mappingbird.MappingBirdMainActivity.class);
-					MappingBirdCollectionActivity.this.startActivity(intent);
-					finish();
-				} else {
-					Toast.makeText(getApplicationContext(), "Logout Fail!",
-							Toast.LENGTH_SHORT).show();
-				}
+				mDialog = new MBDialog(mContext);
+				mDialog.setTitle(getString(R.string.dialog_sign_out_title));
+				mDialog.setDescription(getString(R.string.dialog_sign_out_description));
+				mDialog.setPositiveBtn(getString(R.string.ok), 
+						mSignOutOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.setNegativeBtn(getString(R.string.str_cancel), 
+						mSignOutCancelClickListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.show();
 				break;
 			}
 			default:
