@@ -19,6 +19,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
@@ -208,8 +209,8 @@ class NetwokConnection {
 		String rsp = null;
 		HttpUriRequest request = null;
 		HttpParams httpParameters = new BasicHttpParams();
-		// HttpConnectionParams.setConnectionTimeout(httpParameters, 60 * 1000);
-		// HttpConnectionParams.setSoTimeout(httpParameters, 60 * 1000);
+		HttpConnectionParams.setConnectionTimeout(httpParameters, 10 * 1000);
+		HttpConnectionParams.setSoTimeout(httpParameters, 10 * 1000);
 		DefaultHttpClient client = new DefaultHttpClient(httpParameters);
 
 		if (method.equals("GET")) {

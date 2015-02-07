@@ -9,6 +9,8 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
 import android.widget.EditText;
@@ -68,12 +70,17 @@ public class MappingBirdLoginActivity extends Activity implements
 			mLoginText
 					.setText(this.getResources().getString(R.string.logining));
 			mLoginText.setTextColor(Color.WHITE);
+			Animation anim = AnimationUtils.loadAnimation(MappingBirdLoginActivity.this, R.anim.loading_animation_rotate);
 			mLoginLoadingIcon.setVisibility(View.VISIBLE);
+			mLoginLoadingIcon.startAnimation(anim);
+			mLoginDescription.setEnabled(false);
 			mLogIn.setEnabled(false);
 		} else {
 			mLoginText.setText(this.getResources().getString(R.string.login));
 			mLoginText.setTextColor(Color.WHITE);
+			mLoginLoadingIcon.clearAnimation();
 			mLoginLoadingIcon.setVisibility(View.GONE);
+			mLoginDescription.setEnabled(true);
 			mLogIn.setEnabled(true);
 		}
 	}
@@ -148,6 +155,7 @@ public class MappingBirdLoginActivity extends Activity implements
 		mErrorDialog.setDescription(getString(R.string.dialog_sign_out_description));
 		mErrorDialog.setPositiveBtn(getString(R.string.ok), 
 				mLoginOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
+		mErrorDialog.setCanceledOnTouchOutside(false);
 		mErrorDialog.show();
 	}
 
@@ -155,6 +163,10 @@ public class MappingBirdLoginActivity extends Activity implements
 		
 		@Override
 		public void onClick(View v) {
+			if(mErrorDialog != null) {
+				mErrorDialog.dismiss();
+				mErrorDialog = null;
+			}
 		}
 	};
 
