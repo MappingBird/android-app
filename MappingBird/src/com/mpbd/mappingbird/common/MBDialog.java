@@ -6,11 +6,15 @@ import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.MBUtil;
 
 
 public class MBDialog {
@@ -34,6 +38,7 @@ public class MBDialog {
 	
 	private void initView(Context context) {
 		View view = (LayoutInflater.from(context)).inflate(R.layout.mb_dialog, null);
+
 		if(view != null) {
 			mDialogTitle = (TextView) view.findViewById(R.id.dialog_title);
 			mDialogTitlePaddingBottom = view.findViewById(R.id.dialog_title_padding_bottom);
@@ -42,7 +47,28 @@ public class MBDialog {
 			mDialogPositiveBtn = (TextView) view.findViewById(R.id.dialog_positive);
 			mDialogDivider = view.findViewById(R.id.dialog_divider);
 			mDialog = new Dialog(context, R.style.MBDialog);
+			setDialogSize(MBUtil.getWindowWidth(context), 0);
 			mDialog.setContentView(view);
+		}
+	}
+
+	private void setDialogSize(int width, int height) {
+		try {
+		if(mDialog != null) {
+			Window window = mDialog.getWindow();
+			WindowManager.LayoutParams lp = window.getAttributes();
+			lp.width = width;
+			if(height > 0)
+				lp.height = height;
+			window.setAttributes(lp);
+		}
+		} catch(Exception e) {
+			
+		}
+		if(mDialogTitle != null) {
+			LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mDialogTitle.getLayoutParams();
+			lp.width = width;
+			mDialogTitle.setLayoutParams(lp);
 		}
 	}
 

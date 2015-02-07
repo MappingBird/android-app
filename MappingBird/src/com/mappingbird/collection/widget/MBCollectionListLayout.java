@@ -37,9 +37,9 @@ import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
-import com.mappingbird.common.Utils;
 import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.Utils;
 
 public class MBCollectionListLayout extends RelativeLayout {
 	private final static float MAX_ALPHA = 0.8f;

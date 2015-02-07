@@ -30,12 +30,12 @@ import com.mappingbird.api.OnGetPointsListener;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
-import com.mappingbird.common.Utils;
 import com.mappingbird.widget.MBImageCountView;
 import com.mappingbird.widget.MappingbirdGallery;
 import com.mappingbird.widget.MappingbirdGallery.MBGalleryListener;
 import com.mappingbird.widget.MappingbirdScrollView;
 import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
+import com.mpbd.mappingbird.util.Utils;
 
 public class MappingBirdPlaceActivity extends Activity implements
 		OnClickListener {

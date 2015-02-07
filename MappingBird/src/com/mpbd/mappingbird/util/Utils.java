@@ -1,4 +1,4 @@
-package com.mappingbird.common;
+package com.mpbd.mappingbird.util;
 
 import java.text.DecimalFormat;
 
@@ -12,6 +12,8 @@ import android.text.style.AbsoluteSizeSpan;
 import android.util.TypedValue;
 
 import com.mappingbird.api.MBPointData;
+import com.mappingbird.common.DistanceObject;
+import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
 
 public class Utils {

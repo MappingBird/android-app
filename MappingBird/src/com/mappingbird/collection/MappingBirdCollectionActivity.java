@@ -29,6 +29,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.common.location.LocationService;
+import com.common.location.LocationService.LocationServiceListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -59,7 +61,6 @@ import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MainUIMessenger;
 import com.mappingbird.common.MainUIMessenger.OnMBLocationChangedListener;
 import com.mappingbird.common.MappingBirdPref;
-import com.mappingbird.common.Utils;
 import com.mpbd.mappingbird.MappingBirdBitmap;
 import com.mpbd.mappingbird.MappingBirdBitmap.MappingBirdBitmapListner;
 import com.mpbd.mappingbird.MappingBirdDialog;
@@ -67,6 +68,7 @@ import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.MappingBirdPlaceActivity;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
+import com.mpbd.mappingbird.util.Utils;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
@@ -102,7 +104,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private Marker mClickedMarker = null;
 	private Cluster<MappingBirdItem> mClickedCluster;
 
-//	private LocationService mLocationService;
+	private LocationService mLocationService;
 	
 	private CustomInfoWindowAdapter mInfoWindowAdapter;
 	private MBCollectionListLayout mMBCollectionListLayout;
@@ -202,9 +204,18 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				title = getResources().getString(R.string.error);
 				String error = "";
 				error = MappingBirdDialog.setError(statusCode, mContext);
-				MappingBirdDialog.createMessageDialog(mContext, title, error,
-						getResources().getString(R.string.ok),
-						positiveListener, null, null).show();
+//				MappingBirdDialog.createMessageDialog(mContext, title, error,
+//						getResources().getString(R.string.ok),
+//						positiveListener, null, null).show();
+				
+				mDialog = new MBDialog(mContext);
+				mDialog.setTitle(title);
+				mDialog.setDescription(error);
+				mDialog.setPositiveBtn(getString(R.string.ok), 
+						mErrorDialogOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.setCanceledOnTouchOutside(false);
+				mDialog.show();
+
 			}
 		}
 	};
@@ -212,10 +223,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		if(mLocationService != null)
-//			mLocationService.start();
-		MainUIMessenger.getIns().addLocationListener(mOnMBLocationChangedListener);
-		CommonServiceClient.startLocation(this);
+		if(mLocationService != null)
+			mLocationService.start();
+//		MainUIMessenger.getIns().addLocationListener(mOnMBLocationChangedListener);
+//		CommonServiceClient.startLocation(this);
 	}
 
 	
@@ -229,10 +240,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
-//		if(mLocationService != null)
-//			mLocationService.stopUsingGPS();
-		MainUIMessenger.getIns().removeLocationListener(mOnMBLocationChangedListener);
-		CommonServiceClient.stopLocation(this);
+		if(mLocationService != null)
+			mLocationService.stopUsingGPS();
+//		MainUIMessenger.getIns().removeLocationListener(mOnMBLocationChangedListener);
+//		CommonServiceClient.stopLocation(this);
 	}
 
 	private class DrawerItemClickListener implements
@@ -302,6 +313,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			mDialog.dismiss();
+			MappingBirdCollectionActivity.this.finish();
 		}
 	};
 
@@ -406,31 +418,31 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 	};
 	
-	android.content.DialogInterface.OnClickListener mLocationRetryListener = new android.content.DialogInterface.OnClickListener() {
+	View.OnClickListener mLocationRetryListener = new View.OnClickListener() {
 
 		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			dialog.dismiss();
-//			if(mLocationService != null)
-//				mLocationService.start();
-			CommonServiceClient.startLocation(MappingBirdCollectionActivity.this);
+		public void onClick(View v) {
+			mDialog.dismiss();
+			if(mLocationService != null)
+				mLocationService.start();
+//			CommonServiceClient.startLocation(MappingBirdCollectionActivity.this);
 		}
 	};
 
-	android.content.DialogInterface.OnClickListener mCancelListener = new android.content.DialogInterface.OnClickListener() {
+	View.OnClickListener mCancelListener = new View.OnClickListener() {
 
 		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			dialog.dismiss();
+		public void onClick(View v) {
+			mDialog.dismiss();
 			finish();
 		}
 	};
 
-	android.content.DialogInterface.OnClickListener positiveListener = new android.content.DialogInterface.OnClickListener() {
+	View.OnClickListener positiveListener = new View.OnClickListener() {
 
 		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			dialog.dismiss();
+		public void onClick(View v) {
+			mDialog.dismiss();
 		}
 	};
 
@@ -450,12 +462,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 		if (mMap != null) {
 			DeBug.i(TAG, "mMap !=  null");
-//			if(mLocationService == null) {
-//				mLocationService = new LocationService(mContext);
-//				mLocationService.setLocationServiceListener(mMyLocationChangedListener);
-//			}
-//			mLocationService.start();
-			CommonServiceClient.startLocation(this);
+			if(mLocationService == null) {
+				mLocationService = new LocationService(mContext);
+				mLocationService.setLocationServiceListener(mMyLocationChangedListener);
+			}
+			mLocationService.start();
+//			CommonServiceClient.startLocation(this);
 		}
 		
 		if(mMyLocation != null) {
@@ -466,43 +478,56 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 	}
 
+	private void setMyLocation(Location location) {
+		if (mLoadingDialog != null && mLoadingDialog.isShowing())
+			mLoadingDialog.dismiss();
+		if(location == null) {
+			// Error
+			String title = "";
+			title = getResources().getString(R.string.error);
+			String error = mContext.getString(R.string.location_error);
+//			MappingBirdDialog.createMessageDialog(mContext, title, error,
+//					getResources().getString(R.string.str_cancel),
+//					mCancelListener, 
+//					getResources().getString(R.string.str_retry),
+//					mLocationRetryListener
+//					).show();
+			mDialog = new MBDialog(mContext);
+			mDialog.setTitle(title);
+			mDialog.setDescription(error);
+			mDialog.setNegativeBtn(getString(R.string.str_cancel), 
+					mCancelListener, MBDialog.BTN_STYLE_DEFAULT);
+			mDialog.setPositiveBtn(getString(R.string.str_retry), 
+					mLocationRetryListener, MBDialog.BTN_STYLE_DEFAULT);
+			mDialog.setCanceledOnTouchOutside(false);
+			mDialog.show();
+		} else {
+			DeBug.i(TAG, "mMyLocationChangedListener : location = "+location.toString());
+			mMyLocation = new LatLng(location.getLatitude(),
+					location.getLongitude());
+			mMBCollectionListLayout.setMyLocation(mMyLocation);
+			if (mMyMarker != null) {
+				mMyMarker.setPosition(mMyLocation);
+				BitmapDescriptor icon = BitmapDescriptorFactory
+					.fromResource(R.drawable.icon_current_location);
+				if(icon != null)
+					mMyMarker.setIcon(icon);
+				mMyMarker.setTitle(getResources().getString(
+						R.string.my_loaction));
+			} else {
+				setUpMap();
+			}
+		}
+	}
+
 	private OnMBLocationChangedListener mOnMBLocationChangedListener = new OnMBLocationChangedListener() {
 		
 		@Override
 		public void onLocationChanged(Location location) {
-			if (mLoadingDialog != null && mLoadingDialog.isShowing())
-				mLoadingDialog.dismiss();
-			if(location == null) {
-				// Error
-				String title = "";
-				title = getResources().getString(R.string.error);
-				String error = mContext.getString(R.string.location_error);
-				MappingBirdDialog.createMessageDialog(mContext, title, error,
-						getResources().getString(R.string.str_cancel),
-						mCancelListener, 
-						getResources().getString(R.string.str_retry),
-						mLocationRetryListener
-						).show();
-			} else {
-				DeBug.i(TAG, "mMyLocationChangedListener : location = "+location.toString());
-				mMyLocation = new LatLng(location.getLatitude(),
-						location.getLongitude());
-				mMBCollectionListLayout.setMyLocation(mMyLocation);
-				if (mMyMarker != null) {
-					mMyMarker.setPosition(mMyLocation);
-					BitmapDescriptor icon = BitmapDescriptorFactory
-						.fromResource(R.drawable.icon_current_location);
-					if(icon != null)
-						mMyMarker.setIcon(icon);
-					mMyMarker.setTitle(getResources().getString(
-							R.string.my_loaction));
-				} else {
-					setUpMap();
-				}
-			}
+			setMyLocation(location);
 		}
 	};
-/*
+
 	private LocationServiceListener mMyLocationChangedListener = new LocationServiceListener() {
 		
 		@Override
@@ -511,41 +536,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				
 				@Override
 				public void run() {
-					if (mLoadingDialog != null && mLoadingDialog.isShowing())
-						mLoadingDialog.dismiss();
-					if(location == null) {
-						// Error
-						String title = "";
-						title = getResources().getString(R.string.error);
-						String error = mContext.getString(R.string.location_error);
-						MappingBirdDialog.createMessageDialog(mContext, title, error,
-								getResources().getString(R.string.str_cancel),
-								mCancelListener, 
-								getResources().getString(R.string.str_retry),
-								mLocationRetryListener
-								).show();
-					} else {
-						DeBug.i(TAG, "mMyLocationChangedListener : location = "+location.toString());
-						mMyLocation = new LatLng(location.getLatitude(),
-								location.getLongitude());
-						mMBCollectionListLayout.setMyLocation(mMyLocation);
-						if (mMyMarker != null) {
-							mMyMarker.setPosition(mMyLocation);
-							BitmapDescriptor icon = BitmapDescriptorFactory
-								.fromResource(R.drawable.icon_current_location);
-							if(icon != null)
-								mMyMarker.setIcon(icon);
-							mMyMarker.setTitle(getResources().getString(
-									R.string.my_loaction));
-						} else {
-							setUpMap();
-						}
-					}
+					setMyLocation(location);
 				}
 			});
 		}
 	};
-*/
+
 	private void setUpMap() {
 		if(mMap == null)
 			return;

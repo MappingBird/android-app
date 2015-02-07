@@ -22,8 +22,8 @@ import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.MappingBirdApplication;
-import com.mappingbird.common.Utils;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.Utils;
 
 public class MBListLayoutCardView extends RelativeLayout {
 
@@ -158,7 +158,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 							mIcon.setScaleType(ScaleType.CENTER_CROP);
 					}
 				};
-				mBitmapLoader.getBitmap(mIcon, params, false);
+//				mBitmapLoader.getBitmap(mIcon, params, false);
 			} else {
 				mIcon.setScaleType(ScaleType.CENTER);
 				mIcon.setImageResource(R.drawable.default_problem);
