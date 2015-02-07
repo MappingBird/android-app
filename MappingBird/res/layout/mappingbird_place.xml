@@ -1,282 +1,303 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.mappingbird.widget.MappingbirdPlaceLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/trip_place_framelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.mappingbird.widget.MappingbirdScrollView
-        android:id="@+id/trip_place_scrollview"
+    <RelativeLayout
+        android:id="@+id/trip_place_scroll_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff"
-        android:fadingEdge="none"
-        android:fadingEdgeLength="0dp"
-        android:scrollbarAlwaysDrawHorizontalTrack="false"
-        android:scrollbarAlwaysDrawVerticalTrack="false"
-        android:scrollbars="none" >
+        android:layout_height="match_parent" >
 
-        <LinearLayout
-            android:id="@+id/trip_place_detail_layout"
+        <com.mappingbird.widget.MappingbirdScrollView
+            android:id="@+id/trip_place_scrollview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <RelativeLayout
-                android:id="@+id/trip_place_photo"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/place_gallery_layout_height"
-                android:background="#FFFFFF" >
-
-                <ImageView
-                    android:id="@+id/trip_no_photo"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/place_gallery_height"
-                    android:background="@drawable/default_noimages"
-                    android:visibility="gone" />
-
-                <com.mappingbird.widget.MappingbirdGallery
-                    android:id="@+id/trip_photo"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/place_gallery_height"
-                    android:background="#000" />
-
-                <com.mappingbird.widget.MappingbirdFontIcon
-                    android:id="@+id/pin_icon"
-                    android:layout_width="64dp"
-                    android:layout_height="56dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/map_mark_normal"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="24dp"
-                    android:textStyle="bold" />
-
-                <com.mappingbird.widget.MBImageCountView
-                    android:id="@+id/trip_photo_count_point"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/trip_photo"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp"
-                    android:visibility="gone" />
-
-                <com.mappingbird.widget.MappingbirdTextView
-                    android:id="@+id/trip_photo_count_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/trip_photo"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/font_hint"
-                    android:textSize="12dp"
-                    android:visibility="gone" />
-            </RelativeLayout>
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0dp"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:scrollbarAlwaysDrawVerticalTrack="false"
+            android:scrollbars="none" >
 
             <LinearLayout
-                android:id="@+id/trip_detail_content"
+                android:id="@+id/trip_place_detail_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="#fff"
-                android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp" >
+                android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/palce_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/font_normal"
-                    android:textSize="20dp" />
+                <RelativeLayout
+                    android:id="@+id/trip_place_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/place_gallery_layout_height"
+                    android:background="#FFFFFF" >
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="6dp"
-                    android:background="#fff" />
+                    <ImageView
+                        android:id="@+id/trip_no_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/place_gallery_height"
+                        android:background="@drawable/default_noimages"
+                        android:visibility="gone" />
+
+                    <com.mappingbird.widget.MappingbirdGallery
+                        android:id="@+id/trip_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/place_gallery_height"
+                        android:background="#000" />
+
+                    <com.mappingbird.widget.MappingbirdFontIcon
+                        android:id="@+id/pin_icon"
+                        android:layout_width="64dp"
+                        android:layout_height="56dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/map_mark_normal"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="24dp"
+                        android:textStyle="bold" />
+
+                    <com.mappingbird.widget.MBImageCountView
+                        android:id="@+id/trip_photo_count_point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/trip_photo"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone" />
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:id="@+id/trip_photo_count_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/trip_photo"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/font_hint"
+                        android:textSize="12dp"
+                        android:visibility="gone" />
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/trip_place_phone_layout"
+                    android:id="@+id/trip_detail_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone"
-                    android:orientation="horizontal" >
+                    android:background="#fff"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp" >
 
-                    <com.mappingbird.widget.MappingbirdFontIcon
+                    <TextView
+                        android:id="@+id/palce_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/iconfont_phone"
-                        android:textColor="@color/graphic_symbol"
-                        android:textSize="22sp" />
+                        android:textColor="@color/font_normal"
+                        android:textSize="20dp" />
 
-                    <com.mappingbird.widget.MappingbirdTextView
-                        android:id="@+id/trip_place_phone"
-                        style="@style/TextStyle_Body_Small"
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="6dp"
+                        android:background="#fff" />
+
+                    <LinearLayout
+                        android:id="@+id/trip_place_phone_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:autoLink="phone"
-                        android:paddingLeft="6dp"
-                        android:textColor="@color/font_normal" />
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
+
+                        <com.mappingbird.widget.MappingbirdFontIcon
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/iconfont_phone"
+                            android:textColor="@color/graphic_symbol"
+                            android:textSize="22sp" />
+
+                        <com.mappingbird.widget.MappingbirdTextView
+                            android:id="@+id/trip_place_phone"
+                            style="@style/TextStyle_Body_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:autoLink="phone"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/font_normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/trip_place_address_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
+
+                        <com.mappingbird.widget.MappingbirdFontIcon
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/iconfont_map_maker"
+                            android:textColor="@color/graphic_symbol"
+                            android:textSize="22sp" />
+
+                        <com.mappingbird.widget.MappingbirdTextView
+                            android:id="@+id/trip_place_address"
+                            style="@style/TextStyle_Body_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:autoLink="map"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/font_normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/trip_place_date_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
+
+                        <com.mappingbird.widget.MappingbirdFontIcon
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/iconfont_clock"
+                            android:textColor="@color/graphic_symbol"
+                            android:textSize="22sp" />
+
+                        <com.mappingbird.widget.MappingbirdTextView
+                            android:id="@+id/trip_place_date"
+                            style="@style/TextStyle_Body_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/font_normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/trip_place_tag_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
+
+                        <com.mappingbird.widget.MappingbirdFontIcon
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/iconfont_tag"
+                            android:textColor="@color/graphic_symbol"
+                            android:textSize="22sp" />
+
+                        <com.mappingbird.widget.MappingbirdTextView
+                            android:id="@+id/trip_place_tag"
+                            style="@style/TextStyle_Body_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="6dp"
+                            android:textColor="@color/font_normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/trip_place_link_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone" >
+
+                        <com.mappingbird.widget.MappingbirdFontIcon
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/iconfont_link"
+                            android:textColor="@color/graphic_symbol"
+                            android:textSize="22sp" />
+
+                        <com.mappingbird.widget.MappingbirdTextView
+                            android:id="@+id/trip_place_link"
+                            style="@style/TextStyle_Body_Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:autoLink="web"
+                            android:paddingLeft="6dp"
+                            android:singleLine="true"
+                            android:textColor="@color/font_normal" />
+                    </LinearLayout>
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:id="@+id/trip_place_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:autoLink="all"
+                        android:lineSpacingExtra="6dp"
+                        android:textColor="@color/font_normal"
+                        android:textSize="14sp" />
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:id="@+id/trip_place_last_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/font_hint"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/trip_place_address_layout"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="16dp"
-                    android:visibility="gone"
-                    android:orientation="horizontal" >
+                    android:layout_marginTop="20dp" >
 
-                    <com.mappingbird.widget.MappingbirdFontIcon
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/iconfont_map_maker"
-                        android:textColor="@color/graphic_symbol"
-                        android:textSize="22sp" />
+                    <ImageView
+                        android:id="@+id/trip_map_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:scaleType="fitXY" />
 
-                    <com.mappingbird.widget.MappingbirdTextView
-                        android:id="@+id/trip_place_address"
-                        style="@style/TextStyle_Body_Small"
+                    <TextView
+                        android:id="@+id/trip_map_address"
+                        style="@style/TextStyle_Body"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:autoLink="map"
-                        android:paddingLeft="6dp"
-                        android:textColor="@color/font_normal" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/trip_place_date_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="gone"
-                    android:orientation="horizontal" >
-
-                    <com.mappingbird.widget.MappingbirdFontIcon
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/iconfont_clock"
-                        android:textColor="@color/graphic_symbol"
-                        android:textSize="22sp" />
-
-                    <com.mappingbird.widget.MappingbirdTextView
-                        android:id="@+id/trip_place_date"
-                        style="@style/TextStyle_Body_Small"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="6dp"
-                        android:textColor="@color/font_normal" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/trip_place_tag_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="gone"
-                    android:orientation="horizontal" >
-
-                    <com.mappingbird.widget.MappingbirdFontIcon
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/iconfont_tag"
-                        android:textColor="@color/graphic_symbol"
-                        android:textSize="22sp" />
-
-                    <com.mappingbird.widget.MappingbirdTextView
-                        android:id="@+id/trip_place_tag"
-                        style="@style/TextStyle_Body_Small"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingLeft="6dp"
-                        android:textColor="@color/font_normal" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/trip_place_link_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="gone"
-                    android:orientation="horizontal" >
-
-                    <com.mappingbird.widget.MappingbirdFontIcon
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/iconfont_link"
-                        android:textColor="@color/graphic_symbol"
-                        android:textSize="22sp" />
-
-                    <com.mappingbird.widget.MappingbirdTextView
-                        android:id="@+id/trip_place_link"
-                        style="@style/TextStyle_Body_Small"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:autoLink="web"
-                        android:paddingLeft="6dp"
-                        android:singleLine="true"
-                        android:textColor="@color/font_normal" />
-                </LinearLayout>
-
-                <com.mappingbird.widget.MappingbirdTextView
-                    android:id="@+id/trip_place_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:autoLink="all"
-                    android:lineSpacingExtra="6dp"
-                    android:textColor="@color/font_normal"
-                    android:textSize="14sp" />
-
-                <com.mappingbird.widget.MappingbirdTextView
-                    android:id="@+id/trip_place_last_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/font_hint"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
+                        android:background="#B2FFFFFF"
+                        android:padding="16dp"
+                        android:textColor="#707070"
+                        android:visibility="gone" />
+                </RelativeLayout>
             </LinearLayout>
+        </com.mappingbird.widget.MappingbirdScrollView>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp" >
-
-                <ImageView
-                    android:id="@+id/trip_map_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:scaleType="fitXY" />
-
-                <TextView
-                    android:id="@+id/trip_map_address"
-                    style="@style/TextStyle_Body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#B2FFFFFF"
-                    android:padding="16dp"
-                    android:textColor="#707070"
-                    android:visibility="gone" />
-            </RelativeLayout>
-        </LinearLayout>
-    </com.mappingbird.widget.MappingbirdScrollView>
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/get_direction_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_bule_circle"
+            android:gravity="center"
+            android:text="@string/iconfont_directions"
+            android:textColor="#fff"
+            android:textSize="26dp"
+            android:visibility="gone" >
+        </com.mappingbird.widget.MappingbirdFontIcon>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/trip_detail_title_back"
@@ -326,19 +347,5 @@
             android:layout_alignParentRight="true"
             android:text="@string/iconfont_share" />
     </RelativeLayout>
-
-    <com.mappingbird.widget.MappingbirdFontIcon
-        android:id="@+id/get_direction_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/btn_bule_circle"
-        android:gravity="center"
-        android:text="@string/iconfont_directions"
-        android:textColor="#fff"
-        android:textSize="26dp"
-        android:visibility="gone" >
-    </com.mappingbird.widget.MappingbirdFontIcon>
 
 </com.mappingbird.widget.MappingbirdPlaceLayout>

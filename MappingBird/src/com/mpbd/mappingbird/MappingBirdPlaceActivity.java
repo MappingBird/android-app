@@ -33,6 +33,8 @@ import com.mappingbird.common.DeBug;
 import com.mappingbird.widget.MBImageCountView;
 import com.mappingbird.widget.MappingbirdGallery;
 import com.mappingbird.widget.MappingbirdGallery.MBGalleryListener;
+import com.mappingbird.widget.MappingbirdPlaceLayout;
+import com.mappingbird.widget.MappingbirdPlaceLayout.onPlaceLayoutListener;
 import com.mappingbird.widget.MappingbirdScrollView;
 import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
 import com.mpbd.mappingbird.util.Utils;
@@ -44,6 +46,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private static final String TAG = MappingBirdPlaceActivity.class.getName();
 
 	private Animation mDirectionAnimation = null;
+
+	private MappingbirdPlaceLayout mPlaceFrameLayout;
 
 	private View mGetDirection = null;
 	private MBPointData mCurrentPoint;
@@ -103,6 +107,15 @@ public class MappingBirdPlaceActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mappingbird_place);
+		mPlaceFrameLayout = (MappingbirdPlaceLayout) findViewById(R.id.trip_place_framelayout);
+		mPlaceFrameLayout.setPlaceLayoutListener(new onPlaceLayoutListener() {
+			
+			@Override
+			public void onFinish() {
+				MappingBirdPlaceActivity.this.finish();
+			}
+		});
+
 		mGetDirection = findViewById(R.id.get_direction_layout);
 		mTitle = (TextView) findViewById(R.id.trip_detail_title_name);
 		mPlaceName = (TextView) findViewById(R.id.palce_name);

@@ -19,8 +19,17 @@
 
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:windowAnimationStyle">@style/activity_animation</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
-
+    
+    <style name="AppPlaceTheme" parent="@android:Theme.Translucent">
+        <item name="android:windowAnimationStyle">@style/activity_animation</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    
     <style name="LoadingDialog" parent="@android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>

@@ -158,7 +158,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 							mIcon.setScaleType(ScaleType.CENTER_CROP);
 					}
 				};
-//				mBitmapLoader.getBitmap(mIcon, params, false);
+				mBitmapLoader.getBitmap(mIcon, params, false);
 			} else {
 				mIcon.setScaleType(ScaleType.CENTER);
 				mIcon.setImageResource(R.drawable.default_problem);
