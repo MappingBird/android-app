@@ -61,6 +61,7 @@ import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MainUIMessenger;
 import com.mappingbird.common.MainUIMessenger.OnMBLocationChangedListener;
 import com.mappingbird.common.MappingBirdPref;
+import com.mpbd.mappingbird.MBSettingsActivity;
 import com.mpbd.mappingbird.MappingBirdBitmap;
 import com.mpbd.mappingbird.MappingBirdBitmap.MappingBirdBitmapListner;
 import com.mpbd.mappingbird.MappingBirdDialog;
@@ -136,6 +137,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		findViewById(R.id.collection_logout_icon).setOnClickListener(mMenuClickListener);
 		findViewById(R.id.collection_help_layout).setOnClickListener(mMenuClickListener);
+		findViewById(R.id.collection_settings_layout).setOnClickListener(mMenuClickListener);
 
 		mTitleText = (TextView) findViewById(R.id.title_text);
 		mTitleNumber = (TextView) findViewById(R.id.title_number);
@@ -313,7 +315,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			mDialog.dismiss();
-			MappingBirdCollectionActivity.this.finish();
+//			MappingBirdCollectionActivity.this.finish();
 		}
 	};
 
@@ -349,10 +351,15 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.collection_settings_layout: {
+				Intent intent = new Intent(mContext, MBSettingsActivity.class);
+				startActivity(intent);
+				break;
+			}
 			case R.id.collection_help_layout: {
 				Intent intent = new Intent(Intent.ACTION_SENDTO);
 				intent.setData(Uri.parse("mailto:"));
-				intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "mapping@mappingbird.com" });
+				intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "feedback@mappingbird.com" });
 				intent.putExtra(Intent.EXTRA_SUBJECT, "MappingBird Feedback , ");
 				startActivity(intent);
 				break;

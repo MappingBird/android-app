@@ -65,6 +65,9 @@ public class MBCollectionListLayout extends RelativeLayout {
 	private ListView mListView;
 	private ItemAdapter mItemAdapter;
 
+	// Select kind
+	private MBListLayoutAddLayout mAddLayout;
+
 	//Bitmap loader
 	private BitmapLoader mBitmapLoader;
 	
@@ -95,6 +98,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mCard = (MBListLayoutCardView) findViewById(R.id.item_card);
 		mChangeCardAnimBoj = new MBListLayoutChangeCardObject();
 		
+		mAddLayout = (MBListLayoutAddLayout) findViewById(R.id.item_add_layout);
+
 		mListView = (ListView) findViewById(R.id.item_list);
 		mListView.setOnItemClickListener(mListViewItemClickListener);
 		mListView.setVisibility(View.INVISIBLE);

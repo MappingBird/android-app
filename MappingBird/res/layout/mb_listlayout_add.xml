@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mappingbird.collection.widget.MBListLayoutAddLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- Top -->
+    <ImageView 
+        android:id="@+id/select_scene"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/category_icon_scene"/>
+    
+    <ImageView 
+        android:id="@+id/select_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/category_icon_restaurant"/>
+
+    <ImageView 
+        android:id="@+id/select_hotel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/category_icon_hotel"/>
+    
+    <!-- bottom -->
+    <ImageView 
+        android:id="@+id/select_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/category_icon_default"/>
+    
+    <ImageView 
+        android:id="@+id/select_mall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/select_category_margin_left"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/category_icon_mall"/>
+
+    <ImageView 
+        android:id="@+id/select_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/select_category_margin_left"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/category_icon_bar"/>
+    
+    <!-- Center -->
+    <com.mappingbird.widget.MappingbirdFontIcon
+        android:id="@+id/item_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="400dp"
+        android:background="@drawable/btn_bule_circle"
+        android:gravity="center"
+        android:text="@string/iconfont_plus_circle_outline"
+        android:textColor="#fff"
+        android:textSize="26dp" />
+
+</com.mappingbird.collection.widget.MBListLayoutAddLayout>

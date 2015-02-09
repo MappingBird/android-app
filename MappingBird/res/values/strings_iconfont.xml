@@ -9,6 +9,7 @@
     <string name="iconfont_arrow_left" translatable="false">\uE60D</string>
     <string name="iconfont_share" translatable="false">\uE60B</string>
     <string name="iconfont_logout" translatable="false">\uE61F</string>
+    <string name="iconfont_plus_circle_outline" translatable="false">\uE61B</string>
 
     <!-- Place icon -->
     <string name="iconfont_map_maker" translatable="false">\uE610</string>

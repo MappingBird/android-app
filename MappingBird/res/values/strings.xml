@@ -62,6 +62,10 @@
     <!-- Pick place -->
     <string name="pick_place_title">Pick A Place</string>
     
+    <!-- Settings -->
+    <string name="settings_about_title">About MappingBird</string>
+    <string name="settings_about_subtitle">Version : %s</string>
     <!--  -->
     <string name="str_question">Help &#038; feedback</string>
+    <string name="str_settings">Settings</string>
 </resources>

@@ -295,8 +295,7 @@
             android:text="@string/iconfont_directions"
             android:textColor="#fff"
             android:textSize="26dp"
-            android:visibility="gone" >
-        </com.mappingbird.widget.MappingbirdFontIcon>
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
