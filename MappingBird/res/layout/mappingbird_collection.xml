@@ -89,7 +89,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:text="@string/iconfont_account_circle"
-                    android:textColor="@color/font_normal"
+                    android:textColor="@color/iconfont_leading"
                     android:textSize="26dp" />
 
                 <com.mappingbird.widget.MappingbirdFontIcon
@@ -99,8 +99,9 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:text="@string/iconfont_logout"
-                    android:textColor="@color/font_normal"
+                    android:textColor="@color/iconfont_leading"
                     android:textSize="26dp" />
 
                 <com.mappingbird.widget.MappingbirdTextView
@@ -118,7 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
-                    android:background="#e5e5e5" />
+                    android:background="@color/default_divider" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -131,7 +132,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#e5e5e5" />
+                    android:background="@color/default_divider" />
 
                 <com.mappingbird.widget.MappingbirdFontIcon
                     android:id="@+id/collection_help_icon"
@@ -140,7 +141,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center"
                     android:text="@string/iconfont_help_circle"
-                    android:textColor="@color/font_normal"
+                    android:textColor="@color/iconfont_leading"
                     android:textSize="26dp" />
 
                 <com.mappingbird.widget.MappingbirdTextView
@@ -165,7 +166,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#e5e5e5" />
+                    android:background="@color/default_divider" />
 
                 <com.mappingbird.widget.MappingbirdFontIcon
                     android:id="@+id/collection_settings_icon"
@@ -173,8 +174,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:gravity="center"
-                    android:text="@string/iconfont_help_circle"
-                    android:textColor="@color/font_normal"
+                    android:text="@string/iconfont_settings"
+                    android:textColor="@color/iconfont_leading"
                     android:textSize="26dp" />
 
                 <com.mappingbird.widget.MappingbirdTextView

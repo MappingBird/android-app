@@ -3,7 +3,8 @@
     android:id="@+id/settings_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/default_background" >
 
     <RelativeLayout
         android:id="@+id/settings_title_layout"
@@ -23,36 +24,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="@string/str_settings"
             android:layout_toRightOf="@id/back_icon"
             android:singleLine="true"
+            android:text="@string/str_settings"
             android:textColor="@color/white" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/settings_sync_layout"
+        android:id="@+id/settings_log_out_layout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/collection_item_bg" >
 
         <com.mappingbird.widget.MappingbirdFontIcon
-            android:id="@+id/collection_settings_icon"
+            android:id="@+id/settings_log_out_icon"
             android:layout_width="54dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="@string/iconfont_help_circle"
-            android:textColor="@color/font_normal"
+            android:text="@string/iconfont_logout"
+            android:textColor="@color/iconfont_leading"
             android:textSize="26dp" />
 
         <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/collection_settings"
+            android:id="@+id/ettings_log_out_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/collection_settings_icon"
+            android:layout_toRightOf="@id/settings_log_out_icon"
             android:paddingRight="16dp"
-            android:text="@string/str_settings"
+            android:text="@string/str_log_out"
             android:textColor="@color/font_normal"
             android:textSize="16sp" />
     </RelativeLayout>
@@ -60,17 +61,17 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#e5e5e5" />
+        android:background="@color/default_divider" />
 
     <LinearLayout
         android:id="@+id/settings_about_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
         android:background="@drawable/collection_item_bg"
         android:orientation="vertical"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:paddingLeft="54dp" >
+        android:paddingTop="10dp" >
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/settings_about_title"
@@ -85,8 +86,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_settings"
-            android:textColor="@color/font_normal"
+            android:textColor="@color/font_hint"
             android:textSize="14sp" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/default_divider" />
 
 </LinearLayout>

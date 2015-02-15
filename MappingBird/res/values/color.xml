@@ -31,7 +31,14 @@
 	<color name="font_hint">#b2b2b2</color>
 	<color name="font_white">#ffffff</color>
 	
+	<!-- iconfont -->
+	<color name="iconfont_leading">#a5a5a5</color>
+
 	<!-- Collection List -->
 	<color name="item_blue_activated">#d9f1fb</color>
 	<color name="item_blue_pressed">#d9d9d9</color>
+	
+	<!-- Default -->
+	<color name="default_background">#ffffffff</color>
+	<color name="default_divider">#e5e5e5</color>
 </resources>

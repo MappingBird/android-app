@@ -1,12 +1,11 @@
 package com.mappingbird.collection.widget;
 
-import com.mappingbird.common.DeBug;
-import com.mappingbird.common.MappingBirdApplication;
-import com.mpbd.mappingbird.R;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.View;
+
+import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.mappingbird.R;
 
 
 public class MBListLayoutChangeCardObject {
@@ -18,6 +17,8 @@ public class MBListLayoutChangeCardObject {
 	private int mMargeLeft = 0;
 	private int mMargeBottom = 0;
 	private boolean isVisiable = true;
+	
+	private float mMoveY = 0;
 
 	public MBListLayoutChangeCardObject() {
 		mCurrentObject = new MBListLayoutCardMashObject();
@@ -68,7 +69,6 @@ public class MBListLayoutChangeCardObject {
 		Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache());
 		mCurrentObject.buildBmp(bmp);
 		view.destroyDrawingCache();
-		DeBug.e("Test", "view Y = "+view.getY()+", h = "+view.getHeight());
 		mCurrentObject.setPosition(mMargeLeft, (int)view.getY() + view.getHeight(), 0);
 	}
 	
@@ -79,18 +79,20 @@ public class MBListLayoutChangeCardObject {
 		mThreeObject.count(MBListLayoutCardMashObject.ANIM_MODE_ONLY_MOVE_UP, 0);
 	}
 	
-	public void moveCardAnimation(float vaule) {
-		
+	public void setMoveY(float moveY) {
+		mMoveY = moveY;
 	}
 
 	public void setVisiable(boolean visiable) {
 		isVisiable = visiable;
 	}
 
-	public void onDraw(Canvas canvas) {
+	public void draw(Canvas canvas) {
 		if(!isVisiable)
 			return;
 
+		canvas.save();
+		canvas.translate(0, mMoveY);
 		if(mThreeObject.isInit()) {
 			mThreeObject.draw(canvas);
 		}
@@ -106,5 +108,6 @@ public class MBListLayoutChangeCardObject {
 		if(mCurrentObject.isInit()) {
 			mCurrentObject.draw(canvas);
 		}
+		canvas.restore();
 	}
 }

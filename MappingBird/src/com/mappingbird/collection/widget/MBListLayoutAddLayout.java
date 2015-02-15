@@ -28,7 +28,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	
 	// Animation space
 	private float mAnimSpace = 0.3f;
-	private int mAnimDuration = 1200;
+	private int mAnimDuration = 900;
 	
 	// Add
 	private View mAddItem;
@@ -290,6 +290,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				} else if(value >= startValue + mAnimSpace) {
 					targeView.setX(mItemViewXList.get(i));
 					targeView.setY(mItemViewYList.get(i));
+					targeView.setRotation(0);
 				}
 				startValue += 0.1f;
 			}
@@ -322,6 +323,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				} else if(value >= startValue + mAnimSpace) {
 					targeView.setX(mSelectItemCenterPositionX);
 					targeView.setY(mSelectItemCenterPositionY);
+					targeView.setRotation(0);
 				}
 				startValue += 0.1f;
 			}

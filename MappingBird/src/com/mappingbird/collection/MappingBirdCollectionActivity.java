@@ -315,34 +315,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			mDialog.dismiss();
-//			MappingBirdCollectionActivity.this.finish();
-		}
-	};
-
-	private OnClickListener mSignOutOkClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			mDialog.dismiss();
-			// logout
-			if (mApi.logOut()) {
-				Intent intent = new Intent();
-				intent.setClass(MappingBirdCollectionActivity.this,
-						com.mpbd.mappingbird.MappingBirdMainActivity.class);
-				MappingBirdCollectionActivity.this.startActivity(intent);
-				finish();
-			} else {
-				Toast.makeText(getApplicationContext(), "Logout Fail!",
-						Toast.LENGTH_SHORT).show();
-			}			
-		}
-	};
-
-	private OnClickListener mSignOutCancelClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			mDialog.dismiss();
+			MappingBirdCollectionActivity.this.finish();
 		}
 	};
 
@@ -365,14 +338,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				break;
 			}
 			case R.id.collection_logout_icon: {
-				mDialog = new MBDialog(mContext);
-				mDialog.setTitle(getString(R.string.dialog_sign_out_title));
-				mDialog.setDescription(getString(R.string.dialog_sign_out_description));
-				mDialog.setPositiveBtn(getString(R.string.ok), 
-						mSignOutOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
-				mDialog.setNegativeBtn(getString(R.string.str_cancel), 
-						mSignOutCancelClickListener, MBDialog.BTN_STYLE_DEFAULT);
-				mDialog.show();
 				break;
 			}
 			default:

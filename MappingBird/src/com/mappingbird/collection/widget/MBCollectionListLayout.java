@@ -7,6 +7,7 @@ import java.util.Comparator;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -29,9 +30,11 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ViewAnimator;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.api.MBPointData;
+import com.mappingbird.collection.widget.MBListLayoutAddLayout.OnSelectKindLayoutListener;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
@@ -79,6 +82,11 @@ public class MBCollectionListLayout extends RelativeLayout {
 	// TouchLock
 	// 1. Change card animaiont
 	private boolean lockTouchEvent = false;
+	
+	// Animator
+	private static final int ANIMATOR_CARD = 400;
+	private ValueAnimator mValueAnimator;
+
 	public MBCollectionListLayout(Context context) {
 		super(context);
 	}
@@ -99,6 +107,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mChangeCardAnimBoj = new MBListLayoutChangeCardObject();
 		
 		mAddLayout = (MBListLayoutAddLayout) findViewById(R.id.item_add_layout);
+		mAddLayout.setOnSelectKindLayoutListener(mOnSelectKindLayoutListener);
 
 		mListView = (ListView) findViewById(R.id.item_list);
 		mListView.setOnItemClickListener(mListViewItemClickListener);
@@ -639,14 +648,60 @@ public class MBCollectionListLayout extends RelativeLayout {
 		return false;
 	}
 
-	
+
+	private OnSelectKindLayoutListener mOnSelectKindLayoutListener = new OnSelectKindLayoutListener() {
+		
+		@Override
+		public void openSelect() {
+			// 
+			mValueAnimator = ValueAnimator.ofInt(0, 300);
+			mValueAnimator.setDuration(ANIMATOR_CARD);
+			mValueAnimator.addUpdateListener(new CardObjectAnimator(CardObjectAnimator.ANIM_DOWN));
+			mValueAnimator.start();
+		}
+		
+		@Override
+		public void onSelectKind(int type) {
+		}
+		
+		@Override
+		public void closeSelect() {
+			mValueAnimator = ValueAnimator.ofInt(300, 0);
+			mValueAnimator.setDuration(ANIMATOR_CARD);
+			mValueAnimator.addUpdateListener(new CardObjectAnimator(CardObjectAnimator.ANIM_UP));
+			mValueAnimator.start();
+		}
+	};
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		mChangeCardAnimBoj.onDraw(canvas);
+		mChangeCardAnimBoj.draw(canvas);
 	}
 
+	// Animator Listener =============================
+	private class CardObjectAnimator implements ValueAnimator.AnimatorUpdateListener {
+		private static final int ANIM_UP = 0;
+		private static final int ANIM_DOWN = 1;
+		private int mAnim = ANIM_UP;
+		
+		public CardObjectAnimator(int anim) {
+			if(mAnim == ANIM_DOWN) {
+				mAnim = ANIM_DOWN;
+			} else {
+				mAnim = ANIM_UP;
+			}
+		}
+
+		@Override
+		public void onAnimationUpdate(ValueAnimator animation) {
+			int y = (Integer)animation.getAnimatedValue();
+			mChangeCardAnimBoj.setMoveY(y);
+			mCard.setY(mCardDefaultPositionY - y);
+			postInvalidate();
+		}
+	}
+	
 	private class ItemAdapter extends BaseAdapter {
 
 		private ArrayList<ListItem> mAllPoints = new ArrayList<ListItem>();
