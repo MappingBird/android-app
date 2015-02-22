@@ -9,6 +9,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -28,7 +29,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	
 	// Animation space
 	private float mAnimSpace = 0.3f;
-	private int mAnimDuration = 900;
+	private int mAnimDuration = 500;
 	
 	// Add
 	private View mAddItem;
@@ -68,6 +69,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private ArrayList<Integer> 	mItemViewYList = new ArrayList<Integer>();
 	
 	private OnSelectKindLayoutListener mOnSelectKindLayoutListener = null;
+	
+	private int mAlphaBackground = 0;
+
 	public MBListLayoutAddLayout(Context context) {
 		super(context);
 	}
@@ -83,6 +87,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
+		
+		mAlphaBackground = (int) getResources().getColor(R.color.graphic_alpha_background);
 		mAddItem = findViewById(R.id.item_add);
 		
 		mSelectScene 		= findViewById(R.id.select_scene);
@@ -232,12 +238,6 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				}
 				if(mOnSelectKindLayoutListener  != null)
 					mOnSelectKindLayoutListener.onSelectKind(type);
-//				Intent intent = new Intent(getContext(), MappingBirdPickPlaceActivity.class);
-//				intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_COLLECTION_LIST, mCollectionList);
-//				intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_TYPE, type);
-//				intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LAT, mLatitude);
-//				intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LONG, mLongitude);
-//				getContext().startActivity(intent);
 			}
 		}
 	};
@@ -264,6 +264,16 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		}
 	}
 	
+	public boolean isOpenSelect() {
+		return mMode == MODE_OPEN;
+	}
+
+	public void closeSelector() {
+		if(mMode == MODE_OPEN) {
+			startAnimation(mMode);
+		}
+	}
+
 	private AnimatorUpdateListener mOpenUpdateListener = new AnimatorUpdateListener() {
 		@Override
 		public void onAnimationUpdate(ValueAnimator animation) {
@@ -276,6 +286,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				mAddItem.setRotation(-45);
 			}
 
+			setBackgroundColor((int)(mAlphaBackground*(1-rate)));
 			float startValue = 0;
 			View targeView = null;
 			for(int i = 0; i < mItemViewList.size(); i++) {
@@ -292,7 +303,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					targeView.setY(mItemViewYList.get(i));
 					targeView.setRotation(0);
 				}
-				startValue += 0.1f;
+				startValue += 0.07f;
 			}
 		}
 	};
@@ -309,6 +320,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				mAddItem.setRotation(0);
 			}
 
+			setBackgroundColor((int)(mAlphaBackground*(rate)));
 			float startValue = 0;
 			View targeView = null;
 			for(int i = mItemViewList.size() - 1; i >= 0; i--) {
@@ -325,11 +337,19 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					targeView.setY(mSelectItemCenterPositionY);
 					targeView.setRotation(0);
 				}
-				startValue += 0.1f;
+				startValue += 0.07f;
 			}
 
 		}
 	};
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if(mMode != MODE_CLOSE)
+			return true;
+
+		return super.onTouchEvent(event);
+	}
 
 	private AnimatorListener mAnimatorListener = new AnimatorListener() {
 		

@@ -138,19 +138,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	};
 
 	private void initTitleLayout() {
-		getActionBar().setDisplayHomeAsUpEnabled(false);
-		getActionBar().setDisplayShowHomeEnabled(false);
-		getActionBar().setDisplayShowTitleEnabled(false);
-
-		getActionBar().setBackgroundDrawable(new ColorDrawable(0xfff6892a));
-		getActionBar().setDisplayOptions(
-				getActionBar().getDisplayOptions()
-						| ActionBar.DISPLAY_SHOW_CUSTOM);
-		LayoutInflater inflater = LayoutInflater.from(getActionBar().getThemedContext());
-		View titlelayout = inflater.inflate(R.layout.mappingbird_pick_place_title_view, null, false);
-		getActionBar().setCustomView(titlelayout);
-		
-		mTitleText = (TextView) titlelayout.findViewById(R.id.title_text);
+		mTitleText = (TextView) findViewById(R.id.title_text);
 		findViewById(R.id.title_btn_back).setOnClickListener(mTitleClickListener);
 		setTitleText(getString(R.string.pick_place_title));
 	}

@@ -23,7 +23,8 @@
 	<color name="graphic_shade_small">#27000000</color>
 	<color name="graphic_default_background">#cccccc</color>
 	<color name="graphic_symbol">#ffa5a5a5</color>
-	
+	<color name="graphic_alpha_background">#B2000000</color>
+		
 	<!-- font -->
 	<color name="font_deep_blue">#0298c1</color>
 	<color name="font_dark">#4e4e4e</color>

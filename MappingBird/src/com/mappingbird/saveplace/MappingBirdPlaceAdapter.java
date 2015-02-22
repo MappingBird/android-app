@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.mappingbird.common.DistanceObject;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.Utils;
 
 public class MappingBirdPlaceAdapter extends BaseAdapter  {
 	
@@ -62,9 +64,10 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 				case MappingBirdPlaceItem.TYPE_PLACE: {
 					convertView = mInflater.inflate(R.layout.mappingbird_pick_place_item, parent, false);
 					ItemHost host = new ItemHost();
-					host.mName = (TextView) convertView.findViewById(R.id.item_name);
-					host.mAddress = (TextView) convertView.findViewById(R.id.item_address);
-					host.mDistance = (TextView) convertView.findViewById(R.id.item_distance);
+					host.mName 		= (TextView) convertView.findViewById(R.id.item_name);
+					host.mAddress 	= (TextView) convertView.findViewById(R.id.item_address);
+					host.mDistance 	= (TextView) convertView.findViewById(R.id.item_distance);
+					host.mUnit 		= (TextView) convertView.findViewById(R.id.item_unit);
 					convertView.setTag(host);
 					break;
 				}
@@ -76,7 +79,9 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 				ItemHost host = (ItemHost)convertView.getTag();
 				host.mName.setText(item.getName());
 				host.mAddress.setText(item.getAddress());
-				host.mDistance.setText(item.getDistance());
+				DistanceObject disObject = Utils.getDistanceObject(item.mDistance);
+				host.mDistance.setText(disObject.mDistance);
+				host.mUnit.setText(disObject.mUnit);
 				break;
 		}
 		return convertView;
@@ -86,5 +91,6 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 		public TextView mName;
 		public TextView mAddress;
 		public TextView mDistance;
+		public TextView mUnit;
 	}
 }

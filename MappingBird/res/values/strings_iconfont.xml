@@ -19,6 +19,7 @@
 	<string name="iconfont_phone" translatable="false">\uE61e</string>
 	<string name="iconfont_link" translatable="false">\uE61d</string>
 	<string name="iconfont_directions" translatable="false">\uE608</string>
+	<string name="iconfont_addplace" translatable="false">\uE626</string>
 
     <!-- Place type -->
     <string name="iconfont_restaurant" translatable="false">\uE614</string>

@@ -33,8 +33,4 @@ public class MappingBirdPlaceItem implements Serializable {
 	public String getAddress() {
 		return mData.getFormattedAddress();
 	}
-
-	public SpannableString getDistance() {
-		return Utils.getDistanceString(mData.getDistance());
-	}
 }

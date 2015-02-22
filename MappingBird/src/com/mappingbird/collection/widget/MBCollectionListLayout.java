@@ -9,6 +9,7 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -30,7 +31,6 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ViewAnimator;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.api.MBPointData;
@@ -40,6 +40,7 @@ import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
+import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
 import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.Utils;
@@ -84,8 +85,10 @@ public class MBCollectionListLayout extends RelativeLayout {
 	private boolean lockTouchEvent = false;
 	
 	// Animator
-	private static final int ANIMATOR_CARD = 400;
+	private static final int ANIMATOR_CARD = 300;
 	private ValueAnimator mValueAnimator;
+
+	private ArrayList<String> mCollectStrList = new ArrayList<String>();
 
 	public MBCollectionListLayout(Context context) {
 		super(context);
@@ -619,7 +622,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 				mListView.setVisibility(View.INVISIBLE);
 				setBackgroundColor(0x00000000);
 			}
-			mCard.setY(mDragY);
+			mCard.setTranlatorY(mDragY);
 		} else {
 			if(mListView.getVisibility() != View.VISIBLE
 					|| mCard.getVisibility() == View.VISIBLE) {
@@ -648,13 +651,17 @@ public class MBCollectionListLayout extends RelativeLayout {
 		return false;
 	}
 
+	public void setCollectionList(ArrayList<String> collections) {
+		mCollectStrList.clear();
+		mCollectStrList.addAll(collections);
+	}
 
 	private OnSelectKindLayoutListener mOnSelectKindLayoutListener = new OnSelectKindLayoutListener() {
 		
 		@Override
 		public void openSelect() {
-			// 
-			mValueAnimator = ValueAnimator.ofInt(0, 300);
+			int detailX = getHeight() - mCardDefaultPositionY;
+			mValueAnimator = ValueAnimator.ofInt(0, detailX);
 			mValueAnimator.setDuration(ANIMATOR_CARD);
 			mValueAnimator.addUpdateListener(new CardObjectAnimator(CardObjectAnimator.ANIM_DOWN));
 			mValueAnimator.start();
@@ -662,11 +669,19 @@ public class MBCollectionListLayout extends RelativeLayout {
 		
 		@Override
 		public void onSelectKind(int type) {
+			
+			Intent intent = new Intent(getContext(), MappingBirdPickPlaceActivity.class);
+			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_COLLECTION_LIST, mCollectStrList);
+			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_TYPE, type);
+			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LAT, mMyLocation.latitude);
+			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LONG, mMyLocation.longitude);
+			getContext().startActivity(intent);
 		}
 		
 		@Override
 		public void closeSelect() {
-			mValueAnimator = ValueAnimator.ofInt(300, 0);
+			int detailX = getHeight() - mCardDefaultPositionY;
+			mValueAnimator = ValueAnimator.ofInt(detailX, 0);
 			mValueAnimator.setDuration(ANIMATOR_CARD);
 			mValueAnimator.addUpdateListener(new CardObjectAnimator(CardObjectAnimator.ANIM_UP));
 			mValueAnimator.start();
@@ -697,11 +712,20 @@ public class MBCollectionListLayout extends RelativeLayout {
 		public void onAnimationUpdate(ValueAnimator animation) {
 			int y = (Integer)animation.getAnimatedValue();
 			mChangeCardAnimBoj.setMoveY(y);
-			mCard.setY(mCardDefaultPositionY - y);
+			mCard.setY(mCardDefaultPositionY + y);
 			postInvalidate();
 		}
 	}
 	
+	// Key Event
+	public boolean handlerKeyDown() {
+		if(mAddLayout.isOpenSelect()) {
+			mAddLayout.closeSelector();
+			return true;
+		}
+		
+		return false;
+	}
 	private class ItemAdapter extends BaseAdapter {
 
 		private ArrayList<ListItem> mAllPoints = new ArrayList<ListItem>();

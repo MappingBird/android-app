@@ -20,6 +20,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.text.SpannableString;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -198,6 +199,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				if (collection.getCount() > 0) {
 					mCollectionListAdapter.setData(collection);
 					selectItem(MappingBirdPref.getIns().getIns().getCollectionPosition());
+					ArrayList<String> collections = new ArrayList<String>();
+					if (mCollections.getCount() > 0) {
+						for(int i = 0; i < mCollections.getCount(); i++)
+							collections.add(mCollections.get(i).getName());
+					}
+					mMBCollectionListLayout.setCollectionList(collections);
 				} else {
 					setTitle(R.string.no_data);
 				}
@@ -855,4 +862,15 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			return cluster.getSize() > 1;
 		}
 	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK) {
+			if(mMBCollectionListLayout.handlerKeyDown())
+				return true;
+		}
+		return super.onKeyUp(keyCode, event);
+	}
+	
+	
 }

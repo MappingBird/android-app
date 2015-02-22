@@ -286,9 +286,8 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mEndHeight = (int) getResources().getDimension(R.dimen.list_layout_item_height);
 	}
 
-	@Override
-	public void setY(float y) {
-		super.setY(y);
+	public void setTranlatorY(float y) {
+		setY(y);
 		if(mParentHeight > 0) {
 			float dis = mParentHeight - mCardPoisition - y;
 			if(dis < 0)
@@ -329,5 +328,10 @@ public class MBListLayoutCardView extends RelativeLayout {
 				mItemLayout.setAlpha((alpha-0.5f)*2);
 			}
 		}
+	}
+
+	@Override
+	public void setY(float y) {
+		super.setY(y);
 	}
 }
