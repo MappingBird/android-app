@@ -18,7 +18,7 @@
             android:gravity="right"
             android:paddingRight="8dp"
             android:paddingTop="8dp"
-            android:textColor="#6f6f6f"
+            android:textColor="@color/font_dark"
             android:textSize="32dp" />
 
         <com.mappingbird.widget.MappingbirdTextView
@@ -27,12 +27,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginBottom="4dp"
             android:layout_marginRight="4dp"
             android:layout_toLeftOf="@id/item_distance"
             android:singleLine="true"
-            android:textColor="#6f6f6f"
-            android:textSize="16sp" />
+            android:textColor="@color/font_dark"
+            android:textSize="16dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -50,7 +49,7 @@
             android:gravity="right|top"
             android:paddingRight="8dp"
             android:singleLine="true"
-            android:textColor="#6f6f6f"
+            android:textColor="@color/font_dark"
             android:textSize="16dp" />
 
         <com.mappingbird.widget.MappingbirdTextView
@@ -62,7 +61,7 @@
             android:layout_toLeftOf="@id/item_unit"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:textColor="#6f6f6f"
+            android:textColor="@color/font_dark"
             android:textSize="13dp" />
     </RelativeLayout>
 </LinearLayout>

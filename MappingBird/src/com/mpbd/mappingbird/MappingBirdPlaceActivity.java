@@ -410,36 +410,28 @@ public class MappingBirdPlaceActivity extends Activity implements
 	// startActivity(intent);
 	// }
 
-	private int getPinIcon(int type) {
-		int iconRes = -1;
+	private void getPinIcon(int type) {
 		mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_general.png";
 		switch (type) {
 		case MBPointData.TYPE_RESTAURANT:
-			iconRes = R.drawable.category_icon_restaurant;
 			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_restaurant.png";
 			break;
 		case MBPointData.TYPE_HOTEL:
-			iconRes = R.drawable.category_icon_hotel;
 			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_hotel.png";
 			break;
 		case MBPointData.TYPE_MALL:
-			iconRes = R.drawable.category_icon_mall;
 			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_shopping.png";
 			break;
 		case MBPointData.TYPE_BAR:
-			iconRes = R.drawable.category_icon_bar;
 			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_bar.png";
 			break;
 		case MBPointData.TYPE_MISC:
-			iconRes = R.drawable.category_icon_default;
 			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_general.png";
 			break;
 		case MBPointData.TYPE_SCENICSPOT:
-			iconRes = R.drawable.category_icon_scene;
 			mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_camera.png";
 			break;
 		}
-		return iconRes;
 	}
 
 	private void getShareIntent(String title, String placeInfo) {

@@ -32,6 +32,9 @@
 	<color name="font_hint">#b2b2b2</color>
 	<color name="font_white">#ffffff</color>
 	
+	<!-- bg -->
+	<color name="bg_grey">#e7e7e7</color>
+
 	<!-- iconfont -->
 	<color name="iconfont_leading">#a5a5a5</color>
 

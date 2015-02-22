@@ -377,20 +377,20 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 //				MappingBirdCollectionActivity.this.startActivity(intent);
 //				break;
 			case R.id.title_btn_add:
-				Display display = getWindowManager().getDefaultDisplay();
-				Point size = new Point();
-				display.getSize(size);
-				int width = size.x;
-				int height = size.y;
-				ArrayList<String> collectList = new ArrayList<String>();
-				collectList.clear();
-				if (mCollections.getCount() > 0) {
-					for(int i = 0; i < mCollections.getCount(); i++)
-						collectList.add(mCollections.get(i).getName());
-				}
-				Dialog selected = MappingBirdDialog.createSelectPlaceKindDialog(mContext, width, height
-						, mMyLocation.latitude, mMyLocation.longitude, collectList);
-				selected.show();
+//				Display display = getWindowManager().getDefaultDisplay();
+//				Point size = new Point();
+//				display.getSize(size);
+//				int width = size.x;
+//				int height = size.y;
+//				ArrayList<String> collectList = new ArrayList<String>();
+//				collectList.clear();
+//				if (mCollections.getCount() > 0) {
+//					for(int i = 0; i < mCollections.getCount(); i++)
+//						collectList.add(mCollections.get(i).getName());
+//				}
+//				Dialog selected = MappingBirdDialog.createSelectPlaceKindDialog(mContext, width, height
+//						, mMyLocation.latitude, mMyLocation.longitude, collectList);
+//				selected.show();
 				break;
 			}
 			

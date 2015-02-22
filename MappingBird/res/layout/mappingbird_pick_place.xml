@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/bg_grey" >
 
+    <!-- Title -->
     <RelativeLayout
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
@@ -26,11 +28,22 @@
             android:textColor="#FFF" />
     </RelativeLayout>
 
+    <!-- current location -->
+    <RelativeLayout 
+        android:id="@+id/pick_place_current_location_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        
+    </RelativeLayout>
+    
+    <!-- place item -->
     <ListView
         android:id="@+id/pick_place_list"
         android:layout_below="@id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/pick_place_listview_margin_bottom"
         android:background="#00000000"
         android:cacheColorHint="#00000000"
         android:divider="#00000000"

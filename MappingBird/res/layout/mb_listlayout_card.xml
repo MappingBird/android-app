@@ -149,7 +149,7 @@
                         android:layout_toLeftOf="@id/card_distance"
                         android:singleLine="true"
                         android:textColor="#0298c1"
-                        android:textSize="16sp" />
+                        android:textSize="16dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -178,7 +178,7 @@
                         android:layout_toLeftOf="@id/card_unit"
                         android:singleLine="true"
                         android:textColor="#6f6f6f"
-                        android:textSize="13sp" />
+                        android:textSize="13dp" />
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>

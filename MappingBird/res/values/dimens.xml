@@ -27,4 +27,6 @@
     
     <dimen name="col_select_place_item_width">48dp</dimen>
     
+    <!-- Pick Place -->
+    <dimen name="pick_place_listview_margin_bottom">70dp</dimen>
 </resources>
