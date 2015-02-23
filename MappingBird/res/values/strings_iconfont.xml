@@ -28,4 +28,6 @@
     <string name="iconfont_bar" translatable="false">\uE616</string>
     <string name="iconfont_general" translatable="false">\uE613</string>
     <string name="iconfont_camera" translatable="false">\uE612</string>
+    
+    <string name="iconfont_locate" translatable="false">\uE638</string>
 </resources>

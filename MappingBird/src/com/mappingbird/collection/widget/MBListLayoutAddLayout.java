@@ -8,9 +8,11 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 
 import com.mappingbird.common.DeBug;
@@ -29,7 +31,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	
 	// Animation space
 	private float mAnimSpace = 0.3f;
-	private int mAnimDuration = 500;
+	private int mAnimDuration = 800;
 	
 	// Add
 	private View mAddItem;
@@ -248,6 +250,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
 			animator.setDuration(mAnimDuration);
 			animator.addUpdateListener(mOpenUpdateListener);
+			animator.setInterpolator(new DecelerateInterpolator());
 			animator.addListener(mAnimatorListener);
 			animator.start();
 			if(mOnSelectKindLayoutListener != null)
@@ -257,6 +260,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
 			animator.setDuration(mAnimDuration);
 			animator.addUpdateListener(mCloseUpdateListener);
+			animator.setInterpolator(new DecelerateInterpolator());
 			animator.addListener(mAnimatorListener);
 			animator.start();
 			if(mOnSelectKindLayoutListener != null)
@@ -286,17 +290,20 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				mAddItem.setRotation(-45);
 			}
 
-			setBackgroundColor((int)(mAlphaBackground*(1-rate)));
+			int color = Color.argb((int)(0xB2*value), 0, 0, 0);
+			setBackgroundColor(color);
 			float startValue = 0;
 			View targeView = null;
 			for(int i = 0; i < mItemViewList.size(); i++) {
 				targeView = mItemViewList.get(i);
 				if(value > startValue && value < startValue + mAnimSpace) {
 					rate = (value - startValue)/mAnimSpace;
+					// y = (1 - b)x^2 + b*x , b = (d - c^2)/c(1-c)  (d,c) = (0.75, 1.2)
+					float rateN = -2.4f*rate*rate +3.4f * rate;
 					targeView.setX(mSelectItemCenterPositionX
-							+ (mItemViewXList.get(i)- mSelectItemCenterPositionX) * rate);
+							+ (mItemViewXList.get(i)- mSelectItemCenterPositionX) * rateN);
 					targeView.setY(mSelectItemCenterPositionY
-							+ (mItemViewYList.get(i) - mSelectItemCenterPositionY) * rate);
+							+ (mItemViewYList.get(i) - mSelectItemCenterPositionY) * rateN);
 					targeView.setRotation(-180*(1 - rate));
 				} else if(value >= startValue + mAnimSpace) {
 					targeView.setX(mItemViewXList.get(i));
@@ -320,7 +327,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				mAddItem.setRotation(0);
 			}
 
-			setBackgroundColor((int)(mAlphaBackground*(rate)));
+			int color = Color.argb((int)(0xB2*(1 - value)), 0, 0, 0);
+			setBackgroundColor(color);
 			float startValue = 0;
 			View targeView = null;
 			for(int i = mItemViewList.size() - 1; i >= 0; i--) {

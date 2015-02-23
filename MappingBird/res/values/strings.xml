@@ -61,7 +61,7 @@
     
     <!-- Pick place -->
     <string name="pick_place_title">Remember a place</string>
-    
+    <string name="pick_place_new_location">Add a new location</string>
     <!-- Settings -->
     <string name="settings_about_title">About MappingBird</string>
     <string name="settings_about_subtitle">Version : %s</string>

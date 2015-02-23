@@ -1,14 +1,12 @@
 package com.mappingbird.saveplace;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -51,12 +49,19 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 
 	private ArrayList<MappingBirdPlaceItem> mRequestPlace = new ArrayList<MappingBirdPlaceItem>();
 	private ArrayList<String> mTripTitles;
+	
+	// add place frame layout
+	private MBListLayoutAddPlaceLayout mAddPlaceFrameLayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mappingbird_pick_place);
 		initTitleLayout();
 		mApi = new MappingBirdAPI(this.getApplicationContext());
+
+		String str = "";
+		HashMap<Character, Integer> maps = new HashMap<Character, Integer>();
+		maps.put('a', 1);
 
 		mPlaceListView = (ListView) findViewById(R.id.pick_place_list);
 		mPlaceAdapter = new MappingBirdPlaceAdapter(this);
@@ -73,6 +78,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 			prepareData();
 		}
 		
+		mAddPlaceFrameLayout = (MBListLayoutAddPlaceLayout) findViewById(R.id.pick_place_framelayout);
 	}
 
 	private void prepareData() {
@@ -99,6 +105,8 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 							MappingBirdPlaceItem.TYPE_PLACE, collection.get(i), mLatitude, mLongitude));
 				}
 				mPlaceAdapter.setPlaceData(mRequestPlace);
+				mAddPlaceFrameLayout.showCurrectLocationLayout();
+				
 			} else {
 			}
 		}
