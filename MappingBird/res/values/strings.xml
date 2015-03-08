@@ -58,7 +58,10 @@
     <string name="add_place_new_collection">Create a new collection</string>
     <string name="add_place_about_place">What about this place...</string>
     <string name="add_place_add_tags">Add tags</string>
-    
+    <string name="add_place_location_name">Enter location name</string>
+    <string name="add_place_address">Add address</string>
+    <string name="add_place_add_field">Add another field</string>
+
     <!-- Pick place -->
     <string name="pick_place_title">Remember a place</string>
     <string name="pick_place_new_location">Add a new location</string>

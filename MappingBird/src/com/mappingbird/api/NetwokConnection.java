@@ -106,6 +106,7 @@ class NetwokConnection {
 				case API_ADD_COLLECTION:
 					break;
 				case API_ADD_PLACE:
+					mPoint = MapParse.parseAddPointsResult(rsp);
 					break;
 				case API_UPLOAD_IMAGE:
 					break;
@@ -146,7 +147,12 @@ class NetwokConnection {
 			DeBug.e(TAG, "JSON Parser Error: server rsp error!");
 			// DeBug.getStackTraceString(e);
 			return MappingBirdAPI.RESULT_INTERNAL_ERROR;
+		} catch (Exception e) {
+			DeBug.e(TAG, "Exception Error: server rsp error!");
+			// DeBug.getStackTraceString(e);
+			return MappingBirdAPI.RESULT_NETWORK_ERROR;
 		}
+		
 		return MappingBirdAPI.RESULT_OK;
 	}
 

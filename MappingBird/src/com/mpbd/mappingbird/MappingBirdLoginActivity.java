@@ -151,8 +151,8 @@ public class MappingBirdLoginActivity extends Activity implements
 
 	private void onLoginError(String message) {
 		mErrorDialog = new MBDialog(MappingBirdLoginActivity.this);
-		mErrorDialog.setTitle(getString(R.string.dialog_sign_out_title));
-		mErrorDialog.setDescription(getString(R.string.dialog_sign_out_description));
+		mErrorDialog.setTitle(getString(R.string.network_error));
+		mErrorDialog.setDescription(message);
 		mErrorDialog.setPositiveBtn(getString(R.string.ok), 
 				mLoginOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
 		mErrorDialog.setCanceledOnTouchOutside(false);

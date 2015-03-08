@@ -34,6 +34,7 @@
 	
 	<!-- bg -->
 	<color name="bg_grey">#e7e7e7</color>
+	<color name="bg_white">#ffffff</color>
 
 	<!-- iconfont -->
 	<color name="iconfont_leading">#a5a5a5</color>

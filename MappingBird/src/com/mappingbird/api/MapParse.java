@@ -147,6 +147,52 @@ class MapParse {
 		return collections;
 	}
 
+	public static MBPointData parseAddPointsResult(String rsp) 
+			throws JSONException {
+		JSONObject obj = new JSONObject(rsp);
+
+		long pid = obj.optLong("id");
+		DeBug.i(TAG, "[add point json] pid=" + pid);
+
+		String title = obj.optString("title");
+		DeBug.i(TAG, "[add point json] title=" + title);
+
+		String url = obj.optString("url");
+		DeBug.i(TAG, "[add point json] url=" + url);
+
+		String description = obj.optString("description");
+		DeBug.i(TAG, "[add point json] description=" + description);
+		DeBug.i(TAG, "[add point json] description index =" + description.indexOf("\n"));
+
+		String place_name = obj.optString("place_name");
+		DeBug.i(TAG, "[add point json] place_name=" + place_name);
+
+		String place_address = obj.optString("place_address");
+		DeBug.i(TAG, "[add point json] place_address=" + place_address);
+
+		String place_phone = obj.optString("place_phone");
+		DeBug.i(TAG, "[add point json] place_phone=" + place_phone);
+
+		String coordinates = obj.optString("coordinates");
+		DeBug.i(TAG, "[add point json] coordinates=" + coordinates);
+
+		String type = obj.optString("type");
+		DeBug.i(TAG, "[add point json] type=" + type);
+
+		long collectionId = obj.optLong("collection");
+		DeBug.i(TAG, "[add point json] collectionId=" + collectionId);
+
+		String pcreateTime = obj.optString("create_time");
+		DeBug.i(TAG, "[add point json] createTime=" + pcreateTime);
+
+		String pupdateTime = obj.optString("update_time");
+		DeBug.i(TAG, "[add point json] updateTime=" + pupdateTime);
+
+		return new MBPointData(pid, title, url, type, description,
+				place_address, place_phone, place_name, coordinates, null,
+				null, collectionId, null, pcreateTime, pupdateTime);
+	}
+
 	public static MBPointData parsePointsResult(String rsp)
 			throws JSONException {
 

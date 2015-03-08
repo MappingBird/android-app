@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.Utils;
@@ -79,6 +80,7 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 				ItemHost host = (ItemHost)convertView.getTag();
 				host.mName.setText(item.getName());
 				host.mAddress.setText(item.getAddress());
+				DeBug.d("Test", "p = "+position+", d = "+item.mDistance);
 				DistanceObject disObject = Utils.getDistanceObject(item.mDistance);
 				host.mDistance.setText(disObject.mDistance);
 				host.mUnit.setText(disObject.mUnit);

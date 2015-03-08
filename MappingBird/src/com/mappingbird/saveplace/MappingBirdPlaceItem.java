@@ -21,6 +21,10 @@ public class MappingBirdPlaceItem implements Serializable {
 	public MappingBirdPlaceItem(int type, Venue data, double latitude, double longitude) {
 		mType = type;
 		mData = data;
+		mDistance = Utils.getDistance(mData.getLatitude(),
+				mData.getLongitude(), 
+				latitude, 
+				longitude);
 	}
 
 	public int getType() {

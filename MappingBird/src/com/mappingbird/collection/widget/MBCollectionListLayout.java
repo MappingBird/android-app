@@ -691,7 +691,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		mChangeCardAnimBoj.draw(canvas);
+		if(mItemAdapter.getCount() > 0)
+			mChangeCardAnimBoj.draw(canvas);
 	}
 
 	// Animator Listener =============================

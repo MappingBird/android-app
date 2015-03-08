@@ -74,25 +74,17 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 	}
 
 	private void initTitleLayout() {
-//		getActionBar().setDisplayHomeAsUpEnabled(false);
-//		getActionBar().setDisplayShowHomeEnabled(false);
-//		getActionBar().setDisplayShowTitleEnabled(false);
-//
-//		getActionBar().setBackgroundDrawable(new ColorDrawable(0xfff6892a));
-//		getActionBar().setDisplayOptions(
-//				getActionBar().getDisplayOptions()
-//						| ActionBar.DISPLAY_SHOW_CUSTOM);
 		LayoutInflater inflater = LayoutInflater.from(this);
-//		View titlelayout = inflater.inflate(R.layout.mappingbird_add_place_title_view, null, false);
-//		getActionBar().setCustomView(titlelayout);
-//		
-//		mTitleText = (TextView) titlelayout.findViewById(R.id.title_text);
-//		findViewById(R.id.title_btn_back).setOnClickListener(mTitleClickListener);
-//		setTitleText(mItem.getName());
+
+		mTitleText = (TextView) findViewById(R.id.title_text);
+		findViewById(R.id.title_btn_back).setOnClickListener(mTitleClickListener);
+		findViewById(R.id.title_btn_submit).setOnClickListener(mTitleClickListener);
+		setTitleText(getString(R.string.pick_place_title));
 		
 		mListView = (ListView) findViewById(R.id.add_place_list);
 		MappingbirdAddPlaceInfoLayout headerlayout = (MappingbirdAddPlaceInfoLayout)inflater.inflate(R.layout.mappingbird_add_place_info_layout, null, false);
 		headerlayout.setCollectionList(mCollectionTitle);
+		headerlayout.setPlaceData(mItem);
 		
 		mListView.addHeaderView(headerlayout);
 		mAdapter = new MappingBirdPhotoAdapter(this);
@@ -116,6 +108,8 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 			switch(v.getId()) {
 			case R.id.title_btn_back:
 				finish();
+				break;
+			case R.id.title_btn_submit:
 				break;
 			}
 		}

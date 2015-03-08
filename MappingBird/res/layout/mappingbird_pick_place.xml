@@ -6,7 +6,6 @@
     android:background="@color/bg_grey" >
 
     <!-- Title -->
-
     <RelativeLayout
         android:id="@+id/title_bar"
         android:layout_width="match_parent"

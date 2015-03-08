@@ -31,7 +31,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	
 	// Animation space
 	private float mAnimSpace = 0.3f;
-	private int mAnimDuration = 800;
+	private int mAnimDuration = 1000;
 	
 	// Add
 	private View mAddItem;

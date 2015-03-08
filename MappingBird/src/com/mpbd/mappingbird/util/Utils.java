@@ -104,8 +104,7 @@ public class Utils {
 		} else {
 			// m
 			DecimalFormat df = new DecimalFormat();
-			String style = "#,###,###";
-			df.applyPattern(style);
+			df.applyPattern("#,####,####");
 			object.mDistance = df.format(distance);
 			object.mUnit = MappingBirdApplication.instance().getString(R.string.distance_meter);
 			return object;				

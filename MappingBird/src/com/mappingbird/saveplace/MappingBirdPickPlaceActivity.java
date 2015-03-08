@@ -1,6 +1,8 @@
 package com.mappingbird.saveplace;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import android.app.Dialog;
@@ -104,6 +106,15 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 					mRequestPlace.add(new MappingBirdPlaceItem(
 							MappingBirdPlaceItem.TYPE_PLACE, collection.get(i), mLatitude, mLongitude));
 				}
+				Collections.sort(mRequestPlace, new Comparator<MappingBirdPlaceItem>() {
+
+					@Override
+					public int compare(MappingBirdPlaceItem lhs, MappingBirdPlaceItem rhs) {
+						return (int)(lhs.mDistance - rhs.mDistance);
+					}
+					
+				});
+
 				mPlaceAdapter.setPlaceData(mRequestPlace);
 				mAddPlaceFrameLayout.showCurrectLocationLayout();
 				
@@ -126,6 +137,15 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 					mRequestPlace.add(new MappingBirdPlaceItem(
 							MappingBirdPlaceItem.TYPE_PLACE, collection.get(i), mLatitude, mLongitude));
 				}
+				Collections.sort(mRequestPlace, new Comparator<MappingBirdPlaceItem>() {
+
+					@Override
+					public int compare(MappingBirdPlaceItem lhs, MappingBirdPlaceItem rhs) {
+						return (int)(lhs.mDistance - rhs.mDistance);
+					}
+					
+				});
+
 				mPlaceAdapter.setPlaceData(mRequestPlace);
 			} else {
 			}

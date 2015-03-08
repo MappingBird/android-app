@@ -15,6 +15,7 @@ import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
 import com.mappingbird.common.MappingBirdPref;
+import com.mappingbird.saveplace.MappingBirdPlaceItem;
 import com.mpbd.mappingbird.R;
 
 public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
@@ -22,13 +23,22 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	private ArrayList<String> mCollectionList = new ArrayList<String>();
 	
 	private View mCollectionLayout;
-	private EditText mCollectionEdit;
 	private TextView mCollectionText;
-	private ImageView mCollectionArrowDown;
+	private TextView mCollectionArrowDown;
 	
-	private EditText mPlaceInfo;
 	private ListPopupWindow mCollectionlistPopupWindow;
 	private CollectionListAdapter mCollectionListAdapter;
+	
+	// Place data
+	private MappingBirdPlaceItem mPlaceData;
+	
+	// Place Field
+	private EditText mPlaceName;
+	private EditText mPlaceAddress;
+	private EditText mPlaceInfo;
+	
+	
+
 	public MappingbirdAddPlaceInfoLayout(Context context) {
 		super(context);
 	}
@@ -45,15 +55,20 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	protected void onFinishInflate() {
 		super.onFinishInflate();
 		mCollectionLayout = findViewById(R.id.add_place_collection_layout);
-		mCollectionEdit = (EditText) findViewById(R.id.add_place_collection_input);
 		mCollectionText = (TextView) findViewById(R.id.add_place_collection_text);
-		mCollectionArrowDown = (ImageView) findViewById(R.id.add_place_collection_arrow);
+		mCollectionArrowDown = (TextView) findViewById(R.id.add_place_collection_arrow);
 
+		// Place Field
 		mPlaceInfo = (EditText) findViewById(R.id.add_place_about);
+		mPlaceName = (EditText) findViewById(R.id.add_place_location_name);
+		mPlaceAddress = (EditText) findViewById(R.id.add_place_address);
 		
-		LayoutInflater inflater = LayoutInflater.from(getContext());
+		
+		findViewById(R.id.add_place_add_field).setOnClickListener(mOnClickListener);
+
+//		LayoutInflater inflater = LayoutInflater.from(getContext());
 		mCollectionlistPopupWindow = new ListPopupWindow(getContext());
-		View footlayout = inflater.inflate(R.layout.mappingbird_add_place_input_collection_item, null, false);
+//		View footlayout = inflater.inflate(R.layout.mappingbird_add_place_input_collection_item, null, false);
 		mCollectionListAdapter = new CollectionListAdapter(getContext());
 		mCollectionlistPopupWindow.setAdapter(mCollectionListAdapter);
 		mCollectionlistPopupWindow.setAnchorView(mCollectionLayout);
@@ -64,12 +79,10 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		mCollectionList.clear();
 		mCollectionList.addAll(list);
 		if(mCollectionList.size() == 0) {
-			mCollectionEdit.setVisibility(View.VISIBLE);
 			mCollectionText.setVisibility(View.GONE);
 			mCollectionArrowDown.setVisibility(View.GONE);
 			mCollectionLayout.setOnClickListener(null);
 		} else {
-			mCollectionEdit.setVisibility(View.GONE);
 			mCollectionText.setVisibility(View.VISIBLE);
 			mCollectionArrowDown.setVisibility(View.VISIBLE);
 			mCollectionText.setText(mCollectionList.get(MappingBirdPref.getIns().getIns().getCollectionPosition()));
@@ -77,6 +90,23 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		}
 	}
 
+	public void setPlaceData(MappingBirdPlaceItem item) {
+		mPlaceData = item;
+		mPlaceName.setText(mPlaceData.getName());
+		mPlaceAddress.setText(mPlaceData.getAddress());
+	}
+
+	private OnClickListener mOnClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			switch(v.getId()) {
+				case R.id.add_place_add_field:
+					break;
+			}
+			
+		}
+	};
 	private OnClickListener mCollectionListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
