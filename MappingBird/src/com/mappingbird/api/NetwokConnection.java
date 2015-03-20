@@ -160,7 +160,7 @@ class NetwokConnection {
 			JSONObject postData, int apiType) throws ClientProtocolException,
 			IOException {
 		String rsp = null;
-		int retrynum = 3;
+		int retrynum = 1;
 		while (retrynum > 0 && rsp == null) {
 			try {
 				rsp = httpConnection(url, method, postData, apiType);
@@ -249,7 +249,10 @@ class NetwokConnection {
 		StatusLine status = response.getStatusLine();
 		int statusCode = status.getStatusCode();
 		DeBug.d(TAG, "statusCode =" + statusCode);
-		if (statusCode == HttpStatus.SC_OK) {
+		// 200 - SC_OK      : ok
+		// 201 - SC_CREATED : Post 指令被成功地執行
+		if (statusCode == HttpStatus.SC_OK ||
+				statusCode == HttpStatus.SC_CREATED) {
 			rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
 		} else if (statusCode == HttpStatus.SC_BAD_REQUEST) {
 			rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);

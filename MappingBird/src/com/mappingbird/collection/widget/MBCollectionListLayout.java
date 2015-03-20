@@ -1,7 +1,6 @@
 package com.mappingbird.collection.widget;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import android.animation.Animator;
@@ -33,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.mappingbird.api.Collections;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.collection.widget.MBListLayoutAddLayout.OnSelectKindLayoutListener;
 import com.mappingbird.common.BitmapLoader;
@@ -88,7 +88,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 	private static final int ANIMATOR_CARD = 300;
 	private ValueAnimator mValueAnimator;
 
-	private ArrayList<String> mCollectStrList = new ArrayList<String>();
+	private Collections mCollections = null;
 
 	public MBCollectionListLayout(Context context) {
 		super(context);
@@ -651,9 +651,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 		return false;
 	}
 
-	public void setCollectionList(ArrayList<String> collections) {
-		mCollectStrList.clear();
-		mCollectStrList.addAll(collections);
+	public void setCollectionList(Collections collections) {
+		mCollections = collections;
 	}
 
 	private OnSelectKindLayoutListener mOnSelectKindLayoutListener = new OnSelectKindLayoutListener() {
@@ -668,10 +667,10 @@ public class MBCollectionListLayout extends RelativeLayout {
 		}
 		
 		@Override
-		public void onSelectKind(int type) {
+		public void onSelectKind(String type) {
 			
 			Intent intent = new Intent(getContext(), MappingBirdPickPlaceActivity.class);
-			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_COLLECTION_LIST, mCollectStrList);
+			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_COLLECTION_LIST, mCollections);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_TYPE, type);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LAT, mMyLocation.latitude);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LONG, mMyLocation.longitude);
@@ -757,7 +756,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 			for(ListItem item : mAllPoints) {
 				item.countDistance(mMyLocation);
 			}
-			Collections.sort(mAllPoints, new Comparator<ListItem>() {
+
+			java.util.Collections.sort(mAllPoints, new Comparator<ListItem>() {
 
 				@Override
 				public int compare(ListItem lhs, ListItem rhs) {

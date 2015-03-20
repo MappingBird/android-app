@@ -36,7 +36,7 @@ public class MappingBirdLogoActivity extends Activity {
 				// get token from db
 				if (!isLogin) {
 					intent.setClass(MappingBirdLogoActivity.this,
-							com.mpbd.mappingbird.MappingBirdMainActivity.class);
+							com.mpbd.tutorial.MBTutorialActivity.class);
 				} else {
 					intent.setClass(MappingBirdLogoActivity.this,
 							com.mappingbird.collection.MappingBirdCollectionActivity.class);

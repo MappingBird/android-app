@@ -6,12 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,15 +25,18 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mappingbird.api.Collections;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPhotoAdapter.PhotoAdapterListener;
-import com.mappingbird.widget.MappingbirdAddPlaceInfoLayout;
+import com.mappingbird.saveplace.MappingbirdAddPlaceInfoLayout.PlaceInfoListener;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
+import com.mpbd.services.MBServiceClient;
 
 public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 
+	public static final String EXTRA_TYPE = "extra_type";
 	public static final String EXTRA_COLLECTION_LIST = "extra_collection_list";
 	public static final String EXTRA_ITEM = "extra_item";
 	private static final int MAX_LOADING_ITEM_NUMBER = 20;
@@ -45,7 +46,11 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 	private static final int REQUEST_TAKE_PICTURE = 2;
 
 	private MappingBirdPlaceItem mItem;
+	private Collections mCollections = null;
+	private String mType = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
+
 	private TextView mTitleText;
+	private View mSubmitBtn;
 
 	private ListView mListView;
 	private MappingBirdPhotoAdapter mAdapter;
@@ -56,8 +61,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 
 	private Dialog mLoadingDialog;
 
-	private ArrayList<String> mCollectionTitle;
-
+	private MappingbirdAddPlaceInfoLayout mAddPlaceInfoLayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,8 +71,10 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 			finish();
 			return;
 		} else {
+			if(intent.hasCategory(EXTRA_TYPE)) 
+				mType = intent.getStringExtra(EXTRA_TYPE);
 			mItem = (MappingBirdPlaceItem) intent.getSerializableExtra(EXTRA_ITEM);
-			mCollectionTitle = intent.getStringArrayListExtra(EXTRA_COLLECTION_LIST);
+			mCollections = (Collections)intent.getSerializableExtra(EXTRA_COLLECTION_LIST);
 		}
 		initTitleLayout();
 	}
@@ -78,15 +84,17 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 
 		mTitleText = (TextView) findViewById(R.id.title_text);
 		findViewById(R.id.title_btn_back).setOnClickListener(mTitleClickListener);
-		findViewById(R.id.title_btn_submit).setOnClickListener(mTitleClickListener);
+		mSubmitBtn = findViewById(R.id.title_btn_submit);
+		mSubmitBtn.setOnClickListener(mTitleClickListener);
 		setTitleText(getString(R.string.pick_place_title));
 		
 		mListView = (ListView) findViewById(R.id.add_place_list);
-		MappingbirdAddPlaceInfoLayout headerlayout = (MappingbirdAddPlaceInfoLayout)inflater.inflate(R.layout.mappingbird_add_place_info_layout, null, false);
-		headerlayout.setCollectionList(mCollectionTitle);
-		headerlayout.setPlaceData(mItem);
+		mAddPlaceInfoLayout = (MappingbirdAddPlaceInfoLayout)inflater.inflate(R.layout.mappingbird_add_place_info_layout, null, false);
+		mAddPlaceInfoLayout.setPlaceInfoListener(mPlaceInfoListener);
+		mAddPlaceInfoLayout.setCollectionList(mCollections);
+		mAddPlaceInfoLayout.setPlaceData(mItem);
 		
-		mListView.addHeaderView(headerlayout);
+		mListView.addHeaderView(mAddPlaceInfoLayout);
 		mAdapter = new MappingBirdPhotoAdapter(this);
 		mAdapter.setPhotoAdapterListener(mPhotoAdapterListener);
 		mListView.setAdapter(mAdapter);
@@ -101,6 +109,13 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		mTitleText.setText(title);
 	}
 
+	private PlaceInfoListener mPlaceInfoListener = new PlaceInfoListener() {
+		@Override
+		public void placeNameChanged(String s) {
+			mSubmitBtn.setEnabled((s.length() > 0));
+		}
+	};
+
 	private OnClickListener mTitleClickListener = new OnClickListener() {
 		
 		@Override
@@ -110,6 +125,12 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 				finish();
 				break;
 			case R.id.title_btn_submit:
+				MBAddPlaceData data = mAddPlaceInfoLayout.getPlaceInfoData();
+				data.type = mType;
+				data.setImageList(mAdapter.getSelectPhotoList());
+				MBServiceClient.addPlace(MappingBirdAddPlaceActivity.this, data);
+				setResult(RESULT_OK);
+				finish();
 				break;
 			}
 		}

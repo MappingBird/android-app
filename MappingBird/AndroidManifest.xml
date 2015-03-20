@@ -53,7 +53,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mpbd.mappingbird.MappingBirdMainActivity"
+            android:name="com.mpbd.tutorial.MBTutorialActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -62,11 +62,6 @@
         </activity>
         <activity
             android:name="com.mappingbird.collection.MappingBirdCollectionActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.mpbd.mappingbird.MappingBirdProfileActivity"
-            android:configChanges="orientation"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -83,7 +78,7 @@
         </activity>
         
         <service 
-            android:name="com.hlrt.common.services.CommonService"
+            android:name="com.mpbd.services.MBService"
             android:exported="true">
             
         </service>

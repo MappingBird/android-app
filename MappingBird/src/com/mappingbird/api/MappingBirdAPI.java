@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.content.Context;
 
 import com.mappingbird.common.DeBug;
+import com.mappingbird.saveplace.MBAddPlaceData;
 
 public class MappingBirdAPI {
 	private static final String TAG = MappingBirdAPI.class.getName();
@@ -21,7 +22,8 @@ public class MappingBirdAPI {
 	public static final int RESULT_BAD_REQUEST_ERROR = 5;
 	public static final int RESULT_UNKNOW_ERROR = 6;
 	
-	private static final String mHost = "https://mappingbird.com";
+//	private static final String mHost = "https://mappingbird.com";
+	private static final String mHost = "http://stage.mappingbird.com";
 
 	private Context mContext = null;
 	private MappingBirdUtil mUtil = null;
@@ -95,16 +97,31 @@ public class MappingBirdAPI {
 		}
 	}
 	
-	public void addPlace(OnAddPlaceListener listener, String title, String description, long collectionId, ArrayList<String> tags, String placeUrl,String placeName, String placeAddress, String placePhone, double lat, double lng, String type) {
+	public void addPlace(OnAddPlaceListener listener, MBAddPlaceData data) {
 		String url = mHost + "/api/points";
 		String method = "POST";
 		try {
-				JSONObject postData = MapParse.writePlace(title, tags, placeUrl, description, placeName, placeAddress, placePhone, lat, lng, type, collectionId);
+				JSONObject postData = MapParse.writePlace(
+						data.title, data.tags, data.url, data.description, data.placeName, data.placeAddress,
+						data.placePhone, data.lat, data.lng, data.type, data.collectionId);
 				mUtil.sendAddPlace(NetwokConnection.API_ADD_PLACE,
 						listener, url, method, postData);
 		} catch (JSONException e) {
-		}
+		}		
 	}
+	
+//	public void addPlace(OnAddPlaceListener listener, String title, String description, long collectionId,
+//			ArrayList<String> tags, String placeUrl,String placeName,
+//			String placeAddress, String placePhone, double lat, double lng, String type) {
+//		String url = mHost + "/api/points";
+//		String method = "POST";
+//		try {
+//				JSONObject postData = MapParse.writePlace(title, tags, placeUrl, description, placeName, placeAddress, placePhone, lat, lng, type, collectionId);
+//				mUtil.sendAddPlace(NetwokConnection.API_ADD_PLACE,
+//						listener, url, method, postData);
+//		} catch (JSONException e) {
+//		}
+//	}
 	
 	public void uploadImage(OnUploadImageListener listener, String placeId, byte[] image) {
 		

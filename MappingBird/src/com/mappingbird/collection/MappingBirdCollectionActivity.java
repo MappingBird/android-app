@@ -199,12 +199,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				if (collection.getCount() > 0) {
 					mCollectionListAdapter.setData(collection);
 					selectItem(MappingBirdPref.getIns().getIns().getCollectionPosition());
-					ArrayList<String> collections = new ArrayList<String>();
-					if (mCollections.getCount() > 0) {
-						for(int i = 0; i < mCollections.getCount(); i++)
-							collections.add(mCollections.get(i).getName());
-					}
-					mMBCollectionListLayout.setCollectionList(collections);
+					mMBCollectionListLayout.setCollectionList(collection);
 				} else {
 					setTitle(R.string.no_data);
 				}

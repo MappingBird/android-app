@@ -1,5 +1,5 @@
 package com.mappingbird.api;
 
 public interface OnAddPlaceListener {
-	public abstract void onAddPlace(int statusCode);
+	public abstract void onAddPlace(int statusCode, MBPointData data);
 }

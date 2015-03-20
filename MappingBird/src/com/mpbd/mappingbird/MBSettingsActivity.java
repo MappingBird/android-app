@@ -76,7 +76,8 @@ public class MBSettingsActivity extends Activity {
 			if (mApi.logOut()) {
 				Intent intent = new Intent();
 				intent.setClass(MBSettingsActivity.this,
-						com.mpbd.mappingbird.MappingBirdMainActivity.class);
+						com.mpbd.tutorial.MBTutorialActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK);
 				MBSettingsActivity.this.startActivity(intent);
 				finish();
 			} else {

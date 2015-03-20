@@ -217,7 +217,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			} else {
 				if(mMode != MODE_OPEN)
 					return;
-				int type = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
+				String type = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
 				switch(v.getId()) {
 					case R.id.select_scene:
 						type = MappingBirdPickPlaceActivity.TYPE_SCENE;
@@ -389,7 +389,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	}
 	
 	public interface OnSelectKindLayoutListener {
-		public void onSelectKind(int type);
+		public void onSelectKind(String type);
 		public void openSelect();
 		public void closeSelect();
 	}

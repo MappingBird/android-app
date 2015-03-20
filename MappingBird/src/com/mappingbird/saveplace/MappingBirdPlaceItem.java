@@ -27,6 +27,14 @@ public class MappingBirdPlaceItem implements Serializable {
 				longitude);
 	}
 
+	public double getLatitude() {
+		return mData.getLatitude();
+	}
+	
+	public double getLongitude() {
+		return mData.getLongitude();
+	}
+
 	public int getType() {
 		return mType;
 	}

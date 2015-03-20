@@ -637,7 +637,7 @@ final class MappingBirdUtil {
 		
 		public void setAddPlaceListener() {
 			for (OnAddPlaceListener listener : mOnAddPlaceListenerArray)
-				listener.onAddPlace(mStatus);
+				listener.onAddPlace(mStatus, mPoint);
 			
 		}
 
@@ -756,6 +756,8 @@ final class MappingBirdUtil {
 				break;
 			case NetwokConnection.API_ADD_PLACE:
 				msg.what = MSG_ADD_POINT_FINISH;
+				point = handler.getPoint();
+				mInfo.setPoint(point);
 				break;
 			case NetwokConnection.API_UPLOAD_IMAGE:
 				msg.what = MSG_UPLOAD_IMAGE_FINISH;

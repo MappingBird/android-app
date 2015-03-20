@@ -35,6 +35,10 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 		mBitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
 	}
 
+	public ArrayList<String> getSelectPhotoList() {
+		return mSelectPhotoList;
+	}
+
 	public void cleanData() {
 		mItems.clear();
 		notifyDataSetChanged();		
@@ -131,7 +135,7 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 				if(mSelectPhotoList.contains(item.getPath1())) {
 					host.mPhoto1_check.setSelected(true);
 					host.mPhoto1_mask.setVisibility(View.VISIBLE);
-					host.mPhoto1_check.setText(""+mSelectPhotoList.indexOf(item.getPath1()));
+					host.mPhoto1_check.setText(""+(mSelectPhotoList.indexOf(item.getPath1())+1));
 				} else {
 					host.mPhoto1_check.setSelected(false);
 					host.mPhoto1_mask.setVisibility(View.GONE);
@@ -156,7 +160,7 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 			if(mSelectPhotoList.contains(item.getPath2())) {
 				host.mPhoto2_check.setSelected(true);
 				host.mPhoto2_mask.setVisibility(View.VISIBLE);
-				host.mPhoto2_check.setText(""+mSelectPhotoList.indexOf(item.getPath2()));
+				host.mPhoto2_check.setText(""+(mSelectPhotoList.indexOf(item.getPath2())+1));
 			} else {
 				host.mPhoto2_check.setSelected(false);
 				host.mPhoto2_mask.setVisibility(View.GONE);
@@ -175,7 +179,7 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 			if(mSelectPhotoList.contains(item.getPath3())) {
 				host.mPhoto3_check.setSelected(true);
 				host.mPhoto3_mask.setVisibility(View.VISIBLE);
-				host.mPhoto3_check.setText(""+mSelectPhotoList.indexOf(item.getPath3()));
+				host.mPhoto3_check.setText(""+(mSelectPhotoList.indexOf(item.getPath3())+1));
 			} else {
 				host.mPhoto3_check.setSelected(false);
 				host.mPhoto3_mask.setVisibility(View.GONE);

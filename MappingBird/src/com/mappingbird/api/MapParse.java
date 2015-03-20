@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MBLocation;
@@ -43,25 +44,15 @@ class MapParse {
 		return obj;
 	}
 
-	static JSONObject writePlace(String title, ArrayList<String> tags,
+	static JSONObject writePlace(String title, String tags,
 			String url, String description, String placeName,
-			String placeAddress, String placePhone, double lat, double lng,
+			String placeAddress, String placePhone, String lat, String lng,
 			String type, long collectionId) throws JSONException {
 		JSONObject obj = new JSONObject();
 		if (title != null)
 			obj.put("title", title);
 		if (tags != null) {
-			if (tags.size() > 0) {
-				String sTags = "";
-				for (int i = 0; i < tags.size(); i++) {
-					if (i == tags.size() - 1) {
-						sTags = sTags + tags.get(i);
-					} else {
-						sTags = sTags + tags.get(i) + ",";
-					}
-				}
-				obj.put("tags", sTags);
-			}
+			obj.put("tags", tags);
 		}
 		if (url != null)
 			obj.put("url", url);

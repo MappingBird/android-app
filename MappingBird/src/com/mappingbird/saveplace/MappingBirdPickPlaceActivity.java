@@ -1,7 +1,6 @@
 package com.mappingbird.saveplace;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -16,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mappingbird.api.Collections;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnExploreFourSquareListener;
 import com.mappingbird.api.OnSearchFourSquareListener;
@@ -25,13 +25,14 @@ import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 
 public class MappingBirdPickPlaceActivity extends FragmentActivity  {
+	private static final int REQUEST_ADD_PLACE = 0x001010;
 
-	public static final int TYPE_SCENE 		= 0;
-	public static final int TYPE_BAR 		= 1;
-	public static final int TYPE_HOTEL 		= 2;
-	public static final int TYPE_RESTURANT 	= 3;
-	public static final int TYPE_MALL 		= 4;
-	public static final int TYPE_DEFAULT 	= 5;
+	public static final String TYPE_SCENE 		= "scenicspot";
+	public static final String TYPE_BAR 		= "bar";
+	public static final String TYPE_HOTEL 		= "hotel";
+	public static final String TYPE_RESTURANT 	= "restaurant";
+	public static final String TYPE_MALL 		= "mall";
+	public static final String TYPE_DEFAULT 	= "misc";
 
 	public static final String EXTRA_COLLECTION_LIST = "extra_collection_list";
 	public static final String EXTRA_TYPE = "extra_type";
@@ -45,12 +46,12 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	private MappingBirdAPI mApi = null;
 	private Dialog mLoadingDialog = null;
 
-	private int mType;
+	private String mType = TYPE_DEFAULT;
 	private double mLatitude = 0;
 	private double mLongitude = 0;
 
 	private ArrayList<MappingBirdPlaceItem> mRequestPlace = new ArrayList<MappingBirdPlaceItem>();
-	private ArrayList<String> mTripTitles;
+	private Collections mCollections = null;
 	
 	// add place frame layout
 	private MBListLayoutAddPlaceLayout mAddPlaceFrameLayout;
@@ -73,14 +74,25 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 		if(intent == null)
 			finish();
 		else {
-			mType = intent.getIntExtra(EXTRA_TYPE, TYPE_DEFAULT);
+			if(intent.hasExtra(EXTRA_TYPE))
+				mType = intent.getStringExtra(EXTRA_TYPE);
 			mLatitude = intent.getDoubleExtra(EXTRA_LAT, 0);
 			mLongitude = intent.getDoubleExtra(EXTRA_LONG, 0);
-			mTripTitles = intent.getStringArrayListExtra(EXTRA_COLLECTION_LIST);
+			mCollections = (Collections)intent.getSerializableExtra(EXTRA_COLLECTION_LIST);
 			prepareData();
 		}
 		
 		mAddPlaceFrameLayout = (MBListLayoutAddPlaceLayout) findViewById(R.id.pick_place_framelayout);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode == RESULT_OK) {
+			if(requestCode == REQUEST_ADD_PLACE)
+				finish();
+		}
+		
 	}
 
 	private void prepareData() {
@@ -106,7 +118,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 					mRequestPlace.add(new MappingBirdPlaceItem(
 							MappingBirdPlaceItem.TYPE_PLACE, collection.get(i), mLatitude, mLongitude));
 				}
-				Collections.sort(mRequestPlace, new Comparator<MappingBirdPlaceItem>() {
+				java.util.Collections.sort(mRequestPlace, new Comparator<MappingBirdPlaceItem>() {
 
 					@Override
 					public int compare(MappingBirdPlaceItem lhs, MappingBirdPlaceItem rhs) {
@@ -137,7 +149,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 					mRequestPlace.add(new MappingBirdPlaceItem(
 							MappingBirdPlaceItem.TYPE_PLACE, collection.get(i), mLatitude, mLongitude));
 				}
-				Collections.sort(mRequestPlace, new Comparator<MappingBirdPlaceItem>() {
+				java.util.Collections.sort(mRequestPlace, new Comparator<MappingBirdPlaceItem>() {
 
 					@Override
 					public int compare(MappingBirdPlaceItem lhs, MappingBirdPlaceItem rhs) {
@@ -159,9 +171,10 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 				long arg3) {
 			
 			Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MappingBirdAddPlaceActivity.class);
-			intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_COLLECTION_LIST, mTripTitles);
+			intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_COLLECTION_LIST, mCollections);
+			intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_TYPE, mType);
 			intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_ITEM, (MappingBirdPlaceItem)mPlaceAdapter.getItem(position));
-			MappingBirdPickPlaceActivity.this.startActivity(intent);
+			MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 		}
 	};
 
