@@ -4,14 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/graphic_orange" >
 
-    <com.mappingbird.widget.MappingbirdTextView
-        android:id="@+id/tutoral_login"
-        android:layout_width="wrap_content"
+    <com.mappingbird.widget.MappingBirdParallaxPager
+        android:id="@+id/tutoral_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:layout_alignParentBottom="true"
+        android:id="@+id/tutoral_pager_indicator"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-		android:layout_centerInParent="true"        
-        android:text="@string/login1"
-        android:padding="10dp"
-        android:textColor="@color/font_white"
-        android:background="#80ffffff"
-        android:textSize="24dp" />
+        android:padding="10dip" />
+
 </RelativeLayout>
