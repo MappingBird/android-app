@@ -10,30 +10,26 @@
         android:id="@+id/tutoral_welcome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:gravity="center"
         android:visibility="gone" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxWidth="272dp"
-            android:minWidth="208dp"
-            android:paddingBottom="40dp" >
+
 
             <LinearLayout
+                android:layout_weight="1"
                 android:id="@+id/tutoral_welcome_logo_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/tutoral_welcome_descript_layout"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal" >
+                android:layout_gravity="center"
+                android:gravity="center" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:orientation="vertical" >
 
                     <com.mappingbird.widget.MappingbirdFontIcon
@@ -56,8 +52,6 @@
                 android:id="@+id/tutoral_welcome_descript_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/tutoral_sign_in"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
                 android:gravity="center_horizontal"
@@ -89,7 +83,6 @@
                 android:maxWidth="272dp"
                 android:minWidth="208dp"
                 android:text="@string/tutorial_sign_in" />
-        </RelativeLayout>
     </LinearLayout>
 
     <!-- Intro Page -->
@@ -124,11 +117,11 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_centerHorizontal="true"
-            android:layout_above="@+id/page_intro_title"
             android:id="@+id/page_intro_image"
             android:layout_width="240dp"
             android:layout_height="240dp"
+            android:layout_above="@+id/page_intro_title"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/oobe_splash_001" />
 
         <com.mappingbird.widget.MappingbirdTextView

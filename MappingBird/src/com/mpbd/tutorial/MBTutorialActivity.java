@@ -88,21 +88,24 @@ public class MBTutorialActivity extends FragmentActivity{
             rootView = view;
             ctx = context;
 
+            int screenHeight = MBUtil.getScreenHeight(context);
+            
             // layout - welcome
             layoutWelcome = (LinearLayout) view.findViewById(R.id.tutoral_welcome);
             tvSignIn = (TextView) view.findViewById(R.id.tutoral_sign_in);
-
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.CENTER;
+            params.height = (screenHeight / 100) * 66;
+            layoutWelcome.setLayoutParams(params);
             
             // layout 2            
             layoutIntroPage = (RelativeLayout) view.findViewById(R.id.layout_tutoral_page);
             introText = (TextView) view.findViewById(R.id.page_intro_title);
             introImage = (ImageView) view.findViewById(R.id.page_intro_image);
             
-            int screenHeight = MBUtil.getScreenHeight(context);
-//            layoutIntroPage.getLayoutParams().height = (screenHeight / 100) * 30;
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER;
-            params.height = (screenHeight / 100) * 66;
+            params.height = (screenHeight / 100) * 68;
             layoutIntroPage.setLayoutParams(params);
             
             // layout 3 - create account
