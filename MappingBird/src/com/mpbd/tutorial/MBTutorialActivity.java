@@ -219,17 +219,14 @@ public class MBTutorialActivity extends FragmentActivity{
                 
                 if(position == 1){
                     vh.introText.setText(R.string.tutorial_page1_scenario_intro);
-                    
                     vh.introImage.setImageResource(R.drawable.oobe_splash_001);
                 }
                 else if(position == 2){
-                    vh.introText.setText(R.string.tutorial_page2_scenario_intro_1);
-
+                    vh.introText.setText(R.string.tutorial_page2_scenario_intro);
                     vh.introImage.setImageResource(R.drawable.oobe_splash_002);                    
                 }
                 else if(position == 3){
                     vh.introText.setText(R.string.tutorial_page3_scenario_intro);
-
                     vh.introImage.setImageResource(R.drawable.oobe_splash_003);
                 }
             }

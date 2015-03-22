@@ -131,7 +131,7 @@
             android:minWidth="208dp"
             android:text="@string/tutorial_page1_scenario_intro"
             android:textColor="@color/font_white"
-            android:textSize="16dp" />
+            android:textSize="14dp" />
     </RelativeLayout>
 
     <!-- Create account or do it later -->

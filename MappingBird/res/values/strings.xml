@@ -44,8 +44,7 @@
     <string name="tutorial_sign_in">Log in</string>
     
     <string name="tutorial_page1_scenario_intro">When you just visit a nice place, save it to MappingBird.</string>
-    <string name="tutorial_page2_scenario_intro_1">Look for a great bar to have fun with friends?</string>
-    <string name="tutorial_page2_scenario_intro_2">Check your MappingBird collections.</string>
+    <string name="tutorial_page2_scenario_intro">Look for a great bar to have fun with friends?\n Check your MappingBird collections.</string>
     <string name="tutorial_page3_scenario_intro">View places bookmarked from your computer when on the go.</string>
     
     <string name="tutorial_sign_up_title">Remember places for later.</string>
