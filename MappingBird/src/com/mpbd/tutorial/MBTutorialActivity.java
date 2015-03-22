@@ -11,24 +11,28 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.mappingbird.widget.MappingBirdParallaxPager;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.MBUtil;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 
 public class MBTutorialActivity extends FragmentActivity{
 
     MappingBirdParallaxPager viewPager;
+    int mScreenHeight ;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +41,17 @@ public class MBTutorialActivity extends FragmentActivity{
 		setContentView(R.layout.mb_activity_layout_tutorial);
 		
 		viewPager = (MappingBirdParallaxPager) findViewById(R.id.tutoral_pager);
+		mScreenHeight = MBUtil.getScreenHeight(MBTutorialActivity.this);
 		
 		MBViewPagerAdapter viewPagerAdapter = new MBViewPagerAdapter(MBTutorialActivity.this);
 		viewPager.setAdapter(viewPagerAdapter);
 		
 		PageIndicator mIndicator = (CirclePageIndicator)findViewById(R.id.tutoral_pager_indicator);
 		mIndicator.setViewPager(viewPager);
-		        
-
-		
 	}
 
 
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -65,42 +68,48 @@ public class MBTutorialActivity extends FragmentActivity{
 	    Context ctx;
 	    View rootView;
 	    
-	    // layout - welcome
-	    RelativeLayout layoutWelcome;
-	    TextView tvSignIn;
-	    
-	    
-	 // layout 2
-	    LinearLayout layoutIntroPage;
-	    ImageView introImage;
-	    TextView introText;
-	    TextView introText2;
-	    
-	 // layout 3
-	    LinearLayout layoutCreatOrDoItLater;
-	    TextView tvDescription;
-	    TextView tvCreateAccount;
-	    TextView tvDoLater;
+        // layout - welcome
+	    LinearLayout layoutWelcome;
+        TextView tvSignIn;
+
+        // layout 2
+        LinearLayout layoutIntroPage;
+        ImageView introImage;
+        TextView introText;
+
+        // layout 3 - create account
+        LinearLayout layoutCreatOrDoItLater;
+        TextView tvDescription;
+        TextView tvCreateAccount;
+        TextView tvDoLater;
 	    
 	    public MBTutorPagerViewHolder(View view, Context context) {
-	           rootView = view;
-	           ctx = context;
-	           
-	           layoutWelcome = (RelativeLayout) view.findViewById(R.id.tutoral_welcome);
-	           tvSignIn = (TextView) view.findViewById(R.id.tutoral_sign_in);
-	           
-	           layoutIntroPage = (LinearLayout) view.findViewById(R.id.tutoral_page);
-	           introText = (TextView) view.findViewById(R.id.page_intro_title);
-	           introText2 = (TextView) view.findViewById(R.id.page_intro_title2);
-	           introImage = (ImageView) view.findViewById(R.id.page_intro_image);
-	           
-	           layoutCreatOrDoItLater = (LinearLayout) view.findViewById(R.id.tutoral_create_or_do_later);
-	           tvDescription = (TextView) view.findViewById(R.id.tutoral_create_descripion);
-	           tvCreateAccount = (TextView) view.findViewById(R.id.tutoral_create_account);
-	           tvDoLater = (TextView) view.findViewById(R.id.tutoral_do_it_later);
-	           
-	           
-	            
+            rootView = view;
+            ctx = context;
+
+            // layout - welcome
+            layoutWelcome = (LinearLayout) view.findViewById(R.id.tutoral_welcome);
+            tvSignIn = (TextView) view.findViewById(R.id.tutoral_sign_in);
+
+            
+            // layout 2            
+            layoutIntroPage = (LinearLayout) view.findViewById(R.id.layout_tutoral_page);
+            introText = (TextView) view.findViewById(R.id.page_intro_title);
+            introImage = (ImageView) view.findViewById(R.id.page_intro_image);
+            
+            int screenHeight = MBUtil.getScreenHeight(context);
+//            layoutIntroPage.getLayoutParams().height = (screenHeight / 100) * 30;
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.CENTER;
+            params.height = (screenHeight / 100) * 66;
+            layoutIntroPage.setLayoutParams(params);
+            
+            // layout 3 - create account
+            layoutCreatOrDoItLater = (LinearLayout) view.findViewById(R.id.tutoral_create_or_do_later);
+            tvDescription = (TextView) view.findViewById(R.id.tutoral_create_descripion);
+            tvCreateAccount = (TextView) view.findViewById(R.id.tutoral_create_account);
+            tvDoLater = (TextView) view.findViewById(R.id.tutoral_do_it_later);
+
 	    }
 	}
 	
@@ -112,7 +121,6 @@ public class MBTutorialActivity extends FragmentActivity{
 	    
 	    int targetLayoutId = R.layout.mb_tutorial_page_layout; 
 	    Stack<View> recycledViewsList = new Stack<View>();
-    
 	    
         private MBTutorPagerViewHolder inflateOrRecycleView() {
 
@@ -202,22 +210,18 @@ public class MBTutorialActivity extends FragmentActivity{
                 
                 if(position == 1){
                     vh.introText.setText(R.string.tutorial_page1_scenario_intro);
-                    vh.introText2.setVisibility(View.GONE);
                     
-                    //vh.introImage.setImageResource(resId);
+                    vh.introImage.setImageResource(R.drawable.oobe_splash_001);
                 }
                 else if(position == 2){
                     vh.introText.setText(R.string.tutorial_page2_scenario_intro_1);
-                    vh.introText2.setVisibility(View.VISIBLE);
-                    vh.introText2.setText(R.string.tutorial_page2_scenario_intro_2);
 
-                    //vh.introImage.setImageResource(resId);                    
+                    vh.introImage.setImageResource(R.drawable.oobe_splash_002);                    
                 }
                 else if(position == 3){
                     vh.introText.setText(R.string.tutorial_page3_scenario_intro);
-                    vh.introText2.setVisibility(View.GONE);
 
-                    //vh.introImage.setImageResource(resId);                    
+                    vh.introImage.setImageResource(R.drawable.oobe_splash_003);
                 }
             }
 	        
