@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
@@ -81,8 +82,8 @@ public class MBTutorialActivity extends FragmentActivity{
         // layout 3 - create account
         LinearLayout layoutCreatOrDoItLater;
         TextView tvDescription;
-        TextView tvCreateAccount;
-        TextView tvDoLater;
+        TextView tvSignIn2;
+        TextView tvLearnMore;
 	    
 	    public MBTutorPagerViewHolder(View view, Context context) {
             rootView = view;
@@ -111,9 +112,12 @@ public class MBTutorialActivity extends FragmentActivity{
             // layout 3 - create account
             layoutCreatOrDoItLater = (LinearLayout) view.findViewById(R.id.tutoral_create_or_do_later);
             tvDescription = (TextView) view.findViewById(R.id.tutoral_create_descripion);
-            tvCreateAccount = (TextView) view.findViewById(R.id.tutoral_create_account);
-            tvDoLater = (TextView) view.findViewById(R.id.tutoral_do_it_later);
-
+            tvSignIn2 = (TextView) view.findViewById(R.id.tutoral_sign_in_2);
+            tvLearnMore = (TextView) view.findViewById(R.id.tutoral_learn_more);
+            params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            params.gravity = Gravity.CENTER;
+            params.height = (screenHeight / 100) * 73;
+            layoutCreatOrDoItLater.setLayoutParams(params);
 	    }
 	}
 	
@@ -184,11 +188,11 @@ public class MBTutorialActivity extends FragmentActivity{
                 vh.layoutIntroPage.setVisibility(View.GONE);
                 vh.layoutCreatOrDoItLater.setVisibility(View.VISIBLE);
                 
-                vh.tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
-                vh.tvDescription.setText(Html
-                        .fromHtml(getString(R.string.tutorial_sign_up_descriptions)));
+//                vh.tvDescription.setMovementMethod(LinkMovementMethod.getInstance());
+//                vh.tvDescription.setText(Html
+//                        .fromHtml(getString(R.string.tutorial_sign_up_descriptions)));
                 
-                vh.tvCreateAccount.setOnClickListener(new OnClickListener() {
+                vh.tvSignIn2.setOnClickListener(new OnClickListener() {
                     
                     @Override
                     public void onClick(View v) {
@@ -197,13 +201,14 @@ public class MBTutorialActivity extends FragmentActivity{
                         MBTutorialActivity.this.startActivity(intent);                        
                     }
                 });
-                vh.tvDoLater.setOnClickListener(new OnClickListener() {
+                vh.tvLearnMore.setOnClickListener(new OnClickListener() {
                     
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MappingBirdLoginActivity.class);
-                        MBTutorialActivity.this.startActivity(intent);
+                        String url = "http://www.mappingbird.com";
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
                     }
                 });
                 

@@ -49,14 +49,10 @@
     <string name="tutorial_page3_scenario_intro">View places bookmarked from your computer when on the go.</string>
     
     <string name="tutorial_sign_up_title">Remember places for later.</string>
-    <string name="tutorial_sign_up_descriptions">
-        <![CDATA[
-        Sign up a MappingBird account to sync your collections across all devices, as well as
-        <font color=#01A9E7><a href="https://mappingbird.com/">Mappingbird.com</a></font>
-        ]]>        
-        </string>
+    <string name="tutorial_sign_up_descriptions">Sign up a MappingBird account to sync your collections across all devices, as well as Mappingbird.com </string>
     <string name="tutorial_create_account">Create a Free Account</string>
     <string name="tutorial_do_it_later">Do It Later</string>
+    <string name="tutorial_learn_more">Learn more</string>
     <string name="tutorial_welcome">Welcome</string>
     
     <!-- Dialog -->
