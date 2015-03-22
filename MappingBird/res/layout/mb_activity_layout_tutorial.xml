@@ -7,13 +7,14 @@
     <com.mappingbird.widget.MappingBirdParallaxPager
         android:id="@+id/tutoral_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tutoral_pager_indicator" />
 
     <com.viewpagerindicator.CirclePageIndicator
-        android:layout_alignParentBottom="true"
         android:id="@+id/tutoral_pager_indicator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:padding="10dip" />
 
 </RelativeLayout>

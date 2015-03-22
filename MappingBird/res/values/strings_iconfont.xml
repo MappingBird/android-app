@@ -11,6 +11,7 @@
     <string name="iconfont_logout" translatable="false">\uE61F</string>
     <string name="iconfont_plus_circle_outline" translatable="false">\uE61B</string>
     <string name="iconfont_settings" translatable="false">\uE625</string>
+    <string name="iconfont_mappingbird_logo" translatable="false">\uE61C</string>
 
     <string name="iconfont_check" translatable="false">\uE632</string>
     <!-- Place icon -->

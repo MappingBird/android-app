@@ -3,6 +3,8 @@
 
     <color name="login">#01A9E7</color>
     <color name="login_press">#0387b9</color>
+    <color name="login_style2_normal">#33ffffff</color>
+    <color name="login_style2_press">#66ffffff</color>
     <color name="login_unable">#3f000000</color>
     <color name="logout">#707070</color>
     <color name="logout_press">#E5E5E5</color>

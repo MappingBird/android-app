@@ -106,6 +106,18 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="BtnTransparent">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textColor">@color/font_white</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:background">@drawable/login_style2_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>    
+    
     <style name="TitleButtonStyle">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">match_parent</item>
