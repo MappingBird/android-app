@@ -94,17 +94,17 @@
 
     <!-- Intro Page -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layout_tutoral_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingBottom="40dp"
         android:visibility="gone" >
 
         <LinearLayout
-            android:layout_gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -124,18 +124,19 @@
         </LinearLayout>
 
         <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/page_intro_title"
             android:id="@+id/page_intro_image"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:layout_gravity="center_horizontal"
             android:src="@drawable/oobe_splash_001" />
 
         <com.mappingbird.widget.MappingbirdTextView
+            android:layout_alignParentBottom="true"
             android:id="@+id/page_intro_title"
             style="@style/TextStyle_Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
             android:gravity="center_horizontal"
             android:maxWidth="272dp"
@@ -143,7 +144,7 @@
             android:text="@string/tutorial_page1_scenario_intro"
             android:textColor="@color/font_white"
             android:textSize="16dp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <!-- Create account or do it later -->
 

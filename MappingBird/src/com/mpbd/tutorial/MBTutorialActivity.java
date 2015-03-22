@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mappingbird.widget.MappingBirdParallaxPager;
@@ -73,7 +74,7 @@ public class MBTutorialActivity extends FragmentActivity{
         TextView tvSignIn;
 
         // layout 2
-        LinearLayout layoutIntroPage;
+        RelativeLayout layoutIntroPage;
         ImageView introImage;
         TextView introText;
 
@@ -93,7 +94,7 @@ public class MBTutorialActivity extends FragmentActivity{
 
             
             // layout 2            
-            layoutIntroPage = (LinearLayout) view.findViewById(R.id.layout_tutoral_page);
+            layoutIntroPage = (RelativeLayout) view.findViewById(R.id.layout_tutoral_page);
             introText = (TextView) view.findViewById(R.id.page_intro_title);
             introImage = (ImageView) view.findViewById(R.id.page_intro_image);
             
