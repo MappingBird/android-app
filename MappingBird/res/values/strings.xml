@@ -76,8 +76,14 @@
     <string name="add_place_add_tags">Add tags</string>
     <string name="add_place_location_name">Enter location name</string>
     <string name="add_place_address">Add address</string>
+    <string name="add_place_add_phone">Add phone</string>
+    <string name="add_place_add_open_time">Add open time</string>
+    <string name="add_place_add_link">Add hyperlink</string>
     <string name="add_place_add_field">Add another field</string>
 
+    <string name="add_place_field_phone">Phone number</string>
+    <string name="add_place_field_open_time">Open time</string>
+	<string name="add_place_field_hyperlink">Hyperlink</string>
     <!-- Pick place -->
     <string name="pick_place_title">Remember a place</string>
     <string name="pick_place_new_location">Add a new location</string>

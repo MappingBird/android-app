@@ -1,7 +1,9 @@
 package com.mappingbird.saveplace;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -32,12 +34,23 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	// Place data
 	private MappingBirdPlaceItem mPlaceData;
 	private Collections mCollections = null;
+
+	// Place Layout
+	private View mPlacePhoneLayout;
+	private View mPlaceOpenTimeLayout;
+	private View mPlaceHyperLinkLayout;
 	
 	// Place Field
 	private EditText mPlaceName;
 	private EditText mPlaceAddress;
 	private EditText mPlaceDescription;
+	private EditText mPlacePhone;
+	private EditText mPlaceOpenTime;
+	private EditText mPlaceHyperLink;
 	
+	// Add field dialog
+	private Dialog mAddFieldDialog = null;
+
 	// 
 	private int mSelectCollectionPosition = 0;
 	// 
@@ -66,18 +79,24 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		mCollectionText = (TextView) findViewById(R.id.add_place_collection_text);
 		mCollectionArrowDown = (TextView) findViewById(R.id.add_place_collection_arrow);
 
+		// Place Field layout
+		mPlacePhoneLayout = findViewById(R.id.add_place_phone_layout);
+		mPlaceOpenTimeLayout = findViewById(R.id.add_place_open_time_layout);
+		mPlaceHyperLinkLayout = findViewById(R.id.add_place_link_layout);
+		
 		// Place Field
 		mPlaceDescription = (EditText) findViewById(R.id.add_place_about);
 		mPlaceName = (EditText) findViewById(R.id.add_place_location_name);
 		mPlaceAddress = (EditText) findViewById(R.id.add_place_address);
+		mPlacePhone = (EditText) findViewById(R.id.add_place_phone);
+		mPlaceOpenTime = (EditText) findViewById(R.id.add_place_open_time);
+		mPlaceHyperLink = (EditText) findViewById(R.id.add_place_link);
 		
 		mPlaceName.addTextChangedListener(mPlaceTextWatcher);
 		
 		findViewById(R.id.add_place_add_field).setOnClickListener(mOnClickListener);
 
-//		LayoutInflater inflater = LayoutInflater.from(getContext());
 		mCollectionlistPopupWindow = new ListPopupWindow(getContext());
-//		View footlayout = inflater.inflate(R.layout.mappingbird_add_place_input_collection_item, null, false);
 		mCollectionListAdapter = new CollectionListAdapter(getContext());
 		mCollectionlistPopupWindow.setAdapter(mCollectionListAdapter);
 		mCollectionlistPopupWindow.setAnchorView(mCollectionLayout);
@@ -129,14 +148,22 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 
 	public MBPlaceAddDataToServer getPlaceInfoData() {
 		MBPlaceAddDataToServer data = new MBPlaceAddDataToServer();
-		if(mPlaceName.getText().toString().length() > 0)
+		if(!TextUtils.isEmpty(mPlaceName.getText()))
 			data.title = mPlaceName.getText().toString();
-		if(mPlaceName.getText().toString().length() > 0)
+		if(!TextUtils.isEmpty(mPlaceName.getText()))
 			data.placeName = mPlaceName.getText().toString();
-		if(mPlaceAddress.getText().toString().length() > 0)
+		if(!TextUtils.isEmpty(mPlaceAddress.getText()))
 			data.placeAddress = mPlaceAddress.getText().toString();
-		if(mPlaceDescription.getText().toString().length() > 0)
+		if(!TextUtils.isEmpty(mPlaceDescription.getText()))
 			data.description = mPlaceDescription.getText().toString();
+
+		if(!TextUtils.isEmpty(mPlacePhone.getText()))
+			data.placePhone = mPlacePhone.getText().toString();
+		if(!TextUtils.isEmpty(mPlaceOpenTime.getText()))
+			data.placeOpenTime = mPlaceOpenTime.getText().toString();
+		if(!TextUtils.isEmpty(mPlaceHyperLink.getText()))
+			data.url = mPlaceHyperLink.getText().toString();
+
 		data.collectionId = mCollections.get(mSelectCollectionPosition).getId();
 		data.lat = String.valueOf(mPlaceData.getLatitude());
 		data.lng = String.valueOf(mPlaceData.getLongitude());
@@ -158,6 +185,7 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		public void onClick(View v) {
 			switch(v.getId()) {
 				case R.id.add_place_add_field:
+					showFiledSelectDialog();
 					break;
 			}
 			
@@ -203,6 +231,55 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 			name.setText(mCollections.get(position).getName());
 			return convertView;
 		}
-		
 	}
+	
+	// Field select dialog
+	private void showFiledSelectDialog() {
+		if(mAddFieldDialog != null) {
+			mAddFieldDialog.dismiss();
+		}
+
+		mAddFieldDialog = new Dialog(getContext(),R.style.CustomDialog);
+		mAddFieldDialog.setContentView(R.layout.mb_dialog_add_field);
+		if(mPlacePhoneLayout.getVisibility() == View.VISIBLE) {
+			mAddFieldDialog.findViewById(R.id.field_phone_layout).setVisibility(View.GONE);
+			mAddFieldDialog.findViewById(R.id.field_phone_divider).setVisibility(View.GONE);
+		} else {
+			mAddFieldDialog.findViewById(R.id.field_phone_layout).setOnClickListener(mOnAddFieldDialogClickListener);
+		}
+		if(mPlaceOpenTimeLayout.getVisibility() == View.VISIBLE) {
+			mAddFieldDialog.findViewById(R.id.field_open_time_layout).setVisibility(View.GONE);
+			mAddFieldDialog.findViewById(R.id.field_open_time_divider).setVisibility(View.GONE);
+		} else {
+			mAddFieldDialog.findViewById(R.id.field_open_time_layout).setOnClickListener(mOnAddFieldDialogClickListener);
+		}
+		if(mPlaceHyperLinkLayout.getVisibility() == View.VISIBLE) {
+			mAddFieldDialog.findViewById(R.id.field_link_layout).setVisibility(View.GONE);
+		} else {
+			mAddFieldDialog.findViewById(R.id.field_link_layout).setOnClickListener(mOnAddFieldDialogClickListener);
+		}
+		mAddFieldDialog.show();
+	}
+	
+	private OnClickListener mOnAddFieldDialogClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			switch(v.getId()) {
+				case R.id.field_phone_layout:
+					mPlacePhoneLayout.setVisibility(View.VISIBLE);
+					break;
+				case R.id.field_open_time_layout:
+					mPlaceOpenTimeLayout.setVisibility(View.VISIBLE);
+					break;
+				case R.id.field_link_layout:
+					mPlaceHyperLinkLayout.setVisibility(View.VISIBLE);
+					break;
+			}
+			if(mPlacePhoneLayout.getVisibility() == View.VISIBLE &&
+					mPlaceOpenTimeLayout.getVisibility() == View.VISIBLE &&
+							mPlaceHyperLinkLayout.getVisibility() == View.VISIBLE)
+				findViewById(R.id.add_place_add_field).setVisibility(View.GONE);
+			mAddFieldDialog.dismiss();
+		}
+	};
 }

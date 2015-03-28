@@ -21,7 +21,7 @@
         <item name="android:windowAnimationStyle">@style/activity_animation</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-    
+
     <style name="AppPlaceTheme" parent="@android:Theme.Translucent">
         <item name="android:windowAnimationStyle">@style/activity_animation</item>
         <item name="android:windowFrame">@null</item>
@@ -29,7 +29,7 @@
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-    
+
     <style name="LoadingDialog" parent="@android:Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
@@ -116,8 +116,8 @@
         <item name="android:background">@drawable/login_style2_selector</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
-    </style>    
-    
+    </style>
+
     <style name="TitleButtonStyle">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -133,6 +133,20 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        
     </style>
+
+    <style name="CustomDialog" parent="@android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/cards_background</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="DividerNormal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/default_divider</item>
+    </style>
+
 </resources>

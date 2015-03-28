@@ -114,6 +114,108 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/add_place_phone_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" >
+
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/add_place_phone_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/iconfont_phone"
+            android:textColor="@color/graphic_symbol"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/add_place_phone"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/add_place_phone_icon"
+            android:background="@drawable/edit_custom_drawable"
+            android:hint="@string/add_place_add_phone"
+            android:paddingBottom="10dp"
+            android:paddingTop="8dp"
+            android:textColorHint="#DDDDDD" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/add_place_open_time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" >
+
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/add_place_open_time_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/iconfont_clock"
+            android:textColor="@color/graphic_symbol"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/add_place_open_time"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/add_place_open_time_icon"
+            android:background="@drawable/edit_custom_drawable"
+            android:hint="@string/add_place_add_open_time"
+            android:paddingBottom="10dp"
+            android:paddingTop="8dp"
+            android:textColorHint="#DDDDDD" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/add_place_link_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" >
+
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/add_place_link_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/iconfont_link"
+            android:textColor="@color/graphic_symbol"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/add_place_link"
+            style="@style/TextStyle_Body_Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/add_place_link_icon"
+            android:background="@drawable/edit_custom_drawable"
+            android:hint="@string/add_place_add_link"
+            android:paddingBottom="10dp"
+            android:paddingTop="8dp"
+            android:textColorHint="#DDDDDD" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"

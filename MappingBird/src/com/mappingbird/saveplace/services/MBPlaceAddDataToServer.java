@@ -15,6 +15,7 @@ public class MBPlaceAddDataToServer implements Serializable{
 	public String placeName = "";
 	public String placeAddress = "";
 	public String placePhone = "";
+	public String placeOpenTime = "";
 	public String lat = null;
 	public String lng = null;
 	public String type = "";
