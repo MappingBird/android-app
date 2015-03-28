@@ -7,7 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.text.TextUtils;
+import android.util.Base64;
 
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MBLocation;
@@ -39,7 +39,7 @@ class MapParse {
 			throws JSONException {
 		JSONObject obj = new JSONObject();
 		obj.put("point", placeId);
-		obj.put("media", image);
+		obj.put("media", Base64.encodeToString(image, Base64.NO_WRAP));
 		DeBug.i(TAG, "[image json] =" + obj.toString());
 		return obj;
 	}

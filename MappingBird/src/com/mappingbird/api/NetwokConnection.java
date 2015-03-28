@@ -237,8 +237,11 @@ class NetwokConnection {
 			request = post;
 			post.setHeader("Content-Type", "application/json");
 			post.setHeader("Accept", "application/json");
+			if(mCurrentUser != null) {
+				String auth = "Token " + mCurrentUser.getToken();
+				post.setHeader("Authorization", auth);
+			}
 			if (postData != null) {
-
 				StringEntity jsonentity = new StringEntity(postData.toString(),
 						"UTF-8");
 				post.setEntity(jsonentity);

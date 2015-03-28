@@ -294,7 +294,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 			return true;
 
 		mGestureDetector.onTouchEvent(ev);
-		DeBug.d("Test", "mMode = "+mMode);
+//		DeBug.d("Test", "mMode = "+mMode);
 		switch(mMode) {
 			case MODE_SMALL_CARD:
 				if(handleSmallCardTouchEvent(ev))

@@ -14,12 +14,6 @@ public class AppPlaceDBHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "AppPlace.db";
 
-    public static final int SUBMIT_STATE_WAIT = 0;
-    public static final int SUBMIT_STATE_PLACE_READY = 1;
-    public static final int SUBMIT_STATE_PHOTO_READY = 2;
-    public static final int SUBMIT_STATE_CANCEL = 3;
-    public static final int SUBMIT_STATE_FINISHED = 4;
-
     // Add place table
     public static final String ADD_PLACE_TABLE_NAME 	= "AppPlaceTable";
     public static final String ADD_PLACE_ID 			= "_id";
@@ -29,7 +23,7 @@ public class AppPlaceDBHelper extends SQLiteOpenHelper {
     public static final String ADD_PLACE_PLACE_ID 		= "place_id";
     public static final String ADD_PLACE_CREATE_TIME 	= "create_time";
 
-    public static final String[] APP_PLACE_TABLE_COLUMNS = { 
+    public static final String[] ADD_PLACE_TABLE_COLUMNS = { 
     	ADD_PLACE_ID, ADD_PLACE_OBJECT, ADD_PLACE_STATE, ADD_PLACE_PLACE_ID};
 
     private static final String ADD_PLACE_TABLE_CREATED = "CREATE TABLE IF NOT EXISTS "
@@ -42,6 +36,26 @@ public class AppPlaceDBHelper extends SQLiteOpenHelper {
             +ADD_PLACE_PLACE_ID+" TEXT"
             +");";
 
+    // Image table
+    public static final String ADD_IMAGE_TABLE_NAME 	= "AppImageTable";
+    public static final String ADD_IMAGE_ID 			= "_id";
+    public static final String ADD_IMAGE_URL 			= "url";
+    public static final String ADD_IMAGE_PLACE_DB_ID	= "place_db_id";
+    public static final String ADD_IMAGE_STATE 			= "state";
+    public static final String ADD_IMAGE_CREATE_TIME 	= "create_time";
+
+    public static final String[] ADD_IMAGE_TABLE_COLUMNS = { 
+    	ADD_IMAGE_ID, ADD_IMAGE_URL, ADD_IMAGE_PLACE_DB_ID, ADD_IMAGE_STATE};
+
+    private static final String ADD_IMAGE_TABLE_CREATED = "CREATE TABLE IF NOT EXISTS "
+            +ADD_IMAGE_TABLE_NAME+"( "
+            +ADD_IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            +ADD_IMAGE_URL+" TEXT, "
+            +ADD_IMAGE_PLACE_DB_ID+" TEXT, "
+            +ADD_IMAGE_STATE+" TEXT,"
+            +ADD_PLACE_CREATE_TIME+" TEXT"
+            +");";
+
     public AppPlaceDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     	DeBug.i("DB", "OrderDBHelper init");
@@ -51,13 +65,16 @@ public class AppPlaceDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
     	DeBug.i("DB", "DB onCreate");
     	db.execSQL(ADD_PLACE_TABLE_CREATED);
+    	db.execSQL(ADD_IMAGE_TABLE_CREATED);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	DeBug.i("DB", "DB onUpgrade");
     	db.execSQL("DELETE FROM " + ADD_PLACE_TABLE_NAME);
+    	db.execSQL("DELETE FROM " + ADD_IMAGE_TABLE_NAME);
     	
     	db.execSQL(ADD_PLACE_TABLE_CREATED);
+    	db.execSQL(ADD_IMAGE_TABLE_CREATED);
     }
 }

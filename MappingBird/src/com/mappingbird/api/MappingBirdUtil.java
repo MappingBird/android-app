@@ -755,9 +755,9 @@ final class MappingBirdUtil {
 				msg.what = MSG_ADD_COLLECTION_FINISH;
 				break;
 			case NetwokConnection.API_ADD_PLACE:
-				msg.what = MSG_ADD_POINT_FINISH;
 				point = handler.getPoint();
 				mInfo.setPoint(point);
+				msg.what = MSG_ADD_POINT_FINISH;
 				break;
 			case NetwokConnection.API_UPLOAD_IMAGE:
 				msg.what = MSG_UPLOAD_IMAGE_FINISH;

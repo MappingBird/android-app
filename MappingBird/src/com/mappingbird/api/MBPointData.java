@@ -71,8 +71,10 @@ public class MBPointData implements Serializable {
 		mTags = tags;
 		CollectionId = collectionId;
 		mLocation = location;
-		mLatitude = mLocation.getLatitude();
-		mLongitude = mLocation.getLongitude();
+		if(mLocation != null) {
+			mLatitude = mLocation.getLatitude();
+			mLongitude = mLocation.getLongitude();
+		}
 		mCreateTime = createTime;
 		mUpdateTime = updateTime;
 	}

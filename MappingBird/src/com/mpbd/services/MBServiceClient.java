@@ -1,22 +1,26 @@
 package com.mpbd.services;
 
-import com.mappingbird.saveplace.MBAddPlaceData;
+import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Messenger;
 
 public class MBServiceClient {
-
 	public static void attachMessenger(Context context, Messenger messenger) {
 		Intent intent = createIntent(context, MBService.CMD_ATTACH_MESSAGE);
 		intent.putExtra(MBService.EXTRA_MESSENGER, messenger);
 		startService(context, intent);
 	}
 
-	public static void addPlace(Context context, MBAddPlaceData data) {
+	public static void addPlace(Context context, MBPlaceAddDataToServer data) {
 		Intent intent = createIntent(context, MBService.CMD_ADD_PLACE_ITEM);
 		intent.putExtra(MBService.EXTRA_PLACE_DATA, data);
+		startService(context, intent);
+	}
+
+	public static void stopService(Context context) {
+		Intent intent = createIntent(context, MBService.CMD_STOP_SERVICE);
 		startService(context, intent);
 	}
 

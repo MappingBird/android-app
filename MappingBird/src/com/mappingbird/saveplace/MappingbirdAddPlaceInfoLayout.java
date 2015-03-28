@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.mappingbird.api.Collections;
 import com.mappingbird.common.MappingBirdPref;
+import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 import com.mpbd.mappingbird.R;
 
 public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
@@ -126,8 +127,8 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		mPlaceAddress.setText(mPlaceData.getAddress());
 	}
 
-	public MBAddPlaceData getPlaceInfoData() {
-		MBAddPlaceData data = new MBAddPlaceData();
+	public MBPlaceAddDataToServer getPlaceInfoData() {
+		MBPlaceAddDataToServer data = new MBPlaceAddDataToServer();
 		if(mPlaceName.getText().toString().length() > 0)
 			data.title = mPlaceName.getText().toString();
 		if(mPlaceName.getText().toString().length() > 0)

@@ -91,4 +91,17 @@
     
     <!-- Error -->
     <string name="error_log_out_fail">Log out fail!</string>
+    
+    <!-- Notification -->
+    <string name="noti_update_wait_title">Update wait</string>
+    <string name="noti_update_wait_message">Update wait message</string>
+
+    <string name="noti_update_error_title">Update error</string>
+    <string name="noti_update_error_message">Update error message</string>
+
+    <string name="noti_update_progress_title">Update progress</string>
+    <string name="noti_update_progress_message">Update %1$s / %2$s</string>
+
+    <string name="noti_update_finish_title">Update finished</string>
+    <string name="noti_update_finish_message">Update finished message</string>
 </resources>

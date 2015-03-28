@@ -30,6 +30,7 @@ import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPhotoAdapter.PhotoAdapterListener;
 import com.mappingbird.saveplace.MappingbirdAddPlaceInfoLayout.PlaceInfoListener;
+import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.services.MBServiceClient;
@@ -71,7 +72,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 			finish();
 			return;
 		} else {
-			if(intent.hasCategory(EXTRA_TYPE)) 
+			if(intent.hasExtra(EXTRA_TYPE)) 
 				mType = intent.getStringExtra(EXTRA_TYPE);
 			mItem = (MappingBirdPlaceItem) intent.getSerializableExtra(EXTRA_ITEM);
 			mCollections = (Collections)intent.getSerializableExtra(EXTRA_COLLECTION_LIST);
@@ -125,7 +126,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 				finish();
 				break;
 			case R.id.title_btn_submit:
-				MBAddPlaceData data = mAddPlaceInfoLayout.getPlaceInfoData();
+				MBPlaceAddDataToServer data = mAddPlaceInfoLayout.getPlaceInfoData();
 				data.type = mType;
 				data.setImageList(mAdapter.getSelectPhotoList());
 				MBServiceClient.addPlace(MappingBirdAddPlaceActivity.this, data);

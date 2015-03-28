@@ -1,33 +1,36 @@
 package com.mpbd.services;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Messenger;
 import android.os.Parcelable;
 
 import com.hlrt.common.DeBug;
-import com.mappingbird.api.MBPointData;
-import com.mappingbird.api.MappingBirdAPI;
-import com.mappingbird.api.OnAddPlaceListener;
-import com.mappingbird.api.OnUploadImageListener;
-import com.mappingbird.saveplace.MBAddPlaceData;
+import com.mappingbird.common.MappingBirdApplication;
+import com.mappingbird.saveplace.db.AppPlaceDB;
+import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
+import com.mappingbird.saveplace.services.MBPlaceSubmitLogic;
+import com.mappingbird.saveplace.services.MBPlaceSubmitLogic.SubmitLogicListener;
+import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
+import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
+import com.mpbd.mappingbird.R;
+import com.mpbd.notification.MBNotificationCenter;
 
 public class MBService extends Service{
 	private static final String TAG = "CommonService";
+	private static final int NOTIFY_ID = 10020;
+	private static final int NOTIFY_FINISHED_ID = 10021;
 	public static final String EXTRA_SERVICE_COMMEND = "extra_service_commend";
 	
 	public static final int CMD_START_LOCATUIN 	= 0x0100;
 	public static final int CMD_STOP_LOCATUIN 	= 0x0101;
 	public static final int CMD_ATTACH_MESSAGE 	= 0x0102;
 	public static final int CMD_ADD_PLACE_ITEM	= 0x0103;
+	public static final int CMD_RETRY_UPDATE 	= 0x0104;
 	public static final int CMD_STOP_SERVICE 	= 0x01A0;
 
 	//
@@ -43,8 +46,10 @@ public class MBService extends Service{
 		super.onCreate();
 		// start foreground
 		try {
-			Notification nm = new Notification();
-			startForeground(10020, nm);
+			Notification nm = MBNotificationCenter.getUpdateMessageNotification(this, 
+					this.getString(R.string.noti_update_wait_title), 
+					this.getString(R.string.noti_update_wait_message));
+			startForeground(NOTIFY_ID, nm);
 		} catch (Exception e) {
 			if(DeBug.DEBUG)
 				DeBug.e(TAG, "Foreground failed : "+e.getMessage());
@@ -63,67 +68,57 @@ public class MBService extends Service{
 				DeBug.d(TAG, "Commond : CMD_ATTACH_MESSAGE");
 			attachMessager(intent);
 			break;
+		case CMD_RETRY_UPDATE: {
+			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
+			boolean updateData = logic.submit();
+			if(updateData) {
+				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : update dataing ");
+			} else {
+				stopSelf();
+				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : stop service ");
+			}			
+			break;
+		}
 		case CMD_ADD_PLACE_ITEM:
 			if(intent.hasExtra(EXTRA_PLACE_DATA)) {
-				final MBAddPlaceData submitData = (MBAddPlaceData)intent.getSerializableExtra(EXTRA_PLACE_DATA);
-//				AppPlaceDB db = new AppPlaceDB(this);
-//				db.setAppPlaceData(data);
-				MappingBirdAPI api = new MappingBirdAPI(this);
-				DeBug.d("Test", "onAddPlace ---- ");
-				api.addPlace(new OnAddPlaceListener() {
-					@Override
-					public void onAddPlace(int statusCode, MBPointData data) {
-						DeBug.d("Test", "onAddPlace , statusCode : "+statusCode+", place id = "+data.getId());
-//						if(statusCode == MappingBirdAPI.RESULT_OK) {
-//							//Update Image
-//							if(submitData.imageList.size() > 0) {
-//								DeBug.i("Test", "onAddPlace , submit bitmap : ");
-//								MappingBirdAPI api = new MappingBirdAPI(MBService.this);
-//								api.uploadImage(new OnUploadImageListener() {
-//									
-//									@Override
-//									public void OnUploadImage(int statusCode) {
-//										DeBug.e("Test", "OnUploadImage , statusCode : "+statusCode);
-//										
-//									}
-//								}, 
-//								String.valueOf(data.getId()),
-//								getBitmapBytArray(submitData.imageList.get(0)));
-//							}
-//						}
-						
-					}
-				}, submitData);
+				if(DeBug.DEBUG)
+					DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] : get add place commend");
+				final MBPlaceAddDataToServer submitData = (MBPlaceAddDataToServer)intent.getSerializableExtra(EXTRA_PLACE_DATA);
+				if(DeBug.DEBUG)
+					DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] : add data to DB");
+				AppPlaceDB db = new AppPlaceDB(this);
+				db.setAppPlaceData(submitData);
+				if(DeBug.DEBUG)
+					DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] : call SubmitLogic ");
+				MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
+				logic.setSubmitLogicListener(mSubmitLogicListener);
+				boolean updateData = logic.submit();
+				if(updateData) {
+					DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] : update dataing ");
+				} else {
+					stopSelf();
+					DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] : stop service ");
+				}
 			}
 			break;
 		case CMD_STOP_SERVICE:
-			stopSelf();
+			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
+			boolean updateData = logic.submit();
+			if(!updateData)
+				stopSelf();
 			break;
 		}
 		return START_NOT_STICKY;
 	}
 
-	private static byte[] getBitmapBytArray(String path) {
-		File file = new File(path);
-	    int size = (int) file.length();
-	    byte[] bytes = new byte[size];
-	    try {
-	        BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-	        buf.read(bytes, 0, bytes.length);
-	        buf.close();
-	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-	    DeBug.d("getBitmapBytArray : bytes size = "+bytes.length);
-	    return bytes;
-	}
-
 	@Override
 	public void onDestroy() {
-		if(DeBug.DEBUG)
+		if(DeBug.DEBUG) {
 			DeBug.d(TAG, "onDestroy");
+			DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] : onDestroy");
+		}
+		MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
+		logic.setSubmitLogicListener(null);
 		stopForeground(true);
 		super.onDestroy();
 	}
@@ -145,19 +140,43 @@ public class MBService extends Service{
 		}
 	}
 
-	// Location 
-//	private LocationServiceListener mLocationChangedListener = new LocationServiceListener() {
-//		@Override
-//		public void onLocationChanged(Location location) {
-//			if(mUIMessenger != null) {
-//				Message msg = Message.obtain();
-//				msg.getData().putParcelable(MSG_LOCATION, location);
-//				try {
-//					mUIMessenger.send(msg);
-//				} catch (RemoteException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//	};
+	private SubmitLogicListener mSubmitLogicListener = new SubmitLogicListener() {
+		
+		@Override
+		public void onStateChanged(int state) {
+			if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED) {
+				NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
+				if(notificationManager != null) {
+					Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
+							MappingBirdApplication.instance().getString(R.string.noti_update_finish_title), 
+							MappingBirdApplication.instance().getString(R.string.noti_update_finish_message));
+					notificationManager.notify(NOTIFY_FINISHED_ID, nm);
+				}
+				MBServiceClient.stopService(MappingBirdApplication.instance());
+			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
+				NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
+				if(notificationManager != null) {
+					Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
+							MappingBirdApplication.instance().getString(R.string.noti_update_error_title), 
+							MappingBirdApplication.instance().getString(R.string.noti_update_error_message));
+					notificationManager.notify(NOTIFY_ID, nm);
+				}				
+			}
+		}
+		
+		@Override
+		public void onProcess(int process, int totle) {
+			NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
+			if(notificationManager != null) {
+				Notification nm = MBNotificationCenter.getUpdateProgressNotification(MappingBirdApplication.instance(), 
+						MappingBirdApplication.instance().getString(R.string.noti_update_progress_title), 
+						String.format(MappingBirdApplication.instance().getString(R.string.noti_update_finish_message),
+								process, totle),
+						process,
+						totle,
+						true);
+				notificationManager.notify(NOTIFY_ID, nm);
+			}
+		}
+	};
 }

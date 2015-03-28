@@ -1,4 +1,4 @@
-package com.mappingbird.saveplace;
+package com.mappingbird.saveplace.services;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import android.text.TextUtils;
 
 
-public class MBAddPlaceData implements Serializable{
+public class MBPlaceAddDataToServer implements Serializable{
 
 	public String title = "";
 	public String tags = "";
@@ -22,7 +22,7 @@ public class MBAddPlaceData implements Serializable{
 
 	public ArrayList<String> imageList = new ArrayList<String>();
 
-	public MBAddPlaceData() {
+	public MBPlaceAddDataToServer() {
 		
 	}
 

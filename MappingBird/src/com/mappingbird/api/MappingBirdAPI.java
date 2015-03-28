@@ -1,7 +1,6 @@
 package com.mappingbird.api;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +8,7 @@ import org.json.JSONObject;
 import android.content.Context;
 
 import com.mappingbird.common.DeBug;
-import com.mappingbird.saveplace.MBAddPlaceData;
+import com.mappingbird.saveplace.services.MBPlaceSubmitData;
 
 public class MappingBirdAPI {
 	private static final String TAG = MappingBirdAPI.class.getName();
@@ -22,8 +21,8 @@ public class MappingBirdAPI {
 	public static final int RESULT_BAD_REQUEST_ERROR = 5;
 	public static final int RESULT_UNKNOW_ERROR = 6;
 	
-//	private static final String mHost = "https://mappingbird.com";
-	private static final String mHost = "http://stage.mappingbird.com";
+	private static final String mHost = "https://mappingbird.com";
+//	private static final String mHost = "http://stage.mappingbird.com";
 
 	private Context mContext = null;
 	private MappingBirdUtil mUtil = null;
@@ -97,7 +96,7 @@ public class MappingBirdAPI {
 		}
 	}
 	
-	public void addPlace(OnAddPlaceListener listener, MBAddPlaceData data) {
+	public void addPlace(OnAddPlaceListener listener, MBPlaceSubmitData data) {
 		String url = mHost + "/api/points";
 		String method = "POST";
 		try {
@@ -125,12 +124,12 @@ public class MappingBirdAPI {
 	
 	public void uploadImage(OnUploadImageListener listener, String placeId, byte[] image) {
 		
-		String url = mHost + "/api/mobile/upload";
+		String url = mHost + "/api/upload";
 		String method = "POST";
 		try {
-				JSONObject postData = MapParse.writeImage(placeId, image);
-				mUtil.sendUploadIImage(NetwokConnection.API_UPLOAD_IMAGE,
-						listener, url, method, postData);
+			JSONObject postData = MapParse.writeImage(placeId, image);
+			mUtil.sendUploadIImage(NetwokConnection.API_UPLOAD_IMAGE,
+					listener, url, method, postData);
 		} catch (JSONException e) {
 		}
 	}
