@@ -56,11 +56,13 @@ import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetCollectionInfoListener;
 import com.mappingbird.api.OnGetCollectionsListener;
+import com.mappingbird.collection.data.MBCollectionListObject;
 import com.mappingbird.collection.widget.MBCollectionListLayout;
 import com.mappingbird.collection.widget.MBCollectionListLayout.NewCardClickListener;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MainUIMessenger;
 import com.mappingbird.common.MainUIMessenger.OnMBLocationChangedListener;
+import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.mappingbird.MBSettingsActivity;
 import com.mpbd.mappingbird.MappingBirdBitmap;
@@ -176,8 +178,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			}
 		});
 
-		mApi = new MappingBirdAPI(this.getApplicationContext());
-		mApi.getCollections(getCollectionListener);
+		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
+		listObj.setOnGetCollectionListener(getCollectionListener);
+		listObj.getCollectionList();
+		mApi = new MappingBirdAPI(this);
 		mAccountTextView.setText(mApi.getCurrentUser().getEmail());
 
 		mLoadBitmap = new MappingBirdBitmap(this.getApplicationContext());
@@ -232,8 +236,15 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 //		MainUIMessenger.getIns().addLocationListener(mOnMBLocationChangedListener);
 //		CommonServiceClient.startLocation(this);
 	}
-
 	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
+		listObj.removeOnGetCollectionsListener(getCollectionListener);
+	}
+
+
 	@Override
 	protected void onStart() {
 		super.onStart();

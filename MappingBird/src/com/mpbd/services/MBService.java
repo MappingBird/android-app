@@ -152,7 +152,7 @@ public class MBService extends Service{
 							MappingBirdApplication.instance().getString(R.string.noti_update_finish_message));
 					notificationManager.notify(NOTIFY_FINISHED_ID, nm);
 				}
-				MBServiceClient.stopService(MappingBirdApplication.instance());
+				MBServiceClient.stopService();
 			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
 				NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
 				if(notificationManager != null) {

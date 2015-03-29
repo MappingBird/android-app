@@ -57,7 +57,10 @@
     <!-- Dialog -->
     <string name="dialog_sign_out_title">Sign out!</string>
     <string name="dialog_sign_out_description">Signing out will remove all your cached files from your device. Do you want to sign out?</string>
-
+	<!-- New Collection -->
+	<string name="dialog_create_collection_title">Create new collection</string>
+	<string name="dialog_create_collection_hint">Enter collection name</string>
+    
     <!--  -->
     <string name="place_last_update">Last edit - %s</string>
     
@@ -84,7 +87,10 @@
     <string name="add_place_field_phone">Phone number</string>
     <string name="add_place_field_open_time">Open time</string>
 	<string name="add_place_field_hyperlink">Hyperlink</string>
-    <!-- Pick place -->
+	
+	<string name="add_place_create_new">Create new...</string>
+
+	<!-- Pick place -->
     <string name="pick_place_title">Remember a place</string>
     <string name="pick_place_new_location">Add a new location</string>
     <!-- Settings -->

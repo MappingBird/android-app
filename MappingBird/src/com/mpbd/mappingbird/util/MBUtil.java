@@ -1,5 +1,7 @@
 package com.mpbd.mappingbird.util;
 
+import com.mappingbird.common.DeBug;
+
 import android.content.Context;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
@@ -8,7 +10,7 @@ import android.view.WindowManager;
 
 
 public class MBUtil {
-	
+	public static final boolean mEnableAddFunction = DeBug.DEBUG;
 	public static int getWindowHeight(Context context) {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();

@@ -175,7 +175,7 @@ public class AppPlaceDB {
     }
 
     // ===== set and get byte array =====
- 	public static Object deserializeObject(byte[] b) {
+ 	public synchronized static Object deserializeObject(byte[] b) {
  		try {
  			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(b));
  			Object object = in.readObject();

@@ -1,5 +1,7 @@
 package com.mappingbird.saveplace;
 
+import java.util.ArrayList;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.text.Editable;
@@ -17,10 +19,18 @@ import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
+import com.mappingbird.api.Collection;
 import com.mappingbird.api.Collections;
+import com.mappingbird.api.MappingBirdAPI;
+import com.mappingbird.api.OnAddCollectionListener;
+import com.mappingbird.collection.data.MBCollectionListObject;
+import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
+import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.common.MBDialog;
+import com.mpbd.mappingbird.common.MBInputDialog;
 
 public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 
@@ -33,7 +43,6 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	
 	// Place data
 	private MappingBirdPlaceItem mPlaceData;
-	private Collections mCollections = null;
 
 	// Place Layout
 	private View mPlacePhoneLayout;
@@ -48,11 +57,13 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	private EditText mPlaceOpenTime;
 	private EditText mPlaceHyperLink;
 	
-	// Add field dialog
+	// dialog
 	private Dialog mAddFieldDialog = null;
-
+	private MBInputDialog mCreateNewDialog = null;
+	private Dialog mLoadingDialog = null;
+	private MBDialog mErrorDialog = null;
 	// 
-	private int mSelectCollectionPosition = 0;
+	private MBCollectionListObject mListObject;
 	// 
 	private PlaceInfoListener mListener = null;
 	public interface PlaceInfoListener {
@@ -74,7 +85,6 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		mSelectCollectionPosition = MappingBirdPref.getIns().getIns().getCollectionPosition();
 		mCollectionLayout = findViewById(R.id.add_place_collection_layout);
 		mCollectionText = (TextView) findViewById(R.id.add_place_collection_text);
 		mCollectionArrowDown = (TextView) findViewById(R.id.add_place_collection_arrow);
@@ -99,23 +109,20 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		mCollectionlistPopupWindow = new ListPopupWindow(getContext());
 		mCollectionListAdapter = new CollectionListAdapter(getContext());
 		mCollectionlistPopupWindow.setAdapter(mCollectionListAdapter);
-		mCollectionlistPopupWindow.setAnchorView(mCollectionLayout);
+		mCollectionlistPopupWindow.setAnchorView(findViewById(R.id.add_place_top_layout));
 		mCollectionlistPopupWindow.setOnItemClickListener(mPopWindowClickListener);
 		
+		mListObject = MappingBirdApplication.instance().getCollectionObj();
+		resetCollectionList();
 	}
 
-	public void setCollectionList(Collections list) {
-		mCollections = list;
-		if(mCollections.getCount() == 0) {
-			mCollectionText.setVisibility(View.GONE);
-			mCollectionArrowDown.setVisibility(View.GONE);
-			mCollectionLayout.setOnClickListener(null);
-		} else {
-			mCollectionText.setVisibility(View.VISIBLE);
-			mCollectionArrowDown.setVisibility(View.VISIBLE);
-			mCollectionText.setText(mCollections.get(mSelectCollectionPosition).getName());
-			mCollectionLayout.setOnClickListener(mCollectionListener);
-		}
+	private void resetCollectionList() {
+		mCollectionListAdapter.setData(mListObject.getLastCollections(), 
+				MappingBirdPref.getIns().getIns().getCollectionPosition());
+		mCollectionText.setVisibility(View.VISIBLE);
+		mCollectionArrowDown.setVisibility(View.VISIBLE);
+		mCollectionText.setText(mCollectionListAdapter.getSelectionName());
+		mCollectionLayout.setOnClickListener(mCollectionListener);
 	}
 
 	public void setPlaceInfoListener(PlaceInfoListener listener) {
@@ -123,7 +130,6 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	}
 
 	private TextWatcher mPlaceTextWatcher = new TextWatcher() {
-		
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			if(mListener != null)
@@ -164,7 +170,7 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		if(!TextUtils.isEmpty(mPlaceHyperLink.getText()))
 			data.url = mPlaceHyperLink.getText().toString();
 
-		data.collectionId = mCollections.get(mSelectCollectionPosition).getId();
+		data.collectionId = mCollectionListAdapter.getSelectionId();
 		data.lat = String.valueOf(mPlaceData.getLatitude());
 		data.lng = String.valueOf(mPlaceData.getLongitude());
 		return data;
@@ -174,8 +180,15 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			mSelectCollectionPosition = position;
-			mCollectionText.setText(mCollections.get(mSelectCollectionPosition).getName());
+			ListObject item = (ListObject)mCollectionListAdapter.getItem(position);
+			if(item.type == ListObject.TYPE_COLLECTION) {
+				// 選擇Collection
+				mCollectionListAdapter.setSelectPosition(item.collectionPosition);
+				mCollectionText.setText(mCollectionListAdapter.getSelectionName());
+			} else {
+				// Create new
+				createNewCollectionDialog();
+			}
 			mCollectionlistPopupWindow.dismiss();
 		}
 	};
@@ -200,21 +213,110 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		}
 	};
 
+	private class ListObject {
+		public static final int TYPE_COLLECTION = 0;
+		public static final int TYPE_CREATE_NEW = 1;
+		public int type;
+		public String name;
+		public int collectionPosition;
+		
+		public ListObject(Collection collection, int position) {
+			type = TYPE_COLLECTION;
+			name = collection.getName();
+			collectionPosition = position;
+		}
+		
+		public ListObject() {
+			type = TYPE_CREATE_NEW;
+			name = MappingBirdApplication.instance().getString(R.string.add_place_create_new);
+		}
+	}
+	
 	private class CollectionListAdapter extends BaseAdapter {
-
+		private Collections mCollections = null;
+		private int mSelectCollectionPosition = 0;
+		private ArrayList<ListObject> mList = new ArrayList<ListObject>();
 		private LayoutInflater mInflater; 
 		public CollectionListAdapter(Context context) {
 			mInflater = LayoutInflater.from(context);
 		}
 
+		/**
+		 * 選到的Position
+		 * @param position
+		 */
+		public void setSelectPosition(int position) {
+			mSelectCollectionPosition = position;
+			if(mCollections.getCount() <= position) {
+				mSelectCollectionPosition = 0;
+			}
+			resetData();
+		}
+
+		/**
+		 * 輸入 Collections 和 預設的position
+		 */
+		public void setData(Collections collections, int position) {
+			mSelectCollectionPosition = position;
+			mCollections = collections;
+			resetData();
+		}
+
+		/**
+		 * 輸入 Collections
+		 */
+		public void setData(Collections collections) {
+			mCollections = collections;
+			resetData();
+		}
+
+		public void resetData() {
+			if(mSelectCollectionPosition >= mCollections.getCount())
+				mSelectCollectionPosition = 0;
+			mList.clear();
+			mList.add(new ListObject(mCollections.get(mSelectCollectionPosition), mSelectCollectionPosition));
+			if(mCollections != null) {
+				for(int i = 0; i < mCollections.getCount(); i++) {
+					if(mSelectCollectionPosition != i) {
+						Collection collection = mCollections.get(i);
+						mList.add(new ListObject(collection, i));
+					}
+				}
+			}
+			mList.add(new ListObject());
+			notifyDataSetChanged();
+		}
+
+		public String getSelectionName() {
+			if(mCollections.getCount() > mSelectCollectionPosition)
+				return mCollections.get(mSelectCollectionPosition).getName();
+			else {
+				mSelectCollectionPosition = 0;
+				return mCollections.get(mSelectCollectionPosition).getName();
+			}
+		}
+
+		public long getSelectionId() {
+			if(mCollections.getCount() > mSelectCollectionPosition)
+				return mCollections.get(mSelectCollectionPosition).getId();
+			else {
+				mSelectCollectionPosition = 0;
+				return mCollections.get(mSelectCollectionPosition).getId();
+			}
+		}
+
 		@Override
 		public int getCount() {
-			return mCollections.getCount();
+			return mList.size();
+		}
+
+		public Collection getCollectionItem(int position) {
+			return mCollections.get(position);
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return mCollections.get(position);
+			return mList.get(position);
 		}
 
 		@Override
@@ -228,11 +330,104 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 				convertView = mInflater.inflate(R.layout.mappingbird_add_place_select_collection_item, parent, false);
 			}
 			TextView name = (TextView) convertView.findViewById(R.id.item_name);
-			name.setText(mCollections.get(position).getName());
+			name.setText(mList.get(position).name);
+			if(position == 0) {
+				convertView.findViewById(R.id.item_checked).setVisibility(View.VISIBLE);
+			} else {
+				convertView.findViewById(R.id.item_checked).setVisibility(View.GONE);
+			}
 			return convertView;
 		}
 	}
 	
+	public boolean handleBackKey() {
+		if(mAddFieldDialog != null &&
+				mAddFieldDialog.isShowing()) {
+			mAddFieldDialog.dismiss();
+			return true;
+		}
+
+		if(mCollectionlistPopupWindow != null &&
+				mCollectionlistPopupWindow.isShowing()) {
+			mCollectionlistPopupWindow.dismiss();
+			return true;
+		}
+
+		if(mCreateNewDialog != null &&
+				mCreateNewDialog.isShowing()) {
+			mCreateNewDialog.dismiss();
+			return true;
+		}
+
+		if(mErrorDialog != null &&
+				mErrorDialog.isShowing()) {
+			mErrorDialog.dismiss();
+			return true;
+		}
+		return false;
+	}
+
+	// Create New collection
+	private void createNewCollectionDialog() {
+		if(mCreateNewDialog != null && mCreateNewDialog.isShowing())
+			return;
+		mCreateNewDialog = new MBInputDialog(getContext());
+		mCreateNewDialog.setTitle(getContext().getString(R.string.dialog_create_collection_title));
+		mCreateNewDialog.setInput("",getContext().getString(R.string.dialog_create_collection_hint));
+		mCreateNewDialog.setCanceledOnTouchOutside(false);
+		mCreateNewDialog.setPositiveBtn(getContext().getString(R.string.ok), 
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mCreateNewDialog.dismiss();
+						if(!TextUtils.isEmpty(mCreateNewDialog.getInputText())) {
+							addCollection(mCreateNewDialog.getInputText());
+						}
+					}
+				}, MBInputDialog.BTN_STYLE_DEFAULT);
+		mCreateNewDialog.setNegativeBtn(getContext().getString(R.string.str_cancel), 
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mCreateNewDialog.dismiss();
+					}
+				}, MBInputDialog.BTN_STYLE_DEFAULT);
+		mCreateNewDialog.show();
+	}
+
+	private void addCollection(String name) {
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(getContext(), null,
+				true);
+		mLoadingDialog.setCancelable(false);
+		mLoadingDialog.show();				
+		mListObject.createCollection(new OnAddCollectionListener() {
+			
+			@Override
+			public void onAddCollection(int statusCode) {
+				mLoadingDialog.dismiss();
+				if(statusCode == MappingBirdAPI.RESULT_OK) {
+					// 上傳成功. 重新拿List
+					mCollectionListAdapter.setData(mListObject.getLastCollections());
+				} else {
+					// 上傳失敗. 跳出error dialog
+					String error = MappingBirdDialog.setError(statusCode, MappingBirdApplication.instance());
+
+					mErrorDialog = new MBDialog(MappingBirdApplication.instance());
+					mErrorDialog.setTitle(MappingBirdApplication.instance().getString(R.string.error));
+					mErrorDialog.setDescription(error);
+					mErrorDialog.setPositiveBtn(MappingBirdApplication.instance().getString(R.string.ok), 
+							new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									mErrorDialog.dismiss();
+								}
+							}, MBDialog.BTN_STYLE_DEFAULT);
+					mErrorDialog.setCanceledOnTouchOutside(false);
+					mErrorDialog.show();
+				}
+			}
+		}, name);
+	}
 	// Field select dialog
 	private void showFiledSelectDialog() {
 		if(mAddFieldDialog != null) {

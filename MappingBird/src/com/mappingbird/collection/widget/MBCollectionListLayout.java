@@ -43,6 +43,7 @@ import com.mappingbird.common.DistanceObject;
 import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
 import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
 
 public class MBCollectionListLayout extends RelativeLayout {
@@ -111,6 +112,10 @@ public class MBCollectionListLayout extends RelativeLayout {
 		
 		mAddLayout = (MBListLayoutAddLayout) findViewById(R.id.item_add_layout);
 		mAddLayout.setOnSelectKindLayoutListener(mOnSelectKindLayoutListener);
+		if(MBUtil.mEnableAddFunction)
+			mAddLayout.setVisibility(View.VISIBLE);
+		else
+			mAddLayout.setVisibility(View.GONE);
 
 		mListView = (ListView) findViewById(R.id.item_list);
 		mListView.setOnItemClickListener(mListViewItemClickListener);

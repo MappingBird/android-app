@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -92,7 +93,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		mListView = (ListView) findViewById(R.id.add_place_list);
 		mAddPlaceInfoLayout = (MappingbirdAddPlaceInfoLayout)inflater.inflate(R.layout.mappingbird_add_place_info_layout, null, false);
 		mAddPlaceInfoLayout.setPlaceInfoListener(mPlaceInfoListener);
-		mAddPlaceInfoLayout.setCollectionList(mCollections);
+//		mAddPlaceInfoLayout.setCollectionList(mCollections);
 		mAddPlaceInfoLayout.setPlaceData(mItem);
 		
 		mListView.addHeaderView(mAddPlaceInfoLayout);
@@ -129,7 +130,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 				MBPlaceAddDataToServer data = mAddPlaceInfoLayout.getPlaceInfoData();
 				data.type = mType;
 				data.setImageList(mAdapter.getSelectPhotoList());
-				MBServiceClient.addPlace(MappingBirdAddPlaceActivity.this, data);
+				MBServiceClient.addPlace(data);
 				setResult(RESULT_OK);
 				finish();
 				break;
@@ -285,4 +286,15 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 	    // Save a file: path for use with ACTION_VIEW intents
 	    return image;
 	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK) {
+			if(mAddPlaceInfoLayout.handleBackKey())
+				return true;
+		}
+		return super.onKeyUp(keyCode, event);
+	}
+	
+	
 }

@@ -1,5 +1,6 @@
 package com.mpbd.services;
 
+import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 
 import android.content.Context;
@@ -7,32 +8,32 @@ import android.content.Intent;
 import android.os.Messenger;
 
 public class MBServiceClient {
-	public static void attachMessenger(Context context, Messenger messenger) {
-		Intent intent = createIntent(context, MBService.CMD_ATTACH_MESSAGE);
+	public static void attachMessenger(Messenger messenger) {
+		Intent intent = createIntent(MBService.CMD_ATTACH_MESSAGE);
 		intent.putExtra(MBService.EXTRA_MESSENGER, messenger);
-		startService(context, intent);
+		startService(intent);
 	}
 
-	public static void addPlace(Context context, MBPlaceAddDataToServer data) {
-		Intent intent = createIntent(context, MBService.CMD_ADD_PLACE_ITEM);
+	public static void addPlace(MBPlaceAddDataToServer data) {
+		Intent intent = createIntent(MBService.CMD_ADD_PLACE_ITEM);
 		intent.putExtra(MBService.EXTRA_PLACE_DATA, data);
-		startService(context, intent);
+		startService(intent);
 	}
 
-	public static void stopService(Context context) {
-		Intent intent = createIntent(context, MBService.CMD_STOP_SERVICE);
-		startService(context, intent);
+	public static void stopService() {
+		Intent intent = createIntent(MBService.CMD_STOP_SERVICE);
+		startService(intent);
 	}
 
-	private static Intent createIntent(Context context, int command) {
-		Intent intent = new Intent(context, MBService.class);
+	private static Intent createIntent(int command) {
+		Intent intent = new Intent(MappingBirdApplication.instance(), MBService.class);
 		intent.putExtra(MBService.EXTRA_SERVICE_COMMEND, command);
 		return intent;
 	}
 
-	private static void startService(Context context, Intent intent) {
+	private static void startService(Intent intent) {
 		try{
-			context.startService(intent);
+			MappingBirdApplication.instance().startService(intent);
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		}

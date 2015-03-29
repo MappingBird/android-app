@@ -2,14 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF" >
+    android:background="@drawable/edit_custom_drawable" >
+
+    <com.mappingbird.widget.MappingbirdFontIcon
+        android:id="@+id/item_checked"
+        style="@style/TitleButtonStyle"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="@string/iconfont_check"
+        android:textSize="20dp"
+        android:textColor="@color/graphic_blue"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/item_name"
-        android:layout_height="50dp"
-        android:layout_width="wrap_content"
-        android:gravity="center_vertical"
         style="@style/TextStyle_Body_Small"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_toLeftOf="@id/item_checked"
+        android:gravity="center_vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textColor="#000"
