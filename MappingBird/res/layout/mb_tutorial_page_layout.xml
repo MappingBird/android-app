@@ -42,6 +42,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/mappingbird_logotype_large" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/mappingbird_viewer" />
             </LinearLayout>
         </LinearLayout>
 
@@ -91,6 +96,7 @@
         android:visibility="gone" >
 
         <LinearLayout
+            android:id="@+id/layout_logo_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -110,6 +116,13 @@
                 android:layout_marginLeft="2dp"
                 android:src="@drawable/mappingbird_logotype_large" />
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/layout_logo_container"
+            android:src="@drawable/mappingbird_viewer" />
 
         <ImageView
             android:id="@+id/page_intro_image"
@@ -172,7 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/mappingbird_slogan" />
+                    android:src="@drawable/mappingbird_viewer" />
             </LinearLayout>
         </LinearLayout>
 
@@ -203,10 +216,10 @@
             android:textColor="@color/font_white" />
 
         <ImageView
-            android:layout_marginBottom="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/instruction_or" />
 
