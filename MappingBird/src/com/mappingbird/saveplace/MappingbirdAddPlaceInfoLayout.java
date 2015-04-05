@@ -30,6 +30,7 @@ import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
+import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.common.MBInputDialog;
 
 public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
@@ -310,10 +311,10 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 			return mList.size();
 		}
 
-		public Collection getCollectionItem(int position) {
-			return mCollections.get(position);
-		}
-
+//		public Collection getCollectionItem(int position) {
+//			return mCollections.get(position);
+//		}
+//
 		@Override
 		public Object getItem(int position) {
 			return mList.get(position);
@@ -410,10 +411,10 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 					mCollectionListAdapter.setData(mListObject.getLastCollections());
 				} else {
 					// 上傳失敗. 跳出error dialog
-					String error = MappingBirdDialog.setError(statusCode, MappingBirdApplication.instance());
+					String error = MBErrorMessageControl.getErrorMessage(statusCode, MappingBirdApplication.instance());
 
 					mErrorDialog = new MBDialog(MappingBirdApplication.instance());
-					mErrorDialog.setTitle(MappingBirdApplication.instance().getString(R.string.error));
+					mErrorDialog.setTitle(MappingBirdApplication.instance().getString(R.string.error_normal_title));
 					mErrorDialog.setDescription(error);
 					mErrorDialog.setPositiveBtn(MappingBirdApplication.instance().getString(R.string.ok), 
 							new OnClickListener() {

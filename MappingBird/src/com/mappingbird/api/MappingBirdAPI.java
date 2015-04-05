@@ -14,11 +14,19 @@ public class MappingBirdAPI {
 	private static final String TAG = MappingBirdAPI.class.getName();
 	public static final int RSP_STATUS_DEFAULT = -1;
 	public static final int RESULT_OK = 0;
-	public static final int RESULT_INTERNAL_ERROR = 1;
-	public static final int RESULT_NETWORK_ERROR = 2;
-	public static final int RESULT_NO_LOGIN_ERROR = 3;
-	public static final int RESULT_ACCOUNT_ERROR = 4;
-	public static final int RESULT_BAD_REQUEST_ERROR = 5;
+	//
+	public static final int RESULT_INTERNAL_ERROR 		= 1;
+	public static final int RESULT_NETWORK_ERROR 		= 2;
+	public static final int RESULT_NO_LOGIN_ERROR		= 3;
+	
+	//
+	public static final int RESULT_LOGIN_ACCOUNT_ERROR 	= 101;
+	public static final int RESULT_LOGIN_NETWORK_ERROR 	= 102;
+	
+	// 
+	public static final int RESULT_BAD_REQUEST_ERROR 	= 5;
+
+	
 	public static final int RESULT_UNKNOW_ERROR = 6;
 	
 	private static final String mHost = "https://mappingbird.com";

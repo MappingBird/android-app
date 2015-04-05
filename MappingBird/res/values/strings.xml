@@ -7,11 +7,11 @@
     <string name="get_start">Get Started</string>
     <string name="login_content_title">Log In Mappingbird Account</string>
     <string name="login_content">
-        <![CDATA[
+<![CDATA[
         Once you log your account, you can view all your saved places on Mappingbird. If you haven\'t signed up, please visit 
         <font color=#01A9E7><a href="https://mappingbird.com/">www.mappingbird.com</a></font>
         ]]>
-        </string>
+    </string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">LOG IN</string>
@@ -22,54 +22,45 @@
     <string name="change_password">Change Password</string>
     <string name="get_direction">Get Direction</string>
     <string name="login_description">Log into your MappingBird account to view the places you\'ve saved on www.mappingbird.com.</string>
-	<string name="no_data">No Data</string>
-	<string name="error">Error</string>
-	<string name="location_error">Location Error</string>
-    <string name="internal_error">Internal Error</string>
-    <string name="network_error">Network Error</string>
-    <string name="unknow_error">Unknow Error</string> 
+    <string name="no_data">No Data</string>
     <string name="loading">Loading...</string>
     <string name="my_loaction">My Location</string>
-    <string name="login_fail_network_error">Login Fail!Network Error.</string>
-    <string name="login_fail_accout_error">Login Fail! Email or Password Error.</string>
     <string name="data_incomplete">The data is incomplete!</string>
     <string name="ok">OK</string>
     <string name="or">OR</string>
     <string name="str_retry">Retry</string>
     <string name="str_cancel">Cancel</string>
-    
+
     <!-- Tutorial -->
     <string name="tutorial_swipe_to_learn">Swipe to learn more about MappingBird.</string>
     <string name="tutorial_already_have_account">Already have a account?</string>
     <string name="tutorial_sign_in">Sign in</string>
-    
     <string name="tutorial_page1_scenario_intro">MappingBird Chrome extension makes you easily bookmark physical location while you browsing the web on your desktop.</string>
     <string name="tutorial_page2_scenario_intro">With less than 3 clicks, you can save places on maps for future reference which saves lots of your time.</string>
     <string name="tutorial_page3_scenario_intro">After signing in the account which you create on MappingBird.com, you are able to view your bookmarked places when on the go.</string>
-    
     <string name="tutorial_sign_up_title">Remember places for later.</string>
     <string name="tutorial_sign_up_descriptions">Sign in a MappingBird account to sync your collections which you have saved from your computer.</string>
     <string name="tutorial_create_account">Create a Free Account</string>
     <string name="tutorial_do_it_later">Do It Later</string>
     <string name="tutorial_learn_more">Learn more</string>
     <string name="tutorial_welcome">Welcome</string>
-    
+
     <!-- Dialog -->
     <string name="dialog_sign_out_title">Sign out!</string>
     <string name="dialog_sign_out_description">Signing out will remove all your cached files from your device. Do you want to sign out?</string>
-	<!-- New Collection -->
-	<string name="dialog_create_collection_title">Create new collection</string>
-	<string name="dialog_create_collection_hint">Enter collection name</string>
-    
+    <!-- New Collection -->
+    <string name="dialog_create_collection_title">Create new collection</string>
+    <string name="dialog_create_collection_hint">Enter collection name</string>
+
     <!--  -->
     <string name="place_last_update">Last edit - %s</string>
-    
+
     <!-- Distance -->
     <string name="distance_less_one_meter">&#060;1</string>
     <string name="distance_meter">M</string>
     <string name="distance_kilometer">KM</string>
     <string name="distance_max_kilometer">+KM</string>
-    
+
     <!-- Add place -->
     <string name="add_place_pick_category">Pick a category for the place you are going to save.</string>
     <string name="add_place_save">Save</string>
@@ -83,14 +74,12 @@
     <string name="add_place_add_open_time">Add open time</string>
     <string name="add_place_add_link">Add hyperlink</string>
     <string name="add_place_add_field">Add another field</string>
-
     <string name="add_place_field_phone">Phone number</string>
     <string name="add_place_field_open_time">Open time</string>
-	<string name="add_place_field_hyperlink">Hyperlink</string>
-	
-	<string name="add_place_create_new">Create new...</string>
+    <string name="add_place_field_hyperlink">Hyperlink</string>
+    <string name="add_place_create_new">Create new...</string>
 
-	<!-- Pick place -->
+    <!-- Pick place -->
     <string name="pick_place_title">Remember a place</string>
     <string name="pick_place_new_location">Add a new location</string>
     <!-- Settings -->
@@ -100,20 +89,29 @@
     <string name="str_question">Help &#038; feedback</string>
     <string name="str_settings">Settings</string>
     <string name="str_log_out">Log out</string>
-    
+
     <!-- Error -->
-    <string name="error_log_out_fail">Log out fail!</string>
-    
+    <string name="error_normal_title">Oops!</string>
+    <string name="error_location_title">Location Error</string>
+    <string name="error_location_message">Your current location cannot be detected. If the problem persists, please feedback to us or email to feedback@mappingbird.com.</string>
+    <string name="error_internal_title">Internal Error</string>
+    <string name="error_internal_message">Please try again later. If the problem persists, please contact us by feedback@mappingbird.com.</string>
+    <string name="error_unknow_title">Unknow Error</string>
+    <string name="error_unknow_message">Please try again later. If the problem persists, please contact us by feedback@mappingbird.com.</string>
+    <string name="error_log_out_fail">Fail to log out!</string>
+    <string name="error_network_title">Network Error</string>
+    <string name="error_network_message">Please connect to the Internet to sync your saved places on MappingBird.com.</string>
+    <string name="error_login_fail_network">Please connect to the Internet and log in again.</string>
+    <string name="error_login_fail_accout">Email or Password Error.</string>
+
     <!-- Notification -->
     <string name="noti_update_wait_title">Update wait</string>
     <string name="noti_update_wait_message">Update wait message</string>
-
     <string name="noti_update_error_title">Update error</string>
     <string name="noti_update_error_message">Update error message</string>
-
     <string name="noti_update_progress_title">Update progress</string>
     <string name="noti_update_progress_message">Update %1$s / %2$s</string>
-
     <string name="noti_update_finish_title">Update finished</string>
     <string name="noti_update_finish_message">Update finished message</string>
+
 </resources>

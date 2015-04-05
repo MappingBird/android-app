@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.Collections;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnExploreFourSquareListener;
@@ -83,6 +84,19 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 		}
 		
 		mAddPlaceFrameLayout = (MBListLayoutAddPlaceLayout) findViewById(R.id.pick_place_framelayout);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this); 
 	}
 
 	@Override

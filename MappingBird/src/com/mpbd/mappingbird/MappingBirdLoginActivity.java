@@ -19,10 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.User;
 import com.mpbd.mappingbird.common.MBDialog;
+import com.mpbd.mappingbird.common.MBErrorMessageControl;
 
 public class MappingBirdLoginActivity extends Activity implements
 		OnClickListener {
@@ -63,6 +65,19 @@ public class MappingBirdLoginActivity extends Activity implements
 	protected void onPause() {
 		super.onPause();
 		closeIME();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this); 
 	}
 
 	private void isLoaing(boolean isLoading) {
@@ -124,35 +139,30 @@ public class MappingBirdLoginActivity extends Activity implements
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 						| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				MappingBirdLoginActivity.this.startActivity(intent);
-			} else if (statusCode == MappingBirdAPI.RESULT_NETWORK_ERROR) {
+			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_NETWORK_ERROR) {
 				isLoaing(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
-				onLoginError(getResources().getString(R.string.login_fail_network_error));
-//				Toast.makeText(getApplicationContext(),
-//						getResources().getString(R.string.login_fail_network_error), Toast.LENGTH_SHORT).show();
+				onLoginError(statusCode);
 				
-			} else if (statusCode == MappingBirdAPI.RESULT_ACCOUNT_ERROR) {
+			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_ACCOUNT_ERROR) {
 				isLoaing(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
-				onLoginError(getResources().getString(R.string.login_fail_accout_error));
-//				Toast.makeText(getApplicationContext(),
-//						getResources().getString(R.string.login_fail_accout_error),
-//						Toast.LENGTH_SHORT).show();
+				onLoginError(statusCode);
 			} else {
 				isLoaing(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
-				onLoginError(getResources().getString(R.string.login_fail_accout_error));
+				onLoginError(statusCode);
 			}
 		}
 	};
 
-	private void onLoginError(String message) {
+	private void onLoginError(int statusCode) {
 		mErrorDialog = new MBDialog(MappingBirdLoginActivity.this);
-		mErrorDialog.setTitle(getString(R.string.network_error));
-		mErrorDialog.setDescription(message);
+		mErrorDialog.setTitle(MBErrorMessageControl.getErrorTitle(statusCode, MappingBirdLoginActivity.this));
+		mErrorDialog.setDescription(MBErrorMessageControl.getErrorMessage(statusCode, MappingBirdLoginActivity.this));
 		mErrorDialog.setPositiveBtn(getString(R.string.ok), 
 				mLoginOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
 		mErrorDialog.setCanceledOnTouchOutside(false);

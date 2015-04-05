@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.ImageDetail;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
@@ -37,6 +37,7 @@ import com.mappingbird.widget.MappingbirdPlaceLayout;
 import com.mappingbird.widget.MappingbirdPlaceLayout.onPlaceLayoutListener;
 import com.mappingbird.widget.MappingbirdScrollView;
 import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
+import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.Utils;
 
 public class MappingBirdPlaceActivity extends Activity implements
@@ -88,7 +89,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 	private double mPlaceLatitude = 0;
 	private double mPlaceLongitude = 0;
-	private LocationManager mLocationManager;
 	private double mMyLatitude = 0;
 	private double mMyLongitude = 0;
 
@@ -212,7 +212,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 				"&zoom=16&size=720x400"+
 				"&markers=icon:"+mIconUrl
 				+"%7C"+mPlaceLatitude+","+mPlaceLongitude;
-		DeBug.i("Test", "mapUrl = "+mapUrl);
+		DeBug.i(TAG, "mapUrl = "+mapUrl);
 		mBitmapLoader = new BitmapLoader(this);
 		BitmapParameters params = BitmapParameters.getUrlBitmap(mapUrl);
 		mBitmapLoader.getBitmap(mTripMapView, params);
@@ -332,9 +332,9 @@ public class MappingBirdPlaceActivity extends Activity implements
 				}
 			} else {
 				String title = "";
-				title = getResources().getString(R.string.error);
+				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
 				String error = "";
-				error = MappingBirdDialog.setError(statusCode, mContext);
+				error = MBErrorMessageControl.getErrorMessage(statusCode, mContext);
 				MappingBirdDialog.createMessageDialog(mContext, title, error,
 						getResources().getString(R.string.ok),
 						positiveListener, null, null).show();
@@ -443,4 +443,16 @@ public class MappingBirdPlaceActivity extends Activity implements
 		startActivity(intent);
 	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this); 
+	}
 }

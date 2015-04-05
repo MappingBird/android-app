@@ -58,18 +58,4 @@ public class MappingBirdDialog {
 			builder.setNegativeButton(negativeText, negativeListener);
 		return builder.create();
 	}
-
-	public static String setError(int statusCode, Context context) {
-		String error = "";
-
-		if (statusCode == MappingBirdAPI.RESULT_INTERNAL_ERROR) {
-			error = context.getResources().getString(R.string.internal_error);
-		} else if (statusCode == MappingBirdAPI.RESULT_NETWORK_ERROR) {
-			error = context.getResources().getString(R.string.network_error);
-		} else {
-			error = context.getResources().getString(R.string.unknow_error);
-		}
-		return error;
-	}
-
 }

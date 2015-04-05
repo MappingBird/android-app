@@ -6,7 +6,6 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -19,7 +18,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.text.SpannableString;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,10 +26,10 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.common.location.LocationService;
 import com.common.location.LocationService.LocationServiceListener;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -49,7 +47,6 @@ import com.google.maps.android.clustering.ClusterManager.OnClusterClickListener;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
-import com.hlrt.common.services.CommonServiceClient;
 import com.mappingbird.api.Collection;
 import com.mappingbird.api.Collections;
 import com.mappingbird.api.MBPointData;
@@ -60,7 +57,6 @@ import com.mappingbird.collection.data.MBCollectionListObject;
 import com.mappingbird.collection.widget.MBCollectionListLayout;
 import com.mappingbird.collection.widget.MBCollectionListLayout.NewCardClickListener;
 import com.mappingbird.common.DeBug;
-import com.mappingbird.common.MainUIMessenger;
 import com.mappingbird.common.MainUIMessenger.OnMBLocationChangedListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
@@ -72,6 +68,7 @@ import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.MappingBirdPlaceActivity;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
+import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.Utils;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
@@ -209,12 +206,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				}
 			} else {
 				String title = "";
-				title = getResources().getString(R.string.error);
+				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
 				String error = "";
-				error = MappingBirdDialog.setError(statusCode, mContext);
-//				MappingBirdDialog.createMessageDialog(mContext, title, error,
-//						getResources().getString(R.string.ok),
-//						positiveListener, null, null).show();
+				error = MBErrorMessageControl.getErrorMessage(statusCode, mContext);
 				
 				mDialog = new MBDialog(mContext);
 				mDialog.setTitle(title);
@@ -248,7 +242,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-//		EasyTracker.getInstance().activityStart(this);
+		EasyTracker.getInstance(this).activityStart(this);
 	}
 
 
@@ -257,6 +251,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		super.onStop();
 		if(mLocationService != null)
 			mLocationService.stopUsingGPS();
+		EasyTracker.getInstance(this).activityStop(this); 
 //		MainUIMessenger.getIns().removeLocationListener(mOnMBLocationChangedListener);
 //		CommonServiceClient.stopLocation(this);
 	}
@@ -305,9 +300,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				if (mLoadingDialog != null && mLoadingDialog.isShowing())
 					mLoadingDialog.dismiss();
 				String title = "";
-				title = getResources().getString(R.string.error);
+				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
 				String error = "";
-				error = MappingBirdDialog.setError(statusCode, mContext);
+				error = MBErrorMessageControl.getErrorMessage(statusCode, mContext);
 
 //				MappingBirdDialog.createMessageDialog(mContext, title, error,
 //						getResources().getString(R.string.ok),
@@ -469,14 +464,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if(location == null) {
 			// Error
 			String title = "";
-			title = getResources().getString(R.string.error);
-			String error = mContext.getString(R.string.location_error);
-//			MappingBirdDialog.createMessageDialog(mContext, title, error,
-//					getResources().getString(R.string.str_cancel),
-//					mCancelListener, 
-//					getResources().getString(R.string.str_retry),
-//					mLocationRetryListener
-//					).show();
+			title = getResources().getString(R.string.error_location_title);
+			String error = mContext.getString(R.string.error_location_message);
 			mDialog = new MBDialog(mContext);
 			mDialog.setTitle(title);
 			mDialog.setDescription(error);

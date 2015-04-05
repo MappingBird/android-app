@@ -82,15 +82,18 @@ class NetwokConnection {
 					return MappingBirdAPI.RESULT_NO_LOGIN_ERROR;
 				}
 				if (rsp.equals("networkError")) {
-					DeBug.d(TAG, "[Http]retry 3 times: network error.");
-					return MappingBirdAPI.RESULT_NETWORK_ERROR;
+					DeBug.d(TAG, "[Http] network error.");
+					if(apiType == API_LOGIN)
+						return MappingBirdAPI.RESULT_LOGIN_NETWORK_ERROR;
+					else
+						return MappingBirdAPI.RESULT_NETWORK_ERROR;
 				}
 				DeBug.d(TAG, "[Http]parse json");
 				switch (apiType) {
 				case API_LOGIN:
 					mUser = MapParse.parseAccountResult(mContext, rsp);
 					if (mUser == null) {
-						return MappingBirdAPI.RESULT_ACCOUNT_ERROR;
+						return MappingBirdAPI.RESULT_LOGIN_ACCOUNT_ERROR;
 					}
 					break;
 				case API_LOGOUT:

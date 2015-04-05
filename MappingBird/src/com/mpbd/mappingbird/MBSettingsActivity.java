@@ -1,5 +1,6 @@
 package com.mpbd.mappingbird;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.collection.MappingBirdCollectionActivity;
 import com.mpbd.mappingbird.common.MBDialog;
@@ -38,6 +39,19 @@ public class MBSettingsActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this); 
 	}
 
 	private OnClickListener mOnClickListener = new OnClickListener() {
