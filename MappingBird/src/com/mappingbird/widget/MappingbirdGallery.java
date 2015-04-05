@@ -49,16 +49,9 @@ public class MappingbirdGallery extends ViewGroup {
 	private int mCurrentIndex = 0;
 
 	private boolean isAnimation = false;
-	private Drawable mBubbleReset;
-	private Drawable mBubbleSelected;
-	private int mBubbleWidth = 0;
-	private int mBubblePadding = 0;
-	private int mBubbleMarginBottom = 0;
-	private int mBubblePositionX = -1;
 
 	private GestureDetector mGestureDetector = null;
 	private boolean mTouchEventFling = false;
-	private float mVelocityX = 0;
 
 	private MBGalleryListener mGalleryListener;
 	@Override
@@ -66,14 +59,6 @@ public class MappingbirdGallery extends ViewGroup {
 		super.onFinishInflate();
 		mBitmapLoader = new BitmapLoader(this.getContext());
 		mBitmapLoader.setBMPDownLoadListener(mBitmapDownloadListener);
-		
-		mBubbleReset = getResources().getDrawable(R.drawable.icon_nav_default);
-		mBubbleSelected = getResources().getDrawable(R.drawable.icon_nav_selected);
-		mBubbleReset.setBounds(0, 0, mBubbleReset.getIntrinsicWidth(), mBubbleReset.getIntrinsicHeight());
-		mBubbleSelected.setBounds(0, 0, mBubbleSelected.getIntrinsicWidth(), mBubbleSelected.getIntrinsicHeight());
-		mBubblePadding = (int) getResources().getDimension(R.dimen.gallery_bubble_padding);
-		mBubbleMarginBottom = (int) getResources().getDimension(R.dimen.gallery_bubble_margin_bottom);
-		mBubbleWidth = mBubbleReset.getIntrinsicWidth()+mBubblePadding;
 		
 		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
 	}
@@ -117,7 +102,6 @@ public class MappingbirdGallery extends ViewGroup {
 				float velocityY) {
 			DeBug.d("Test", "onFling !!! ");
 			mTouchEventFling = true;
-			mVelocityX = velocityX;
 			return false;
 		}
 		
@@ -125,7 +109,6 @@ public class MappingbirdGallery extends ViewGroup {
 		public boolean onDown(MotionEvent e) {
 			DeBug.d("Test", "onDown !!! ");
 			mTouchEventFling = false;
-			mVelocityX = 0;
 			return false;
 		}
 	};
