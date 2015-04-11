@@ -3,8 +3,8 @@
     android:id="@+id/settings_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/default_background" >
+    android:background="@color/default_background"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/settings_title_layout"
@@ -94,5 +94,53 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/default_divider" />
+
+    <RelativeLayout
+        android:id="@+id/settings_dump_db_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/collection_item_bg"
+        android:visibility="gone" >
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/debug_dump_db"
+            android:textColor="@color/font_normal"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/default_divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/settings_submit_data_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/collection_item_bg"
+        android:visibility="gone" >
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/debug_update_item"
+            android:textColor="@color/font_normal"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/default_divider" />
+    </RelativeLayout>
 
 </LinearLayout>

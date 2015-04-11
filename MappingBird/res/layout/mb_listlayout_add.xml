@@ -4,86 +4,96 @@
     android:layout_height="match_parent" >
 
     <!-- Top -->
+
     <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/select_scene"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:background="@drawable/btn_create_circle"
         android:gravity="center"
         android:text="@string/iconfont_camera"
-        android:textSize="18dp"
         android:textColor="#fff"
-        android:background="@drawable/btn_create_circle"/>
-    
-    <com.mappingbird.widget.MappingbirdFontIcon 
+        android:textSize="18dp" />
+
+    <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/select_restaurant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:background="@drawable/btn_create_circle"
         android:gravity="center"
         android:text="@string/iconfont_restaurant"
-        android:textSize="18dp"
         android:textColor="#fff"
-        android:background="@drawable/btn_create_circle"/>
+        android:textSize="18dp" />
 
-    <com.mappingbird.widget.MappingbirdFontIcon 
+    <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/select_hotel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:background="@drawable/btn_create_circle"
         android:gravity="center"
         android:text="@string/iconfont_hotel"
-        android:textSize="18dp"
         android:textColor="#fff"
-        android:background="@drawable/btn_create_circle"/>
-    
+        android:textSize="18dp" />
+
     <!-- bottom -->
-    <com.mappingbird.widget.MappingbirdFontIcon 
+
+    <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/select_default"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:background="@drawable/btn_create_circle"
         android:gravity="center"
         android:text="@string/iconfont_general"
-        android:textSize="18dp"
         android:textColor="#fff"
-        android:background="@drawable/btn_create_circle"/>
-    
-    <com.mappingbird.widget.MappingbirdFontIcon 
+        android:textSize="18dp" />
+
+    <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/select_mall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/select_category_margin_left"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/select_category_margin_left"
+        android:background="@drawable/btn_create_circle"
         android:gravity="center"
         android:text="@string/iconfont_shopping"
-        android:textSize="18dp"
         android:textColor="#fff"
-        android:background="@drawable/btn_create_circle"/>
+        android:textSize="18dp" />
 
-    <com.mappingbird.widget.MappingbirdFontIcon 
+    <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/select_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/select_category_margin_left"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/select_category_margin_left"
+        android:background="@drawable/btn_create_circle"
         android:gravity="center"
         android:text="@string/iconfont_bar"
-        android:textSize="18dp"
         android:textColor="#fff"
-        android:background="@drawable/btn_create_circle"/>
-    
+        android:textSize="18dp" />
+
     <!-- Center -->
-    <com.mappingbird.widget.MappingbirdFontIcon
-        android:id="@+id/item_add"
+
+    <com.mappingbird.collection.widget.MBProgressCircleLayout
+        android:id="@+id/item_add_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="400dp"
-        android:background="@drawable/btn_white_circle"
-        android:gravity="center"
-        android:text="@string/iconfont_addplace"
-        android:textColor="@color/graphic_orange"
-        android:textSize="26dp" />
+        android:background="@drawable/btn_white_circle" >
+
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/item_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:text="@string/iconfont_addplace"
+            android:textColor="@color/graphic_orange"
+            android:textSize="26dp" />
+    </com.mappingbird.collection.widget.MBProgressCircleLayout>
 
 </com.mappingbird.collection.widget.MBListLayoutAddLayout>

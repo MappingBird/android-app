@@ -2,6 +2,8 @@ package com.mappingbird.saveplace.services;
 
 import java.util.ArrayList;
 
+import android.text.TextUtils;
+
 public class MBPlaceSubmitData {
 	// 上傳的狀態
 	public int placeState 	= -1;
@@ -49,6 +51,19 @@ public class MBPlaceSubmitData {
 
 	public int getTotleProcess() {
 		return 1 + imageArrays.size();
+	}
+
+	public boolean isSubmitFinished() {
+		// Place 沒有上傳成功
+		if(TextUtils.isEmpty(placeId))
+			return false;
+		// 圖片沒有上傳成功
+		for(MBPlaceSubmitImageData data : imageArrays) {
+			if(data.mFileState != MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED)
+				return false;
+		}
+
+		return true;
 	}
 }
 

@@ -12,6 +12,8 @@ import android.text.TextUtils;
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.collection.widget.MBSpannBackground;
 import com.mappingbird.common.MBLocation;
+import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.mappingbird.R;
 
 public class MBPointData implements Serializable {
 
@@ -187,7 +189,9 @@ public class MBPointData implements Serializable {
 		SpannableString ss = new SpannableString(tag);
 		if(positionList.size() > 0) {
 			for(Point position : positionList)
-				ss.setSpan(new MBSpannBackground(0xC0191919), position.x, position.y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+				ss.setSpan(new MBSpannBackground(
+						MappingBirdApplication.instance().getResources().getColor(R.color.tag_background)),
+						position.x, position.y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 
 		return ss;

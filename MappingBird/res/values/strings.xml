@@ -78,7 +78,8 @@
     <string name="add_place_field_open_time">Open time</string>
     <string name="add_place_field_hyperlink">Hyperlink</string>
     <string name="add_place_create_new">Create new...</string>
-
+	<string name="add_place_add_tag_title">Add new or choose tags</string>
+    
     <!-- Pick place -->
     <string name="pick_place_title">Remember a place</string>
     <string name="pick_place_new_location">Add a new location</string>
@@ -113,5 +114,9 @@
     <string name="noti_update_progress_message">Update %1$s / %2$s</string>
     <string name="noti_update_finish_title">Update finished</string>
     <string name="noti_update_finish_message">Update finished message</string>
+    
+    <!-- Debug -->
+    <string name="debug_dump_db">Dump DB</string>
+    <string name="debug_update_item">Update item</string>
 
 </resources>

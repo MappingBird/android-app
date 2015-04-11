@@ -23,6 +23,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -102,6 +104,8 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		findViewById(R.id.title_btn_back).setOnClickListener(mTitleClickListener);
 		mSubmitBtn = findViewById(R.id.title_btn_submit);
 		mSubmitBtn.setOnClickListener(mTitleClickListener);
+		Animation anim = AnimationUtils.loadAnimation(this, R.anim.submit_btn_in_animation);
+		mSubmitBtn.setAnimation(anim);
 		setTitleText(getString(R.string.pick_place_title));
 		
 		mListView = (ListView) findViewById(R.id.add_place_list);
@@ -128,7 +132,21 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 	private PlaceInfoListener mPlaceInfoListener = new PlaceInfoListener() {
 		@Override
 		public void placeNameChanged(String s) {
-			mSubmitBtn.setEnabled((s.length() > 0));
+			if(s.length() == 0) {
+				if(mSubmitBtn.isEnabled()) {
+					mSubmitBtn.setEnabled(false);
+					Animation anim = AnimationUtils.loadAnimation(MappingBirdAddPlaceActivity.this, R.anim.submit_btn_out_animation);
+					anim.setFillAfter(true);
+					mSubmitBtn.startAnimation(anim);
+				} 
+			} else {
+				if(!mSubmitBtn.isEnabled()) {
+					mSubmitBtn.setEnabled(true);
+					Animation anim = AnimationUtils.loadAnimation(MappingBirdAddPlaceActivity.this, R.anim.submit_btn_in_animation);
+					anim.setFillAfter(true);
+					mSubmitBtn.startAnimation(anim);
+				}
+			}
 		}
 	};
 

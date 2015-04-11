@@ -1,9 +1,9 @@
 package com.mpbd.mappingbird;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.mappingbird.api.MappingBirdAPI;
-import com.mappingbird.collection.MappingBirdCollectionActivity;
-import com.mpbd.mappingbird.common.MBDialog;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,12 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.analytics.tracking.android.EasyTracker;
+import com.hlrt.common.DeBug;
+import com.mappingbird.api.MappingBirdAPI;
+import com.mpbd.mappingbird.common.MBDialog;
+import com.mpbd.services.MBServiceClient;
 
 public class MBSettingsActivity extends Activity {
 
@@ -39,6 +45,13 @@ public class MBSettingsActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		if(DeBug.DEBUG) {
+			findViewById(R.id.settings_dump_db_layout).setVisibility(View.VISIBLE);
+			findViewById(R.id.settings_dump_db_layout).setOnClickListener(mOnClickListener);
+			findViewById(R.id.settings_submit_data_layout).setVisibility(View.VISIBLE);
+			findViewById(R.id.settings_submit_data_layout).setOnClickListener(mOnClickListener);
+		}
 	}
 
 	@Override
@@ -59,6 +72,12 @@ public class MBSettingsActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+				case R.id.settings_submit_data_layout:
+					MBServiceClient.retryUpdate();
+					break;
+				case R.id.settings_dump_db_layout:
+					dumpDB();
+					break;
 				case R.id.back_icon: {
 					finish();
 					break;
@@ -109,4 +128,40 @@ public class MBSettingsActivity extends Activity {
 		}
 	};
 
+	private void dumpDB() {
+		File f=new File("/data/data/com.mpbd.mappingbird/databases/AppPlace.db");
+		FileInputStream fis=null;
+		FileOutputStream fos=null;
+
+		try
+		{
+		  fis=new FileInputStream(f);
+		  fos=new FileOutputStream("/mnt/sdcard/db_dump.db");
+		  while(true)
+		  {
+		    int i=fis.read();
+		    if(i!=-1)
+		    {fos.write(i);}
+		    else
+		    {break;}
+		  }
+		  fos.flush();
+		  Toast.makeText(this, "DB dump OK", Toast.LENGTH_LONG).show();
+		}
+		catch(Exception e)
+		{
+		  e.printStackTrace();
+		  Toast.makeText(this, "DB dump ERROR", Toast.LENGTH_LONG).show();
+		}
+		finally
+		{
+		  try
+		  {
+		    fos.close();
+		    fis.close();
+		  }
+		  catch(IOException ioe)
+		  {}
+		}
+	}
 }

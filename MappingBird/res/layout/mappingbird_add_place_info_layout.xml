@@ -81,6 +81,7 @@
             android:layout_centerVertical="true"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_address"
+            android:singleLine="true"
             android:paddingBottom="10dp"
             android:paddingTop="8dp"
             android:textColorHint="#DDDDDD" />
@@ -103,7 +104,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <EditText
+        <TextView
             android:id="@+id/add_place_tag"
             style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
@@ -115,6 +116,7 @@
             android:hint="@string/add_place_add_tags"
             android:paddingBottom="10dp"
             android:paddingTop="8dp"
+            android:textColor="#fff"
             android:textColorHint="#DDDDDD" />
     </RelativeLayout>
 
@@ -147,6 +149,8 @@
             android:layout_toRightOf="@id/add_place_phone_icon"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_add_phone"
+            android:singleLine="true"
+            android:inputType="phone"
             android:paddingBottom="10dp"
             android:paddingTop="8dp"
             android:textColorHint="#DDDDDD" />
@@ -181,6 +185,7 @@
             android:layout_toRightOf="@id/add_place_open_time_icon"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_add_open_time"
+            android:singleLine="true"
             android:paddingBottom="10dp"
             android:paddingTop="8dp"
             android:textColorHint="#DDDDDD" />
@@ -215,6 +220,7 @@
             android:layout_toRightOf="@id/add_place_link_icon"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_add_link"
+            android:singleLine="true"
             android:paddingBottom="10dp"
             android:paddingTop="8dp"
             android:textColorHint="#DDDDDD" />

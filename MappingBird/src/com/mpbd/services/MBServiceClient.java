@@ -20,6 +20,11 @@ public class MBServiceClient {
 		startService(intent);
 	}
 
+	public static void retryUpdate() {
+		Intent intent = createIntent(MBService.CMD_RETRY_UPDATE);
+		startService(intent);
+	}
+
 	public static void stopService() {
 		Intent intent = createIntent(MBService.CMD_STOP_SERVICE);
 		startService(intent);

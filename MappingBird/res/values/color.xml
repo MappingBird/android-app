@@ -43,9 +43,12 @@
 
 	<!-- Collection List -->
 	<color name="item_blue_activated">#d9f1fb</color>
-	<color name="item_blue_pressed">#d9d9d9</color>
+	<color name="item_pressed">#d9d9d9</color>
 	
 	<!-- Default -->
 	<color name="default_background">#ffffffff</color>
 	<color name="default_divider">#e5e5e5</color>
+	
+	<!--  -->
+	<color name="tag_background">#C0191919</color>
 </resources>

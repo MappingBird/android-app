@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mappingbird.saveplace.MBDialogAddTagLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_framelayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:singleLine="true"
+        android:text="@string/add_place_add_tag_title"
+        android:textColor="#333"
+        android:textSize="20dp" />
+
+    <View
+        android:id="@+id/dialog_title_padding_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="6dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/default_divider" />
+
+    <me.gujun.android.taggroup.TagGroup
+        android:id="@+id/dialog_edit_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/edit_custom_drawable"
+        android:paddingBottom="10dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="8dp"
+        app:isAppendMode="true" />
+
+    <ListView
+        android:id="@+id/dialog_tag_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="0dp"
+        android:divider="#00000000"
+        android:layout_marginBottom="8dp"
+        android:visibility="visible" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/default_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal" >
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/dialog_negative"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_dialog_bg"
+            android:gravity="center"
+            android:text="@string/str_cancel"
+            android:textColor="#7f7f7f"
+            android:textSize="16dp"
+            android:visibility="visible" />
+
+        <View
+            android:id="@+id/dialog_divider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/default_divider"
+            android:visibility="visible" />
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/dialog_positive"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/btn_dialog_bg"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:textColor="#7f7f7f"
+            android:textSize="16dp"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</com.mappingbird.saveplace.MBDialogAddTagLayout>

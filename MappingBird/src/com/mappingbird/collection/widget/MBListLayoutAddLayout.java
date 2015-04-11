@@ -34,6 +34,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private int mAnimDuration = 1000;
 	
 	// Add
+	private View mAddItemLayout;
 	private View mAddItem;
 	private int mAddItemPositionY = 0;
 	private int mAddItemPaddingTop = 0;
@@ -91,6 +92,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		super.onFinishInflate();
 		
 		mAlphaBackground = (int) getResources().getColor(R.color.graphic_alpha_background);
+		mAddItemLayout = findViewById(R.id.item_add_layout);
 		mAddItem = findViewById(R.id.item_add);
 		
 		mSelectScene 		= findViewById(R.id.select_scene);
@@ -101,7 +103,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		mSelectBar 			= findViewById(R.id.select_bar);
 		
 		// setClick
-		mAddItem.setOnClickListener(mItemClickListener);
+		mAddItemLayout.setOnClickListener(mItemClickListener);
 		mSelectScene.setOnClickListener(mItemClickListener);
 		mSelectRestaurant.setOnClickListener(mItemClickListener);
 		mSelectHotel.setOnClickListener(mItemClickListener);
@@ -118,7 +120,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		int titleBarHeight = (int)getContext().getResources().getDimension(R.dimen.title_bar_height);
 		int add_margin_bottom = (int) getContext().getResources().getDimension(R.dimen.col_add_place_margin_bottom);
 		mAddItemPositionY = windowHeight - titleBarHeight - add_margin_bottom;
-		setMarginInView(mAddItem, 0, mAddItemPositionY, 0, 0);
+		setMarginInView(mAddItemLayout, 0, mAddItemPositionY, 0, 0);
 		
 		mAddItemPaddingTop = (int) getContext().getResources().getDimension(R.dimen.col_add_place_padding_top);
 		mAddItemPaddingRight = (int) getContext().getResources().getDimension(R.dimen.col_add_place_padding_right);
@@ -212,7 +214,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					&& mMode != MODE_OPEN)
 				return;
 			
-			if(v.getId() == R.id.item_add) {
+			if(v.getId() == R.id.item_add_layout) {
 				startAnimation(mMode);
 			} else {
 				if(mMode != MODE_OPEN)

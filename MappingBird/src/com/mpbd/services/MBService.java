@@ -23,7 +23,7 @@ import com.mpbd.notification.MBNotificationCenter;
 public class MBService extends Service{
 	private static final String TAG = "CommonService";
 	private static final int NOTIFY_ID = 10020;
-	private static final int NOTIFY_FINISHED_ID = 10021;
+	private static final int NOTIFY_FINISHED_ID = 10020;
 	public static final String EXTRA_SERVICE_COMMEND = "extra_service_commend";
 	
 	public static final int CMD_START_LOCATUIN 	= 0x0100;
@@ -31,6 +31,7 @@ public class MBService extends Service{
 	public static final int CMD_ATTACH_MESSAGE 	= 0x0102;
 	public static final int CMD_ADD_PLACE_ITEM	= 0x0103;
 	public static final int CMD_RETRY_UPDATE 	= 0x0104;
+	
 	public static final int CMD_STOP_SERVICE 	= 0x01A0;
 
 	//
@@ -69,13 +70,13 @@ public class MBService extends Service{
 			attachMessager(intent);
 			break;
 		case CMD_RETRY_UPDATE: {
+			DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : update data");
 			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
 			boolean updateData = logic.submit();
 			if(updateData) {
-				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : update dataing ");
 			} else {
 				stopSelf();
-				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : stop service ");
+				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : no update - stop service ");
 			}			
 			break;
 		}

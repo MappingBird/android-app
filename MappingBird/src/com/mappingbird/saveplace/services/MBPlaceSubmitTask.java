@@ -48,6 +48,11 @@ public class MBPlaceSubmitTask implements Runnable{
 					mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_FAILED);
 				break;
 			case MSG_ADD_PLACE_FINISHED:
+				if(mSubmitData.isSubmitFinished()) {
+					AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
+					db.updatePlaceValue(
+							MBPlaceSubmitUtil.SUBMIT_STATE_FINISHED, mSubmitData.placeId, mSubmitData.placeDBId);
+				}
 				if(mSubmitTaskListener != null)
 					mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_FINISHED);
 				break;
@@ -69,6 +74,8 @@ public class MBPlaceSubmitTask implements Runnable{
 	 * 準備上傳Place
 	 */
 	private void updatePlaceData() {
+		if(DeBug.DEBUG)
+			DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] updatePlaceData");
 		// 先確認是否已經上傳過Place
 		if(mSubmitData.placeState < MBPlaceSubmitUtil.SUBMIT_STATE_PLACE_READY) {
 			// 還沒上傳過或失敗. 需要上傳
@@ -96,7 +103,10 @@ public class MBPlaceSubmitTask implements Runnable{
 				}
 			}, mSubmitData);
 		} else {
-			
+			//不用上傳Place. 檢查是否要上傳照片
+			if(DeBug.DEBUG)
+				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] Place updated!!!, check image");
+			updateImage();
 		}
 	}
 	
@@ -156,7 +166,6 @@ public class MBPlaceSubmitTask implements Runnable{
 			mImageIndex = index + 1;
 			mHandler.sendEmptyMessage(MSG_ADD_PLACE_UPDATE_IMAGE);
 		}
-		
 	}
 
 	private void sendProcress(int procress) {

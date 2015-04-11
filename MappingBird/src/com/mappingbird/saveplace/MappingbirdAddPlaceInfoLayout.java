@@ -57,8 +57,13 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	private EditText mPlacePhone;
 	private EditText mPlaceOpenTime;
 	private EditText mPlaceHyperLink;
+	private TextView mPlaceTag;
 	
+	// Tag
+	private String mTagsListStr = "";
+
 	// dialog
+	private Dialog mAddTagDialog = null;
 	private Dialog mAddFieldDialog = null;
 	private MBInputDialog mCreateNewDialog = null;
 	private Dialog mLoadingDialog = null;
@@ -67,6 +72,8 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	private MBCollectionListObject mListObject;
 	// 
 	private PlaceInfoListener mListener = null;
+	//
+	private boolean showTiemField = false;
 	public interface PlaceInfoListener {
 		public void placeNameChanged(String s);
 	}
@@ -102,8 +109,10 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		mPlacePhone = (EditText) findViewById(R.id.add_place_phone);
 		mPlaceOpenTime = (EditText) findViewById(R.id.add_place_open_time);
 		mPlaceHyperLink = (EditText) findViewById(R.id.add_place_link);
+		mPlaceTag = (TextView) findViewById(R.id.add_place_tag);
 		
 		mPlaceName.addTextChangedListener(mPlaceTextWatcher);
+		mPlaceTag.setOnClickListener(mOnClickListener);
 		
 		findViewById(R.id.add_place_add_field).setOnClickListener(mOnClickListener);
 
@@ -153,6 +162,10 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		mPlaceAddress.setText(mPlaceData.getAddress());
 	}
 
+	/**
+	 * 取得資料
+	 * @return
+	 */
 	public MBPlaceAddDataToServer getPlaceInfoData() {
 		MBPlaceAddDataToServer data = new MBPlaceAddDataToServer();
 		if(!TextUtils.isEmpty(mPlaceName.getText()))
@@ -171,6 +184,7 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		if(!TextUtils.isEmpty(mPlaceHyperLink.getText()))
 			data.url = mPlaceHyperLink.getText().toString();
 
+		data.tags = mTagsListStr;
 		data.collectionId = mCollectionListAdapter.getSelectionId();
 		data.lat = String.valueOf(mPlaceData.getLatitude());
 		data.lng = String.valueOf(mPlaceData.getLongitude());
@@ -200,6 +214,9 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 			switch(v.getId()) {
 				case R.id.add_place_add_field:
 					showFiledSelectDialog();
+					break;
+				case R.id.add_place_tag:
+					showTagDialog();
 					break;
 			}
 			
@@ -342,6 +359,13 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	}
 	
 	public boolean handleBackKey() {
+		
+		if(mAddTagDialog != null &&
+				mAddTagDialog.isShowing()) {
+			mAddTagDialog.dismiss();
+			return true;
+		}
+
 		if(mAddFieldDialog != null &&
 				mAddFieldDialog.isShowing()) {
 			mAddFieldDialog.dismiss();
@@ -393,6 +417,7 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 						mCreateNewDialog.dismiss();
 					}
 				}, MBInputDialog.BTN_STYLE_DEFAULT);
+		mCreateNewDialog.setCanceledOnTouchOutside(false);
 		mCreateNewDialog.show();
 	}
 
@@ -443,20 +468,58 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		} else {
 			mAddFieldDialog.findViewById(R.id.field_phone_layout).setOnClickListener(mOnAddFieldDialogClickListener);
 		}
-		if(mPlaceOpenTimeLayout.getVisibility() == View.VISIBLE) {
+
+		if(showTiemField) {
+			if(mPlaceOpenTimeLayout.getVisibility() == View.VISIBLE) {
+				mAddFieldDialog.findViewById(R.id.field_open_time_layout).setVisibility(View.GONE);
+				mAddFieldDialog.findViewById(R.id.field_open_time_divider).setVisibility(View.GONE);
+			} else {
+				mAddFieldDialog.findViewById(R.id.field_open_time_layout).setOnClickListener(mOnAddFieldDialogClickListener);
+			}
+		} else {
 			mAddFieldDialog.findViewById(R.id.field_open_time_layout).setVisibility(View.GONE);
 			mAddFieldDialog.findViewById(R.id.field_open_time_divider).setVisibility(View.GONE);
-		} else {
-			mAddFieldDialog.findViewById(R.id.field_open_time_layout).setOnClickListener(mOnAddFieldDialogClickListener);
 		}
+
 		if(mPlaceHyperLinkLayout.getVisibility() == View.VISIBLE) {
 			mAddFieldDialog.findViewById(R.id.field_link_layout).setVisibility(View.GONE);
 		} else {
 			mAddFieldDialog.findViewById(R.id.field_link_layout).setOnClickListener(mOnAddFieldDialogClickListener);
 		}
+		mAddFieldDialog.setCanceledOnTouchOutside(false);
 		mAddFieldDialog.show();
 	}
-	
+
+	// Add Tag dialog
+	private void showTagDialog() {
+		if(mAddTagDialog != null) {
+			mAddTagDialog.dismiss();
+		}
+		mAddTagDialog = new Dialog(getContext(),R.style.CustomDialog);
+		mAddTagDialog.setContentView(R.layout.mb_dialog_add_tag);
+		final MBDialogAddTagLayout addTagLayout = (MBDialogAddTagLayout) mAddTagDialog.findViewById(R.id.dialog_framelayout);
+		mAddTagDialog.findViewById(R.id.dialog_negative).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mAddTagDialog.dismiss();
+			}
+		});
+		mAddTagDialog.findViewById(R.id.dialog_positive).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mAddTagDialog.dismiss();
+				// Input tags
+				String[] tags = addTagLayout.getTags();
+				// Save tags
+				MBSavePlaceUtil.saveTagArray(tags);
+				mTagsListStr = TextUtils.join(",", tags);
+				mPlaceTag.setText(MBSavePlaceUtil.getTagsStringSpan(tags));
+			}
+		});
+		mAddTagDialog.setCanceledOnTouchOutside(false);
+		mAddTagDialog.show();
+	}
+
 	private OnClickListener mOnAddFieldDialogClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -471,10 +534,18 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 					mPlaceHyperLinkLayout.setVisibility(View.VISIBLE);
 					break;
 			}
-			if(mPlacePhoneLayout.getVisibility() == View.VISIBLE &&
-					mPlaceOpenTimeLayout.getVisibility() == View.VISIBLE &&
-							mPlaceHyperLinkLayout.getVisibility() == View.VISIBLE)
-				findViewById(R.id.add_place_add_field).setVisibility(View.GONE);
+
+			if(showTiemField) {
+				if(mPlacePhoneLayout.getVisibility() == View.VISIBLE &&
+						mPlaceOpenTimeLayout.getVisibility() == View.VISIBLE &&
+								mPlaceHyperLinkLayout.getVisibility() == View.VISIBLE)
+					findViewById(R.id.add_place_add_field).setVisibility(View.GONE);
+			} else {
+				if(mPlacePhoneLayout.getVisibility() == View.VISIBLE &&
+								mPlaceHyperLinkLayout.getVisibility() == View.VISIBLE)
+					findViewById(R.id.add_place_add_field).setVisibility(View.GONE);
+			}
+
 			mAddFieldDialog.dismiss();
 		}
 	};

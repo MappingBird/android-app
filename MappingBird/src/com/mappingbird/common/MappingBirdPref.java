@@ -84,4 +84,12 @@ public class MappingBirdPref{
 	public int getCollectionPosition() {
 		return getInt("collection_position", 0);
 	}
+	
+	public void setTagArray(String array) {
+		putString("tag_array", array);
+	}
+
+	public String getTagArray() {
+		return getString("tag_array", "");
+	}
 }

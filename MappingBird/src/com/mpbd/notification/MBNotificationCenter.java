@@ -2,6 +2,7 @@ package com.mpbd.notification;
 
 import android.app.Notification;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
 import com.mpbd.mappingbird.R;
@@ -11,6 +12,7 @@ public class MBNotificationCenter {
 	public static Notification getUpdateMessageNotification(Context context, String title, String message) {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 		builder.setSmallIcon(R.drawable.statusbar_icon);
+		builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
 		builder.setContentText(message);
 		builder.setContentTitle(title);
 		return builder.build();
@@ -21,6 +23,7 @@ public class MBNotificationCenter {
 			, int max, int progress, boolean indeterminate) {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 		builder.setSmallIcon(R.drawable.statusbar_icon);
+		builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
 		builder.setContentText(message);
 		builder.setContentTitle(title);
 		builder.setProgress(max, progress, indeterminate);
