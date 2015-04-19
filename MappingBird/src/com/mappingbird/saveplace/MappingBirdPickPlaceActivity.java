@@ -142,7 +142,8 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 				});
 
 				mPlaceAdapter.setPlaceData(mRequestPlace);
-				mAddPlaceFrameLayout.showCurrectLocationLayout();
+				// 暫時先不出現
+//				mAddPlaceFrameLayout.showCurrectLocationLayout();
 				
 			} else {
 			}

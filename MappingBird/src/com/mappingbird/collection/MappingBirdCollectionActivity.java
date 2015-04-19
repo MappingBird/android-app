@@ -57,9 +57,12 @@ import com.mappingbird.collection.data.MBCollectionListObject;
 import com.mappingbird.collection.widget.MBCollectionListLayout;
 import com.mappingbird.collection.widget.MBCollectionListLayout.NewCardClickListener;
 import com.mappingbird.common.DeBug;
-import com.mappingbird.common.MainUIMessenger.OnMBLocationChangedListener;
+import com.mappingbird.common.MainUIMessenger;
+import com.mappingbird.common.MainUIMessenger.OnMBSubmitChangedListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
+import com.mappingbird.saveplace.MBSubmitMsgData;
+import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mpbd.mappingbird.MBSettingsActivity;
 import com.mpbd.mappingbird.MappingBirdBitmap;
 import com.mpbd.mappingbird.MappingBirdBitmap.MappingBirdBitmapListner;
@@ -222,15 +225,36 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 	};
 
+	private OnMBSubmitChangedListener mOnMBSubmitChangedListener = new OnMBSubmitChangedListener() {
+		
+		@Override
+		public void onSubmitChanged(MBSubmitMsgData data) {
+			switch(data.getState()) {
+			case MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED:
+				break;
+			case MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED:
+				mMBCollectionListLayout.setProgress(data.getState(), data.getProgress(), data.getTotalProgress());
+				break;
+			case MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS:
+				mMBCollectionListLayout.setProgress(data.getState(), data.getProgress(), data.getTotalProgress());
+				break;
+			}
+		}
+	};
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		if(mLocationService != null)
 			mLocationService.start();
-//		MainUIMessenger.getIns().addLocationListener(mOnMBLocationChangedListener);
-//		CommonServiceClient.startLocation(this);
+		MainUIMessenger.getIns().addSubmitListener(mOnMBSubmitChangedListener);;
 	}
 	
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -252,8 +276,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if(mLocationService != null)
 			mLocationService.stopUsingGPS();
 		EasyTracker.getInstance(this).activityStop(this); 
-//		MainUIMessenger.getIns().removeLocationListener(mOnMBLocationChangedListener);
-//		CommonServiceClient.stopLocation(this);
+		MainUIMessenger.getIns().removeSubmitListener(mOnMBSubmitChangedListener);;
 	}
 
 	private class DrawerItemClickListener implements
@@ -284,6 +307,17 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mApi.getCollectionInfo(getCollectionInfoListener,
 					mCollections.get(position).getId());
 		}
+	}
+
+	/**
+	 * 更新現在Collections的值
+	 */
+	private void refreshThisCollections() {
+		if (mLoadingDialog != null)
+			mLoadingDialog.show();
+		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
+		listObj.setOnGetCollectionListener(getCollectionListener);
+		listObj.getCollectionList();
 	}
 
 	OnGetCollectionInfoListener getCollectionInfoListener = new OnGetCollectionInfoListener() {
@@ -494,13 +528,13 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 	}
 
-	private OnMBLocationChangedListener mOnMBLocationChangedListener = new OnMBLocationChangedListener() {
-		
-		@Override
-		public void onLocationChanged(Location location) {
-			setMyLocation(location);
-		}
-	};
+//	private OnMBLocationChangedListener mOnMBLocationChangedListener = new OnMBLocationChangedListener() {
+//		
+//		@Override
+//		public void onLocationChanged(Location location) {
+//			setMyLocation(location);
+//		}
+//	};
 
 	private LocationServiceListener mMyLocationChangedListener = new LocationServiceListener() {
 		
@@ -779,7 +813,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private NewCardClickListener mNewCardClickListener = new NewCardClickListener() {
 		@Override
 		public void onClickCard(MBPointData point) {
-			DeBug.d("Test","onClickCard - ");
 			Intent intent = new Intent();
 			intent.putExtra(MappingBirdPlaceActivity.EXTRA_MBPOINT, point);
 			intent.putExtra("myLatitude", mMyLocation.latitude);
@@ -788,6 +821,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			intent.setClass(MappingBirdCollectionActivity.this,
 					com.mpbd.mappingbird.MappingBirdPlaceActivity.class);
 			MappingBirdCollectionActivity.this.startActivity(intent);
+		}
+
+		@Override
+		public void onProgressFinished() {
+			// 當上傳完成後. 重讀
+			refreshThisCollections();
 		}
 	};
 

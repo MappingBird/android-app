@@ -33,6 +33,10 @@ public class MBPlaceSubmitTask implements Runnable{
 	
 	private int mImageIndex = 0;
 
+	// 上傳的progress
+	private int mProgress = 0;
+	private boolean isSubmit = false;
+
 	private Handler mHandler = new Handler() {
 
 		@Override
@@ -44,17 +48,20 @@ public class MBPlaceSubmitTask implements Runnable{
 					mSubmitTaskListener.onProcess(msg.arg1, mSubmitData.getTotleProcess());
 				break;
 			case MSG_ADD_PLACE_FAILED:
+				isSubmit = false;
 				if(mSubmitTaskListener != null)
-					mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_FAILED);
+					mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_FAILED, 0, 0);
 				break;
 			case MSG_ADD_PLACE_FINISHED:
+				isSubmit = false;
 				if(mSubmitData.isSubmitFinished()) {
 					AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
 					db.updatePlaceValue(
 							MBPlaceSubmitUtil.SUBMIT_STATE_FINISHED, mSubmitData.placeId, mSubmitData.placeDBId);
 				}
+
 				if(mSubmitTaskListener != null)
-					mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_FINISHED);
+					mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_FINISHED,  mSubmitData.getTotleProcess(),  mSubmitData.getTotleProcess());
 				break;
 			case MSG_ADD_PLACE_UPDATE_IMAGE:
 				updateImage();
@@ -66,6 +73,7 @@ public class MBPlaceSubmitTask implements Runnable{
 	@Override
 	public void run() {
 		mImageIndex = 0;
+		isSubmit = true;
 		// 上傳地點
 		updatePlaceData();
 	}
@@ -82,7 +90,8 @@ public class MBPlaceSubmitTask implements Runnable{
 			if(DeBug.DEBUG)
 				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] Place update start!!!");
 			MappingBirdAPI api = new MappingBirdAPI(MappingBirdApplication.instance());
-			sendProcress(1);
+			mProgress = 0;
+			sendProcress(mProgress);
 			api.addPlace(new OnAddPlaceListener() {
 				@Override
 				public void onAddPlace(int statusCode, MBPointData data) {
@@ -120,7 +129,8 @@ public class MBPlaceSubmitTask implements Runnable{
 			for(int i = mImageIndex; i < mSubmitData.imageArrays.size(); i++) {
 				if(mSubmitData.imageArrays.get(i).mFileState != MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED) {
 					submitImage(i, mSubmitData.imageArrays.get(i));
-					sendProcress(i+2);
+					mProgress = i+1;
+					sendProcress(mProgress);
 					return;
 				}
 			}
@@ -179,9 +189,9 @@ public class MBPlaceSubmitTask implements Runnable{
 	 * @return
 	 */
 	public boolean isSubmit() {
-		return false;
+		return isSubmit;
 	}
-	
+
 	public void setSubmitTaskListener(SubmitTaskListener listener) {
 		mSubmitTaskListener = listener;
 	}
@@ -189,7 +199,7 @@ public class MBPlaceSubmitTask implements Runnable{
 	 * 
 	 */
 	public interface SubmitTaskListener {
-		public void onStateChanged(int state);
+		public void onStateChanged(int state, int process, int totle);
 		public void onProcess(int process, int totle);
 	}
 	
@@ -210,6 +220,22 @@ public class MBPlaceSubmitTask implements Runnable{
 		    return bytes;
 		}
 		return null;
+	}
+	
+	/**
+	 * 抓到現在的Progress
+	 * @return
+	 */
+	public synchronized int getProgress() {
+		return mProgress;
+	}
+	
+	/**
+	 * 抓到總共的Progress
+	 * @return
+	 */
+	public synchronized int getTotalProgress() {
+		return mSubmitData.getTotleProcess();
 	}
 }
 

@@ -2,6 +2,7 @@ package com.mappingbird.saveplace.services;
 
 import com.hlrt.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mappingbird.saveplace.MBSubmitMsgData;
 import com.mappingbird.saveplace.db.AppPlaceDB;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask.SubmitTaskListener;
 
@@ -9,13 +10,13 @@ public class MBPlaceSubmitLogic {
 	private static MBPlaceSubmitLogic sInstance = null;
 
 	// 上傳資料data
-	private MBPlaceSubmitData mSubmitDaat = null;
+	private MBPlaceSubmitData mSubmitData = null;
 	// 上傳Task
 	private MBPlaceSubmitTask mSubmitTask = null;
 
 	private SubmitLogicListener mSubmitLogicListener = null;
 	public interface SubmitLogicListener {
-		public void onStateChanged(int state);
+		public void onStateChanged(int state, int process, int totle);
 		public void onProcess(int process, int totle);
 	}
 
@@ -67,16 +68,16 @@ public class MBPlaceSubmitLogic {
 			DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : get data from DB. ");
 		// 從DB裡面撈取資料
 		AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
-		mSubmitDaat = db.getFirstData();
+		mSubmitData = db.getFirstData();
 		// 確認是否有Data需要上傳 
-		if(mSubmitDaat == null) {
+		if(mSubmitData == null) {
 			// 沒有資料需要上傳
 			if(DeBug.DEBUG)
 				DeBug.e(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : no data need submit ");
 			return false;
 		}
 		// 開始上傳
-		start(mSubmitDaat);
+		start(mSubmitData);
 		return true;
 	}
 
@@ -99,11 +100,11 @@ public class MBPlaceSubmitLogic {
 	 */
 	private SubmitTaskListener mSubmitTaskListener = new SubmitTaskListener() {
 		@Override
-		public void onStateChanged(int state) {
+		public void onStateChanged(int state, int process, int totle) {
 			if(DeBug.DEBUG)
-				DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : onStateChanged state = "+state);
+				DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : onStateChanged state = "+state+", process = "+process+", totle = "+totle);
 			if(mSubmitLogicListener != null)
-				mSubmitLogicListener.onStateChanged(state);
+				mSubmitLogicListener.onStateChanged(state, process, totle);
 		}
 
 		@Override
@@ -114,5 +115,30 @@ public class MBPlaceSubmitLogic {
 				mSubmitLogicListener.onProcess(process, totle);
 		}
 	};
+	
+	/**
+	 * 看現在這狀態
+	 * @return
+	 */
+	public MBSubmitMsgData getSubmitState() {
+		if(mSubmitTask != null && mSubmitTask.isSubmit()) {
+			// 發現有東西正在上傳. 回傳現在上傳的狀態;
+			if(DeBug.DEBUG)
+				DeBug.e(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : already have submit task, get submit state, progress = "+mSubmitTask.getProgress()+
+						", total = "+mSubmitTask.getTotalProgress());
+			MBSubmitMsgData data = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS, mSubmitTask.getProgress(), mSubmitTask.getTotalProgress());
+			return data;
+		}
+		MBSubmitMsgData data = new MBSubmitMsgData(-1);
+		return data;
+	}
+	
+	/**
+	 * 當上傳完時. 清除資料
+	 */
+	public void cleanData() {
+		mSubmitData = null;
+		mSubmitTask = null;
+	}
 }
 

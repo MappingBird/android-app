@@ -2,21 +2,23 @@ package com.mappingbird.collection.widget;
 
 import java.util.ArrayList;
 
-import android.animation.Animator.AnimatorListener;
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.mappingbird.common.DeBug;
+import com.hlrt.common.DeBug;
+import com.mappingbird.collection.widget.MBProgressCircleLayout.ProgressListener;
 import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
+import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.MBUtil;
 
@@ -26,7 +28,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private static final int MODE_OPEN = 1;
 	private static final int MODE_CLOSE_ANIM = 2;
 	private static final int MODE_OPEN_ANIM = 3;
-	
+	private static final int MODE_PROGRESSING = 4;
+
 	private int mMode = MODE_CLOSE;
 	
 	// Animation space
@@ -34,8 +37,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private int mAnimDuration = 1000;
 	
 	// Add
-	private View mAddItemLayout;
-	private View mAddItem;
+	private MBProgressCircleLayout mAddItemLayout;
+	private TextView mAddItemText;
 	private int mAddItemPositionY = 0;
 	private int mAddItemPaddingTop = 0;
 	private int mAddItemPaddingRight = 0;
@@ -92,8 +95,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		super.onFinishInflate();
 		
 		mAlphaBackground = (int) getResources().getColor(R.color.graphic_alpha_background);
-		mAddItemLayout = findViewById(R.id.item_add_layout);
-		mAddItem = findViewById(R.id.item_add);
+		mAddItemLayout = (MBProgressCircleLayout)findViewById(R.id.item_add_layout);
+		mAddItemText = (TextView)findViewById(R.id.item_add);
 		
 		mSelectScene 		= findViewById(R.id.select_scene);
 		mSelectRestaurant 	= findViewById(R.id.select_restaurant);
@@ -139,7 +142,6 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		setMarginInView(mSelectScene, 0, 0, mAddItemPaddingRight, 0);
 		mSelectScenePositionX = mSelectItemCenterPositionX;
 		mSelectScenePositionY = mSelectItemCenterPositionY - radius;
-//		mSelectScene.setX(mSelectItemCenterPositionX);
 		mSelectScene.setY(mSelectItemCenterPositionY);
 		mItemViewList.add(mSelectScene);
 		mItemViewXList.add(mSelectScenePositionX);
@@ -150,7 +152,6 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		setMarginInView(mSelectRestaurant, 0, 0, mAddItemPaddingRight, 0);
 		mSelectRestaurantPositionX = mSelectItemCenterPositionX + (int)(- radius * Math.cos(angle));
 		mSelectRestaurantPositionY = mSelectItemCenterPositionY - (int)(radius * Math.sin(angle));
-//		mSelectRestaurant.setX(mSelectItemCenterPositionX);
 		mSelectRestaurant.setY(mSelectItemCenterPositionY);
 		mItemViewList.add(mSelectRestaurant);
 		mItemViewXList.add(mSelectRestaurantPositionX);
@@ -161,7 +162,6 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		setMarginInView(mSelectHotel, 0, 0, mAddItemPaddingRight, 0);
 		mSelectHotelPositionX = mSelectItemCenterPositionX + (int)(- radius * Math.cos(angle));
 		mSelectHotelPositionY = mSelectItemCenterPositionY - (int)(radius * Math.sin(angle));
-//		mSelectHotel.setX(mSelectItemCenterPositionX);
 		mSelectHotel.setY(mSelectItemCenterPositionY);
 		mItemViewList.add(mSelectHotel);
 		mItemViewXList.add(mSelectHotelPositionX);
@@ -172,7 +172,6 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		setMarginInView(mSelectDefault, 0, 0, mAddItemPaddingRight, 0);
 		mSelectDefaultPositionX = mSelectItemCenterPositionX + (int)(- radius * Math.cos(angle));
 		mSelectDefaultPositionY = mSelectItemCenterPositionY + (int)(radius * Math.sin(angle));
-//		mSelectDefault.setX(mSelectItemCenterPositionX);
 		mSelectDefault.setY(mSelectItemCenterPositionY);
 		mItemViewList.add(mSelectDefault);
 		mItemViewXList.add(mSelectDefaultPositionX);
@@ -183,7 +182,6 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		angle = 54 * Math.PI / 180;
 		mSelectMallPositionX = mSelectItemCenterPositionX + (int)(- radius * Math.cos(angle));
 		mSelectMallPositionY = mSelectItemCenterPositionY + (int)(radius * Math.sin(angle));
-//		mSelectMall.setX(mSelectItemCenterPositionX);
 		mSelectMall.setY(mSelectItemCenterPositionY);
 		mItemViewList.add(mSelectMall);
 		mItemViewXList.add(mSelectMallPositionX);
@@ -193,7 +191,6 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		setMarginInView(mSelectBar, 0, 0, mAddItemPaddingRight, 0);
 		mSelectBarPositionX = mSelectItemCenterPositionX;
 		mSelectBarPositionY = mSelectItemCenterPositionY + radius;
-//		mSelectBar.setX(mSelectItemCenterPositionX);
 		mSelectBar.setY(mSelectItemCenterPositionY);
 		mItemViewList.add(mSelectBar);
 		mItemViewXList.add(mSelectBarPositionX);
@@ -246,6 +243,16 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		}
 	};
 	
+	public void closeImm() {
+		mMode = MODE_PROGRESSING;
+		ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
+		animator.setDuration(0);
+		animator.addUpdateListener(mCloseUpdateListener);
+		animator.start();
+		if(mOnSelectKindLayoutListener != null)
+			mOnSelectKindLayoutListener.closeSelect();
+	}
+
 	private void startAnimation(int mode) {
 		if(mode == MODE_CLOSE) {
 			mMode = MODE_OPEN_ANIM;
@@ -268,6 +275,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			if(mOnSelectKindLayoutListener != null)
 				mOnSelectKindLayoutListener.closeSelect();
 		}
+		mAddItemText.setText(R.string.iconfont_addplace);
 	}
 	
 	public boolean isOpenSelect() {
@@ -287,9 +295,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
                     .floatValue();
 			float rate = 0;
 			if(value < 0.1)
-				mAddItem.setRotation(-45 * value * 10);
+				mAddItemText.setRotation(-45 * value * 10);
 			else {
-				mAddItem.setRotation(-45);
+				mAddItemText.setRotation(-45);
 			}
 
 			int color = Color.argb((int)(0xB2*value), 0, 0, 0);
@@ -324,9 +332,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
                     .floatValue();
 			float rate = 0;
 			if(value < 0.1)
-				mAddItem.setRotation(-45 * (0.1f - value) * 10);
+				mAddItemText.setRotation(-45 * (0.1f - value) * 10);
 			else {
-				mAddItem.setRotation(0);
+				mAddItemText.setRotation(0);
 			}
 
 			int color = Color.argb((int)(0xB2*(1 - value)), 0, 0, 0);
@@ -394,5 +402,43 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		public void onSelectKind(String type);
 		public void openSelect();
 		public void closeSelect();
+		public void onProgressFinished();
 	}
+	
+	// Progress ---------------------------------
+	public void setProgress(int state, int progress, int total) {
+		if(DeBug.DEBUG)
+			DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBListLayoutAddLayout] setProgress,state = "+state+
+					", progress = "+progress+", total = "+total+", mMode = "+mMode);
+
+		if(mMode != MODE_PROGRESSING) {
+			closeImm();
+		}
+
+		mMode = MODE_PROGRESSING;
+		mAddItemLayout.setMode(MBProgressCircleLayout.MODE_PROGRESS);
+		mAddItemLayout.setProgressListener(mProgressListener);
+		mAddItemLayout.startProcress(progress, total);
+		post(new Runnable() {
+			@Override
+			public void run() {
+				mAddItemText.setText(R.string.iconfont_cloud_upload);
+			}
+		});
+	}
+	
+	private ProgressListener mProgressListener = new ProgressListener() {
+		@Override
+		public void progressFinished() {
+			mMode = MODE_CLOSE;
+			if(mOnSelectKindLayoutListener != null)
+				mOnSelectKindLayoutListener.onProgressFinished();
+			post(new Runnable() {
+				@Override
+				public void run() {
+					mAddItemText.setText(R.string.iconfont_addplace);
+				}
+			});
+		}
+	};
 }

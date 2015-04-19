@@ -1,23 +1,19 @@
 /*
- * GameDataBase.java
- * Copyright (c) 2013 Rolltech
- *
- * Licensed under ...
  *
  */
 package com.mappingbird.common;
 
 import java.util.LinkedHashSet;
 
-import com.hlrt.common.services.CommonService;
-import com.hlrt.common.services.CommonServiceClient;
-
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcelable;
+
+import com.mappingbird.saveplace.MBSubmitMsgData;
+import com.mpbd.services.MBService;
+import com.mpbd.services.MBServiceClient;
 
 /**
  * This is for yDoc to filter this class out. So this class will not show in Javadoc.
@@ -33,7 +29,8 @@ public class MainUIMessenger {
 		}
 	};
 
-	private LinkedHashSet<OnMBLocationChangedListener> _locationListenerList = new LinkedHashSet<OnMBLocationChangedListener>();
+	private LinkedHashSet<OnMBSubmitChangedListener> _submitListenerList = new LinkedHashSet<OnMBSubmitChangedListener>();
+
 	public static MainUIMessenger getIns() {
 		return MainMessenger.get();
 	}
@@ -44,24 +41,24 @@ public class MainUIMessenger {
 		mUIMessenger = new Messenger(new MajorProgressHander());
 	}
 
-	public void addLocationListener(OnMBLocationChangedListener listener) {
-		int count = _locationListenerList.size();
-		_locationListenerList.add(listener);
+	public void addSubmitListener(OnMBSubmitChangedListener listener) {
+		int count = _submitListenerList.size();
+		_submitListenerList.add(listener);
 		
-		if(count == 0 && _locationListenerList.size() > 0)
-			CommonServiceClient.attachMessenger(MappingBirdApplication.instance(), mUIMessenger);
+		if(count == 0 && _submitListenerList.size() > 0)
+			MBServiceClient.attachMessenger(mUIMessenger);
 	}
 
-	public void removeLocationListener(OnMBLocationChangedListener listener) {
-		int count = _locationListenerList.size();
-		_locationListenerList.remove(listener);
+	public void removeSubmitListener(OnMBSubmitChangedListener listener) {
+		int count = _submitListenerList.size();
+		_submitListenerList.remove(listener);
 		
-		if(count > 0 && _locationListenerList.size() == 0)
-			CommonServiceClient.attachMessenger(MappingBirdApplication.instance(), null);
+		if(count > 0 && _submitListenerList.size() == 0)
+			MBServiceClient.attachMessenger(null);
 	}
 
-	public interface OnMBLocationChangedListener {
-		void onLocationChanged(Location location);
+	public interface OnMBSubmitChangedListener {
+		void onSubmitChanged(MBSubmitMsgData data);
 	}
 
 	private class MajorProgressHander extends Handler {
@@ -71,20 +68,20 @@ public class MainUIMessenger {
 			if(msg != null) {
 				Bundle bundle = msg.getData();
 				if(null != bundle) {
-					bundle.setClassLoader(Location.class.getClassLoader());
-					Parcelable p = bundle.getParcelable(CommonService.MSG_LOCATION);
-					if(p != null && p instanceof Location) {
-						Location location = (Location)p;
-						handleLocationChanged(location);
+					bundle.setClassLoader(MBSubmitMsgData.class.getClassLoader());
+					Parcelable p = bundle.getParcelable(MBService.MSG_SUBMIT);
+					if(p != null && p instanceof MBSubmitMsgData) {
+						MBSubmitMsgData data = (MBSubmitMsgData)p;
+						handleSubmitStateChanged(data);
 					}
 				}
 			}
 		}
 	}
 	
-	private void handleLocationChanged(Location location) {
-		for(OnMBLocationChangedListener listener: _locationListenerList) {
-			listener.onLocationChanged(location);
+	private void handleSubmitStateChanged(MBSubmitMsgData data) {
+		for(OnMBSubmitChangedListener listener: _submitListenerList) {
+			listener.onSubmitChanged(data);
 		}
 	}
 }

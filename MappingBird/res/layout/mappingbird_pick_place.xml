@@ -36,13 +36,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title_bar"
-        android:layout_marginBottom="@dimen/pick_place_listview_margin_bottom"
         android:background="#00000000"
         android:cacheColorHint="#00000000"
         android:divider="#00000000"
         android:dividerHeight="0dp"
         android:scrollbars="none" />
-
+<!-- 
+        android:layout_marginBottom="@dimen/pick_place_listview_margin_bottom"
+ -->
     <!-- current location -->
 
     <RelativeLayout

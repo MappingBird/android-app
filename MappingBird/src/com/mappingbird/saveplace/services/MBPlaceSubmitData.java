@@ -2,6 +2,8 @@ package com.mappingbird.saveplace.services;
 
 import java.util.ArrayList;
 
+import com.hlrt.common.DeBug;
+
 import android.text.TextUtils;
 
 public class MBPlaceSubmitData {

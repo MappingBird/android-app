@@ -6,11 +6,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcelable;
+import android.os.RemoteException;
 
 import com.hlrt.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mappingbird.saveplace.MBSubmitMsgData;
 import com.mappingbird.saveplace.db.AppPlaceDB;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 import com.mappingbird.saveplace.services.MBPlaceSubmitLogic;
@@ -39,7 +42,7 @@ public class MBService extends Service{
 	public static final String EXTRA_PLACE_DATA = "extra_place_data";
 	
 	//
-	public static final String MSG_LOCATION = "msg_location";
+	public static final String MSG_SUBMIT = "msg_submit";
 	private Messenger mUIMessenger = null;
 	
 	@Override
@@ -105,8 +108,10 @@ public class MBService extends Service{
 		case CMD_STOP_SERVICE:
 			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
 			boolean updateData = logic.submit();
-			if(!updateData)
+			if(!updateData) {
+				logic.cleanData();
 				stopSelf();
+			}
 			break;
 		}
 		return START_NOT_STICKY;
@@ -137,14 +142,36 @@ public class MBService extends Service{
 				mUIMessenger = null;
 			} else {
 				mUIMessenger = (Messenger) p;
+				// 馬上傳送現在的狀態
+				MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
+				Message msg = Message.obtain();
+				msg.getData().putParcelable(MSG_SUBMIT, logic.getSubmitState());
+				try {
+					if(mUIMessenger != null)
+						mUIMessenger.send(msg);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
 			}
+		}
+	}
+
+	private void sendMessage(int state, int progress, int total) {
+		MBSubmitMsgData data = new MBSubmitMsgData(state, progress, total);
+		Message msg = Message.obtain();
+		msg.getData().putParcelable(MSG_SUBMIT, data);
+		try {
+			if(mUIMessenger != null)
+				mUIMessenger.send(msg);
+		} catch (RemoteException e) {
+			e.printStackTrace();
 		}
 	}
 
 	private SubmitLogicListener mSubmitLogicListener = new SubmitLogicListener() {
 		
 		@Override
-		public void onStateChanged(int state) {
+		public void onStateChanged(int state, int progess, int totle) {
 			if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED) {
 				NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
 				if(notificationManager != null) {
@@ -154,6 +181,7 @@ public class MBService extends Service{
 					notificationManager.notify(NOTIFY_FINISHED_ID, nm);
 				}
 				MBServiceClient.stopService();
+				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED, progess, totle);
 			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
 				NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
 				if(notificationManager != null) {
@@ -162,22 +190,24 @@ public class MBService extends Service{
 							MappingBirdApplication.instance().getString(R.string.noti_update_error_message));
 					notificationManager.notify(NOTIFY_ID, nm);
 				}				
+				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED, progess, totle);
 			}
 		}
 		
 		@Override
-		public void onProcess(int process, int totle) {
+		public void onProcess(int progess, int totle) {
 			NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
 			if(notificationManager != null) {
 				Notification nm = MBNotificationCenter.getUpdateProgressNotification(MappingBirdApplication.instance(), 
 						MappingBirdApplication.instance().getString(R.string.noti_update_progress_title), 
 						String.format(MappingBirdApplication.instance().getString(R.string.noti_update_finish_message),
-								process, totle),
-						process,
+								progess, totle),
+						progess,
 						totle,
 						true);
 				notificationManager.notify(NOTIFY_ID, nm);
 			}
+			sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS, progess, totle);
 		}
 	};
 }

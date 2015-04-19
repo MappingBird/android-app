@@ -274,6 +274,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 
 	public interface NewCardClickListener {
 		public void onClickCard(MBPointData point);
+		public void onProgressFinished();
+		
 	}
 
 	private static final int MOVE_POSITION_ANIMATION = 300;
@@ -690,6 +692,12 @@ public class MBCollectionListLayout extends RelativeLayout {
 			mValueAnimator.addUpdateListener(new CardObjectAnimator(CardObjectAnimator.ANIM_UP));
 			mValueAnimator.start();
 		}
+
+		@Override
+		public void onProgressFinished() {
+			if(mNewCardClickListener != null)
+				mNewCardClickListener.onProgressFinished();
+		}
 	};
 
 	@Override
@@ -731,6 +739,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		
 		return false;
 	}
+
 	private class ItemAdapter extends BaseAdapter {
 
 		private ArrayList<ListItem> mAllPoints = new ArrayList<ListItem>();
@@ -929,5 +938,10 @@ public class MBCollectionListLayout extends RelativeLayout {
 		public boolean equals(LatLng latlng) {
 			return mPoint.getLatLng().equals(latlng);
 		}
+	}
+	
+	// Progress
+	public void setProgress(int state, int progress, int total) {
+		mAddLayout.setProgress(state, progress, total);
 	}
 }
