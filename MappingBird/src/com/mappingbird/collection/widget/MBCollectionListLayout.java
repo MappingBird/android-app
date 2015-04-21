@@ -170,6 +170,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 			mCurrentPoint = first.mPoint;
 			mCard.setData(mMyLocation, first.mPoint);
 			mCard.setVisibility(View.VISIBLE);
+		} else {
+			mCard.setVisibility(View.GONE);
 		}
 	}
 
@@ -297,6 +299,9 @@ public class MBCollectionListLayout extends RelativeLayout {
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 		
+		if(mItemAdapter.getCount() == 0)
+			return false;
+
 		if(lockTouchEvent)
 			return true;
 
