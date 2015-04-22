@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -526,12 +527,33 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 			switch(v.getId()) {
 				case R.id.field_phone_layout:
 					mPlacePhoneLayout.setVisibility(View.VISIBLE);
+					mPlacePhoneLayout.requestFocus();
+					postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							openIme(mPlacePhoneLayout);
+						}
+					}, 100);
 					break;
 				case R.id.field_open_time_layout:
 					mPlaceOpenTimeLayout.setVisibility(View.VISIBLE);
+					mPlaceOpenTimeLayout.requestFocus();
+					postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							openIme(mPlaceOpenTimeLayout);
+						}
+					}, 100);
 					break;
 				case R.id.field_link_layout:
 					mPlaceHyperLinkLayout.setVisibility(View.VISIBLE);
+					mPlaceHyperLinkLayout.requestFocus();
+					postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							openIme(mPlaceHyperLinkLayout);
+						}
+					}, 100);
 					break;
 			}
 
@@ -549,4 +571,11 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 			mAddFieldDialog.dismiss();
 		}
 	};
+
+	private void openIme(View view) {
+		InputMethodManager inputMethodManager=(InputMethodManager)
+				this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+	    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(),
+	    		0, 0);
+	}
 }
