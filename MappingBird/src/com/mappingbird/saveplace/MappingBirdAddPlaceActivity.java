@@ -37,6 +37,7 @@ import com.mappingbird.saveplace.MappingbirdAddPlaceInfoLayout.PlaceInfoListener
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.common.MBAnimation;
 import com.mpbd.services.MBServiceClient;
 
 public class MappingBirdAddPlaceActivity extends FragmentActivity  {
@@ -104,7 +105,8 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		findViewById(R.id.title_btn_back).setOnClickListener(mTitleClickListener);
 		mSubmitBtn = findViewById(R.id.title_btn_submit);
 		mSubmitBtn.setOnClickListener(mTitleClickListener);
-		Animation anim = AnimationUtils.loadAnimation(this, R.anim.submit_btn_in_animation);
+		Animation anim = MBAnimation.getActionBtnShowAnimation();
+		anim.setStartOffset(300);
 		mSubmitBtn.setAnimation(anim);
 		setTitleText(getString(R.string.pick_place_title));
 		
@@ -136,14 +138,14 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 			if(s.length() == 0) {
 				if(mSubmitBtn.isEnabled()) {
 					mSubmitBtn.setEnabled(false);
-					Animation anim = AnimationUtils.loadAnimation(MappingBirdAddPlaceActivity.this, R.anim.submit_btn_out_animation);
+					Animation anim = MBAnimation.getActionBtnHideAnimation();
 					anim.setFillAfter(true);
 					mSubmitBtn.startAnimation(anim);
 				} 
 			} else {
 				if(!mSubmitBtn.isEnabled()) {
 					mSubmitBtn.setEnabled(true);
-					Animation anim = AnimationUtils.loadAnimation(MappingBirdAddPlaceActivity.this, R.anim.submit_btn_in_animation);
+					Animation anim = MBAnimation.getActionBtnShowAnimation();
 					anim.setFillAfter(true);
 					mSubmitBtn.startAnimation(anim);
 				}
