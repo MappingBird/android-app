@@ -106,7 +106,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		mSubmitBtn = findViewById(R.id.title_btn_submit);
 		mSubmitBtn.setOnClickListener(mTitleClickListener);
 		Animation anim = MBAnimation.getActionBtnShowAnimation();
-		anim.setStartOffset(300);
+		anim.setStartOffset(500);
 		mSubmitBtn.setAnimation(anim);
 		setTitleText(getString(R.string.pick_place_title));
 		

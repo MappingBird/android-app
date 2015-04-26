@@ -14,6 +14,7 @@
     <string name="iconfont_mappingbird_logo" translatable="false">\uE61C</string>
 
     <string name="iconfont_check" translatable="false">\uE632</string>
+    <string name="iconfont_checkbox_marked_circle" translatable="false">\uE639</string>
     <!-- Place icon -->
     <string name="iconfont_map_maker" translatable="false">\uE610</string>
     <string name="iconfont_tag" translatable="false">\uE60A</string>

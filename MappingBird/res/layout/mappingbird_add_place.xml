@@ -22,7 +22,7 @@
             android:id="@+id/title_btn_submit"
             style="@style/TitleButtonStyle"
             android:layout_alignParentRight="true"
-            android:text="@string/iconfont_check" />
+            android:text="@string/iconfont_checkbox_marked_circle" />
 
         <TextView
             android:id="@+id/title_text"
