@@ -610,9 +610,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					}
 				});
 
-//		final View mapView = getSupportFragmentManager().findFragmentById(
-//				R.id.trip_map).getView();
-
 		if (mLatLngs != null && mLatLngs.size() != 0) {
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			if (mMyLocation != null)
@@ -621,7 +618,13 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				builder.include(mLatLngs.get(i));
 			}
 			LatLngBounds bounds = builder.build();
-			mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+			mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds,
+					(int)getResources().getDimension(R.dimen.col_map_camera_padding)));
+		} else if(mMyLocation != null) {
+			LatLngBounds.Builder builder = new LatLngBounds.Builder();
+			builder.include(mMyLocation);
+			LatLngBounds bounds = builder.build();
+			mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds,0));
 		}
 	}
 

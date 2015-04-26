@@ -17,6 +17,9 @@
     <!--  -->
     <dimen name="title_bar_height">45dp</dimen>
     
+    <!-- Collection  -->
+    <dimen name="col_map_camera_padding">80dp</dimen>
+    
     <!-- Collection : Add -->
     <dimen name="col_add_place_margin_bottom">200dp</dimen>
     <dimen name="col_add_place_padding_top">25dp</dimen>
