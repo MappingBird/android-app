@@ -575,8 +575,16 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					@Override
 					public boolean onClusterClick(
 							Cluster<MappingBirdItem> cluster) {
-						DeBug.v(TAG, "onClusterClick");
+//						DeBug.v(TAG, "onClusterClick");
 						mClickedCluster = cluster;
+						float nowZoom = mMap.getCameraPosition().zoom;
+						if(nowZoom < (mMap.getMaxZoomLevel() - 2)) {
+							nowZoom = nowZoom + 2;
+						} else {
+							nowZoom = mMap.getMaxZoomLevel();
+						}
+						mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+								cluster.getPosition(), nowZoom), 300, null);
 						return true;
 					}
 				});
@@ -585,7 +593,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 					@Override
 					public boolean onClusterItemClick(MappingBirdItem item, Marker marker) {
-						DeBug.d(TAG, "onClusterItemClick, marker"+marker.getTitle());
+//						DeBug.d(TAG, "onClusterItemClick, marker"+marker.getTitle());
 						if(mClickMarkerAnimator != null && mClickMarkerAnimator.isRunning())
 							return true;
 
@@ -613,7 +621,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				builder.include(mLatLngs.get(i));
 			}
 			LatLngBounds bounds = builder.build();
-			mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+			mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
 		}
 	}
 

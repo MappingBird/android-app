@@ -126,6 +126,7 @@ public class MBService extends Service{
 		MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
 		logic.setSubmitLogicListener(null);
 		stopForeground(true);
+		mUIMessenger = null;
 		super.onDestroy();
 	}
 
@@ -145,12 +146,17 @@ public class MBService extends Service{
 				// 馬上傳送現在的狀態
 				MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
 				Message msg = Message.obtain();
-				msg.getData().putParcelable(MSG_SUBMIT, logic.getSubmitState());
+				MBSubmitMsgData data = logic.getSubmitState();
+				msg.getData().putParcelable(MSG_SUBMIT, data);
 				try {
 					if(mUIMessenger != null)
 						mUIMessenger.send(msg);
 				} catch (RemoteException e) {
 					e.printStackTrace();
+				}
+				if(data.getState() == -1)  {
+					// 沒有東西.關閉Service
+					stopSelf();
 				}
 			}
 		}

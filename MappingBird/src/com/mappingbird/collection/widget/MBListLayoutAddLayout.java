@@ -33,8 +33,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private int mMode = MODE_CLOSE;
 	
 	// Animation space
-	private float mAnimSpace = 0.3f;
-	private int mAnimDuration = 1000;
+	private float mAnimSpace = 0.5f;
+	private int mAnimDuration = 600;
 	
 	// Add
 	private MBProgressCircleLayout mAddItemLayout;
