@@ -146,8 +146,8 @@ public class MBListLayoutCardView extends RelativeLayout {
 					public void onDownloadFaild(String url, ImageView icon,
 							BitmapParameters params) {
 						if(mIcon != null && icon != null && mIcon.getTag().equals(icon.getTag())) {
-							mIcon.setScaleType(ScaleType.CENTER);
-							mIcon.setImageResource(R.drawable.default_problem);
+							mIcon.setScaleType(ScaleType.CENTER_CROP);
+							mIcon.setImageResource(R.drawable.default_problem_big);
 						}
 					}
 					
@@ -161,11 +161,11 @@ public class MBListLayoutCardView extends RelativeLayout {
 				mBitmapLoader.getBitmap(mIcon, params, false);
 			} else {
 				mIcon.setScaleType(ScaleType.CENTER);
-				mIcon.setImageResource(R.drawable.default_problem);
+				mIcon.setImageResource(R.drawable.default_noimages);
 			}
 		} else {
-			mIcon.setScaleType(ScaleType.CENTER);
-			mIcon.setImageResource(R.drawable.default_problem);
+			mIcon.setScaleType(ScaleType.CENTER_CROP);
+			mIcon.setImageResource(R.drawable.default_noimages);
 		}
 		mTitle.setText(mPoint.getTitle());
 		mItemName.setText(mPoint.getTitle());

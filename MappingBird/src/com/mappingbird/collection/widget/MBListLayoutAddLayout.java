@@ -34,7 +34,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	
 	// Animation space
 	private float mAnimSpace = 0.5f;
-	private int mAnimDuration = 600;
+	private int mAnimDuration = 500;
 	
 	// Add
 	private MBProgressCircleLayout mAddItemLayout;
@@ -300,7 +300,10 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				mAddItemText.setRotation(-45);
 			}
 
-			int color = Color.argb((int)(0xB2*value), 0, 0, 0);
+			float colorValue = value * 1.5f;
+			if(colorValue > 1)
+				colorValue = 1;
+			int color = Color.argb((int)(0xB2*colorValue), 0, 0, 0);
 			setBackgroundColor(color);
 			float startValue = 0;
 			View targeView = null;
@@ -320,7 +323,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					targeView.setY(mItemViewYList.get(i));
 					targeView.setRotation(0);
 				}
-				startValue += 0.07f;
+				startValue += 0.1f;
 			}
 		}
 	};
@@ -337,6 +340,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				mAddItemText.setRotation(0);
 			}
 
+			float colorValue = value * 1.5f;
+			if(colorValue > 1)
+				colorValue = 1;
 			int color = Color.argb((int)(0xB2*(1 - value)), 0, 0, 0);
 			setBackgroundColor(color);
 			float startValue = 0;
@@ -355,7 +361,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					targeView.setY(mSelectItemCenterPositionY);
 					targeView.setRotation(0);
 				}
-				startValue += 0.07f;
+				startValue += 0.1f;
 			}
 
 		}

@@ -861,13 +861,12 @@ public class MBCollectionListLayout extends RelativeLayout {
 					imagePath = item.mPoint.getImageDetails().get(0).getUrl();
 				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
 				params.mBitmapDownloaded = new BitmapDownloadedListener() {
-					
 					@Override
 					public void onDownloadFaild(String url, ImageView icon,
 							BitmapParameters params) {
 						if(icon != null && icon.getTag().equals(params.getKey())) {
-							icon.setScaleType(ScaleType.CENTER);
-							icon.setImageResource(R.drawable.default_problem);
+							icon.setScaleType(ScaleType.CENTER_CROP);
+							icon.setImageResource(R.drawable.default_problem_big);
 						}
 					}
 					
@@ -881,8 +880,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 				};
 				mBitmapLoader.getBitmap(image, params, false);
 			} else {
-				image.setScaleType(ScaleType.CENTER);
-				image.setImageResource(R.drawable.default_problem);
+				image.setScaleType(ScaleType.CENTER_CROP);
+				image.setImageResource(R.drawable.default_noimages);
 			}
 
 			
