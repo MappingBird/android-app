@@ -300,7 +300,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 		
 		if(mItemAdapter.getCount() == 0)
-			return false;
+			return super.dispatchTouchEvent(ev);
 
 		if(lockTouchEvent)
 			return true;
