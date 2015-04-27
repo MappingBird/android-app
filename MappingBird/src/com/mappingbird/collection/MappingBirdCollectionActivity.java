@@ -72,6 +72,7 @@ import com.mpbd.mappingbird.MappingBirdPlaceActivity;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
+import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
@@ -247,7 +248,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		super.onResume();
 		if(mLocationService != null)
 			mLocationService.start();
-		MainUIMessenger.getIns().addSubmitListener(mOnMBSubmitChangedListener);;
+		if(MBUtil.mEnableAddFunction)
+			MainUIMessenger.getIns().addSubmitListener(mOnMBSubmitChangedListener);;
 	}
 	
 	@Override
@@ -276,7 +278,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if(mLocationService != null)
 			mLocationService.stopUsingGPS();
 		EasyTracker.getInstance(this).activityStop(this); 
-		MainUIMessenger.getIns().removeSubmitListener(mOnMBSubmitChangedListener);;
+		if(MBUtil.mEnableAddFunction)
+			MainUIMessenger.getIns().removeSubmitListener(mOnMBSubmitChangedListener);;
 	}
 
 	private class DrawerItemClickListener implements

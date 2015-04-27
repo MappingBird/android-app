@@ -10,12 +10,20 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true" />
 
-    <ImageView
+    <com.pnikosis.materialishprogress.ProgressWheel
+        xmlns:wheel="http://schemas.android.com/apk/res-auto"
         android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="94dp"
+        android:layout_height="102dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dialog_loading_margin_top"/>
+        android:padding="26dp"
+        android:background="@drawable/btn_submit_white_normal"
+        android:layout_marginTop="@dimen/dialog_loading_margin_top"
+        wheel:barColor="@color/loader_blue_fillin"
+        wheel:barWidth="5dp"
+        wheel:progressIndeterminate="true"
+        wheel:rimColor="@color/loader_blue_bg"
+        wheel:rimWidth="5dp"/>
 
     <LinearLayout
         android:id="@+id/arena_msg_button"

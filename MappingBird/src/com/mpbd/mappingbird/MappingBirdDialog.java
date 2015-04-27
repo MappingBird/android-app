@@ -21,7 +21,7 @@ public class MappingBirdDialog {
 		dialog.setContentView(R.layout.mappingbird_dailog);
 
 		TextView msg = (TextView) dialog.findViewById(R.id.message);
-		ImageView image = (ImageView) dialog.findViewById(R.id.image);
+		View image = dialog.findViewById(R.id.image);
 
 		if (message != null) {
 			msg.setVisibility(View.VISIBLE);
@@ -31,11 +31,11 @@ public class MappingBirdDialog {
 		}
 
 		image.setVisibility(View.VISIBLE);
-		image.setImageResource(R.anim.loading_animation_white);
-		AnimationDrawable animationDrawable = (AnimationDrawable) image
-				.getDrawable();
-
-		animationDrawable.start();
+//		image.setImageResource(R.anim.loading_animation_white);
+//		AnimationDrawable animationDrawable = (AnimationDrawable) image
+//				.getDrawable();
+//
+//		animationDrawable.start();
 
 		return dialog;
 

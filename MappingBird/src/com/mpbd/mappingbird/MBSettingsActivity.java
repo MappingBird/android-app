@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.hlrt.common.DeBug;
 import com.mappingbird.api.MappingBirdAPI;
+import com.mappingbird.common.DeBug;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.services.MBServiceClient;
 
@@ -51,6 +51,9 @@ public class MBSettingsActivity extends Activity {
 			findViewById(R.id.settings_dump_db_layout).setOnClickListener(mOnClickListener);
 			findViewById(R.id.settings_submit_data_layout).setVisibility(View.VISIBLE);
 			findViewById(R.id.settings_submit_data_layout).setOnClickListener(mOnClickListener);
+		} else {
+			findViewById(R.id.settings_dump_db_layout).setVisibility(View.GONE);
+			findViewById(R.id.settings_submit_data_layout).setVisibility(View.GONE);
 		}
 	}
 

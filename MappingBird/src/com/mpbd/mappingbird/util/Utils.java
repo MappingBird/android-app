@@ -89,8 +89,8 @@ public class Utils {
 		} else if(distance > 1000) {
 			// km
 			distance = distance / 1000;
-			if(distance > 10000) {
-				object.mDistance = "9999";
+			if(distance > 1000) {
+				object.mDistance = "999";
 				object.mUnit = MappingBirdApplication.instance().getString(R.string.distance_max_kilometer);
 				return object;				
 			} else {

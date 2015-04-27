@@ -610,6 +610,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mMode = mode;
 		switch(mMode) {
 		case MODE_SMALL_CARD:
+			mListView.setSelectionFromTop(0, 0);
 			break;
 		case MODE_MIDDLE:
 			mCard.setVisibility(View.INVISIBLE);
@@ -741,7 +742,17 @@ public class MBCollectionListLayout extends RelativeLayout {
 			mAddLayout.closeSelector();
 			return true;
 		}
-		
+		if(mMode == MODE_ALL) {
+			// 全開模式遇到Back key則縮回去
+			switchMode(MODE_ANIM_TO_SMALL_CARD);
+			mEndY = mCardDefaultPositionY;
+			ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchModeAnimation", 0.0f, 1.0f);
+			obj.addListener(mSwitchModeAnimationListener);
+			obj.setInterpolator(new  DecelerateInterpolator());
+			obj.setDuration(MOVE_POSITION_ANIMATION);
+			obj.start();
+			return true;
+		}
 		return false;
 	}
 

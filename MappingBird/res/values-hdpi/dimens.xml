@@ -42,7 +42,7 @@
     <dimen name="select_category_margin_bottom">10dp</dimen>
     
     <!-- Dialog -->
-    <dimen name="dialog_loading_margin_top">112dp</dimen>
+    <dimen name="dialog_loading_margin_top">60dp</dimen>
     
     <!-- Text Size -->
     <dimen name="header_title_text_size">18sp</dimen>
