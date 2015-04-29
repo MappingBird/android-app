@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.common.DeBug;
+import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.services.MBServiceClient;
 
@@ -110,6 +111,7 @@ public class MBSettingsActivity extends Activity {
 			MappingBirdAPI mApi = null;
 			mApi = new MappingBirdAPI(MBSettingsActivity.this.getApplicationContext());
 			if (mApi.logOut()) {
+				MappingBirdPref.getIns().getIns().setCollectionPosition(0);
 				Intent intent = new Intent();
 				intent.setClass(MBSettingsActivity.this,
 						com.mpbd.tutorial.MBTutorialActivity.class);
