@@ -187,11 +187,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		mLoadBitmap = new MappingBirdBitmap(this.getApplicationContext());
 		mContext = this;
-
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
-		mLoadingDialog.setCancelable(false);
 		
-		
+		showLoadingDialog();
 	}
 
 	OnGetCollectionsListener getCollectionListener = new OnGetCollectionsListener() {
@@ -306,8 +303,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mDrawerLayout.closeDrawer(mDrawerContentLayout);
 		}
 		if (mCollections != null && mCollections.getCount() > 0) {
-			if (mLoadingDialog != null)
-				mLoadingDialog.show();
+			showLoadingDialog();
 			mMBCollectionListLayout.closeLayout();
 			mApi.getCollectionInfo(getCollectionInfoListener,
 					mCollections.get(position).getId());
@@ -318,8 +314,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	 * 更新現在Collections的值
 	 */
 	private void refreshThisCollections() {
-		if (mLoadingDialog != null)
-			mLoadingDialog.show();
+		showLoadingDialog();
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
 		listObj.setOnGetCollectionListener(getCollectionListener);
 		listObj.getCollectionList();
@@ -336,16 +331,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mCollection = collection;
 				setUpMapIfNeeded();
 			} else {
-//				if (mLoadingDialog != null && mLoadingDialog.isShowing())
-//					mLoadingDialog.dismiss();
 				String title = "";
 				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
 				String error = "";
 				error = MBErrorMessageControl.getErrorMessage(statusCode, mContext);
-
-//				MappingBirdDialog.createMessageDialog(mContext, title, error,
-//						getResources().getString(R.string.ok),
-//						positiveListener, null, null).show();
 				
 				mDialog = new MBDialog(mContext);
 				mDialog.setTitle(title);
@@ -490,16 +479,14 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 		
 		if(mMyLocation != null) {
-			if (mLoadingDialog != null && mLoadingDialog.isShowing())
-				mLoadingDialog.dismiss();
+			closeLoadingDialog();
 			setUpMap();
 		} 
 
 	}
 
 	private void setMyLocation(Location location) {
-		if (mLoadingDialog != null && mLoadingDialog.isShowing())
-			mLoadingDialog.dismiss();
+		closeLoadingDialog();
 		if(location == null) {
 			// Error
 			String title = "";
@@ -922,5 +909,18 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		return super.onKeyUp(keyCode, event);
 	}
 	
-	
+	private void showLoadingDialog() {
+		if(mLoadingDialog != null)
+			return;
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
+		mLoadingDialog.setCancelable(false);
+		mLoadingDialog.show();
+	}
+
+	private void closeLoadingDialog() {
+		if(mLoadingDialog != null && mLoadingDialog.isShowing()) {
+			mLoadingDialog.dismiss();
+		}
+		mLoadingDialog = null;
+	}
 }
