@@ -423,8 +423,7 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	}
 
 	private void addCollection(String name) {
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(getContext(), null,
-				true);
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(getContext());
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();				
 		mListObject.createCollection(new OnAddCollectionListener() {

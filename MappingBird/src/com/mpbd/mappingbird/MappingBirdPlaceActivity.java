@@ -202,8 +202,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mApi.getPoints(mPointListener, mCurrentPoint.getId());
 		mContext = this;
 
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext, null,
-				true);
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
 

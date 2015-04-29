@@ -188,8 +188,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mLoadBitmap = new MappingBirdBitmap(this.getApplicationContext());
 		mContext = this;
 
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext, null,
-				true);
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
 		mLoadingDialog.setCancelable(false);
 		
 		
@@ -334,8 +333,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mCollection = collection;
 				setUpMapIfNeeded();
 			} else {
-				if (mLoadingDialog != null && mLoadingDialog.isShowing())
-					mLoadingDialog.dismiss();
+//				if (mLoadingDialog != null && mLoadingDialog.isShowing())
+//					mLoadingDialog.dismiss();
 				String title = "";
 				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
 				String error = "";

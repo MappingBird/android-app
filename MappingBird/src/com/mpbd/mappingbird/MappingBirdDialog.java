@@ -14,29 +14,12 @@ import com.mappingbird.api.MappingBirdAPI;
 
 public class MappingBirdDialog {
 
-	public static Dialog createLoadingDialog(Context context, String message,
-			boolean isLoading) {
+	public static Dialog createLoadingDialog(Context context) {
 
 		Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
-		dialog.setContentView(R.layout.mappingbird_dailog);
-
-		TextView msg = (TextView) dialog.findViewById(R.id.message);
+		dialog.setContentView(R.layout.mb_dailog_loading);
 		View image = dialog.findViewById(R.id.image);
-
-		if (message != null) {
-			msg.setVisibility(View.VISIBLE);
-			msg.setText(message);
-		} else {
-			msg.setVisibility(View.GONE);
-		}
-
 		image.setVisibility(View.VISIBLE);
-//		image.setImageResource(R.anim.loading_animation_white);
-//		AnimationDrawable animationDrawable = (AnimationDrawable) image
-//				.getDrawable();
-//
-//		animationDrawable.start();
-
 		return dialog;
 
 	}
