@@ -22,9 +22,11 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.mappingbird.common.MappingBirdApplication;
@@ -396,7 +398,7 @@ public class TagGroup extends ViewGroup {
      *
      * @return the INPUT state tag view or null if not exists
      */
-    protected TagView getInputTagView() {
+    public TagView getInputTagView() {
         if (isAppendMode) {
             final int inputTagIndex = getChildCount() - 1;
             final TagView inputTag = getTagViewAt(inputTagIndex);
@@ -880,6 +882,20 @@ public class TagGroup extends ViewGroup {
 
                     @Override
                     public void afterTextChanged(Editable s) {
+                    	String str = s.toString();
+                    	if(str.length() > 0
+                    			&& (str.charAt(str.length()-1) == ',')) {
+                            if (isInputAvailable()) {
+                                // If the input content is available, end the input and dispatch
+                                // the event, then append a new INPUT state tag.
+                            	setText(str.substring(0, str.length()-1));
+                                endInput();
+                                if (mOnTagChangeListener != null) {
+                                    mOnTagChangeListener.onAppend(TagGroup.this, getText().toString());
+                                }
+                                appendInputTag();
+                            }
+                    	}
                     }
                 });
             }

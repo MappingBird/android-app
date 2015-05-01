@@ -518,6 +518,12 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		});
 		mAddTagDialog.setCanceledOnTouchOutside(false);
 		mAddTagDialog.show();
+		postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				addTagLayout.showIME();
+			}
+		}, 100);
 	}
 
 	private OnClickListener mOnAddFieldDialogClickListener = new OnClickListener() {

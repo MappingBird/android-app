@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -97,6 +98,19 @@ public class MBDialogAddTagLayout extends LinearLayout {
 //			mTagListAdapter.getTag(position);
 		}
 	};
+	
+	public void showIME() {
+		if(mTagGroup.getInputTagView() != null)
+			openIme(mTagGroup.getInputTagView());
+	}
+	
+	private void openIme(View view) {
+		InputMethodManager inputMethodManager=(InputMethodManager)
+				this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+	    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(),
+	    		0, 0);
+	}
+
 	// List
 	private class TagAdapter extends BaseAdapter {
 
