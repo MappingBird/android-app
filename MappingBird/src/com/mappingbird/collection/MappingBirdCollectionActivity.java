@@ -512,8 +512,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					.fromResource(R.drawable.icon_current_location);
 				if(icon != null)
 					mMyMarker.setIcon(icon);
-				mMyMarker.setTitle(getResources().getString(
-						R.string.my_loaction));
+//				mMyMarker.setTitle(getResources().getString(
+//						R.string.my_loaction));
 			} else {
 				setUpMap();
 			}
@@ -670,7 +670,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if (mMyMarker == null) {
 			mMyMarker = mMap.addMarker(new MarkerOptions()
 					.position(mMyLocation)
-					.title(getResources().getString(R.string.my_loaction))
 					.icon(BitmapDescriptorFactory
 							.fromResource(R.drawable.icon_current_location)));
 		}
