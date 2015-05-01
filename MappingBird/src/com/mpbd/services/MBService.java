@@ -29,13 +29,13 @@ public class MBService extends Service{
 	private static final int NOTIFY_FINISHED_ID = 10020;
 	public static final String EXTRA_SERVICE_COMMEND = "extra_service_commend";
 	
-	public static final int CMD_START_LOCATUIN 	= 0x0100;
-	public static final int CMD_STOP_LOCATUIN 	= 0x0101;
-	public static final int CMD_ATTACH_MESSAGE 	= 0x0102;
-	public static final int CMD_ADD_PLACE_ITEM	= 0x0103;
-	public static final int CMD_RETRY_UPDATE 	= 0x0104;
+	public static final int CMD_START_LOCATUIN 	= 100;
+	public static final int CMD_STOP_LOCATUIN 	= 101;
+	public static final int CMD_ATTACH_MESSAGE 	= 102;
+	public static final int CMD_ADD_PLACE_ITEM	= 103;
+	public static final int CMD_RETRY_UPDATE 	= 104;
 	
-	public static final int CMD_STOP_SERVICE 	= 0x01A0;
+	public static final int CMD_STOP_SERVICE 	= 110;
 
 	//
 	public static final String EXTRA_MESSENGER 	= "extra_messenger";
@@ -65,6 +65,8 @@ public class MBService extends Service{
 		if(intent == null)
 			return START_NOT_STICKY;
 		int command = intent.getIntExtra(EXTRA_SERVICE_COMMEND, -1);
+		if(DeBug.DEBUG)
+			DeBug.e(TAG, "Start command : "+command);
 		
 		switch(command) {
 		case CMD_ATTACH_MESSAGE:
@@ -144,22 +146,23 @@ public class MBService extends Service{
 			} else {
 				mUIMessenger = (Messenger) p;
 				// 馬上傳送現在的狀態
-				MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
-				Message msg = Message.obtain();
-				MBSubmitMsgData data = logic.getSubmitState();
-				msg.getData().putParcelable(MSG_SUBMIT, data);
-				try {
-					if(mUIMessenger != null)
-						mUIMessenger.send(msg);
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-				if(data.getState() == -1)  {
-					// 沒有東西.關閉Service
-					stopSelf();
-				}
 			}
 		}
+		MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
+		Message msg = Message.obtain();
+		MBSubmitMsgData data = logic.getSubmitState();
+		msg.getData().putParcelable(MSG_SUBMIT, data);
+		try {
+			if(mUIMessenger != null)
+				mUIMessenger.send(msg);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		if(data.getState() == -1)  {
+			// 沒有東西.關閉Service
+			stopSelf();
+		}
+
 	}
 
 	private void sendMessage(int state, int progress, int total) {

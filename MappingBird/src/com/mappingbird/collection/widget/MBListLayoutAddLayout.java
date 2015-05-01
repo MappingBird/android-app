@@ -39,6 +39,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	// Add
 	private MBProgressCircleLayout mAddItemLayout;
 	private TextView mAddItemText;
+	private int mAddItemWidth = 0;
+	private float mAddItemPositionX = 0;
 	private int mAddItemPositionY = 0;
 	private int mAddItemPaddingTop = 0;
 	private int mAddItemPaddingRight = 0;
@@ -78,6 +80,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	
 	private int mAlphaBackground = 0;
 
+	// 滑出滑入動畫需要知道行徑的距離
+	private float mSlideAnimationDistance = 0;
 	public MBListLayoutAddLayout(Context context) {
 		super(context);
 	}
@@ -122,6 +126,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		int windowHeight = MBUtil.getWindowHeight(getContext());
 		int titleBarHeight = (int)getContext().getResources().getDimension(R.dimen.title_bar_height);
 		int add_margin_bottom = (int) getContext().getResources().getDimension(R.dimen.col_add_place_margin_bottom);
+		mAddItemPositionX = mAddItemLayout.getX();
 		mAddItemPositionY = windowHeight - titleBarHeight - add_margin_bottom;
 		setMarginInView(mAddItemLayout, 0, mAddItemPositionY, 0, 0);
 		
@@ -197,6 +202,15 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		mItemViewYList.add(mSelectBarPositionY);
 	}
 	
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		if(mAddItemWidth == 0) {
+			mAddItemWidth = mAddItemLayout.getWidth();
+			mAddItemPositionX = mAddItemLayout.getX();
+		}
+	}
+
 	private void setMarginInView(View view, int left, int top, int right, int bottom) {
 		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) view.getLayoutParams();
 		lp.setMargins(left, top, right, bottom);
@@ -447,4 +461,14 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			});
 		}
 	};
+	
+	// 移出動畫
+	public void setTranlatorX(float y) {
+		float ratio = y/mSlideAnimationDistance;
+		mAddItemLayout.setX(mAddItemPositionX + (mAddItemWidth*ratio)*2); 
+	}
+	
+	public void setSlidOutDistance(float dis) {
+		mSlideAnimationDistance = dis;
+	}
 }

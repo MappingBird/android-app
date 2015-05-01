@@ -147,6 +147,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mCard.setCardPosition(card_position);
 		mCardMaxHeight = getHeight() - ((int) getResources().getDimension(R.dimen.place_item_card_max_position));
 
+		// Add layout滑出動畫
+		mAddLayout.setSlidOutDistance(mCardDefaultPositionY - mCardMaxHeight);
 		int shadow_height = mCard.getPaddingBottom();
 		mChangeCardAnimBoj.setPosition(getHeight(), 0, shadow_height, marge_bottom_other);
 		isInited = true;
@@ -636,6 +638,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 				setBackgroundColor(0x00000000);
 			}
 			mCard.setTranlatorY(mDragY);
+			mAddLayout.setTranlatorX(mCardDefaultPositionY - mDragY);
 		} else {
 			if(mListView.getVisibility() != View.VISIBLE
 					|| mCard.getVisibility() == View.VISIBLE) {
