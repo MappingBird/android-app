@@ -6,8 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/cards_background"
-        android:orientation="vertical" >
+        android:background="@drawable/cards_background" >
 
         <RelativeLayout
             android:id="@+id/place_item_layout"

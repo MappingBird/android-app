@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -78,6 +80,11 @@ public class MBCollectionListLayout extends RelativeLayout {
 	
 	private float mDragY = 0;
 	private float mStartY = 0, mEndY = 0;
+	
+	// 當只有兩個Item的時候. 不能拉到最上面
+	private float mMostTopPosition = 0;
+	private float mCardHeight = 0;
+	
 
 	private MBPointData mCurrentPoint = null;
 
@@ -147,6 +154,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mCard.setCardPosition(card_position);
 		mCardMaxHeight = getHeight() - ((int) getResources().getDimension(R.dimen.place_item_card_max_position));
 
+		mCardHeight = (int) getResources().getDimension(R.dimen.place_item_card_max_position);
 		// Add layout滑出動畫
 		mAddLayout.setSlidOutDistance(mCardDefaultPositionY - mCardMaxHeight);
 		int shadow_height = mCard.getPaddingBottom();
@@ -164,9 +172,19 @@ public class MBCollectionListLayout extends RelativeLayout {
 		if(DeBug.DEBUG)
 			DeBug.d(TAG, "setPositionData, size = "+items.size());
 		mItemAdapter.setItem(items);
+		// 檢查Y最高可以到多少
+		
 		init();
 		initDefaultBitmap();
 		if(mItemAdapter.getCount() > 0) {
+			int windowHeight = MBUtil.getWindowHeight(getContext());
+			int titleBarHeight = (int)getContext().getResources().getDimension(R.dimen.title_bar_height);
+			if(mItemAdapter.getCount() * mCardHeight >= (windowHeight - titleBarHeight)) {
+				mMostTopPosition = 0;
+			} else {
+				mMostTopPosition = windowHeight - mItemAdapter.getCount() * mCardHeight - titleBarHeight;				
+			}
+			
 			ListItem first = (ListItem)mItemAdapter.getItem(0);
 			mItemAdapter.clickItem(first);
 			mCurrentPoint = first.mPoint;
@@ -495,7 +513,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 			}
 			break;
 		case MotionEvent.ACTION_MOVE:
-			if(mListViewTop && (ev.getY() - mTouchDownY) > 0) {
+			if(mListViewTop && (ev.getY() - mTouchDownY) > -mMostTopPosition) {
 				DeBug.v("Test", "handleListTopNormal change to MODE_LIST_TOP_DRAGING_DOWN");
 				switchMode(MODE_ALL_DRAGE);
 				return true;
@@ -514,7 +532,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 			case MotionEvent.ACTION_DOWN:
 				break;
 			case MotionEvent.ACTION_MOVE:
-				float touchY = (int)(ev.getY() - mTouchDownY);
+				float touchY = (int)(mMostTopPosition + ev.getY() - mTouchDownY);
 				// 下限
 				if(touchY > mCardDefaultPositionY)
 					touchY = mCardDefaultPositionY;
@@ -537,34 +555,59 @@ public class MBCollectionListLayout extends RelativeLayout {
 	private void checkTouchUp() {
 		mStartY = mDragY;
 		if(!mTouchEventFling || Math.abs(mVelocityY) < 2500) {
-			// 動量不足, 不是大力滑動
-			if(mDragY < (mCardMaxHeight*RATE_MIDDLE)) {
-				// 進入All
-				switchMode(MODE_ALL_ANIM);
-				mEndY = 0;
-			} else if(mDragY > (mCardMaxHeight*RATE_MIDDLE) &&
-					mDragY < (mCardDefaultPositionY - (mCardDefaultPositionY - mCardMaxHeight)*RATE_SMALL)) {
-				// 回到Middle
-				switchMode(MODE_MIDDLE_ANIM);
-				mEndY = mCardMaxHeight;
+			if(mItemAdapter.getCount() > 1) {
+				// 動量不足, 不是大力滑動
+				if(mDragY < (mCardMaxHeight*RATE_MIDDLE)) {
+					// 進入All
+					switchMode(MODE_ALL_ANIM);
+					mEndY = mMostTopPosition;
+				} else if(mDragY > (mCardMaxHeight*RATE_MIDDLE) &&
+						mDragY < (mCardDefaultPositionY - (mCardDefaultPositionY - mCardMaxHeight)*RATE_SMALL)) {
+					// 回到Middle
+					switchMode(MODE_MIDDLE_ANIM);
+					mEndY = mCardMaxHeight;
+				} else {
+					// 回到Small
+					switchMode(MODE_ANIM_TO_SMALL_CARD);
+					mEndY = mCardDefaultPositionY;
+				}
 			} else {
-				// 回到Small
-				switchMode(MODE_ANIM_TO_SMALL_CARD);
-				mEndY = mCardDefaultPositionY;
+				// 只有一張, 所以只有Middle
+				if(mDragY < (mCardMaxHeight*RATE_MIDDLE) ||
+						(mDragY > (mCardMaxHeight*RATE_MIDDLE) &&
+						mDragY < (mCardDefaultPositionY - (mCardDefaultPositionY - mCardMaxHeight)*RATE_SMALL))) {
+					// 回到Middle
+					switchMode(MODE_MIDDLE_ANIM);
+					mEndY = mCardMaxHeight;
+				} else {
+					// 回到Small
+					switchMode(MODE_ANIM_TO_SMALL_CARD);
+					mEndY = mCardDefaultPositionY;
+				}
 			}
 		} else {
 			// 大力滑動
-			if(mVelocityY > 0) {
-				switchMode(MODE_ANIM_TO_SMALL_CARD);
-				mEndY = mCardDefaultPositionY;
+			if(mItemAdapter.getCount() > 1) {
+				if(mVelocityY > 0) {
+					switchMode(MODE_ANIM_TO_SMALL_CARD);
+					mEndY = mCardDefaultPositionY;
+				} else {
+					switchMode(MODE_ALL_ANIM);
+					mEndY = mMostTopPosition;
+				}
 			} else {
-				switchMode(MODE_ALL_ANIM);
-				mEndY = 0;
+				if(mVelocityY > 0) {
+					switchMode(MODE_ANIM_TO_SMALL_CARD);
+					mEndY = mCardDefaultPositionY;
+				} else {
+					switchMode(MODE_MIDDLE_ANIM);
+					mEndY = mCardMaxHeight;
+				}
 			}
 		}		
 		ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchModeAnimation", 0.0f, 1.0f);
 		obj.addListener(mSwitchModeAnimationListener);
-		obj.setInterpolator(new  DecelerateInterpolator());
+		obj.setInterpolator(new DecelerateInterpolator());
 		obj.setDuration(MOVE_POSITION_ANIMATION);
 		obj.start();
 	}

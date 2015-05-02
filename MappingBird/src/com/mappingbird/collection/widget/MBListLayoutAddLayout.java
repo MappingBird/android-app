@@ -465,7 +465,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	// 移出動畫
 	public void setTranlatorX(float y) {
 		float ratio = y/mSlideAnimationDistance;
-		mAddItemLayout.setX(mAddItemPositionX + (mAddItemWidth*ratio)*2); 
+		setX(mAddItemPositionX + (mAddItemWidth*ratio)*2); 
 	}
 	
 	public void setSlidOutDistance(float dis) {
