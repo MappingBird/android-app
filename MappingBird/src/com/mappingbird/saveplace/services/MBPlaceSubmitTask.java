@@ -26,6 +26,7 @@ public class MBPlaceSubmitTask implements Runnable{
 		mSubmitData = data;
 	}
 
+	public static final int MSG_NONE				= -1;
 	public static final int MSG_ADD_PLACE_FAILED	= 0;
 	public static final int MSG_ADD_PLACE_PROCRESS 	= 1;
 	public static final int MSG_ADD_PLACE_UPDATE_IMAGE 	= 2;

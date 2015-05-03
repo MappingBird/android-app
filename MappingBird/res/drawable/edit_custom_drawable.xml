@@ -19,5 +19,6 @@
 
     <item android:state_enabled="true" android:state_focused="true" android:drawable="@drawable/bg_underline_activated" />
     <iten android:state_enabled="true" android:state_activated="true" android:drawable="@drawable/bg_underline_activated" />
+    <iten android:state_pressed="true" android:drawable="@drawable/bg_underline_pressed" />
     <item android:drawable="@drawable/bg_underline_normal" />
 </selector>

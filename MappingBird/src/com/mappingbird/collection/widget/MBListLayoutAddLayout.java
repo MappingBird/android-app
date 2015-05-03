@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.hlrt.common.DeBug;
 import com.mappingbird.collection.widget.MBProgressCircleLayout.ProgressListener;
+import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.mappingbird.R;
@@ -443,6 +444,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			@Override
 			public void run() {
 				mAddItemText.setText(R.string.iconfont_cloud_upload);
+				mAddItemText.setTextColor(
+						MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
 			}
 		});
 	}
@@ -456,12 +459,17 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			post(new Runnable() {
 				@Override
 				public void run() {
-					mAddItemText.setText(R.string.iconfont_addplace);
+					resetState();
 				}
 			});
 		}
 	};
 	
+	public void resetState() {
+		mAddItemText.setText(R.string.iconfont_addplace);
+		mAddItemText.setTextColor(
+				MappingBirdApplication.instance().getResources().getColor(R.color.graphic_orange));
+	}
 	// 移出動畫
 	public void setTranlatorX(float y) {
 		DeBug.d("Test", "setTranlatorX = "+y);

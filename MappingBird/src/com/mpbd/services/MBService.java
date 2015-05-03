@@ -158,7 +158,7 @@ public class MBService extends Service{
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		if(data.getState() == -1)  {
+		if(data.getState() == MBPlaceSubmitTask.MSG_NONE)  {
 			// 沒有東西.關閉Service
 			stopSelf();
 		}

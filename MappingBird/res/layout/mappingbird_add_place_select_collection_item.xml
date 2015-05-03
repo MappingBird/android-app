@@ -16,7 +16,7 @@
         android:background="#00000000"
         android:visibility="gone" />
 
-    <TextView
+    <com.mappingbird.widget.MappingbirdTextView
         android:id="@+id/item_name"
         style="@style/TextStyle_Body_Small"
         android:layout_width="match_parent"

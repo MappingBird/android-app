@@ -230,6 +230,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onSubmitChanged(MBSubmitMsgData data) {
 			switch(data.getState()) {
+			case MBPlaceSubmitTask.MSG_NONE:
+				// 沒有資料
+				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED:
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED:
@@ -398,28 +401,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					mDrawerLayout.closeDrawer(mDrawerContentLayout);
 				else
 					mDrawerLayout.openDrawer(mDrawerContentLayout);
-				break;
-//			case R.id.title_btn_people:
-//				Intent intent = new Intent();
-//				intent.setClass(MappingBirdCollectionActivity.this,
-//						com.mpbd.mappingbird.MappingBirdProfileActivity.class);
-//				MappingBirdCollectionActivity.this.startActivity(intent);
-//				break;
-			case R.id.title_btn_add:
-//				Display display = getWindowManager().getDefaultDisplay();
-//				Point size = new Point();
-//				display.getSize(size);
-//				int width = size.x;
-//				int height = size.y;
-//				ArrayList<String> collectList = new ArrayList<String>();
-//				collectList.clear();
-//				if (mCollections.getCount() > 0) {
-//					for(int i = 0; i < mCollections.getCount(); i++)
-//						collectList.add(mCollections.get(i).getName());
-//				}
-//				Dialog selected = MappingBirdDialog.createSelectPlaceKindDialog(mContext, width, height
-//						, mMyLocation.latitude, mMyLocation.longitude, collectList);
-//				selected.show();
 				break;
 			}
 			

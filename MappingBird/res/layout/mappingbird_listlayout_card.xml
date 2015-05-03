@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/cards_background" >
 
-    <TextView
+    <com.mappingbird.widget.MappingbirdTextView
         android:id="@+id/item_address"
         style="@style/TextStyle_Body_Small"
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         android:layout_above="@id/item_address"
         android:visibility="gone" >
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/item_distance"
             style="@style/TextStyle_Quote"
             android:layout_width="@dimen/list_layout_item_distance_width"
@@ -57,7 +57,7 @@
             android:layout_toLeftOf="@id/item_divider"
             android:orientation="vertical" >
 
-            <TextView
+            <com.mappingbird.widget.MappingbirdTextView
                 android:id="@+id/item_title"
                 style="@style/TextStyle_Subtitle"
                 android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
                 android:textColor="#ffffff"
                 android:textStyle="normal" />
 
-            <TextView
+            <com.mappingbird.widget.MappingbirdTextView
                 android:id="@+id/item_subtitle"
                 style="@style/TextStyle_Body_Small"
                 android:layout_width="wrap_content"
@@ -98,7 +98,7 @@
                 android:layout_centerHorizontal="true"
                 android:orientation="vertical">
 
-                <TextView
+                <com.mappingbird.widget.MappingbirdTextView
                     android:id="@+id/card_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                     android:textColor="#0298c1"
                     android:textSize="32sp" />
 
-                <TextView
+                <com.mappingbird.widget.MappingbirdTextView
                     android:id="@+id/card_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
             android:orientation="vertical"
             android:paddingLeft="8dp" >
 
-            <TextView
+            <com.mappingbird.widget.MappingbirdTextView
                 android:id="@+id/card_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                 android:textSize="16sp"
                 android:textColor="#0298c1" />
 
-            <TextView
+            <com.mappingbird.widget.MappingbirdTextView
                 android:id="@+id/card_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

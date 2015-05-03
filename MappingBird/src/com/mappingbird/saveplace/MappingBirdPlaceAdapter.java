@@ -7,13 +7,13 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.Utils;
@@ -159,6 +159,8 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 		int index = text.indexOf(filter);
 		if(index >= 0) {
 			ss.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.graphic_orange)),
+					index, index+filter.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			ss.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 
 					index, index+filter.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 		return ss;

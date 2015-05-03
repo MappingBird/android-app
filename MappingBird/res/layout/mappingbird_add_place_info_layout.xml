@@ -31,7 +31,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/add_place_collection_text"
             style="@style/TextStyle_Body_Small"
             android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp" >
 
-        <EditText
+        <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_location_name"
             style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp" >
 
-        <EditText
+        <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_address"
             style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
@@ -104,7 +104,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/add_place_tag"
             style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
@@ -139,7 +139,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <EditText
+        <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_phone"
             style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
@@ -175,7 +175,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <EditText
+        <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_open_time"
             style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
@@ -210,7 +210,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <EditText
+        <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_link"
             style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
@@ -243,7 +243,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <EditText
+        <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_about"
             style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"

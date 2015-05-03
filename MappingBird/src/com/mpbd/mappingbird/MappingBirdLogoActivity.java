@@ -1,7 +1,5 @@
 package com.mpbd.mappingbird;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,21 +9,19 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
-import com.mappingbird.common.DeBug;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MappingBirdLogoActivity extends Activity {
 
 	private boolean isLogin = false;
-	private ImageView mLoading = null;
+	private ProgressWheel mLoading = null;
 
 	private static final int MSG_CHECK_LOGIN = 0;
 	private MappingBirdAPI mApi = null;
 
-	private RotateAnimation mRotateAnimation;
 	private Handler mHandler = new Handler() {
 
 		@Override
@@ -57,14 +53,8 @@ public class MappingBirdLogoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mappingbird_logo);
-		mLoading = (ImageView) findViewById(R.id.logo_loading);
+		mLoading = (ProgressWheel) findViewById(R.id.logo_loading);
 		mHandler.sendEmptyMessageDelayed(MSG_CHECK_LOGIN, 1000);
-		mRotateAnimation = new RotateAnimation(0, 359,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-				0.5f);
-		mRotateAnimation.setDuration(1000);
-		mRotateAnimation.setRepeatCount(-1);
-		mRotateAnimation.setInterpolator( new LinearInterpolator());
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 		isLogin = mApi.getCurrentUser() == null ? false : true;
 	}
@@ -72,13 +62,11 @@ public class MappingBirdLogoActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mLoading.clearAnimation();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mLoading.startAnimation(mRotateAnimation);
 	}
 	
 	@Override

@@ -6,7 +6,12 @@
 
     <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/item_icon_font"
-        style="@style/TitleButtonStyle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:textSize="24dp"
+        android:gravity="center"
+        android:textColor="@color/font_dark"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:text="@string/iconfont_camera" />
 

@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center_vertical">
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:textSize="18dp"
             android:textStyle="bold" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/snippet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:src="@drawable/icon_details"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp" >
     </ImageView>

@@ -24,7 +24,7 @@
             android:layout_alignParentRight="true"
             android:text="@string/iconfont_checkbox_marked_circle" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/title_text"
             style="@style/TextStyle_Title"
             android:layout_width="wrap_content"

@@ -16,14 +16,20 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/logo" />
 
-        <ImageView
+        <com.pnikosis.materialishprogress.ProgressWheel
+            xmlns:wheel="http://schemas.android.com/apk/res-auto"
             android:id="@+id/logo_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_below="@id/logo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:src="@drawable/icon_loading" />
+            android:padding="18dp"
+            wheel:barColor="@color/graphic_symbol"
+            wheel:barWidth="3dp"
+            wheel:progressIndeterminate="true"
+            wheel:rimColor="@color/font_white"
+            wheel:rimWidth="3dp" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -89,7 +89,7 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp" >
 
-                    <TextView
+                    <com.mappingbird.widget.MappingbirdTextView
                         android:id="@+id/palce_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -271,7 +271,7 @@
                         android:layout_height="220dp"
                         android:scaleType="fitXY" />
 
-                    <TextView
+                    <com.mappingbird.widget.MappingbirdTextView
                         android:id="@+id/trip_map_address"
                         style="@style/TextStyle_Body"
                         android:layout_width="match_parent"

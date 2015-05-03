@@ -1005,4 +1005,9 @@ public class MBCollectionListLayout extends RelativeLayout {
 	public void setProgress(int state, int progress, int total) {
 		mAddLayout.setProgress(state, progress, total);
 	}
+
+	// 回復到預設
+	public void resetState() {
+		
+	}
 }

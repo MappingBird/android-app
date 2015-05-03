@@ -129,7 +129,7 @@ public class MBPlaceSubmitLogic {
 			MBSubmitMsgData data = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS, mSubmitTask.getProgress(), mSubmitTask.getTotalProgress());
 			return data;
 		}
-		MBSubmitMsgData data = new MBSubmitMsgData(-1);
+		MBSubmitMsgData data = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_NONE);
 		return data;
 	}
 	

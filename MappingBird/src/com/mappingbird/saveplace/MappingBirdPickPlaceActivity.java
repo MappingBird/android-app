@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.Collections;
@@ -94,6 +96,9 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 		maps.put('a', 1);
 
 		mPlaceListView = (ListView) findViewById(R.id.pick_place_list);
+		// Header view : 為了上面的Padding
+		View headerView = LayoutInflater.from(this).inflate(R.layout.mappingbird_pick_place_header_item, mPlaceListView, false);
+		mPlaceListView.addHeaderView(headerView);
 		mPlaceAdapter = new MappingBirdPlaceAdapter(this);
 		mPlaceListView.setAdapter(mPlaceAdapter);
 		mPlaceListView.setOnItemClickListener(mOnItemClickListener);
@@ -221,19 +226,20 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
 
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-				long arg3) {
-			MappingBirdPlaceItem item = (MappingBirdPlaceItem)mPlaceAdapter.getItem(position);
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			MappingBirdPlaceItem item = (MappingBirdPlaceItem)mPlaceAdapter.getItem(position-1);
 			switch(item.getType()) {
 				case MappingBirdPlaceItem.TYPE_PLACE: {
 					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MappingBirdAddPlaceActivity.class);
 					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_COLLECTION_LIST, mCollections);
 					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_TYPE, mType);
-					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_ITEM, (MappingBirdPlaceItem)mPlaceAdapter.getItem(position));
+					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_ITEM, item);
 					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE: {
+					Toast toast = Toast.makeText(MappingBirdPickPlaceActivity.this, "Ivan還沒有出流程和Layout喔~~~", Toast.LENGTH_SHORT);
+					toast.show();
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT: {

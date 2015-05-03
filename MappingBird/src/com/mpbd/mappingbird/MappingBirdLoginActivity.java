@@ -1,6 +1,7 @@
 package com.mpbd.mappingbird;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -34,10 +35,11 @@ public class MappingBirdLoginActivity extends Activity implements
 	private EditText mPassword = null;
 	private TextView mLoginDescription = null;
 	private TextView mLoginText = null;
-	private ImageView mLoginLoadingIcon = null;
 	private MappingBirdAPI mApi = null;
 	private String mEmails = null;
 	private String mPasswords = null;
+
+	private Dialog mLoadingDialog = null;
 
 	private MBDialog mErrorDialog;
 	@Override
@@ -50,7 +52,6 @@ public class MappingBirdLoginActivity extends Activity implements
 		mPassword = (EditText) findViewById(R.id.input_password);
 		mLoginDescription = (TextView) findViewById(R.id.login_content_text);
 		mLoginText = (TextView) findViewById(R.id.login_loading_text);
-		mLoginLoadingIcon = (ImageView) findViewById(R.id.login_loading);
 		isLoaing(false);
 		findViewById(R.id.back_icon).setOnClickListener(this);
 		findViewById(R.id.question_icon).setOnClickListener(this);
@@ -85,16 +86,13 @@ public class MappingBirdLoginActivity extends Activity implements
 			mLoginText
 					.setText(this.getResources().getString(R.string.logining));
 			mLoginText.setTextColor(Color.WHITE);
-			Animation anim = AnimationUtils.loadAnimation(MappingBirdLoginActivity.this, R.anim.loading_animation_rotate);
-			mLoginLoadingIcon.setVisibility(View.VISIBLE);
-			mLoginLoadingIcon.startAnimation(anim);
+			showLoadingDialog();
 			mLoginDescription.setEnabled(false);
 			mLogIn.setEnabled(false);
 		} else {
 			mLoginText.setText(this.getResources().getString(R.string.login));
 			mLoginText.setTextColor(Color.WHITE);
-			mLoginLoadingIcon.clearAnimation();
-			mLoginLoadingIcon.setVisibility(View.GONE);
+			closeLoadingDialog();
 			mLoginDescription.setEnabled(true);
 			mLogIn.setEnabled(true);
 		}
@@ -189,4 +187,20 @@ public class MappingBirdLoginActivity extends Activity implements
 				.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 	}
+
+	private void showLoadingDialog() {
+		if(mLoadingDialog != null)
+			return;
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(MappingBirdLoginActivity.this);
+		mLoadingDialog.setCancelable(false);
+		mLoadingDialog.show();
+	}
+
+	private void closeLoadingDialog() {
+		if(mLoadingDialog != null && mLoadingDialog.isShowing()) {
+			mLoadingDialog.dismiss();
+		}
+		mLoadingDialog = null;
+	}
+
 }

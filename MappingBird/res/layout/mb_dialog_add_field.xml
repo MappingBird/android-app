@@ -22,7 +22,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/field_photo_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/field_open_time_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <TextView
+        <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/field_link__text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

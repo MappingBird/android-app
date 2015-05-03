@@ -86,10 +86,10 @@ public class MappingBirdBitmap {
 		return mMissBmp;
 	}
 
-	private void setLoadingBmp(ImageView imageView, int missType) {
-		setBmp(imageView, R.drawable.loading);
-
-	}
+//	private void setLoadingBmp(ImageView imageView, int missType) {
+//		setBmp(imageView, R.drawable.loading);
+//
+//	}
 
 	private void setBmp(ImageView imageView, int color) {
 		if (imageView != null) {
@@ -166,7 +166,7 @@ public class MappingBirdBitmap {
 			BMPDownLoadObject object = new BMPDownLoadObject(targetView, url,
 					missType);
 			putDownloadObj(object);
-			setLoadingBmp(targetView, missType);
+//			setLoadingBmp(targetView, missType);
 		} else {
 			setBmp(targetView, bitmapformcache, missType);
 		}
