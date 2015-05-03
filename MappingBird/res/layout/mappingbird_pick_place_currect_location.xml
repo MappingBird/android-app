@@ -91,5 +91,52 @@
         android:dividerHeight="0dp"
         android:listSelector="#00000000"
         android:scrollbars="none" />
+    <!-- android:layout_marginBottom="@dimen/pick_place_listview_margin_bottom" -->
+    <!-- current location -->
+
+    <RelativeLayout
+        android:id="@+id/pick_place_current_location_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pick_place_add_location_layout_height"
+        android:background="@color/bg_grey"
+        android:visibility="gone" >
+
+        <RelativeLayout
+            android:id="@+id/pick_place_add_location_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pick_place_add_location_height"
+            android:background="@drawable/cards_background" >
+
+            <com.mappingbird.widget.MappingbirdFontIcon
+                android:id="@+id/pick_place_add_location_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/iconfont_locate" />
+
+            <TextView
+                android:id="@+id/pick_place_add_location_text"
+                style="@style/TextStyle_Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@id/pick_place_add_location_icon"
+                android:singleLine="true"
+                android:text="@string/pick_place_new_location"
+                android:textColor="@color/font_normal"
+                android:textSize="14dp" />
+        </RelativeLayout>
+
+        <fragment
+            android:id="@+id/trip_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/pick_place_add_location_input_layout"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+    </RelativeLayout>
 
 </com.mappingbird.saveplace.MBListLayoutAddPlaceLayout>

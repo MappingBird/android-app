@@ -24,8 +24,9 @@
 	<string name="iconfont_directions" translatable="false">\uE608</string>
 	<string name="iconfont_addplace" translatable="false">\uE626</string>
 	<string name="iconfont_cloud_upload" translatable="false">\uE627</string>
+	<string name="iconfont_close" translatable="false">\uE62E</string>
 
-    <!-- Place type -->
+	<!-- Place type -->
     <string name="iconfont_restaurant" translatable="false">\uE614</string>
     <string name="iconfont_hotel" translatable="false">\uE611</string>
     <string name="iconfont_shopping" translatable="false">\uE615</string>

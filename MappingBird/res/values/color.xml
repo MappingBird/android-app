@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="login">#01A9E7</color>
-    <color name="login_press">#0387b9</color>
     <color name="login_style2_normal">#33ffffff</color>
     <color name="login_style2_press">#66ffffff</color>
     <color name="login_unable">#3f000000</color>
@@ -15,14 +13,15 @@
     <color name="blue"> #01A9E7</color>
     <color name="title_bar_background">#F6892A</color>
     <color name="transparent">#00000000</color>
-	<color name="title_btn_pressed">#66000000</color>
+	<color name="title_btn_pressed">#1a000000</color>
 
 	<!-- Color -->
 	<color name="graphic_orange">#fff58829</color>
 	<color name="graphic_blue">#ff00a8e6</color>
+    <color name="graphic_blue_pressed">#0387b9</color>
 	<color name="graphic_gray_out">#b2000000</color>
-	<color name="graphic_shade_normal">#3f000000</color>
-	<color name="graphic_shade_small">#27000000</color>
+	<color name="graphic_shade_normal">#1a000000</color>
+	<color name="graphic_shade_small">#1a000000</color>
 	<color name="graphic_default_background">#cccccc</color>
 	<color name="graphic_symbol">#ffa5a5a5</color>
 	<color name="graphic_alpha_background">#B2000000</color>
@@ -43,7 +42,7 @@
 
 	<!-- Collection List -->
 	<color name="item_blue_activated">#d9f1fb</color>
-	<color name="item_pressed">#d9d9d9</color>
+	<color name="item_pressed">#e5e5e5</color>
 	
 	<!-- Default -->
 	<color name="default_background">#ffffffff</color>

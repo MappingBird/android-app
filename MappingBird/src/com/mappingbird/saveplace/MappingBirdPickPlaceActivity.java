@@ -5,13 +5,20 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +47,8 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	public static final String EXTRA_LAT = "extra_latitude";
 	public static final String EXTRA_LONG = "extra_longitude";
 
+	private static final int MSG_SEARCH_INPUT = 0;
+
 	private ListView mPlaceListView;
 	private MappingBirdPlaceAdapter mPlaceAdapter;
 	private TextView mTitleText;
@@ -54,8 +63,25 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	private ArrayList<MappingBirdPlaceItem> mRequestPlace = new ArrayList<MappingBirdPlaceItem>();
 	private Collections mCollections = null;
 	
-	// add place frame layout
-	private MBListLayoutAddPlaceLayout mAddPlaceFrameLayout;
+	// Search layout
+	private View mTitleLayout;
+	private View mSearchLayout;
+	private View mDeletSerachTextBtn;
+	private EditText mSearchInput;
+	
+	private Handler mHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch(msg.what) {
+				case MSG_SEARCH_INPUT:
+					mPlaceAdapter.setFilter(String.valueOf(msg.obj));
+					break;
+			}
+		}
+		
+	};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,10 +106,18 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 			mLatitude = intent.getDoubleExtra(EXTRA_LAT, 0);
 			mLongitude = intent.getDoubleExtra(EXTRA_LONG, 0);
 			mCollections = (Collections)intent.getSerializableExtra(EXTRA_COLLECTION_LIST);
-			prepareData();
+			prepareData(null);
 		}
 		
-		mAddPlaceFrameLayout = (MBListLayoutAddPlaceLayout) findViewById(R.id.pick_place_framelayout);
+		// Search part
+		mTitleLayout = findViewById(R.id.title_bar_text);
+		mSearchLayout = findViewById(R.id.title_bar_search);
+		mDeletSerachTextBtn = findViewById(R.id.title_btn_delete);
+		mDeletSerachTextBtn.setOnClickListener(mTitleClickListener);
+		findViewById(R.id.title_btn_search).setOnClickListener(mTitleClickListener);
+		
+		mSearchInput = (EditText) findViewById(R.id.title_input);
+		mSearchInput.addTextChangedListener(mSearchInputTextWatcher);
 	}
 
 	@Override
@@ -109,11 +143,17 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 		
 	}
 
-	private void prepareData() {
+	@Override
+	protected void onPause() {
+		super.onPause();
+		closeIME();
+	}
+
+	private void prepareData(String filter) {
 		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
 		mLoadingDialog.show();
 //		mApi.explorefromFourSquare(mOnExploreFourSquareListener, mLatitude, mLongitude, 35);
-		mApi.searchfromFourSquare(mOnSearchFourSquareListener, mLatitude, mLongitude, null, 50);
+		mApi.searchfromFourSquare(mOnSearchFourSquareListener, mLatitude, mLongitude, filter, 50);
 	}
 
 	private OnSearchFourSquareListener mOnSearchFourSquareListener = new OnSearchFourSquareListener() {
@@ -183,12 +223,25 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 				long arg3) {
-			
-			Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MappingBirdAddPlaceActivity.class);
-			intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_COLLECTION_LIST, mCollections);
-			intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_TYPE, mType);
-			intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_ITEM, (MappingBirdPlaceItem)mPlaceAdapter.getItem(position));
-			MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
+			MappingBirdPlaceItem item = (MappingBirdPlaceItem)mPlaceAdapter.getItem(position);
+			switch(item.getType()) {
+				case MappingBirdPlaceItem.TYPE_PLACE: {
+					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MappingBirdAddPlaceActivity.class);
+					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_COLLECTION_LIST, mCollections);
+					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_TYPE, mType);
+					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_ITEM, (MappingBirdPlaceItem)mPlaceAdapter.getItem(position));
+					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
+					break;
+				}
+				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE: {
+					break;
+				}
+				case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT: {
+					prepareData(mPlaceAdapter.getFilterStr());
+					closeSearchBar();
+					break;
+				}
+			}
 		}
 	};
 
@@ -208,9 +261,76 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 		public void onClick(View v) {
 			switch(v.getId()) {
 			case R.id.title_btn_back:
+				// 切換
+				if(mSearchLayout.getVisibility() == View.VISIBLE) {
+					closeSearchBar();
+					return;
+				}
 				finish();
+				break;
+			case R.id.title_btn_search:
+				mSearchLayout.setVisibility(View.VISIBLE);
+				mTitleLayout.setVisibility(View.GONE);
+				mHandler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						mSearchInput.requestFocus();
+						openIme(mSearchInput);
+					}
+				}, 300);
+				break;
+			case R.id.title_btn_delete:
+				mSearchInput.setText("");
 				break;
 			}
 		}
 	};
+	
+	private void closeSearchBar() {
+		mSearchInput.setText("");
+		mSearchLayout.setVisibility(View.GONE);
+		mTitleLayout.setVisibility(View.VISIBLE);
+		closeIME();
+	}
+
+	private TextWatcher mSearchInputTextWatcher = new TextWatcher() {
+		
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			if(s.length() > 0) {
+				mDeletSerachTextBtn.setVisibility(View.VISIBLE);
+			} else {
+				mDeletSerachTextBtn.setVisibility(View.GONE);
+			}
+			mHandler.removeMessages(MSG_SEARCH_INPUT);
+			Message msg = new Message();
+			msg.what = MSG_SEARCH_INPUT;
+			msg.obj = mSearchInput.getText().toString();
+			mHandler.sendMessageDelayed(msg, 600);
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+		}
+	};
+	
+	private void closeIME() {
+		InputMethodManager inputManager = (InputMethodManager) this
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+	
+		inputManager.hideSoftInputFromWindow(this.getCurrentFocus()
+			.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+	}
+
+	private void openIme(View view) {
+		InputMethodManager inputMethodManager=(InputMethodManager)
+				MappingBirdPickPlaceActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+	    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(),
+	    		0, 0);
+	}
 }
