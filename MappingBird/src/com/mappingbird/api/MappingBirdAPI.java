@@ -48,6 +48,17 @@ public class MappingBirdAPI {
 		mCurrentUserPref = new UserPrefs(context);
 	}
 
+	public void signUp(OnSignUpListener listener, String email, String password) {
+		String url = mHost + "/api/user/login";
+		String method = "POST";
+		try {
+			JSONObject postData = MapParse.writeAccount(email, password);
+			mUtil.sendSingUp(NetwokConnection.API_SIGNUP, listener, url, method,
+					postData);
+		} catch (JSONException e) {
+		}
+	}
+
 	public void logIn(OnLogInListener listener, String email, String password) {
 		String url = mHost + "/api/user/login";
 		String method = "POST";

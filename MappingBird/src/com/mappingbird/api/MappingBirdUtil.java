@@ -24,6 +24,7 @@ final class MappingBirdUtil {
 	private static final int MSG_UPLOAD_IMAGE_FINISH = 6;
 	private static final int MSG_SEARCH_FS_FINISH = 8;
 	private static final int MSG_EXPLORE_FS_FINISH = 9;
+	private static final int MSG_SIGNUP_FINISH = 10;
  
 	private final static int LOADING_THREAD_MAX = 1;
 	// 同一個或分開都可以
@@ -34,6 +35,35 @@ final class MappingBirdUtil {
 
 	public MappingBirdUtil(Context context) {
 		mContext = context;
+	}
+
+	public void sendSingUp(int apiType, OnSignUpListener listener,
+			String url, String method, JSONObject postData) {
+		DeBug.d(TAG, "[sendLogIn]");
+
+		Info info = new Info(apiType, listener, url, method, postData);
+		LoadInfoThread thread = mLoadingThreadHashMap.get(info.mKey);
+		if (thread != null) {
+			DeBug.d(TAG, "[sendLogIn]thread exist.");
+			thread.addSignUpListener(listener);
+		} else {
+			if (mLoadingThreadHashMap.size() >= LOADING_THREAD_MAX) {
+				Info waitinfo = mWaitHaspMap.get(info.mKey);
+				if (waitinfo != null) {
+					DeBug.d(TAG, "[sendLogIn] info exist");
+					waitinfo.addSignUpListener(listener);
+				} else {
+					DeBug.d(TAG, "[sendLogIn]info add");
+					mWaitHaspMap.put(info.mKey, info);
+					mWaitIndexArray.add(info.mKey);
+				}
+			} else {
+				DeBug.d(TAG, "[sendLogIn]thread <1");
+				thread = new LoadInfoThread(info);
+				mLoadingThreadHashMap.put(info.mKey, thread);
+				thread.start();
+			}
+		}
 	}
 
 	public void sendLogIn(int apiType, OnLogInListener listener,
@@ -300,6 +330,11 @@ final class MappingBirdUtil {
 			DeBug.d(TAG, "Handler, msg.what =" + msg.what);
 			Info info = (Info) msg.obj;
 			switch (msg.what) {
+			case MSG_SIGNUP_FINISH:
+				if (msg.obj instanceof Info) {
+					info.setSignUpListener();
+				}
+				break;
 			case MSG_LOGIN_FINISH:
 				if (msg.obj instanceof Info) {
 					info.setLogInListener();
@@ -356,6 +391,7 @@ final class MappingBirdUtil {
 		private String mUrl;
 		private String mMethod;
 		private JSONObject mPostdata;
+		private ArrayList<OnSignUpListener> mSignUpListenerArray = new ArrayList<OnSignUpListener>();
 		private ArrayList<OnLogInListener> mLogInListenerArray = new ArrayList<OnLogInListener>();
 		private ArrayList<OnGetCollectionsListener> mGetCollectionListenerArray = new ArrayList<OnGetCollectionsListener>();
 		private ArrayList<OnGetPointsListener> mGetPointListenerArray = new ArrayList<OnGetPointsListener>();
@@ -376,6 +412,18 @@ final class MappingBirdUtil {
 		private User mUser;
 		private int mStatus = MappingBirdAPI.RSP_STATUS_DEFAULT;
 		private int mApiType = 0;
+
+		// Signup~~~~
+		public Info(int apiType, OnSignUpListener listener, String url,
+				String method, JSONObject postdata) {
+			mUrl = url;
+			mMethod = method;
+			mPostdata = postdata;
+			mSignUpListenerArray.clear();
+			mSignUpListenerArray.add(listener);
+			mKey = createKey();
+			mApiType = apiType;
+		}
 
 		public Info(int apiType, OnLogInListener listener, String url,
 				String method, JSONObject postdata) {
@@ -478,6 +526,17 @@ final class MappingBirdUtil {
 
 		private String createKey() {
 			return mUrl + mMethod + mPostdata;
+		}
+
+		public void addSignUpListener(OnSignUpListener signUpListener) {
+			boolean hasListener = false;
+			for (OnSignUpListener listener : mSignUpListenerArray) {
+				if (listener == signUpListener) {
+					hasListener = true;
+				}
+			}
+			if (!hasListener)
+				mSignUpListenerArray.add(signUpListener);
 		}
 
 		public void addLogInListener(OnLogInListener logInListener) {
@@ -610,6 +669,11 @@ final class MappingBirdUtil {
 			mVenues = venues;	
 		}
 
+		public void setSignUpListener() {
+			for (OnSignUpListener listener : mSignUpListenerArray)
+				listener.onSignUp(mStatus, mUser);
+		}
+
 		public void setLogInListener() {
 			for (OnLogInListener listener : mLogInListenerArray)
 				listener.onLogIn(mStatus, mUser);
@@ -666,6 +730,11 @@ final class MappingBirdUtil {
 		public LoadInfoThread(Info data) {
 			super();
 			mInfo = data;
+		}
+
+		public void addSignUpListener(OnSignUpListener signUpListener) {
+			if (mInfo != null)
+				mInfo.addSignUpListener(signUpListener);
 		}
 
 		public void addLogInListener(OnLogInListener loginListener) {
@@ -736,6 +805,11 @@ final class MappingBirdUtil {
 			}
 			mInfo.setStatus(status);
 			switch (mInfo.mApiType) {
+			case NetwokConnection.API_SIGNUP:
+				user = (User) handler.getUser();
+				mInfo.setUser(user);
+				msg.what = MSG_SIGNUP_FINISH;
+				break;
 			case NetwokConnection.API_LOGIN:
 				user = (User) handler.getUser();
 				mInfo.setUser(user);

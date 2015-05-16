@@ -239,8 +239,12 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE: {
-					Toast toast = Toast.makeText(MappingBirdPickPlaceActivity.this, "Ivan還沒有出流程和Layout喔~~~", Toast.LENGTH_SHORT);
-					toast.show();
+//					Toast toast = Toast.makeText(MappingBirdPickPlaceActivity.this, "Ivan還沒有出流程和Layout喔~~~", Toast.LENGTH_SHORT);
+//					toast.show();
+					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
+					intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LAT, mLatitude);
+					intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LONG, mLongitude);
+					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT: {

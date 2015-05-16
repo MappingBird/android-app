@@ -50,6 +50,7 @@ class NetwokConnection {
 	public static final int API_UPLOAD_IMAGE = 7;
 	public static final int API_SEARCH_FOURSQUARE = 8;
 	public static final int API_EXPLORE_FOURSQUARE = 9;
+	public static final int API_SIGNUP = 10;
 
 	private static User mUser = null;
 	private static Context mContext = null;
@@ -134,6 +135,12 @@ class NetwokConnection {
 				}
 				DeBug.d(TAG, "[Http]parse json");
 				switch (apiType) {
+				case API_SIGNUP:
+					mUser = MapParse.parseAccountResult(mContext, rsp);
+					if (mUser == null) {
+						return MappingBirdAPI.RESULT_LOGIN_ACCOUNT_ERROR;
+					}
+					break;
 				case API_LOGIN:
 					mUser = MapParse.parseAccountResult(mContext, rsp);
 					if (mUser == null) {

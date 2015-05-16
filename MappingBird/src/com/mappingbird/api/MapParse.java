@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Base64;
 
 import com.mappingbird.common.DeBug;
@@ -85,6 +86,8 @@ class MapParse {
 		if (!obj.has("error")) {
 
 			token = obj.optString("token");
+			if(TextUtils.isEmpty(token))
+				return null;
 
 			JSONObject userobj = obj.getJSONObject("user");
 			email = userobj.optString("email");

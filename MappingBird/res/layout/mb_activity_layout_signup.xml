@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/login_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:background="@color/graphic_orange" >
+
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/back_icon"
+            style="@style/TitleButtonStyle"
+            android:text="@string/iconfont_arrow_left" />
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/login_title_name"
+            style="@style/TextStyle_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/back_icon"
+            android:text="@string/login_content_title"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/login_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/login_title" >
+
+        <RelativeLayout
+            android:id="@+id/login_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="20dp" >
+
+            <com.mappingbird.widget.MappingbirdTextView
+                android:id="@+id/login_content_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/font_normal"
+                android:textSize="14dp" />
+
+            <RelativeLayout
+                android:id="@+id/input_email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@id/login_content_text"
+                android:layout_marginTop="16dp" >
+
+                <com.mappingbird.widget.MappingbirdEditText
+                    android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/font_normal"
+                    android:textColorHint="@color/font_hint"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/field_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/input_email_layout"
+                android:background="#DDDDDD" />
+
+            <RelativeLayout
+                android:id="@+id/input_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@id/field_divider" >
+
+                <com.mappingbird.widget.MappingbirdFontIcon
+                    android:id="@+id/question_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_question_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="@string/iconfont_help_circle"
+                    android:textColor="@color/font_normal"
+                    android:textSize="24dp"
+                    android:visibility="gone" />
+
+                <com.mappingbird.widget.MappingbirdEditText
+                    android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toLeftOf="@id/question_icon"
+                    android:background="#00000000"
+                    android:gravity="center_vertical"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/font_normal"
+                    android:textColorHint="@color/font_hint"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@id/input_password_layout"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/login_selector" >
+
+                <com.mappingbird.widget.MappingbirdTextView
+                    android:id="@+id/login_loading_text"
+                    style="@style/TextStyle_Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/login"
+                    android:textAllCaps="true"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
