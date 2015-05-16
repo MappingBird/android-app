@@ -227,6 +227,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			DeBug.d("Test", "onItemClick");
 			MappingBirdPlaceItem item = (MappingBirdPlaceItem)mPlaceAdapter.getItem(position-1);
 			switch(item.getType()) {
 				case MappingBirdPlaceItem.TYPE_PLACE: {

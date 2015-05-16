@@ -10,10 +10,12 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.Utils;
@@ -105,6 +107,13 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 					host.mAddress 	= (TextView) convertView.findViewById(R.id.item_address);
 					host.mDistance 	= (TextView) convertView.findViewById(R.id.item_distance);
 					host.mUnit 		= (TextView) convertView.findViewById(R.id.item_unit);
+					host.mDistance.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							DeBug.i("Test", "onClick");
+						}
+					});
 					convertView.setTag(host);
 					break;
 				}

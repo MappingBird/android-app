@@ -356,9 +356,12 @@ public class MappingBirdPlaceActivity extends Activity implements
 		public void onClick(View v) {
 			String placeInfo = "";
 			if (mPoint != null) {
-				placeInfo = mPoint.getLocation().getPlaceName() + "\n"
-						+ mPoint.getLocation().getPlaceAddress() + "\n"
-						+ mPoint.getUrl()+"\n";
+				placeInfo = String.format(getString(R.string.share_string),
+						mPoint.getLocation().getPlaceName(),
+						mPoint.getUrl());
+//				placeInfo = mPoint.getLocation().getPlaceName() + "\n"
+//						+ mPoint.getLocation().getPlaceAddress() + "\n"
+//						+ mPoint.getUrl()+"\n";
 				getShareIntent("Share", placeInfo);
 			}
 

@@ -26,7 +26,8 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/card_gradient"
             android:orientation="vertical"
-            android:paddingLeft="8dp" >
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -35,11 +36,11 @@
                 <com.mappingbird.widget.MappingbirdTextViewLight
                     android:id="@+id/item_distance"
                     android:layout_width="@dimen/place_item_card_distance_width"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:gravity="right"
-                    android:paddingTop="8dp"
-                    android:paddingRight="8dp"
+                    android:gravity="right|bottom"
+                    android:paddingRight="@dimen/card_distance_padding_right"
                     android:textColor="#fff"
                     android:textSize="32dp" />
 
@@ -59,7 +60,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="26dp" >
+                android:layout_height="26dp"
+                android:layout_marginTop="-10dp" >
 
                 <com.mappingbird.widget.MappingbirdTextView
                     android:id="@+id/item_unit"
@@ -67,9 +69,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:gravity="right|top"
                     android:layout_marginTop="-3dp"
-                    android:paddingRight="8dp"
+                    android:gravity="right"
+                    android:paddingRight="@dimen/card_unit_padding_right"
                     android:singleLine="true"
                     android:textColor="#fff"
                     android:textSize="16dp" />
@@ -79,9 +81,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="18dp"
                     android:layout_alignParentLeft="true"
-                    android:gravity="center_vertical"
+                    android:layout_alignParentTop="true"
                     android:layout_marginRight="4dp"
                     android:layout_toLeftOf="@id/item_unit"
+                    android:gravity="top"
                     android:singleLine="true"
                     android:textColor="#fff"
                     android:textSize="12dp" />
@@ -92,11 +95,11 @@
             android:id="@+id/item_title_single"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="@dimen/place_item_card_distance_width"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="@dimen/place_item_card_distance_width"
             android:singleLine="true"
             android:textColor="#fff"
             android:textSize="16sp"
@@ -131,10 +134,11 @@
                     <com.mappingbird.widget.MappingbirdTextViewLight
                         android:id="@+id/card_distance"
                         android:layout_width="@dimen/place_item_card_distance_width"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
-                        android:gravity="right"
-                        android:paddingRight="8dp"
+                        android:gravity="right|bottom"
+                        android:paddingRight="@dimen/card_distance_padding_right"
                         android:textColor="#0298c1"
                         android:textSize="32dp" />
 
@@ -162,8 +166,9 @@
                         android:layout_width="@dimen/place_item_card_distance_width"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
                         android:gravity="right"
-                        android:paddingRight="8dp"
+                        android:paddingRight="@dimen/card_unit_padding_right"
                         android:singleLine="true"
                         android:textColor="#0298c1"
                         android:textSize="16dp" />

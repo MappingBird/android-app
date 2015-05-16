@@ -62,6 +62,7 @@ public class MappingBirdLogoActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		mLoading.stopSpinning();
 	}
 
 	@Override

@@ -1,19 +1,14 @@
 package com.mappingbird.api;
 
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -37,9 +32,9 @@ import android.util.Base64;
 
 import com.mappingbird.common.DeBug;
 
-class NetwokConnection {
+class NetwokConnectionUploadImage {
 
-	private static final String TAG = NetwokConnection.class.getName();
+	private static final String TAG = NetwokConnectionUploadImage.class.getName();
 	public static final int API_LOGIN = 0;
 	public static final int API_LOGOUT = 1;
 	public static final int API_GET_COLLECTIONS = 2;
@@ -60,49 +55,10 @@ class NetwokConnection {
 	private MBPointData mPoint;
 	private VenueCollection mVenues;
 
-	NetwokConnection(Context context) {
+	NetwokConnectionUploadImage(Context context) {
 		mContext = context;
 		UserPrefs pref = new UserPrefs(context);
 		mCurrentUser = pref.getUser();
-	}
-
-	/**
-	 * 
-	 * @param url
-	 * @param method
-	 * @param postData
-	 * @param apiType
-	 * @return
-	 */
-	int reqImage(final String url, final String method, final JSONObject postData,
-			int apiType) {
-		String lineEnd = "\r\n";
-		try {
-			URL connecturl;
-			connecturl = new URL(url);
-	        HttpURLConnection conn = (HttpURLConnection) connecturl.openConnection(); 
-	        conn.setDoInput(true); // Allow Inputs
-	        conn.setDoOutput(true); // Allow Outputs
-	        conn.setUseCaches(false); // Don't use a Cached Copy
-	        conn.setRequestMethod("POST");
-	        conn.setRequestProperty("Connection", "Keep-Alive");
-	        //-- setup boundary string for fields 
-	        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=media");
-
-	        DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-	        dos.writeBytes(lineEnd);
-	        dos.writeBytes(lineEnd);
-		} catch (MalformedURLException e) {
-			DeBug.e(TAG, "IO Erro!");
-			// DeBug.getStackTraceString(e);
-			return MappingBirdAPI.RESULT_NETWORK_ERROR;
-		} catch (IOException e) {
-			DeBug.e(TAG, "IO Erro!");
-			// DeBug.getStackTraceString(e);
-			return MappingBirdAPI.RESULT_NETWORK_ERROR;
-		}
-
-		return MappingBirdAPI.RESULT_OK;
 	}
 
 	int req(final String url, final String method, final JSONObject postData,
@@ -304,13 +260,6 @@ class NetwokConnection {
 		if (statusCode == HttpStatus.SC_OK ||
 				statusCode == HttpStatus.SC_CREATED) {
 			rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
-			if(apiType == API_LOGIN) {
-				Header[] headers = response.getAllHeaders();
-				for (Header header : headers) {
-					DeBug.d("Test" , "Key : " + header.getName() 
-					      + " ,Value : " + header.getValue());
-				}
-			}
 		} else if (statusCode == HttpStatus.SC_BAD_REQUEST) {
 			rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
 		} else {

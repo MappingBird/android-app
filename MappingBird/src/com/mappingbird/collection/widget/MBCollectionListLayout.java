@@ -957,14 +957,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 
 			TextView dis = (TextView) convertView.findViewById(R.id.card_distance);
 			TextView util = (TextView) convertView.findViewById(R.id.card_unit);
-			// dis 
-			if(mMyLocation != null) {
-				Spannable dis_str = Utils.getDistanceString(
-						item.mDistance);
-				dis.setText(dis_str);
-			} else {
-				dis.setText("");
-			}
 			
 			if(mMyLocation != null) {
 				DistanceObject disObject = Utils.getDistanceObject(

@@ -123,4 +123,6 @@
     <string name="debug_dump_db">Dump DB</string>
     <string name="debug_update_item">Update item</string>
 
+    <!-- Share -->
+    <string name="share_string">%1$s &#091;Shared from MappingBird - Remember places for later&#093; %2$s</string>
 </resources>

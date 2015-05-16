@@ -727,8 +727,13 @@ final class MappingBirdUtil {
 			int status = MappingBirdAPI.RSP_STATUS_DEFAULT;
 			Message msg = new Message();
 			NetwokConnection handler = new NetwokConnection(mContext);
-			status = handler.req(mInfo.mUrl, mInfo.mMethod,
-					mInfo.mPostdata, mInfo.mApiType);
+			if(mInfo.mApiType == NetwokConnection.API_UPLOAD_IMAGE) {
+				status = handler.reqImage(mInfo.mUrl, mInfo.mMethod,
+						mInfo.mPostdata, mInfo.mApiType);
+			} else {
+				status = handler.req(mInfo.mUrl, mInfo.mMethod,
+						mInfo.mPostdata, mInfo.mApiType);
+			}
 			mInfo.setStatus(status);
 			switch (mInfo.mApiType) {
 			case NetwokConnection.API_LOGIN:

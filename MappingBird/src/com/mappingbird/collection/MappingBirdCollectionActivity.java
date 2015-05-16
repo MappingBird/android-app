@@ -74,6 +74,7 @@ import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
@@ -102,6 +103,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private Context mContext = null;
 
 	private Dialog mLoadingDialog = null;
+	private ProgressWheel mLoading = null;
 
 	private ClusterManager<MappingBirdItem> mClusterManager;
 	private MappingBirdRender mMappingBirdRender;
@@ -188,6 +190,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mLoadBitmap = new MappingBirdBitmap(this.getApplicationContext());
 		mContext = this;
 		
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
+		mLoadingDialog.setCancelable(false);
+		mLoading = (ProgressWheel) mLoadingDialog.findViewById(R.id.image);
+		mLoading.stopSpinning();
+
 		showLoadingDialog();
 	}
 
@@ -257,6 +264,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
+		closeLoadingDialog();
 	}
 
 	@Override
@@ -264,6 +272,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		super.onDestroy();
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
 		listObj.removeOnGetCollectionsListener(getCollectionListener);
+		
+		if(mLoadingDialog != null)
+			mLoadingDialog.cancel();
+		mLoadingDialog = null;
+		
 	}
 
 
@@ -667,9 +680,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			DeBug.i(TAG, "latitude =" + latitude + ", longitude=" + longitude);
 			LatLng latlng = new LatLng(latitude, longitude);
 
-			SpannableString sdistance = Utils.getDistanceString( 
-					Utils.getDistance(mMyLocation.latitude,
-					mMyLocation.longitude, latitude, longitude));
 			boolean isSame = false;
 			for (int j = 0; j < mLatLngs.size(); j++) {
 				LatLng l = mLatLngs.get(j);
@@ -684,7 +694,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				DeBug.e(TAG, "Add Item in mClusterManager");
 				mLatLngs.add(latlng);
 				MappingBirdItem offsetItem = new MappingBirdItem(i, latlng,
-						title, Utils.getPinIconFont(type), sdistance);
+						title, Utils.getPinIconFont(type));
 				mPositionItems.add(point);
 				mClusterManager.addItem(offsetItem);
 			}
@@ -890,17 +900,16 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	}
 	
 	private void showLoadingDialog() {
-		if(mLoadingDialog != null)
-			return;
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
-		mLoadingDialog.setCancelable(false);
-		mLoadingDialog.show();
+		if(mLoadingDialog != null && !mLoadingDialog.isShowing()) {
+			mLoadingDialog.show();
+			mLoading.spin();
+		}
 	}
 
 	private void closeLoadingDialog() {
 		if(mLoadingDialog != null && mLoadingDialog.isShowing()) {
+			mLoading.stopSpinning();
 			mLoadingDialog.dismiss();
 		}
-		mLoadingDialog = null;
 	}
 }

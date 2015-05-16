@@ -54,4 +54,6 @@
 	<!-- Loading -->
 	<color name="loader_blue_fillin">#ff00a8e6</color>
 	<color name="loader_blue_bg">#2600a8e6</color>
+	<color name="loader_white_fillin">#ffffffff</color>
+	<color name="loader_white_bg">#ffF79B4A</color>
 </resources>
