@@ -1,9 +1,14 @@
 package com.mappingbird.common;
 
+import org.acra.*;
+import org.acra.annotation.*;
 import android.app.ActivityManager;
 import android.app.Application;
-
 import com.mappingbird.collection.data.MBCollectionListObject;
+
+@ReportsCrashes(
+    formUri = "https://collector.tracepot.com/f6bb43f9"
+) 
 
 public class MappingBirdApplication extends Application {
 
@@ -12,10 +17,14 @@ public class MappingBirdApplication extends Application {
 	private static MBCollectionListObject mMBCollectionObj;
 	private int memoryClass = 0;
 	private static BitmapLoader mBitmapLoader;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
+		// The following line triggers the initialization of ACRA
+        ACRA.init(this);
+		
 		mInstance = this;
 		mBitmapLoader = new BitmapLoader(this);
 		mMBCollectionObj = new MBCollectionListObject();
