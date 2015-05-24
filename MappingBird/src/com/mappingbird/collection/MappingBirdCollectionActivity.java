@@ -855,10 +855,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		}
 
 		public void setFontIcon(int strId, Marker markerOptions) {
-			String iconStr = getResources().getString(strId);
-			Bitmap icon = mClusterIconGenerator.makeIcon(iconStr);
-			if(icon != null)
-				markerOptions.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+			if(markerOptions != null) {
+				String iconStr = getResources().getString(strId);
+				Bitmap icon = mClusterIconGenerator.makeIcon(iconStr);
+				if(icon != null)
+					markerOptions.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+			}
 		}
 
 		public void setFontIcon(int strId, MarkerOptions markerOptions) {
