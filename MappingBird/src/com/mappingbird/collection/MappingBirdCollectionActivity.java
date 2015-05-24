@@ -210,7 +210,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 						MappingBirdPref.getIns().getIns().setCollectionPosition(0);
 					}
 					selectItem(MappingBirdPref.getIns().getIns().getCollectionPosition());
-					mMBCollectionListLayout.setCollectionList(collection);
 				} else {
 					setTitle(R.string.no_data);
 				}

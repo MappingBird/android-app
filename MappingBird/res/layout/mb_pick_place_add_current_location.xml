@@ -19,76 +19,22 @@
             android:layout_alignParentLeft="true"
             android:text="@string/iconfont_arrow_left" />
 
-        <RelativeLayout
-            android:id="@+id/title_bar_search"
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/title_btn_submit"
+            style="@style/TitleButtonStyle"
+            android:layout_alignParentRight="true"
+            android:text="@string/iconfont_checkbox_marked_circle" />
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/title_text"
+            style="@style/TextStyle_Title"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
             android:layout_toRightOf="@id/title_btn_back"
-            android:background="@drawable/bg_underline_white"
-            android:paddingLeft="4dp"
-            android:visibility="gone" >
-
-            <com.mappingbird.widget.MappingbirdFontIcon
-                android:id="@+id/title_icon_search"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="@string/iconfont_search"
-                android:textColor="@color/titlebar_button_text_color"
-                android:textSize="24dp" />
-
-            <com.mappingbird.widget.MappingbirdEditText
-                android:id="@+id/title_input"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:background="#00000000"
-                android:gravity="center_vertical"
-                android:paddingLeft="28dp"
-                android:paddingRight="40dp"
-                android:singleLine="true"
-                android:textColor="@color/font_white"
-                android:textCursorDrawable="@drawable/edit_cursor_drawable"
-                android:textSize="16dp" />
-
-            <com.mappingbird.widget.MappingbirdFontIcon
-                android:id="@+id/title_btn_delete"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:text="@string/iconfont_close_circle"
-                android:textColor="@color/titlebar_button_text_color"
-                android:textSize="24dp"
-                android:visibility="gone" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/title_bar_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@id/title_btn_back" >
-
-            <com.mappingbird.widget.MappingbirdFontIcon
-                android:id="@+id/title_btn_search"
-                style="@style/TitleButtonStyle"
-                android:layout_alignParentRight="true"
-                android:text="@string/iconfont_search" />
-
-            <com.mappingbird.widget.MappingbirdTextView
-                android:id="@+id/title_text"
-                style="@style/TextStyle_Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/title_btn_search"
-                android:singleLine="true"
-                android:textColor="#FFF" />
-        </RelativeLayout>
+            android:layout_toLeftOf="@id/title_btn_submit"
+            android:singleLine="true"
+            android:textColor="#FFF" />
     </RelativeLayout>
 
     <!-- place item -->
@@ -99,10 +45,40 @@
         android:layout_height="match_parent"
         android:layout_below="@id/title_bar" >
 
-        <fragment
-            android:id="@+id/trip_map"
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/location_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="#fff"
+            android:padding="6dp"
+            android:textColor="#000"
+            android:textSize="16dp" />
+
+        <RelativeLayout
+            android:id="@+id/location_layout"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            class="com.google.android.gms.maps.SupportMapFragment" />
+            android:layout_below="@id/location_address" >
+
+            <fragment
+                android:id="@+id/location_map"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                class="com.google.android.gms.maps.SupportMapFragment" />
+
+            <com.mappingbird.widget.MappingbirdFontIcon
+                android:id="@+id/location_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:background="@drawable/map_mark_normal"
+                android:gravity="center"
+                android:text="@string/iconfont_general"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </RelativeLayout>
     </RelativeLayout>
+
 </RelativeLayout>

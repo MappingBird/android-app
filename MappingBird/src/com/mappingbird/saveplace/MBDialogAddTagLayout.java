@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import me.gujun.android.taggroup.TagGroup;
 import me.gujun.android.taggroup.TagGroup.OnTagChangeListener;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -27,7 +24,6 @@ import com.mpbd.mappingbird.R;
 public class MBDialogAddTagLayout extends LinearLayout {
 
 	private TagGroup mTagGroup;
-	private String mBefortText = "";
 	private TagAdapter mTagListAdapter;
 	private ListView mTagList;
 	public MBDialogAddTagLayout(Context context) {

@@ -12,9 +12,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.text.Spannable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -95,8 +92,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 	// Animator
 	private static final int ANIMATOR_CARD = 300;
 	private ValueAnimator mValueAnimator;
-
-	private Collections mCollections = null;
 
 	public MBCollectionListLayout(Context context) {
 		super(context);
@@ -710,10 +705,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 		return false;
 	}
 
-	public void setCollectionList(Collections collections) {
-		mCollections = collections;
-	}
-
 	private OnSelectKindLayoutListener mOnSelectKindLayoutListener = new OnSelectKindLayoutListener() {
 		
 		@Override
@@ -729,7 +720,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 		public void onSelectKind(String type) {
 			
 			Intent intent = new Intent(getContext(), MappingBirdPickPlaceActivity.class);
-			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_COLLECTION_LIST, mCollections);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_TYPE, type);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LAT, mMyLocation.latitude);
 			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LONG, mMyLocation.longitude);
@@ -808,11 +798,9 @@ public class MBCollectionListLayout extends RelativeLayout {
 		private ArrayList<ListItem> mItems = new ArrayList<ListItem>();
 		private ListItem mSelectPoint = null;
 		private LayoutInflater mInflater;
-		private Context mContext;
 
 		public ItemAdapter(Context context) {
 			mInflater = LayoutInflater.from(context);
-			mContext = context;
 		}
 
 		public synchronized void setItem(ArrayList<MBPointData> items) {

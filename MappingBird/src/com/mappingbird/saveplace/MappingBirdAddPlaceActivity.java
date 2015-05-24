@@ -24,18 +24,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.mappingbird.api.Collections;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPhotoAdapter.PhotoAdapterListener;
 import com.mappingbird.saveplace.MappingbirdAddPlaceInfoLayout.PlaceInfoListener;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
-import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBAnimation;
 import com.mpbd.services.MBServiceClient;
@@ -43,7 +40,6 @@ import com.mpbd.services.MBServiceClient;
 public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 
 	public static final String EXTRA_TYPE = "extra_type";
-	public static final String EXTRA_COLLECTION_LIST = "extra_collection_list";
 	public static final String EXTRA_ITEM = "extra_item";
 	private static final int MAX_LOADING_ITEM_NUMBER = 20;
 	private static final int MSG_REFRESH_DATA = 0;
@@ -52,7 +48,6 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 	private static final int REQUEST_TAKE_PICTURE = 2;
 
 	private MappingBirdPlaceItem mItem;
-	private Collections mCollections = null;
 	private String mType = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
 
 	private TextView mTitleText;
@@ -80,7 +75,6 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 			if(intent.hasExtra(EXTRA_TYPE)) 
 				mType = intent.getStringExtra(EXTRA_TYPE);
 			mItem = (MappingBirdPlaceItem) intent.getSerializableExtra(EXTRA_ITEM);
-			mCollections = (Collections)intent.getSerializableExtra(EXTRA_COLLECTION_LIST);
 		}
 		initTitleLayout();
 	}
@@ -113,7 +107,6 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		mListView = (ListView) findViewById(R.id.add_place_list);
 		mAddPlaceInfoLayout = (MappingbirdAddPlaceInfoLayout)inflater.inflate(R.layout.mappingbird_add_place_info_layout, null, false);
 		mAddPlaceInfoLayout.setPlaceInfoListener(mPlaceInfoListener);
-//		mAddPlaceInfoLayout.setCollectionList(mCollections);
 		mAddPlaceInfoLayout.setPlaceData(mItem);
 		
 		mListView.addHeaderView(mAddPlaceInfoLayout);

@@ -22,12 +22,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
-import com.mappingbird.api.Collections;
 import com.mappingbird.api.MappingBirdAPI;
-import com.mappingbird.api.OnExploreFourSquareListener;
 import com.mappingbird.api.OnSearchFourSquareListener;
 import com.mappingbird.api.VenueCollection;
 import com.mappingbird.common.DeBug;
@@ -44,7 +41,6 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	public static final String TYPE_MALL 		= "mall";
 	public static final String TYPE_DEFAULT 	= "misc";
 
-	public static final String EXTRA_COLLECTION_LIST = "extra_collection_list";
 	public static final String EXTRA_TYPE = "extra_type";
 	public static final String EXTRA_LAT = "extra_latitude";
 	public static final String EXTRA_LONG = "extra_longitude";
@@ -63,7 +59,6 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	private double mLongitude = 0;
 
 	private ArrayList<MappingBirdPlaceItem> mRequestPlace = new ArrayList<MappingBirdPlaceItem>();
-	private Collections mCollections = null;
 	
 	// Search layout
 	private View mTitleLayout;
@@ -91,7 +86,6 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 		initTitleLayout();
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 
-		String str = "";
 		HashMap<Character, Integer> maps = new HashMap<Character, Integer>();
 		maps.put('a', 1);
 
@@ -110,7 +104,6 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 				mType = intent.getStringExtra(EXTRA_TYPE);
 			mLatitude = intent.getDoubleExtra(EXTRA_LAT, 0);
 			mLongitude = intent.getDoubleExtra(EXTRA_LONG, 0);
-			mCollections = (Collections)intent.getSerializableExtra(EXTRA_COLLECTION_LIST);
 			prepareData(null);
 		}
 		
@@ -193,7 +186,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 			}
 		}
 	};
-
+/*
 	private OnExploreFourSquareListener mOnExploreFourSquareListener = new OnExploreFourSquareListener() {
 		@Override
 		public void OnExploreFourSquare(int statusCode, VenueCollection collection) {
@@ -222,7 +215,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 			}
 		}
 	};
-
+*/
 	private OnItemClickListener mOnItemClickListener = new OnItemClickListener() {
 
 		@Override
@@ -232,18 +225,17 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 			switch(item.getType()) {
 				case MappingBirdPlaceItem.TYPE_PLACE: {
 					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MappingBirdAddPlaceActivity.class);
-					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_COLLECTION_LIST, mCollections);
 					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_TYPE, mType);
 					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_ITEM, item);
 					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE: {
-//					Toast toast = Toast.makeText(MappingBirdPickPlaceActivity.this, "Ivan還沒有出流程和Layout喔~~~", Toast.LENGTH_SHORT);
-//					toast.show();
 					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
-					intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LAT, mLatitude);
-					intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LONG, mLongitude);
+					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LAT, mLatitude);
+					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LONG, mLongitude);
+					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TITLE, mPlaceAdapter.getFilterStr());
+					
 					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}

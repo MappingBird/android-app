@@ -125,4 +125,7 @@
 
     <!-- Share -->
     <string name="share_string">%1$s &#091;Shared from MappingBird - Remember places for later&#093; %2$s</string>
+    
+    <!-- Address -->
+    <string name="pick_address_no_address">No address</string>
 </resources>

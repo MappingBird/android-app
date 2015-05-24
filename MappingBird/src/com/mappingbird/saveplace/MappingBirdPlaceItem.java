@@ -2,8 +2,6 @@ package com.mappingbird.saveplace;
 
 import java.io.Serializable;
 
-import android.text.SpannableString;
-
 import com.mappingbird.api.Venue;
 import com.mpbd.mappingbird.util.Utils;
 
@@ -35,6 +33,15 @@ public class MappingBirdPlaceItem implements Serializable {
 				mPlaceLongitude, 
 				latitude, 
 				longitude);
+	}
+
+	public MappingBirdPlaceItem(int type, String name, String address,
+			double currentLat, double currentLon) {
+		mType = type;
+		mPlaceLatitude = currentLat;
+		mPlaceLongitude = currentLon;
+		mPlaceName = name;
+		mPlaceAddress = address;
 	}
 
 	/**
