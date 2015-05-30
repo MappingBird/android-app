@@ -23,7 +23,8 @@ public class MappingBirdApplication extends Application {
 		super.onCreate();
 
 		// The following line triggers the initialization of ACRA
-        ACRA.init(this);
+		if(!DeBug.DEBUG)
+			ACRA.init(this);
 		
 		mInstance = this;
 		mBitmapLoader = new BitmapLoader(this);
