@@ -234,10 +234,10 @@ public class MappingBirdPlaceActivity extends Activity implements
 		@Override
 		public void onScrollChanged(MappingbirdScrollView v, int l, int t,
 				int oldl, int oldt) {
-			if(DeBug.DEBUG) {
+//			if(DeBug.DEBUG) {
 //				DeBug.e("Scroll", "onScrollChanged , scroll Y = "+v.getScrollY()+", mTitleScrollStart = "+mTitleScrollStart);
 //				DeBug.i("Scroll", "onScrollChanged , mTitleScrollEnd = "+mTitleScrollEnd+", mTitleScrollDistance = "+mTitleScrollDistance);
-			}
+//			}
 
 			if(mTitleScrollStart >= Math.abs(v.getScrollY())) {
 				mTitleBack.setAlpha(0f);
@@ -251,43 +251,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 				mPlaceDirectTrigger = mPlaceDetailLayout.getHeight() - mTripMapView.getHeight() - getWindowHeight()
 						+ (int)mContext.getResources().getDimension(R.dimen.place_map_trigger);
 			}
-			if(mPlaceDirectTrigger != 0) {
-				if(mDirectionAnimation != null && !mDirectionAnimation.hasEnded())
-					return;
-
-//				if(DeBug.DEBUG)
-//					DeBug.e("Test", "onScrollChanged , scroll Y = "+v.getScrollY()+", mPlaceDirectTrigger = "+mPlaceDirectTrigger);
-				if(mGetDirection.getVisibility() == View.GONE && mPlaceDirectTrigger < Math.abs(v.getScrollY())) {
-					// Show
-					mDirectionAnimation = AnimationUtils.loadAnimation(MappingBirdPlaceActivity.this,
-							R.anim.layout_scroll_from_bottom_to_up);
-					mGetDirection.setAnimation(mDirectionAnimation);
-					mGetDirection.setVisibility(View.VISIBLE);
-				} 
-				if(mGetDirection.getVisibility() == View.VISIBLE && mPlaceDirectTrigger > Math.abs(v.getScrollY())) {
-					// Hide
-					mDirectionAnimation = AnimationUtils.loadAnimation(MappingBirdPlaceActivity.this,
-							R.anim.layout_scroll_from_up_to_bottom);
-					mDirectionAnimation.setAnimationListener(mCloseDirectionListener);
-					mGetDirection.startAnimation(mDirectionAnimation);
-				}
-			}
-		}
-	};
-
-	private AnimationListener mCloseDirectionListener = new AnimationListener() {
-		
-		@Override
-		public void onAnimationStart(Animation animation) {
-		}
-		
-		@Override
-		public void onAnimationRepeat(Animation animation) {
-		}
-		
-		@Override
-		public void onAnimationEnd(Animation animation) {
-			mGetDirection.setVisibility(View.GONE);
 		}
 	};
 
@@ -329,6 +292,12 @@ public class MappingBirdPlaceActivity extends Activity implements
 					mLastEditText.setText(String.format(
 								getString(R.string.place_last_update), point.getUpdateTime()));
 				}
+
+				mDirectionAnimation = AnimationUtils.loadAnimation(MappingBirdPlaceActivity.this,
+						R.anim.layout_scroll_from_bottom_to_up);
+				mGetDirection.setAnimation(mDirectionAnimation);
+				mGetDirection.setVisibility(View.VISIBLE);
+
 			} else {
 				String title = "";
 				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
@@ -403,14 +372,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 			}
 		}
 	}
-
-	// private void getDirection(long latitude, long longitude) {
-	// // "http://maps.google.com/maps?lat="+latitude+"&lng="+longitude
-	// Intent intent = new Intent(
-	// android.content.Intent.ACTION_VIEW,
-	// Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
-	// startActivity(intent);
-	// }
 
 	private void getPinIcon(int type) {
 		mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_general.png";

@@ -121,14 +121,15 @@ public class MappingbirdPlaceLayout extends RelativeLayout {
 						mStartY = ev.getY();
 						mLastMoveY = mStartY;
 						mDistanceY = 0;
-						handleScrollLayout(ev);
+						handleScrollLayout(ev.getY());
 					}
 				}
 			}else {
 				if(mDistanceY <= 0) {
-					handleScrollLayout(ev);
+					handleScrollLayout(ev.getY());
 					return true;
 				} else {
+					handleScrollLayout(mStartY);
 					mTouchMode = MODE_TOUCH_SCROLL_VIEW;
 				}
 			}
@@ -194,11 +195,11 @@ public class MappingbirdPlaceLayout extends RelativeLayout {
 		mIsValueAnimator = true;
 	}
 
-	private void handleScrollLayout(MotionEvent ev) {
-		float diff = ev.getY() - mStartY;
-		mDistanceY += (ev.getY() - mLastMoveY);
+	private void handleScrollLayout(float y) {
+		float diff = y - mStartY;
+		mDistanceY += (y - mLastMoveY);
 		mPlaceScrollLayout.setY(diff);
-		mLastMoveY = ev.getY();
+		mLastMoveY = y;
 	}
 
 	@Override
