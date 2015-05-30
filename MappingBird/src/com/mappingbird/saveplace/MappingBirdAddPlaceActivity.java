@@ -33,6 +33,7 @@ import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPhotoAdapter.PhotoAdapterListener;
 import com.mappingbird.saveplace.MappingbirdAddPlaceInfoLayout.PlaceInfoListener;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
+import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBAnimation;
 import com.mpbd.services.MBServiceClient;
@@ -115,10 +116,9 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		mListView.setAdapter(mAdapter);
 		
 		// 暫時先關閉
-//		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this, null,
-//				true);
-//		mLoadingDialog.show();
-//		mHandler.sendEmptyMessageDelayed(MSG_START_SCANE, 200);
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
+		mLoadingDialog.show();
+		mHandler.sendEmptyMessageDelayed(MSG_START_SCANE, 200);
 	}
 
 	private void setTitleText(String title) {
@@ -157,7 +157,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 			case R.id.title_btn_submit:
 				MBPlaceAddDataToServer data = mAddPlaceInfoLayout.getPlaceInfoData();
 				data.type = mType;
-				data.setImageList(mAdapter.getSelectPhotoList());
+//				data.setImageList(mAdapter.getSelectPhotoList());
 				MBServiceClient.addPlace(data);
 				setResult(RESULT_OK);
 				finish();

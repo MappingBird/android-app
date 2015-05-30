@@ -129,18 +129,8 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 		if(item.getPath1() != null) {
 			host.mPhoto1_Layout.setVisibility(View.VISIBLE);
 			if(!item.getPath1().equals(TAG_CAMERA)) {
-				BitmapParameters params = BitmapParameters.getFileBitmap(item.getPath1(), 320, 320);
-				mBitmapLoader.getBitmap(host.mPhoto1_image, params);
-				host.mPhoto1_check.setVisibility(View.VISIBLE);
-				if(mSelectPhotoList.contains(item.getPath1())) {
-					host.mPhoto1_check.setSelected(true);
-					host.mPhoto1_mask.setVisibility(View.VISIBLE);
-					host.mPhoto1_check.setText(""+(mSelectPhotoList.indexOf(item.getPath1())+1));
-				} else {
-					host.mPhoto1_check.setSelected(false);
-					host.mPhoto1_mask.setVisibility(View.GONE);
-					host.mPhoto1_check.setText("");
-				}
+				setLayoutData(host.mPhoto1_Layout, host.mPhoto1_image,
+						host.mPhoto1_check, host.mPhoto1_mask, item.getPath1());
 			} else {
 				host.mPhoto1_image.setImageResource(R.drawable.take_pic_btn);
 				host.mPhoto1_check.setVisibility(View.GONE);
@@ -153,43 +143,42 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 		}
 		
 		if(item.getPath2() != null) {
-			host.mPhoto2_Layout.setVisibility(View.VISIBLE);
-			BitmapParameters params = BitmapParameters.getFileBitmap(item.getPath2(), 320, 320);
-			mBitmapLoader.getBitmap(host.mPhoto2_image, params);
-			host.mPhoto2_Layout.setTag(item.getPath2());
-			if(mSelectPhotoList.contains(item.getPath2())) {
-				host.mPhoto2_check.setSelected(true);
-				host.mPhoto2_mask.setVisibility(View.VISIBLE);
-				host.mPhoto2_check.setText(""+(mSelectPhotoList.indexOf(item.getPath2())+1));
-			} else {
-				host.mPhoto2_check.setSelected(false);
-				host.mPhoto2_mask.setVisibility(View.GONE);
-				host.mPhoto2_check.setText("");
-			}
+			setLayoutData(host.mPhoto2_Layout, host.mPhoto2_image,
+					host.mPhoto2_check, host.mPhoto2_mask, item.getPath2());
 		} else {
 			host.mPhoto2_Layout.setVisibility(View.INVISIBLE);
 			host.mPhoto2_Layout.setTag(null);
 		}
 		
 		if(item.getPath3() != null) {
-			host.mPhoto3_Layout.setVisibility(View.VISIBLE);
-			BitmapParameters params = BitmapParameters.getFileBitmap(item.getPath3(), 320, 320);
-			mBitmapLoader.getBitmap(host.mPhoto3_image, params);
-			host.mPhoto3_Layout.setTag(item.getPath3());
-			if(mSelectPhotoList.contains(item.getPath3())) {
-				host.mPhoto3_check.setSelected(true);
-				host.mPhoto3_mask.setVisibility(View.VISIBLE);
-				host.mPhoto3_check.setText(""+(mSelectPhotoList.indexOf(item.getPath3())+1));
-			} else {
-				host.mPhoto3_check.setSelected(false);
-				host.mPhoto3_mask.setVisibility(View.GONE);
-				host.mPhoto3_check.setText("");
-			}
+			setLayoutData(host.mPhoto3_Layout, host.mPhoto3_image,
+					host.mPhoto3_check, host.mPhoto3_mask, item.getPath3());
 		} else {
 			host.mPhoto3_Layout.setVisibility(View.INVISIBLE);
 			host.mPhoto3_Layout.setTag(null);
 		}
 		return convertView;
+	}
+
+	private void setLayoutData(View layout, ImageView image,
+			TextView checkView, View mask, String path) {
+		layout.setVisibility(View.VISIBLE);
+		BitmapParameters params = BitmapParameters.getFileBitmap(path, 320, 320);
+		mBitmapLoader.getBitmap(image, params);
+		layout.setTag(path);
+		if(mSelectPhotoList.contains(path)) {
+			checkView.setSelected(true);
+			checkView.setText(""+(mSelectPhotoList.indexOf(path)+1));
+			mask.setVisibility(View.VISIBLE);
+			layout.setScaleX(0.8f);
+			layout.setScaleY(0.8f);
+		} else {
+			checkView.setSelected(false);
+			checkView.setText("");
+			mask.setVisibility(View.GONE);
+			layout.setScaleX(1f);
+			layout.setScaleY(1f);
+		}
 	}
 
 	private OnClickListener mItemClickListener = new OnClickListener() {
