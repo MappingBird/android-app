@@ -426,7 +426,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mDialog.dismiss();
 			if(mLocationService != null)
 				mLocationService.start();
-//			CommonServiceClient.startLocation(MappingBirdCollectionActivity.this);
 		}
 	};
 
@@ -436,14 +435,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		public void onClick(View v) {
 			mDialog.dismiss();
 			finish();
-		}
-	};
-
-	View.OnClickListener positiveListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			mDialog.dismiss();
 		}
 	};
 
@@ -461,6 +452,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					.findFragmentById(R.id.trip_map)).getMap();
 			DeBug.i(TAG, "mMap =" + mMap);
 		}
+
 		if (mMap != null) {
 			DeBug.i(TAG, "mMap !=  null");
 			if(mLocationService == null) {
@@ -468,7 +460,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mLocationService.setLocationServiceListener(mMyLocationChangedListener);
 			}
 			mLocationService.start();
-//			CommonServiceClient.startLocation(this);
 		}
 		
 		if(mMyLocation != null) {
@@ -505,21 +496,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					.fromResource(R.drawable.icon_current_location);
 				if(icon != null)
 					mMyMarker.setIcon(icon);
-//				mMyMarker.setTitle(getResources().getString(
-//						R.string.my_loaction));
 			} else {
 				setUpMap();
 			}
 		}
 	}
-
-//	private OnMBLocationChangedListener mOnMBLocationChangedListener = new OnMBLocationChangedListener() {
-//		
-//		@Override
-//		public void onLocationChanged(Location location) {
-//			setMyLocation(location);
-//		}
-//	};
 
 	private LocationServiceListener mMyLocationChangedListener = new LocationServiceListener() {
 		
@@ -550,7 +531,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mMap.setOnInfoWindowClickListener(mClusterManager);
 		mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 		mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(mInfoWindowAdapter);
-	 // mClusterManager.setOnClusterInfoWindowClickListener(this);
 		mClusterManager.setOnClusterItemInfoWindowClickListener(this);
 		addItems();
 		mClusterManager.cluster();
@@ -573,6 +553,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 						return true;
 					}
 				});
+
 		mClusterManager
 				.setOnClusterItemClickListener(new OnClusterItemClickListener<MappingBirdItem>() {
 
