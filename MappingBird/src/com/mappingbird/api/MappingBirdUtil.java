@@ -25,6 +25,7 @@ final class MappingBirdUtil {
 	private static final int MSG_SEARCH_FS_FINISH = 8;
 	private static final int MSG_EXPLORE_FS_FINISH = 9;
 	private static final int MSG_SIGNUP_FINISH = 10;
+	private static final int MSG_UPLOAD_IMAGE_PATH_FINISH = 11;
  
 	private final static int LOADING_THREAD_MAX = 1;
 	// 同一個或分開都可以
@@ -367,6 +368,11 @@ final class MappingBirdUtil {
 				}
 				break;
 			case MSG_UPLOAD_IMAGE_FINISH:
+				if (msg.obj instanceof Info) {
+					info.setUploadImageListener();
+				}
+				break;
+			case MSG_UPLOAD_IMAGE_PATH_FINISH:
 				if (msg.obj instanceof Info) {
 					info.setUploadImageListener();
 				}
@@ -840,6 +846,9 @@ final class MappingBirdUtil {
 				break;
 			case NetwokConnection.API_UPLOAD_IMAGE:
 				msg.what = MSG_UPLOAD_IMAGE_FINISH;
+				break;
+			case NetwokConnection.API_UPLOAD_IMAGE_PATH:
+				msg.what = MSG_UPLOAD_IMAGE_PATH_FINISH;
 				break;
 			case NetwokConnection.API_SEARCH_FOURSQUARE:
 				venues = handler.getVenues();

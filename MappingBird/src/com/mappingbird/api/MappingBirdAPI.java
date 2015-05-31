@@ -154,6 +154,18 @@ public class MappingBirdAPI {
 		}
 	}
 	
+	public void uploadImagePath(OnUploadImageListener listener, String placeId, String path) {
+		
+		String url = mHost + "/api/images";
+		String method = "POST";
+		try {
+			JSONObject postData = MapParse.writeImagePath(placeId, path);
+			mUtil.sendUploadIImage(NetwokConnection.API_UPLOAD_IMAGE_PATH,
+					listener, url, method, postData);
+		} catch (JSONException e) {
+		}
+	}
+
 	public void searchfromFourSquare(OnSearchFourSquareListener listener, double latitude, double longitude, String key, int limit) {
 		searchfromFourSquare(listener, latitude, longitude, key, limit, 0);
 	}

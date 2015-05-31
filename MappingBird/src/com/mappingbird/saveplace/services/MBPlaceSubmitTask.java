@@ -1,12 +1,5 @@
 package com.mappingbird.saveplace.services;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 
@@ -17,6 +10,7 @@ import com.mappingbird.api.OnAddPlaceListener;
 import com.mappingbird.api.OnUploadImageListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.db.AppPlaceDB;
+import com.mappingbird.saveplace.services.MBPlaceSubmitImageData.SubmitImageDataListener;
 
 public class MBPlaceSubmitTask implements Runnable{
 
@@ -129,7 +123,8 @@ public class MBPlaceSubmitTask implements Runnable{
 			// 有Image 需要上傳
 			for(int i = mImageIndex; i < mSubmitData.imageArrays.size(); i++) {
 				if(mSubmitData.imageArrays.get(i).mFileState != MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED) {
-					submitImage(i, mSubmitData.imageArrays.get(i));
+//					submitImage(i, mSubmitData.imageArrays.get(i));
+					submitImageForParse(i, mSubmitData.imageArrays.get(i));
 					mProgress = i+1;
 					sendProcress(mProgress);
 					return;
@@ -144,38 +139,69 @@ public class MBPlaceSubmitTask implements Runnable{
 	}
 
 	private void submitImage(final int index, MBPlaceSubmitImageData data) {
-		MappingBirdAPI api = new MappingBirdAPI(MappingBirdApplication.instance());
 		if(DeBug.DEBUG)
 			DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImage : place id = "+mSubmitData.placeId+
 					", path = "+data.mFileUrl);
 
-		byte[] object = getBitmapBytArray(data.mFileUrl);
-		if(object != null) {
-			api.uploadImage(new OnUploadImageListener() {
-				@Override
-				public void OnUploadImage(int statusCode) {
-					if(DeBug.DEBUG)
-						DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImage : statusCode : "+statusCode);
-					mImageIndex = index + 1;
-					if(statusCode == MappingBirdAPI.RESULT_OK) {
-						// 上傳成功
-						mSubmitData.imageArrays.get(index).mFileState = MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED;
-						// Update stat to DB
-						AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
-						db.updateImageValue(MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED, 
-								mSubmitData.imageArrays.get(index).mImageId);
-					} else {
-						// 上傳失敗, 就不做事情了...哈哈哈哈
-					}
-					updateImage();
-				}
-			}, 
-			mSubmitData.placeId,
-			object);
-		} else {
+		if(!data.submitImage(mSubmitData.placeId,
+				new OnUploadImageListener() {
+					@Override
+					public void OnUploadImage(int statusCode) {
+						if(DeBug.DEBUG)
+							DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImage : statusCode : "+statusCode);
+						mImageIndex = index + 1;
+						if(statusCode == MappingBirdAPI.RESULT_OK) {
+							// 上傳成功
+							mSubmitData.imageArrays.get(index).mFileState = MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED;
+							// Update stat to DB
+							AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
+							db.updateImageValue(MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED, 
+									mSubmitData.imageArrays.get(index).mImageId);
+						} else {
+							// 上傳失敗, 就不做事情了...哈哈哈哈
+						}
+						updateImage();
+					}}
+				)) {
 			// 沒有圖
 			mImageIndex = index + 1;
 			mHandler.sendEmptyMessage(MSG_ADD_PLACE_UPDATE_IMAGE);
+		}
+	}
+
+	private void submitImageForParse(final int index, MBPlaceSubmitImageData data) {
+		if(DeBug.DEBUG)
+			DeBug.v(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImageParse : place id = "+mSubmitData.placeId+
+					", path = "+data.mFileUrl);
+
+		boolean haveBmp = data.submitImageParse(mSubmitData.placeId, new SubmitImageDataListener() {
+			
+			@Override
+			public void submitSuccessd() {
+				if(DeBug.DEBUG)
+					DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImage : successed");
+				mImageIndex = index + 1;
+				// 上傳成功
+				mSubmitData.imageArrays.get(index).mFileState = MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED;
+				// Update stat to DB
+				AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
+				db.updateImageValue(MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED, 
+						mSubmitData.imageArrays.get(index).mImageId);
+				updateImage();
+			}
+			
+			@Override
+			public void submitFailed() {
+				mImageIndex = index + 1;
+				// 上傳失敗
+				updateImage();
+			}
+		});
+
+		if(!haveBmp) {
+			// 沒有圖
+			mImageIndex = index + 1;
+			mHandler.sendEmptyMessage(MSG_ADD_PLACE_UPDATE_IMAGE);			
 		}
 	}
 
@@ -202,25 +228,6 @@ public class MBPlaceSubmitTask implements Runnable{
 	public interface SubmitTaskListener {
 		public void onStateChanged(int state, int process, int totle);
 		public void onProcess(int process, int totle);
-	}
-	
-	private static byte[] getBitmapBytArray(String path) {
-		File file = new File(path);
-		if(null != file && file.exists()) {
-			byte[] bytes = null;
-		    try {
-				Bitmap bm = BitmapFactory.decodeFile(path);
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				bm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
-				bytes = baos.toByteArray();
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		    if(bytes != null)
-		    	DeBug.d("getBitmapBytArray : bytes size = "+bytes.length);
-		    return bytes;
-		}
-		return null;
 	}
 	
 	/**

@@ -1,5 +1,7 @@
 package com.mappingbird.api;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -42,6 +44,21 @@ class MapParse {
 		obj.put("point", placeId);
 		obj.put("media", Base64.encodeToString(image, Base64.NO_WRAP));
 		DeBug.i(TAG, "[image json] =" + obj.toString());
+		return obj;
+	}
+
+	static JSONObject writeImagePath(String placeId, String path)
+			throws JSONException {
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("point", placeId);
+			obj.put("thumb_path", "");
+			obj.put("url", URLEncoder.encode(path, "utf-8"));			
+			DeBug.i(TAG, "[image path json] =" + obj.toString());
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return obj;
 	}
 

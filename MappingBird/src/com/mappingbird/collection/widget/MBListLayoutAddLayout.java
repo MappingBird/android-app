@@ -1,6 +1,15 @@
 package com.mappingbird.collection.widget;
 
+import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
@@ -480,4 +489,77 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	public void setSlidOutDistance(float dis) {
 		mSlideAnimationDistance = dis;
 	}
+	
+	static final String TOKEN_KEY = "csrftoken";
+	
+	public String getCSRFToken(final String apiUrl) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				String csrftoken = "";
+				
+				try {
+				    CookieManager cookieManager = new CookieManager(); 
+				    CookieHandler.setDefault(cookieManager);
+
+					URL obj = new URL(apiUrl);
+					HttpURLConnection conn = (HttpURLConnection) obj.openConnection();			
+					conn.setRequestMethod("GET");
+					conn.setUseCaches(true);
+
+					int respCode = conn.getResponseCode();
+					DeBug.d("Test", "Response Code : " + respCode);
+					String cookie = conn.getHeaderField("set-cookie");
+					DeBug.e("Test", "cookie : " + cookie);
+					Map<String, List<String>> maps = conn.getHeaderFields();
+					Iterator<String> it = maps.keySet().iterator();
+					DeBug.v("Test", "Cookie manager size : "+cookieManager.getCookieStore().getCookies().size());
+					while(it.hasNext()) {
+						String key = it.next();
+						DeBug.e("Test", " key : "+key);
+						List<String> list = maps.get(key);
+						for(String str : list) {
+							DeBug.i("Test", " values : "+str);
+						}
+					}
+					//-- get token from header
+				    for (int i = 0;; i++) {
+				        String headerName = conn.getHeaderFieldKey(i);
+				        String headerValue = conn.getHeaderField(i);
+			        	DeBug.v("Test", headerName + " : "+headerValue);
+				        
+				        if (null != headerName && 
+				        	0 == headerName.compareToIgnoreCase("set-cookie")) {
+				        	if (null != headerValue) { 
+				        		String[] kv_list = headerValue.split(";");
+				        		for (String s : kv_list) {
+				        			String[] kv = s.split("=");
+				        			if (0 == TOKEN_KEY.compareToIgnoreCase(kv[0])) {
+				        				csrftoken = kv[1];
+				        			}
+				        		}
+				        	}
+				        }		       		        		       
+
+				        if (headerName == null && headerValue == null) {
+				        	DeBug.d("Test", "headerName and headerValue are null");
+				        	break;
+				        }
+				    }
+				    
+				    conn.disconnect();
+				    
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+					DeBug.d("Test", e.getMessage() );
+				} catch (IOException e) {			
+					DeBug.d("Test", e.getMessage() );
+				}	
+			}
+		}).start();
+		
+		return "";
+	}
+
 }

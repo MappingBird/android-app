@@ -51,6 +51,7 @@ class NetwokConnection {
 	public static final int API_SEARCH_FOURSQUARE = 8;
 	public static final int API_EXPLORE_FOURSQUARE = 9;
 	public static final int API_SIGNUP = 10;
+	public static final int API_UPLOAD_IMAGE_PATH = 11;
 
 	private static User mUser = null;
 	private static Context mContext = null;
