@@ -97,6 +97,7 @@ public class MBTutorialActivity extends FragmentActivity{
         TextView tvDescription;
         TextView tvSignIn2;
         TextView tvLearnMore;
+        TextView tvSignUp;
 	    
 	    public MBTutorPagerViewHolder(View view, Context context) {
             rootView = view;
@@ -127,6 +128,7 @@ public class MBTutorialActivity extends FragmentActivity{
             tvDescription = (TextView) view.findViewById(R.id.tutoral_create_descripion);
             tvSignIn2 = (TextView) view.findViewById(R.id.tutoral_sign_in_2);
             tvLearnMore = (TextView) view.findViewById(R.id.tutoral_learn_more);
+            tvSignUp = (TextView) view.findViewById(R.id.tutoral_sign_up);
             params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER;
             params.height = (screenHeight / 100) * 73;
@@ -224,6 +226,17 @@ public class MBTutorialActivity extends FragmentActivity{
                         startActivity(i);
                     }
                 });
+                vh.tvSignUp.setOnClickListener(new OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MappingBirdSignUpActivity.class);
+                        MBTutorialActivity.this.startActivity(intent);                        
+                    }
+                });
+                
+                
                 
             } else {
                 vh.layoutWelcome.setVisibility(View.GONE);

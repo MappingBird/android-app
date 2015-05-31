@@ -35,6 +35,7 @@
     <string name="tutorial_swipe_to_learn">Swipe to learn more about MappingBird.</string>
     <string name="tutorial_already_have_account">Already have a account?</string>
     <string name="tutorial_sign_in">Sign in</string>
+    <string name="tutorial_sign_up">Sign up</string>
     <string name="tutorial_page1_scenario_intro">MappingBird Chrome extension makes you easily bookmark physical location while you browsing the web on your desktop.</string>
     <string name="tutorial_page2_scenario_intro">With less than 3 clicks, you can save places on maps for future reference which saves lots of your time.</string>
     <string name="tutorial_page3_scenario_intro">After signing in the account which you create on MappingBird.com, you are able to view your bookmarked places when on the go.</string>
@@ -108,6 +109,7 @@
     <string name="error_network_message">Please connect to the Internet to sync your saved places on MappingBird.com.</string>
     <string name="error_login_fail_network">Please connect to the Internet and log in again.</string>
     <string name="error_login_fail_accout">Email or Password Error.</string>
+    <string name="error_sign_up_fail_password_not_match_message">These passwords don\'t match. Try again?</string>
 
     <!-- Notification -->
     <string name="noti_update_wait_title">Update wait</string>

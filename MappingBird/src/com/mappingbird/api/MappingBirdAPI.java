@@ -18,6 +18,7 @@ public class MappingBirdAPI {
 	public static final int RESULT_INTERNAL_ERROR 		= 1;
 	public static final int RESULT_NETWORK_ERROR 		= 2;
 	public static final int RESULT_NO_LOGIN_ERROR		= 3;
+	public static final int RESULT_SIGN_UP_ERROR_PASSWORD_NOT_MATCH   = 4;
 	
 	//
 	public static final int RESULT_LOGIN_ACCOUNT_ERROR 	= 101;

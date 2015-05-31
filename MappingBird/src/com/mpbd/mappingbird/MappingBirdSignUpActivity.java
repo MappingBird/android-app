@@ -10,19 +10,15 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
-import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.OnSignUpListener;
 import com.mappingbird.api.User;
 import com.mpbd.mappingbird.common.MBDialog;
@@ -34,11 +30,12 @@ public class MappingBirdSignUpActivity extends Activity implements
 	private RelativeLayout mLogIn = null;
 	private EditText mEmail = null;
 	private EditText mPassword = null;
-	private TextView mLoginDescription = null;
+	private EditText mConfirmPassword = null;
 	private TextView mLoginText = null;
 	private MappingBirdAPI mApi = null;
 	private String mEmails = null;
 	private String mPasswords = null;
+	private String mConfirmPasswords = null;
 
 	private Dialog mLoadingDialog = null;
 
@@ -51,15 +48,13 @@ public class MappingBirdSignUpActivity extends Activity implements
 		mLogIn = (RelativeLayout) findViewById(R.id.login);
 		mEmail = (EditText) findViewById(R.id.input_email);
 		mPassword = (EditText) findViewById(R.id.input_password);
-		mLoginDescription = (TextView) findViewById(R.id.login_content_text);
+		mConfirmPassword = (EditText) findViewById(R.id.confirm_input_password);
 		mLoginText = (TextView) findViewById(R.id.login_loading_text);
-		isLoaing(false);
+		isLoading(false);
 		findViewById(R.id.back_icon).setOnClickListener(this);
 		findViewById(R.id.question_icon).setOnClickListener(this);
 		mLogIn.setOnClickListener(this);
-		mLoginDescription.setMovementMethod(LinkMovementMethod.getInstance());
-		mLoginDescription.setText(Html
-				.fromHtml(getString(R.string.login_content)));
+
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 	}
 
@@ -82,19 +77,16 @@ public class MappingBirdSignUpActivity extends Activity implements
 		EasyTracker.getInstance(this).activityStop(this); 
 	}
 
-	private void isLoaing(boolean isLoading) {
+	private void isLoading(boolean isLoading) {
 		if (isLoading) {
-			mLoginText
-					.setText(this.getResources().getString(R.string.logining));
+			mLoginText.setText(this.getResources().getString(R.string.tutorial_sign_up));
 			mLoginText.setTextColor(Color.WHITE);
 			showLoadingDialog();
-			mLoginDescription.setEnabled(false);
 			mLogIn.setEnabled(false);
 		} else {
-			mLoginText.setText(this.getResources().getString(R.string.login));
+			mLoginText.setText(this.getResources().getString(R.string.tutorial_sign_up));
 			mLoginText.setTextColor(Color.WHITE);
 			closeLoadingDialog();
-			mLoginDescription.setEnabled(true);
 			mLogIn.setEnabled(true);
 		}
 	}
@@ -110,14 +102,21 @@ public class MappingBirdSignUpActivity extends Activity implements
 		case R.id.login:
 			mEmails = mEmail.getText().toString();
 			mPasswords = mPassword.getText().toString();
-			isLoaing(true);
+			mConfirmPasswords = mConfirmPassword. getText().toString();
+			
+			if(!mConfirmPasswords.equalsIgnoreCase(mPasswords)){
+			    onLoginError(MappingBirdAPI.RESULT_SIGN_UP_ERROR_PASSWORD_NOT_MATCH);
+			    return;
+			}			
+			
+			isLoading(true);
 			if (!mEmails.equals("") && !mPasswords.equals("")) {
 				closeIME();
 				mEmail.setEnabled(false);
 				mPassword.setEnabled(false);
 				mApi.signUp(mSignUpListener, mEmails, mPasswords);
 			} else {
-				isLoaing(false);
+				isLoading(false);
 				Toast.makeText(getApplicationContext(),
 						getResources().getString(R.string.data_incomplete), Toast.LENGTH_SHORT).show();
 			}
@@ -139,18 +138,18 @@ public class MappingBirdSignUpActivity extends Activity implements
 						| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				MappingBirdSignUpActivity.this.startActivity(intent);
 			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_NETWORK_ERROR) {
-				isLoaing(false);
+				isLoading(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
 				onLoginError(statusCode);
 				
 			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_ACCOUNT_ERROR) {
-				isLoaing(false);
+				isLoading(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
 				onLoginError(statusCode);
 			} else {
-				isLoaing(false);
+				isLoading(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
 				onLoginError(statusCode);
