@@ -179,10 +179,8 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 				});
 
 				mPlaceAdapter.setPlaceData(mRequestPlace);
-				// 暫時先不出現
-//				mAddPlaceFrameLayout.showCurrectLocationLayout();
-				
 			} else {
+				// 沒有資料. 直接出現Add和Research
 			}
 		}
 	};

@@ -10,6 +10,8 @@ public class MappingBirdPlaceItem implements Serializable {
 	public static final int TYPE_PLACE 				= 0;
 	public static final int TYPE_ADD_THIS_PLACE		= 1;
 	public static final int TYPE_SEARCH_OTHER_TEXT 	= 2;
+	public static final int TYPE_SEARCH_AGAIN		= 3;
+	public static final int TYPE_SEARCH_ERROR		= 4;
 	
 	public static final int TYPE_NUMBER = 3;
 	

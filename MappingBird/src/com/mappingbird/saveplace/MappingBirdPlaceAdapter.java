@@ -36,9 +36,28 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 
 	public void setPlaceData(ArrayList<MappingBirdPlaceItem> items) {
 		mData.clear();
-		mData.addAll(items);
+		if(items.size() > 0) {
+			mData.addAll(items);
+		} else {
+			prepareNoData();
+		}
 		mFilterString = "";
 		setFilter("");
+	}
+
+	private void prepareNoData() {
+		// 新增此地點
+		mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE, 
+				mContext.getString(R.string.pick_place_add_create_location_title_no_filter_str),
+				mContext.getString(R.string.pick_place_add_create_location_des)));
+//		// 收尋別的字串
+//		mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT, 
+//				String.format(mContext.getString(R.string.pick_place_add_serach_title), text),
+//				mContext.getString(R.string.pick_place_add_srarch_des)));
+	}
+
+	public void prepareErrorDara(int error) {
+		
 	}
 
 	public String getFilterStr() {

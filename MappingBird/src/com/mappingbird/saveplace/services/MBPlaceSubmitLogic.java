@@ -40,6 +40,20 @@ public class MBPlaceSubmitLogic {
 	}
 
 	/**
+	 * 確認是否有正在上傳的行為
+	 * @return
+	 */
+	public boolean hasSubmit() {
+		// 確認現在是否有Task正在上傳
+		if(mSubmitTask != null && mSubmitTask.isSubmit()) {
+			// 發現有東西正在上傳. return true;
+			if(DeBug.DEBUG)
+				DeBug.e(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : already have submit task ");
+			return true;
+		}
+		return false;
+	}
+	/**
 	 * 驅動上傳機制
 	 * @return true  有Data需要上傳
 	 *         flast 沒有Data需要上傳

@@ -1,7 +1,14 @@
 package com.mappingbird.saveplace.services;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +17,7 @@ import com.hlrt.common.DeBug;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnUploadImageListener;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mappingbird.common.MappingBirdPref;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -178,6 +186,145 @@ public class MBPlaceSubmitImageData {
 				break;
 		}
 		return sample;
+	}
+	
+	public boolean updateImageTempBySession(final String placeId, final String csrfToken, final String session,
+			SubmitImageDataListener listener) {
+		final byte[] bmp = getBitmapBytArrayParse(mFileUrl);
+		if(bmp != null) {
+			mListener = listener;
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					uploadFile("https://mappingbird.com/api/upload",
+							Integer.parseInt(placeId),
+							bmp,
+							"p"+placeId+".jpg",
+							csrfToken,
+							session
+							);					
+				}
+			}).start();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private void uploadFile(String apiUrl, int point, byte[] object, String fileName, String csrftoken, String sessionid) {		
+		String lineEnd = "\r\n";
+		String twoHyphens = "--";
+        String boundary = "----WebKitFormBoundaryMRUCc049xtgXiwJZ";
+        
+    	if(DeBug.DEBUG) {
+    		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "update image path : "+apiUrl+"/"+fileName);
+    	}
+        DataOutputStream dos = null;
+		try {
+			//-- field names
+			String key_image = "media";
+			String key_point = "point";
+
+			int serverResponseCode;
+			String serverResponseMessage;			
+			
+	        URL url = new URL(apiUrl);
+	        DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "uploadFile by session");
+	        //-- open a HTTP  connection to  the URL
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection(); 
+	        conn.setDoInput(true); // Allow Inputs
+	        conn.setDoOutput(true); // Allow Outputs
+	        conn.setUseCaches(false); // Don't use a Cached Copy
+	        conn.setRequestMethod("POST");
+	        conn.setRequestProperty("Connection", "Keep-Alive");
+	        //-- setup boundary string for fields 
+	        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+	        //-- setup authentication info, e.g. csrftoken and sessionid
+	        conn.setRequestProperty("Cookie", "csrftoken=" + csrftoken + "; sessionid=" + sessionid);
+	        	           
+	        dos = new DataOutputStream(conn.getOutputStream());
+	        dos.writeBytes(lineEnd);
+	        dos.writeBytes(lineEnd);
+	        
+	        //-- assign csrftoken
+	        dos.writeBytes(twoHyphens + boundary + lineEnd);	        
+	        dos.writeBytes("Content-Disposition: form-data; name=\"csrfmiddlewaretoken\"" + lineEnd);
+	        dos.writeBytes(lineEnd);	        
+	        dos.writeBytes(csrftoken + lineEnd);
+	        
+	        //-- assign bytes chunk of the upload image
+	        dos.writeBytes(twoHyphens + boundary + lineEnd); 	        
+	        dos.writeBytes("Content-Disposition: form-data; name=\"" + key_image + "\";filename=\"" 
+	                       + fileName + "\"" + lineEnd);
+	        dos.writeBytes("Content-Type: image/jpg" +  lineEnd);	           
+	        dos.writeBytes(lineEnd);
+	 
+            dos.write(object, 0, object.length);
+	        dos.writeBytes(lineEnd);
+	        
+	        //-- assign point number
+	        dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);	        
+	        dos.writeBytes("Content-Disposition: form-data; name=\"" + key_point + "\"" + lineEnd);
+	        dos.writeBytes(lineEnd);
+	        dos.writeBytes(String.valueOf(point) + lineEnd);
+	        dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+	        dos.flush();
+	        
+	        //-- responses from the server (code and message)
+	        serverResponseCode = conn.getResponseCode();
+	        serverResponseMessage = conn.getResponseMessage();	        
+	        System.out.println("HTTP Response is : " + 
+	        					serverResponseCode + " " + serverResponseMessage);	   
+        	if(DeBug.DEBUG) {
+        		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "update image response : "+serverResponseCode);
+        	}
+	        
+//	        //-- get body content
+			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine).append(System.getProperty("line.separator"));
+			}
+			in.close();
+			DeBug.e(MBPlaceSubmitUtil.ADD_TAG,"respone body : "+response.toString());
+//			System.out.println(response.toString());
+	        	
+	        conn.disconnect();
+
+	        if(serverResponseCode == 200){
+	        	if(DeBug.DEBUG) {
+	        		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "update image success");
+	        	}
+	        	if(null != mListener)
+	        		mListener.submitSuccessd();
+	        } else {
+	        	if(DeBug.DEBUG) {
+	        		DeBug.e(MBPlaceSubmitUtil.ADD_TAG, "update image failed");
+	        	}
+	        	if(null != mListener)
+	        		mListener.submitFailed();
+	        }
+
+		} catch (Exception e) {
+			if(e != null) {
+//				DeBug.e(MBPlaceSubmitUtil.ADD_TAG,e.getMessage());
+				e.printStackTrace();
+			} else {
+				DeBug.e(MBPlaceSubmitUtil.ADD_TAG,"update load failed");
+			}
+		} finally{
+	        //-- close the streams
+			if (null != dos) {
+				try {
+					dos.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}				
+	        }	
+		}
 	}
 }
 

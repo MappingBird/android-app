@@ -10,12 +10,9 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,12 +21,12 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.User;
+import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
 
 public class MappingBirdLoginActivity extends Activity implements
 		OnClickListener {
-
 	private RelativeLayout mLogIn = null;
 	private EditText mEmail = null;
 	private EditText mPassword = null;
@@ -42,6 +39,7 @@ public class MappingBirdLoginActivity extends Activity implements
 	private Dialog mLoadingDialog = null;
 
 	private MBDialog mErrorDialog;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -129,14 +127,9 @@ public class MappingBirdLoginActivity extends Activity implements
 		@Override
 		public void onLogIn(int statusCode, User user) {
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
-				Intent intent = new Intent();
-				intent.setClass(MappingBirdLoginActivity.this,
-						com.mappingbird.collection.MappingBirdCollectionActivity.class);
-		
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-						| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-				MappingBirdLoginActivity.this.startActivity(intent);
+				MappingBirdPref.getIns().setUserU(mEmails);
+				MappingBirdPref.getIns().setUserP(mPasswords);
+				startInActivity();
 			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_NETWORK_ERROR) {
 				isLoaing(false);
 				mEmail.setEnabled(true);
@@ -156,6 +149,17 @@ public class MappingBirdLoginActivity extends Activity implements
 			}
 		}
 	};
+
+	private void startInActivity() {
+		Intent intent = new Intent();
+		intent.setClass(MappingBirdLoginActivity.this,
+				com.mappingbird.collection.MappingBirdCollectionActivity.class);
+
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		MappingBirdLoginActivity.this.startActivity(intent);
+	}
 
 	private void onLoginError(int statusCode) {
 		mErrorDialog = new MBDialog(MappingBirdLoginActivity.this);
@@ -202,5 +206,4 @@ public class MappingBirdLoginActivity extends Activity implements
 		}
 		mLoadingDialog = null;
 	}
-
 }

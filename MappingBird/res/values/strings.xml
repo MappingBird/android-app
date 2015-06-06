@@ -86,6 +86,7 @@
     <string name="pick_place_new_location">Add a new location</string>
     <string name="pick_place_add_create_location_title">Add &#091; %s &#093;</string>
     <string name="pick_place_add_create_location_des">Create a new location for everyone</string>
+    <string name="pick_place_add_create_location_title_no_filter_str">Add current location</string>
     <string name="pick_place_add_serach_title">Search &#091; %s &#093;</string>
     <string name="pick_place_add_srarch_des">Search more pleaces nearby</string>
     <!-- Settings -->

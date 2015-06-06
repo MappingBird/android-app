@@ -10,6 +10,11 @@ public class MappingBirdPref{
 	
 	private static MappingBirdPref mInstance = null;
 	private SharedPreferences mPref;
+	
+	private static class KEY {
+		public static final String USER_NAME = "u_n";
+		public static final String USER_PASSWORD = "u_p";
+	};
 	protected MappingBirdPref() {
 		mPref = PreferenceManager
 				.getDefaultSharedPreferences(MappingBirdApplication.instance());
@@ -91,5 +96,22 @@ public class MappingBirdPref{
 
 	public String getTagArray() {
 		return getString("tag_array", "");
+	}
+	
+	
+	public void setUserU(String u) {
+		putString(KEY.USER_NAME, u);
+	}
+
+	public String getUserU() {
+		return getString(KEY.USER_NAME, "");
+	}
+
+	public void setUserP(String p) {
+		putString(KEY.USER_PASSWORD, p);
+	}
+
+	public String getUserP() {
+		return getString(KEY.USER_PASSWORD, "");
 	}
 }

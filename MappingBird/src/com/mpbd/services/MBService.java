@@ -108,8 +108,10 @@ public class MBService extends Service{
 			}
 			break;
 		case CMD_STOP_SERVICE:
+			if(DeBug.DEBUG)
+				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] : stop service commend");
 			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
-			boolean updateData = logic.submit();
+			boolean updateData = logic.hasSubmit();
 			if(!updateData) {
 				logic.cleanData();
 				stopSelf();
@@ -200,6 +202,15 @@ public class MBService extends Service{
 					notificationManager.notify(NOTIFY_ID, nm);
 				}				
 				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED, progess, totle);
+			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_GET_TOKEN_FAILED) {
+				NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
+				if(notificationManager != null) {
+					Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
+							MappingBirdApplication.instance().getString(R.string.noti_update_error_title), 
+							MappingBirdApplication.instance().getString(R.string.noti_update_error_message));
+					notificationManager.notify(NOTIFY_ID, nm);
+				}				
+				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_GET_TOKEN_FAILED, progess, totle);
 			}
 		}
 		

@@ -157,7 +157,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 			case R.id.title_btn_submit:
 				MBPlaceAddDataToServer data = mAddPlaceInfoLayout.getPlaceInfoData();
 				data.type = mType;
-//				data.setImageList(mAdapter.getSelectPhotoList());
+				data.setImageList(mAdapter.getSelectPhotoList());
 				MBServiceClient.addPlace(data);
 				setResult(RESULT_OK);
 				finish();

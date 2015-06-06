@@ -11,6 +11,7 @@ import com.mappingbird.api.OnUploadImageListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.db.AppPlaceDB;
 import com.mappingbird.saveplace.services.MBPlaceSubmitImageData.SubmitImageDataListener;
+import com.mappingbird.saveplace.services.MBPlaceSubmitUserToken.UserTokenListener;
 
 public class MBPlaceSubmitTask implements Runnable{
 
@@ -18,6 +19,7 @@ public class MBPlaceSubmitTask implements Runnable{
 	private SubmitTaskListener mSubmitTaskListener = null;
 	public MBPlaceSubmitTask(MBPlaceSubmitData data) {
 		mSubmitData = data;
+		mUserToken = new MBPlaceSubmitUserToken();
 	}
 
 	public static final int MSG_NONE				= -1;
@@ -25,12 +27,16 @@ public class MBPlaceSubmitTask implements Runnable{
 	public static final int MSG_ADD_PLACE_PROCRESS 	= 1;
 	public static final int MSG_ADD_PLACE_UPDATE_IMAGE 	= 2;
 	public static final int MSG_ADD_PLACE_FINISHED 	= 5;
+	public static final int MSG_ADD_PLACE_GET_TOKEN_FAILED	= 6;
 	
 	private int mImageIndex = 0;
 
 	// 上傳的progress
 	private int mProgress = 0;
 	private boolean isSubmit = false;
+	
+	// 先測試上傳圖片的機制
+	private MBPlaceSubmitUserToken mUserToken;
 
 	private Handler mHandler = new Handler() {
 
@@ -41,6 +47,11 @@ public class MBPlaceSubmitTask implements Runnable{
 			case MSG_ADD_PLACE_PROCRESS:
 				if(mSubmitTaskListener != null)
 					mSubmitTaskListener.onProcess(msg.arg1, mSubmitData.getTotleProcess());
+				break;
+			case MSG_ADD_PLACE_GET_TOKEN_FAILED:
+				isSubmit = false;
+				if(mSubmitTaskListener != null)
+					mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_GET_TOKEN_FAILED, 0, 0);
 				break;
 			case MSG_ADD_PLACE_FAILED:
 				isSubmit = false;
@@ -69,8 +80,23 @@ public class MBPlaceSubmitTask implements Runnable{
 	public void run() {
 		mImageIndex = 0;
 		isSubmit = true;
-		// 上傳地點
-		updatePlaceData();
+		// 先拿取Token
+		mUserToken.getTokenFromServer(new UserTokenListener() {
+			
+			@Override
+			public void onFinish(int result) {
+				if(result == MBPlaceSubmitUserToken.RESULE_SUCESSED) {
+					// 有取得資料
+					// 上傳地點
+					updatePlaceData();
+				} else {
+					// 沒有取得資料
+					mHandler.sendEmptyMessage(MSG_ADD_PLACE_FAILED);
+				}
+			}
+		});
+//		// 上傳地點
+//		updatePlaceData();
 	}
 	
 	/**
@@ -124,7 +150,7 @@ public class MBPlaceSubmitTask implements Runnable{
 			for(int i = mImageIndex; i < mSubmitData.imageArrays.size(); i++) {
 				if(mSubmitData.imageArrays.get(i).mFileState != MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED) {
 //					submitImage(i, mSubmitData.imageArrays.get(i));
-					submitImageForParse(i, mSubmitData.imageArrays.get(i));
+					submitImageForSession(i, mSubmitData.imageArrays.get(i));
 					mProgress = i+1;
 					sendProcress(mProgress);
 					return;
@@ -169,6 +195,45 @@ public class MBPlaceSubmitTask implements Runnable{
 		}
 	}
 
+	private void submitImageForSession(final int index, MBPlaceSubmitImageData data) {
+		if(DeBug.DEBUG)
+			DeBug.v(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] updateImageTempBySession : place id = "+mSubmitData.placeId+
+					", path = "+data.mFileUrl);
+
+		boolean haveBmp = data.updateImageTempBySession(mSubmitData.placeId, 
+				mUserToken.getCSRFToken(),
+				mUserToken.getSession(),
+				new SubmitImageDataListener() {
+			
+			@Override
+			public void submitSuccessd() {
+				if(DeBug.DEBUG)
+					DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImage : successed");
+				mImageIndex = index + 1;
+				// 上傳成功
+				mSubmitData.imageArrays.get(index).mFileState = MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED;
+				// Update stat to DB
+				AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
+				db.updateImageValue(MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED, 
+						mSubmitData.imageArrays.get(index).mImageId);
+				updateImage();
+			}
+			
+			@Override
+			public void submitFailed() {
+				mImageIndex = index + 1;
+				// 上傳失敗
+				updateImage();
+			}
+		});
+
+		if(!haveBmp) {
+			// 沒有圖
+			mImageIndex = index + 1;
+			mHandler.sendEmptyMessage(MSG_ADD_PLACE_UPDATE_IMAGE);			
+		}
+		
+	}
 	private void submitImageForParse(final int index, MBPlaceSubmitImageData data) {
 		if(DeBug.DEBUG)
 			DeBug.v(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImageParse : place id = "+mSubmitData.placeId+
