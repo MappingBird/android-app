@@ -14,6 +14,8 @@ public class MappingBirdPref{
 	private static class KEY {
 		public static final String USER_NAME = "u_n";
 		public static final String USER_PASSWORD = "u_p";
+		
+		public static final String USER_GUST_MODE = "guest";
 	};
 	protected MappingBirdPref() {
 		mPref = PreferenceManager
@@ -113,5 +115,13 @@ public class MappingBirdPref{
 
 	public String getUserP() {
 		return getString(KEY.USER_PASSWORD, "");
+	}
+
+	public boolean isGuestMode() {
+		return getBoolean(KEY.USER_GUST_MODE, false);
+	}
+
+	public void setGuestMode(boolean mode) {
+		putBoolean(KEY.USER_GUST_MODE, mode);
 	}
 }
