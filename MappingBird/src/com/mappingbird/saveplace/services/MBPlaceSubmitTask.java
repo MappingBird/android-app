@@ -234,41 +234,6 @@ public class MBPlaceSubmitTask implements Runnable{
 		}
 		
 	}
-	private void submitImageForParse(final int index, MBPlaceSubmitImageData data) {
-		if(DeBug.DEBUG)
-			DeBug.v(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImageParse : place id = "+mSubmitData.placeId+
-					", path = "+data.mFileUrl);
-
-		boolean haveBmp = data.submitImageParse(mSubmitData.placeId, new SubmitImageDataListener() {
-			
-			@Override
-			public void submitSuccessd() {
-				if(DeBug.DEBUG)
-					DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImage : successed");
-				mImageIndex = index + 1;
-				// 上傳成功
-				mSubmitData.imageArrays.get(index).mFileState = MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED;
-				// Update stat to DB
-				AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
-				db.updateImageValue(MBPlaceSubmitUtil.SUBMIT_IMAGE_STATE_FINISHED, 
-						mSubmitData.imageArrays.get(index).mImageId);
-				updateImage();
-			}
-			
-			@Override
-			public void submitFailed() {
-				mImageIndex = index + 1;
-				// 上傳失敗
-				updateImage();
-			}
-		});
-
-		if(!haveBmp) {
-			// 沒有圖
-			mImageIndex = index + 1;
-			mHandler.sendEmptyMessage(MSG_ADD_PLACE_UPDATE_IMAGE);			
-		}
-	}
 
 	private void sendProcress(int procress) {
 		Message msg = new Message();

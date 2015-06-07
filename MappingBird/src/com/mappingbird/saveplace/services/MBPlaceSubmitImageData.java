@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -17,18 +16,12 @@ import com.hlrt.common.DeBug;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnUploadImageListener;
 import com.mappingbird.common.MappingBirdApplication;
-import com.mappingbird.common.MappingBirdPref;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
 
 
 public class MBPlaceSubmitImageData {
 	public final int mImageId;
 	public final String mFileUrl;
 	public int mFileState;
-	private ParseFile mSubmitParseFile = null;
 	private SubmitImageDataListener mListener = null;
 	public MBPlaceSubmitImageData(int imageId, String url, int state) {
 		mImageId = imageId;
@@ -68,56 +61,6 @@ public class MBPlaceSubmitImageData {
 		}
 		return null;
 	}
-	
-	// For Test
-	public boolean submitImageParse(final String placeId, SubmitImageDataListener listener) {
-		
-		// 準備上傳的圖.
-		byte[] bmp = getBitmapBytArrayParse(mFileUrl);
-		if(bmp != null) {
-			mListener = listener;
-			mSubmitParseFile = new ParseFile(bmp);
-			mSubmitParseFile.saveInBackground(new SaveCallback() {
-				
-				@Override
-				public void done(ParseException e) {
-					if(e == null) {
-						// 上傳成功
-				    	String picUrl = mSubmitParseFile.getUrl();
-				    	submitToPictureTable(picUrl);
-				    	// 準備上傳給我們的Server
-				    	MappingBirdAPI api = new MappingBirdAPI(MappingBirdApplication.instance());
-				    	api.uploadImagePath(new OnUploadImageListener() {
-							
-							@Override
-							public void OnUploadImage(int statusCode) {
-								//得到結果
-								if(statusCode == MappingBirdAPI.RESULT_OK) {
-									// 成功
-									mListener.submitSuccessd();
-								} else {
-									// 失敗
-									mListener.submitFailed();
-								}
-							}
-						}, placeId, picUrl);
-						if(DeBug.DEBUG)
-							DeBug.v(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitImageData] save picutre file successed : picUrl = "+picUrl);
-					} else {
-						// 上傳失敗
-						if(DeBug.DEBUG)
-							DeBug.v(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitImageData] save picutre file failed : "+e.getMessage());
-						mListener.submitFailed();
-					}
-
-				}
-			});
-			return true;
-		} else {
-			return false;
-		}
-		
-	}
 
 	/**
 	 * 請記得是非Ui-Thread
@@ -129,17 +72,7 @@ public class MBPlaceSubmitImageData {
 		public void submitFailed();
 	}
 
-	private static final String BITMAP_FIELD_PATH = "path";
-	/**
-	 * 上傳到Parse的Tablet做備案
-	 */
-	private void submitToPictureTable(String path) {
-		final ParseObject submitObject = new ParseObject("submitBmp");
-		submitObject.put(BITMAP_FIELD_PATH, path);
-		submitObject.saveEventually();
-	}
-	
-	private byte[] getBitmapBytArrayParse(String path) {
+	private byte[] getBitmapBytArraySession(String path) {
 		File file = new File(path);
 		if(null != file && file.exists()) {
 			byte[] bytes = null;
@@ -190,7 +123,7 @@ public class MBPlaceSubmitImageData {
 	
 	public boolean updateImageTempBySession(final String placeId, final String csrfToken, final String session,
 			SubmitImageDataListener listener) {
-		final byte[] bmp = getBitmapBytArrayParse(mFileUrl);
+		final byte[] bmp = getBitmapBytArraySession(mFileUrl);
 		if(bmp != null) {
 			mListener = listener;
 			new Thread(new Runnable() {
