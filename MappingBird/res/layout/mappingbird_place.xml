@@ -39,12 +39,17 @@
                         android:background="@drawable/default_noimages"
                         android:visibility="gone" />
 
-                    <com.mappingbird.widget.MappingbirdGallery
+<!--                     <com.mpbd.place.MappingbirdGallery
                         android:id="@+id/trip_photo"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/place_gallery_height"
                         android:background="#000" />
-
+ -->
+ 					<com.mpbd.place.MBGalleryViewPager
+				        android:id="@+id/pace_viewpager"
+				        android:layout_width="match_parent"
+				        android:background="#000"
+				        android:layout_height="@dimen/place_gallery_height" />
                     <com.mappingbird.widget.MappingbirdFontIcon
                         android:id="@+id/pin_icon"
                         android:layout_width="64dp"
@@ -62,7 +67,7 @@
                         android:id="@+id/trip_photo_count_point"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/trip_photo"
+                        android:layout_below="@id/pace_viewpager"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="4dp"
                         android:visibility="gone" />
@@ -71,7 +76,7 @@
                         android:id="@+id/trip_photo_count_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/trip_photo"
+                        android:layout_below="@id/pace_viewpager"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="4dp"
                         android:textColor="@color/font_hint"

@@ -1,4 +1,4 @@
-package com.mpbd.mappingbird;
+package com.mpbd.place;
 
 import java.util.ArrayList;
 
@@ -10,13 +10,14 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -31,12 +32,12 @@ import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.widget.MBImageCountView;
-import com.mappingbird.widget.MappingbirdGallery;
-import com.mappingbird.widget.MappingbirdGallery.MBGalleryListener;
 import com.mappingbird.widget.MappingbirdPlaceLayout;
 import com.mappingbird.widget.MappingbirdPlaceLayout.onPlaceLayoutListener;
 import com.mappingbird.widget.MappingbirdScrollView;
 import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
+import com.mpbd.mappingbird.MappingBirdDialog;
+import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.Utils;
 
@@ -83,7 +84,9 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 	private TextView mLastEditText = null;
 
-	private MappingbirdGallery mPlacePhoto;
+//	private MappingbirdGallery mPlacePhoto;
+	private ViewPager mGalleryPager;
+	private MBGalleryAdapter mGalleryAdapter;
 	private MBImageCountView mPlacePhotoCountPoint;
 	private TextView mPlacePhotoCountText;
 
@@ -141,7 +144,11 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mTitleBack = findViewById(R.id.trip_detail_title_back);
 		mTitleBack.setAlpha(0);
 		mDescription = (TextView) findViewById(R.id.trip_place_description);
-		mPlacePhoto = (MappingbirdGallery) findViewById(R.id.trip_photo);
+//		mPlacePhoto = (MappingbirdGallery) findViewById(R.id.trip_photo);
+		mGalleryPager = (ViewPager) findViewById(R.id.pace_viewpager);
+		mGalleryAdapter = new MBGalleryAdapter(this);
+		mGalleryPager.setAdapter(mGalleryAdapter);
+		mGalleryPager.setOnPageChangeListener(mGalleryListener);
 		mPlacePhotoCountPoint = (MBImageCountView) findViewById(R.id.trip_photo_count_point);
 		mPlacePhotoCountText = (TextView) findViewById(R.id.trip_photo_count_text);
 		
@@ -181,17 +188,22 @@ public class MappingBirdPlaceActivity extends Activity implements
 			list.add(item.getUrl());
 		}
 		if(list.size() == 0) {
-			mPlacePhoto.setVisibility(View.GONE);
+			mGalleryPager.setVisibility(View.GONE);
+//			mPlacePhoto.setVisibility(View.GONE);
 			findViewById(R.id.trip_no_photo).setVisibility(View.VISIBLE);
 		} else if(list.size() <= 15) {
-			mPlacePhoto.setData(list);
-			mPlacePhoto.setGalleryListener(mGalleryListener);
+			mGalleryAdapter.setPathList(list);
+			mGalleryPager.setVisibility(View.VISIBLE);
+//			mPlacePhoto.setData(list);
+//			mPlacePhoto.setGalleryListener(mGalleryListener);
 			mPlacePhotoCountPoint.setVisibility(View.VISIBLE);
 			mPlacePhotoCountPoint.setSize(list.size());
 			mPlacePhotoCountText.setVisibility(View.GONE);
 		} else {
-			mPlacePhoto.setData(list);
-			mPlacePhoto.setGalleryListener(mGalleryListener);
+			mGalleryAdapter.setPathList(list);
+			mGalleryPager.setVisibility(View.VISIBLE);
+//			mPlacePhoto.setData(list);
+//			mPlacePhoto.setGalleryListener(mGalleryListener);
 			mPlacePhotoCountPoint.setVisibility(View.GONE);
 			mPlacePhotoCountText.setVisibility(View.VISIBLE);
 			mPlacePhotoCountText.setText("1/"+list.size());
@@ -217,15 +229,35 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mBitmapLoader.getBitmap(mTripMapView, params);
 	}
 
-	private MBGalleryListener mGalleryListener = new MBGalleryListener() {
+//	private MBGalleryListener mGalleryListener = new MBGalleryListener() {
+//		
+//		@Override
+//		public void changeIndex(int index, int size) {
+//			if(mPlacePhotoCountPoint.getVisibility() == View.VISIBLE) {
+//				mPlacePhotoCountPoint.setSelectIndex(index);
+//			} else {
+//				mPlacePhotoCountText.setText((index+1)+"/"+size);
+//			}
+//		}
+//	};
+
+	private ViewPager.OnPageChangeListener mGalleryListener = new OnPageChangeListener() {
 		
 		@Override
-		public void changeIndex(int index, int size) {
+		public void onPageSelected(int state) {
+		}
+		
+		@Override
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			if(mPlacePhotoCountPoint.getVisibility() == View.VISIBLE) {
-				mPlacePhotoCountPoint.setSelectIndex(index);
+				mPlacePhotoCountPoint.setSelectIndex(position);
 			} else {
-				mPlacePhotoCountText.setText((index+1)+"/"+size);
+				mPlacePhotoCountText.setText((position+1)+"/"+mGalleryAdapter.getCount());
 			}
+		}
+		
+		@Override
+		public void onPageScrollStateChanged(int position) {
 		}
 	};
 

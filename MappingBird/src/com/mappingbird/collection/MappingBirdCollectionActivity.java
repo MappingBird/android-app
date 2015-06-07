@@ -67,12 +67,12 @@ import com.mpbd.mappingbird.MappingBirdBitmap;
 import com.mpbd.mappingbird.MappingBirdBitmap.MappingBirdBitmapListner;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.MappingBirdItem;
-import com.mpbd.mappingbird.MappingBirdPlaceActivity;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
+import com.mpbd.place.MappingBirdPlaceActivity;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
@@ -789,7 +789,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			intent.putExtra("myLongitude", mMyLocation.longitude);
 
 			intent.setClass(MappingBirdCollectionActivity.this,
-					com.mpbd.mappingbird.MappingBirdPlaceActivity.class);
+					com.mpbd.place.MappingBirdPlaceActivity.class);
 			MappingBirdCollectionActivity.this.startActivity(intent);
 		}
 

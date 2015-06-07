@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mpbd.mappingbird.MappingBirdPlaceActivity"
+            android:name="com.mpbd.place.MappingBirdPlaceActivity"
             android:theme="@style/AppPlaceTheme"
             android:screenOrientation="portrait" >
         </activity>
