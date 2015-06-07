@@ -96,6 +96,9 @@ public class BitmapLoader {
 								if(object.mParameters.mBitmapDownloaded != null)
 									object.mParameters.mBitmapDownloaded.onDownloadComplete(object.mParameters.getKey(), iv, object.mBmp, object.mParameters);
 							} else {
+								// 讀圖失敗
+								if(object.mParameters.mBitmapDownloaded != null)
+									object.mParameters.mBitmapDownloaded.onDownloadFaild(object.mParameters.getKey(), iv, object.mParameters);
 							}
 						}
 					}
