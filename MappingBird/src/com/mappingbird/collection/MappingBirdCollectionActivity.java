@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
-import android.text.SpannableString;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -109,7 +108,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private MappingBirdRender mMappingBirdRender;
 	private MappingBirdItem mClickedClusterItem;
 	private Marker mClickedMarker = null;
-	private Cluster<MappingBirdItem> mClickedCluster;
 
 	private LocationService mLocationService;
 	
@@ -541,7 +539,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					public boolean onClusterClick(
 							Cluster<MappingBirdItem> cluster) {
 //						DeBug.v(TAG, "onClusterClick");
-						mClickedCluster = cluster;
 						float nowZoom = mMap.getCameraPosition().zoom;
 						if(nowZoom < (mMap.getMaxZoomLevel() - 2)) {
 							nowZoom = nowZoom + 2;
@@ -694,72 +691,72 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		@Override
 		public View getInfoWindow(final Marker marker) {
-			if(true)
-				return null;
-			DeBug.i(TAG, "getInfoContents");
-			int position = -1;
-			if (mClickedClusterItem != null) {
-				position = mClickedClusterItem.getIndex();
-			}
-
-			if (marker.equals(mMyMarker)) {
-				position = -1;
-			}
-
-			View view = mContents;
-			ImageView icon = ((ImageView) view.findViewById(R.id.badge));
-			ImageView details = ((ImageView) view.findViewById(R.id.details));
-			TextView titleUi = ((TextView) view.findViewById(R.id.title));
-			TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
-
-			if (position > -1) {
-				icon.setVisibility(View.VISIBLE);
-				titleUi.setVisibility(View.VISIBLE);
-				snippetUi.setVisibility(View.VISIBLE);
-				details.setVisibility(View.VISIBLE);
-			} else {
-				icon.setVisibility(View.GONE);
-				titleUi.setVisibility(View.VISIBLE);
-				snippetUi.setVisibility(View.GONE);
-				details.setVisibility(View.GONE);
-			}
-
-			if (position > -1
-					&& mCollection.getPointsObj().get(position)
-							.getImageDetails().size() > 0) {
-				String imagePath = null;
-				imagePath = mCollection.getPointsObj().get(position)
-						.getImageDetails().get(0).getUrl();
-				DeBug.i(TAG, "imagePath =" + imagePath);
-
-				mLoadBitmap.getBitmapByURL(icon, imagePath,
-						mLoadBitmap.ICON_TYPE_CONTENT_INFO_ICON);
-
-				mLoadBitmap
-						.setMappingBirdBitmapListner(new MappingBirdBitmapListner() {
-
-							@Override
-							public void loadBitmapFinish(String key) {
-								DeBug.i(TAG, "callback");
-								marker.showInfoWindow();
-							}
-						});
-			}
-
-			String title = marker.getTitle();
-			if (title != null) {
-				titleUi.setText(title);
-			} else {
-				titleUi.setText("");
-			}
-
-			String snippet = marker.getSnippet();
-			if (snippet != null) {
-				snippetUi.setText(snippet +" m");
-			} else {
-				snippetUi.setText("");
-			}
-			return mContents;
+			return null;
+//			
+//			DeBug.i(TAG, "getInfoContents");
+//			int position = -1;
+//			if (mClickedClusterItem != null) {
+//				position = mClickedClusterItem.getIndex();
+//			}
+//
+//			if (marker.equals(mMyMarker)) {
+//				position = -1;
+//			}
+//
+//			View view = mContents;
+//			ImageView icon = ((ImageView) view.findViewById(R.id.badge));
+//			ImageView details = ((ImageView) view.findViewById(R.id.details));
+//			TextView titleUi = ((TextView) view.findViewById(R.id.title));
+//			TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
+//
+//			if (position > -1) {
+//				icon.setVisibility(View.VISIBLE);
+//				titleUi.setVisibility(View.VISIBLE);
+//				snippetUi.setVisibility(View.VISIBLE);
+//				details.setVisibility(View.VISIBLE);
+//			} else {
+//				icon.setVisibility(View.GONE);
+//				titleUi.setVisibility(View.VISIBLE);
+//				snippetUi.setVisibility(View.GONE);
+//				details.setVisibility(View.GONE);
+//			}
+//
+//			if (position > -1
+//					&& mCollection.getPointsObj().get(position)
+//							.getImageDetails().size() > 0) {
+//				String imagePath = null;
+//				imagePath = mCollection.getPointsObj().get(position)
+//						.getImageDetails().get(0).getUrl();
+//				DeBug.i(TAG, "imagePath =" + imagePath);
+//
+//				mLoadBitmap.getBitmapByURL(icon, imagePath,
+//						mLoadBitmap.ICON_TYPE_CONTENT_INFO_ICON);
+//
+//				mLoadBitmap
+//						.setMappingBirdBitmapListner(new MappingBirdBitmapListner() {
+//
+//							@Override
+//							public void loadBitmapFinish(String key) {
+//								DeBug.i(TAG, "callback");
+//								marker.showInfoWindow();
+//							}
+//						});
+//			}
+//
+//			String title = marker.getTitle();
+//			if (title != null) {
+//				titleUi.setText(title);
+//			} else {
+//				titleUi.setText("");
+//			}
+//
+//			String snippet = marker.getSnippet();
+//			if (snippet != null) {
+//				snippetUi.setText(snippet +" m");
+//			} else {
+//				snippetUi.setText("");
+//			}
+//			return mContents;
 		}
 
 		@Override

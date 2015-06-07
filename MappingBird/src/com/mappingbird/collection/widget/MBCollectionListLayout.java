@@ -31,7 +31,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.mappingbird.api.Collections;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.collection.widget.MBListLayoutAddLayout.OnSelectKindLayoutListener;
 import com.mappingbird.common.BitmapLoader;

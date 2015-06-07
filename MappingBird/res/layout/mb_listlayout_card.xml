@@ -187,14 +187,6 @@
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
-
-        <View
-            android:id="@+id/card_gradient"
-            android:layout_width="60dp"
-            android:layout_height="@dimen/list_layout_card_icon_height"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/place_item_card_distance_width"
-            android:visibility="gone" />
     </RelativeLayout>
 
     <com.mappingbird.widget.MappingbirdTextView

@@ -34,7 +34,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private BitmapLoader mBitmapLoader;
 	private MBPointData mPoint;
 	private TextView mTitle, mSubTitle, mDistance, mUnit;
-	private View mGradientView;
 	private GradientDrawable mDrawable;
 	private View mContentLayout;
 	private int mContentMarginLeft = 0;
@@ -73,7 +72,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mDistance = (TextView) findViewById(R.id.card_distance);
 		mUnit = (TextView) findViewById(R.id.card_unit);
 		mBitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
-		mGradientView = findViewById(R.id.card_gradient);
 		mContentLayout = findViewById(R.id.card_content_layout);
 		createGradientView();
 		mCard0_Position = (int)getResources().getDimension(R.dimen.list_layout_card0_position_height);
@@ -104,7 +102,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 		          GradientDrawable.Orientation.RIGHT_LEFT, new int[] { 0xFFFFFFFF, 0x00000000});
 		
 		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-//		mGradientView.setBackgroundDrawable(mDrawable);
 	}
 
 	void setInfoLayoutBackground(Drawable drawable) {
@@ -183,7 +180,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 		}
 		mSubTitle.setText(mPoint.getLocation().getPlaceAddress());
 		mItemAddress.setText(mPoint.getLocation().getPlaceAddress());
-//		mGradientView.setVisibility(View.VISIBLE);
 		if(mylocation != null) {
 			DistanceObject disObject = Utils.getDistanceObject(
 					Utils.getDistance(mylocation.latitude,

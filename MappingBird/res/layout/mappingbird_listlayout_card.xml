@@ -154,15 +154,6 @@
                 android:singleLine="true"
                 android:textColor="#6f6f6f" />
         </LinearLayout>
-
-        <View
-            android:id="@+id/card_gradient"
-            android:layout_width="60dp"
-            android:layout_height="@dimen/list_layout_card_icon_height"
-            android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@id/card_divider"
-            android:visibility="gone"
-            android:background="@drawable/card_white_gradient" />
     </RelativeLayout>
 
 </com.mappingbird.widget.MappingbirdListLayoutCardView>
