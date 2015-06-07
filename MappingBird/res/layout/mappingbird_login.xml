@@ -59,7 +59,7 @@
                 <com.mappingbird.widget.MappingbirdEditText
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:background="#00000000"
@@ -102,7 +102,7 @@
                 <com.mappingbird.widget.MappingbirdEditText
                     android:id="@+id/input_password"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
                     android:layout_toLeftOf="@id/question_icon"
                     android:background="#00000000"

@@ -8,16 +8,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.hlrt.common.DeBug;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.User;
@@ -58,6 +62,19 @@ public class MappingBirdLoginActivity extends Activity implements
 		mLoginDescription.setText(Html
 				.fromHtml(getString(R.string.login_content)));
 		mApi = new MappingBirdAPI(this.getApplicationContext());
+		
+		// 接收 ok key event
+		mPassword.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if(actionId == EditorInfo.IME_ACTION_DONE) {
+					login();
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override
@@ -105,20 +122,24 @@ public class MappingBirdLoginActivity extends Activity implements
 		case R.id.question_icon:
 			break;
 		case R.id.login:
-			mEmails = mEmail.getText().toString();
-			mPasswords = mPassword.getText().toString();
-			isLoaing(true);
-			if (!mEmails.equals("") && !mPasswords.equals("")) {
-				closeIME();
-				mEmail.setEnabled(false);
-				mPassword.setEnabled(false);
-				mApi.logIn(mLoginListener, mEmails, mPasswords);
-			} else {
-				isLoaing(false);
-				Toast.makeText(getApplicationContext(),
-						getResources().getString(R.string.data_incomplete), Toast.LENGTH_SHORT).show();
-			}
+			login();
 			break;
+		}
+	}
+
+	private void login() {
+		mEmails = mEmail.getText().toString();
+		mPasswords = mPassword.getText().toString();
+		if (!mEmails.equals("") && !mPasswords.equals("")) {
+			isLoaing(true);
+			closeIME();
+			mEmail.setEnabled(false);
+			mPassword.setEnabled(false);
+			mApi.logIn(mLoginListener, mEmails, mPasswords);
+		} else {
+			isLoaing(false);
+			Toast.makeText(getApplicationContext(),
+					getResources().getString(R.string.data_incomplete), Toast.LENGTH_SHORT).show();
 		}
 	}
 
