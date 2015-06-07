@@ -20,6 +20,7 @@ import com.mpbd.mappingbird.R;
 public class MappingBirdPhotoAdapter extends BaseAdapter  {
 	
 	private static final String TAG_CAMERA = "Camera";
+	private static final int MAX_PHOTO_NUMBER = 10;
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private BitmapLoader mBitmapLoader;
@@ -195,10 +196,11 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 					if(mPhotoAdapterListener != null)
 						mPhotoAdapterListener.onStartCameraActivity();
 				} else {
-					if(mSelectPhotoList.contains(path))
+					if(mSelectPhotoList.contains(path)) {
 						mSelectPhotoList.remove(path);
-					else
+					} else if(mSelectPhotoList.size() < MAX_PHOTO_NUMBER){
 						mSelectPhotoList.add(path);
+					}
 					notifyDataSetChanged();
 				}
 				break;
@@ -207,10 +209,11 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 				if(v.getTag() == null)
 					break;
 				String path = String.valueOf(v.getTag());
-				if(mSelectPhotoList.contains(path))
+				if(mSelectPhotoList.contains(path)) {
 					mSelectPhotoList.remove(path);
-				else
+				} else if(mSelectPhotoList.size() < MAX_PHOTO_NUMBER){
 					mSelectPhotoList.add(path);
+				}
 				notifyDataSetChanged();
 				break;
 			}
@@ -218,10 +221,11 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 				if(v.getTag() == null)
 					break;
 				String path = String.valueOf(v.getTag());
-				if(mSelectPhotoList.contains(path))
+				if(mSelectPhotoList.contains(path)) {
 					mSelectPhotoList.remove(path);
-				else
+				} else if(mSelectPhotoList.size() < MAX_PHOTO_NUMBER){
 					mSelectPhotoList.add(path);
+				}
 				notifyDataSetChanged();
 				break;
 			}
