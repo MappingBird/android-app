@@ -123,6 +123,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private Handler mHandler = new Handler();
 	
 	private MBDialog mDialog = null;
+	
+	private long mClickButtonTime = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -783,14 +785,17 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private NewCardClickListener mNewCardClickListener = new NewCardClickListener() {
 		@Override
 		public void onClickCard(MBPointData point) {
-			Intent intent = new Intent();
-			intent.putExtra(MappingBirdPlaceActivity.EXTRA_MBPOINT, point);
-			intent.putExtra("myLatitude", mMyLocation.latitude);
-			intent.putExtra("myLongitude", mMyLocation.longitude);
-
-			intent.setClass(MappingBirdCollectionActivity.this,
-					com.mpbd.place.MappingBirdPlaceActivity.class);
-			MappingBirdCollectionActivity.this.startActivity(intent);
+			if(Math.abs(System.currentTimeMillis() - mClickButtonTime) > 800) {
+				mClickButtonTime = System.currentTimeMillis();
+				Intent intent = new Intent();
+				intent.putExtra(MappingBirdPlaceActivity.EXTRA_MBPOINT, point);
+				intent.putExtra("myLatitude", mMyLocation.latitude);
+				intent.putExtra("myLongitude", mMyLocation.longitude);
+	
+				intent.setClass(MappingBirdCollectionActivity.this,
+						com.mpbd.place.MappingBirdPlaceActivity.class);
+				MappingBirdCollectionActivity.this.startActivity(intent);
+			}
 		}
 
 		@Override
