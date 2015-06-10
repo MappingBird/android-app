@@ -1,13 +1,19 @@
 package com.mpbd.mappingbird;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -19,8 +25,11 @@ import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
+import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.OnSignUpListener;
 import com.mappingbird.api.User;
+import com.mappingbird.common.DeBug;
+import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
 
@@ -40,6 +49,9 @@ public class MappingBirdSignUpActivity extends Activity implements
 	private Dialog mLoadingDialog = null;
 
 	private MBDialog mErrorDialog;
+	
+	private Handler mHandler = new Handler();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -114,7 +126,8 @@ public class MappingBirdSignUpActivity extends Activity implements
 				closeIME();
 				mEmail.setEnabled(false);
 				mPassword.setEnabled(false);
-				mApi.signUp(mSignUpListener, mEmails, mPasswords);
+//				mApi.signUp(mSignUpListener, mEmails, mPasswords);
+				api_signup(mEmails, mPasswords);
 			} else {
 				isLoading(false);
 				Toast.makeText(getApplicationContext(),
@@ -203,4 +216,111 @@ public class MappingBirdSignUpActivity extends Activity implements
 		mLoadingDialog = null;
 	}
 
+	// Sign up function
+    private void api_signup(final String email,final String pw) {    	
+    	new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				String imageAPI_url = "https://mappingbird.com/api/users";
+				
+				try {
+					URL url = new URL(imageAPI_url);
+					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+					conn.setRequestMethod("POST");
+					conn.setRequestProperty("Accept", "application/json");
+					conn.setUseCaches(false);
+					conn.setDoOutput(true);
+					
+					DataOutputStream wr = new DataOutputStream(conn.getOutputStream());			
+					StringBuilder sb = new StringBuilder();
+					sb.append("email=").append(URLEncoder.encode(email, "UTF-8"));
+					sb.append("&");
+					sb.append("password=").append(URLEncoder.encode(pw, "UTF-8"));
+					
+					wr.writeBytes(sb.toString());
+					wr.flush();
+					wr.close();
+					
+					int serverResponseCode = conn.getResponseCode();			
+			        String serverResponseMessage = conn.getResponseMessage();	        
+			        DeBug.d("HTTP Response is : " + String.valueOf(serverResponseCode) + " " + serverResponseMessage);	   
+			        if (serverResponseCode == 200 || serverResponseCode == 201){
+			        	// 建立成功
+			        	signUpSuccessed();
+			        } else {
+			        	// 建立失敗
+			        	signFailed();
+			        }
+					conn.disconnect();	
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+					signFailed();
+				} catch (IOException e) {			
+					signFailed();
+				}				
+			}
+		}).start();
+	}
+    
+    private void signUpSuccessed() {
+    	mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				// 建立成功接下來就是login
+				mApi.logIn(mLoginListener, mEmails, mPasswords);
+			}
+		});
+    }
+    
+    private void signFailed() {
+    	DeBug.d("[Sign up] failed");
+    	mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				isLoading(false);
+				mEmail.setEnabled(true);
+				mPassword.setEnabled(true);
+				onLoginError(MappingBirdAPI.RESULT_LOGIN_NETWORK_ERROR);
+			}
+		});    	
+    }
+    
+	private OnLogInListener mLoginListener = new OnLogInListener() {
+		@Override
+		public void onLogIn(int statusCode, User user) {
+			if (statusCode == MappingBirdAPI.RESULT_OK) {
+				MappingBirdPref.getIns().setUserU(mEmails);
+				MappingBirdPref.getIns().setUserP(mPasswords);
+				startInActivity();
+			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_NETWORK_ERROR) {
+				isLoading(false);
+				mEmail.setEnabled(true);
+				mPassword.setEnabled(true);
+				onLoginError(statusCode);
+				
+			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_ACCOUNT_ERROR) {
+				isLoading(false);
+				mEmail.setEnabled(true);
+				mPassword.setEnabled(true);
+				onLoginError(statusCode);
+			} else {
+				isLoading(false);
+				mEmail.setEnabled(true);
+				mPassword.setEnabled(true);
+				onLoginError(statusCode);
+			}
+		}
+	};
+	
+	private void startInActivity() {
+		Intent intent = new Intent();
+		intent.setClass(MappingBirdSignUpActivity.this,
+				com.mappingbird.collection.MappingBirdCollectionActivity.class);
+
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		MappingBirdSignUpActivity.this.startActivity(intent);
+	}
 }
