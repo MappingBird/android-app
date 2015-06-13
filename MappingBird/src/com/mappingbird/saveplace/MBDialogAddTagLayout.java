@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import me.gujun.android.taggroup.TagGroup;
 import me.gujun.android.taggroup.TagGroup.OnTagChangeListener;
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class MBDialogAddTagLayout extends LinearLayout {
 	private TagGroup mTagGroup;
 	private TagAdapter mTagListAdapter;
 	private ListView mTagList;
+	private Handler mHandler = new Handler();
 	public MBDialogAddTagLayout(Context context) {
 		super(context);
 	}
@@ -82,6 +84,7 @@ public class MBDialogAddTagLayout extends LinearLayout {
 					tagList.add(tag);
 				}
 			}
+			
 			if(addTag) {
 				// 新增Tag
 				tagList.add(selectTag);
@@ -90,8 +93,13 @@ public class MBDialogAddTagLayout extends LinearLayout {
 				// 刪除Tag
 				mTagGroup.setTags(tagList);
 			}
+			mHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					mTagGroup.requestLayout();
+				}
+			});
 			mTagListAdapter.setTagSelected(position, addTag);
-//			mTagListAdapter.getTag(position);
 		}
 	};
 	

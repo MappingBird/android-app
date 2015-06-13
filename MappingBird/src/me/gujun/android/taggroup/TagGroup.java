@@ -450,7 +450,8 @@ public class TagGroup extends ViewGroup {
             if (tagView.mState == TagView.STATE_NORMAL) {
                 tagList.add(tagView.getText().toString());
             } else if(tagView.mState == TagView.STATE_INPUT) {
-            	tagList.add(tagView.getText().toString());
+            	if(tagView.getText() != null && !TextUtils.isEmpty(tagView.getText().toString()))
+            		tagList.add(tagView.getText().toString());
             }
         }
 
