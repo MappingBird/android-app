@@ -29,6 +29,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
 
@@ -448,6 +449,8 @@ public class TagGroup extends ViewGroup {
             final TagView tagView = getTagViewAt(i);
             if (tagView.mState == TagView.STATE_NORMAL) {
                 tagList.add(tagView.getText().toString());
+            } else if(tagView.mState == TagView.STATE_INPUT) {
+            	tagList.add(tagView.getText().toString());
             }
         }
 
@@ -544,7 +547,8 @@ public class TagGroup extends ViewGroup {
     public void setTags(String... tags) {
         removeAllViews();
         for (final String tag : tags) {
-            appendTag(tag);
+        	if(!TextUtils.isEmpty(tag))
+        		appendTag(tag);
         }
 
         if (isAppendMode) {

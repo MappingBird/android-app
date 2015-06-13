@@ -301,6 +301,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			// 當選到相同的Collection, 就不重複loading
+			if(MappingBirdPref.getIns().getCollectionPosition() == position)
+				return;
+
 			if(mClickedMarker != null) {
 				mClickedMarker.remove();
 				mClickedMarker = null;

@@ -10,7 +10,7 @@ import android.view.WindowManager;
 
 
 public class MBUtil {
-	public static final boolean mEnableAddFunction = DeBug.DEBUG;
+	public static final boolean mEnableAddFunction = true;
 	public static int getWindowHeight(Context context) {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
