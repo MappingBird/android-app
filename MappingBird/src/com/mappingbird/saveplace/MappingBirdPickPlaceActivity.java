@@ -177,11 +177,10 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 					}
 					
 				});
-
-				mPlaceAdapter.setPlaceData(mRequestPlace);
 			} else {
-				// 沒有資料. 直接出現Add和Research
+				mRequestPlace.clear();
 			}
+			mPlaceAdapter.setPlaceData(mRequestPlace);
 		}
 	};
 /*
@@ -228,18 +227,29 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
-				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE: {
+				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
 					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LAT, mLatitude);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LONG, mLongitude);
-					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TITLE, mPlaceAdapter.getFilterStr());
+					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TITLE, mPlaceAdapter.getAddPlaceName());
 					
+					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
+					break;
+				}
+				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
+					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
+					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LAT, mLatitude);
+					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LONG, mLongitude);
 					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT: {
 					prepareData(mPlaceAdapter.getFilterStr());
 					closeSearchBar();
+					break;
+				}
+				case MappingBirdPlaceItem.TYPE_SEARCH_ERROR: {
+					prepareData(null);
 					break;
 				}
 			}

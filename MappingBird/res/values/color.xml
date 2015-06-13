@@ -18,6 +18,7 @@
 	<!-- Color -->
 	<color name="graphic_orange">#fff58829</color>
 	<color name="graphic_blue">#ff00a8e6</color>
+	<color name="graphic_blue_alpha">#4400a8e6</color>
     <color name="graphic_blue_pressed">#0387b9</color>
 	<color name="graphic_gray_out">#b2000000</color>
 	<color name="graphic_shade_normal">#1a000000</color>
@@ -27,6 +28,8 @@
 	<color name="graphic_alpha_background">#B2000000</color>
 		
 	<!-- font -->
+	<color name="font_orange">#fff58829</color>
+	<color name="font_blue">#ff00a8e6</color>
 	<color name="font_deep_blue">#0298c1</color>
 	<color name="font_dark">#4e4e4e</color>
 	<color name="font_normal">#6f6f6f</color>

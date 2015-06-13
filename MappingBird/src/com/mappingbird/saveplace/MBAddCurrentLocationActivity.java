@@ -84,8 +84,10 @@ public class MBAddCurrentLocationActivity extends FragmentActivity  {
 				mType = intent.getStringExtra(EXTRA_TYPE);
 			mLatitude = intent.getDoubleExtra(EXTRA_LAT, 0);
 			mLongitude = intent.getDoubleExtra(EXTRA_LONG, 0);
-			mTitleStr = intent.getStringExtra(EXTRA_TITLE);
-			setTitleText(mTitleStr);
+			if(intent.hasExtra(EXTRA_TITLE)) {
+				mTitleStr = intent.getStringExtra(EXTRA_TITLE);
+				setTitleText(String.format(getString(R.string.create_location_title_with_text), mTitleStr));
+			}
 		}
 
 		// init map

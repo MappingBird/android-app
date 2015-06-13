@@ -41,4 +41,7 @@
     <string name="iconfont_menu_down" translatable="false">\uE633</string>
     <string name="iconfont_checkbox_blank" translatable="false">\uE62b</string>
     <string name="iconfont_checkbox_marked" translatable="false">\uE62a</string>
+    
+    <string name="iconfont_refresh" translatable="false">\uE624</string>
+    
 </resources>

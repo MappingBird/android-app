@@ -2,24 +2,27 @@ package com.mappingbird.saveplace;
 
 import java.io.Serializable;
 
+import android.text.SpannableString;
+
 import com.mappingbird.api.Venue;
 import com.mpbd.mappingbird.util.Utils;
 
 
 public class MappingBirdPlaceItem implements Serializable {
-	public static final int TYPE_PLACE 				= 0;
-	public static final int TYPE_ADD_THIS_PLACE		= 1;
-	public static final int TYPE_SEARCH_OTHER_TEXT 	= 2;
-	public static final int TYPE_SEARCH_AGAIN		= 3;
-	public static final int TYPE_SEARCH_ERROR		= 4;
+	public static final int TYPE_PLACE 					= 0;
+	public static final int TYPE_ADD_THIS_PLACE_FTITLE	= 1;
+	public static final int TYPE_SEARCH_OTHER_TEXT 		= 2;
+	public static final int TYPE_SEARCH_ERROR			= 3;
+	public static final int TYPE_ADD_THIS_PLACE_NO_TITLE= 4;
 	
-	public static final int TYPE_NUMBER = 3;
+	public static final int TYPE_NUMBER = 5;
 	
 	private int mType = TYPE_PLACE;
 	// Place info
 	private double mPlaceLatitude = 0;
 	private double mPlaceLongitude = 0;
 	private String mPlaceName = "";
+	private SpannableString mPlaceNameSpan = null;
 	private String mPlaceAddress = "";
 	private Venue mData;
 	public float mDistance;
@@ -47,7 +50,7 @@ public class MappingBirdPlaceItem implements Serializable {
 	}
 
 	/**
-	 * 只有給 新增此地點和收尋另外一個字串使用
+	 * 只有給 新增此地點一個字串使用
 	 * @param type
 	 * @param name
 	 * @param adress
@@ -56,6 +59,18 @@ public class MappingBirdPlaceItem implements Serializable {
 		mType = type;
 		mPlaceName = name;
 		mPlaceAddress = adress;
+	}
+	
+	/**
+	 * 只有給 新增此地點和收尋另外一個字串使用
+	 * @param type
+	 * @param name
+	 * @param adress
+	 */
+	public MappingBirdPlaceItem(int type, SpannableString spann, String address) {
+		mType = type;
+		mPlaceNameSpan = spann;
+		mPlaceAddress = address;
 	}
 	
 	public double getLatitude() {
@@ -73,6 +88,11 @@ public class MappingBirdPlaceItem implements Serializable {
 	public String getName() {
 		return mPlaceName;
 	}
+	
+	public SpannableString getNameSpann() {
+		return mPlaceNameSpan;
+	}
+
 	public String getAddress() {
 		return mPlaceAddress;
 	}

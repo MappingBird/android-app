@@ -84,11 +84,15 @@
     <!-- Pick place -->
     <string name="pick_place_title">Remember a place</string>
     <string name="pick_place_new_location">Add a new location</string>
-    <string name="pick_place_add_create_location_title">Add &#091; %s &#093;</string>
+    <string name="pick_place_add_create_location_title_by_text">Add%s</string>
+    <string name="pick_place_add_create_location_title">Create a new location</string>
     <string name="pick_place_add_create_location_des">Create a new location for everyone</string>
     <string name="pick_place_add_create_location_title_no_filter_str">Add current location</string>
-    <string name="pick_place_add_serach_title">Search &#091; %s &#093;</string>
+    <string name="pick_place_add_serach_title">Search%s</string>
     <string name="pick_place_add_srarch_des">Search more pleaces nearby</string>
+    <!-- Add current location -->
+    <string name="create_location_title">Locating a new place</string>
+    <string name="create_location_title_with_text">Locating %s</string>
     <!-- Settings -->
     <string name="settings_about_title">About MappingBird</string>
     <string name="settings_about_subtitle">Version : %s</string>
@@ -111,6 +115,8 @@
     <string name="error_login_fail_network">Please connect to the Internet and log in again.</string>
     <string name="error_login_fail_accout">Email or Password Error.</string>
     <string name="error_sign_up_fail_password_not_match_message">These passwords don\'t match. Try again?</string>
+    <string name="error_search_place_error">Oops! There are some problems. Try to search or tap to refresh</string>
+    <string name="error_search_place_hint">Otherwise you can...</string>
 
     <!-- Notification -->
     <string name="noti_update_wait_title">Update wait</string>

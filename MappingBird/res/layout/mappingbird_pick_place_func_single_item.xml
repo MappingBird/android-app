@@ -7,38 +7,31 @@
     <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/item_icon_font"
         android:layout_width="36dp"
-        android:layout_height="70dp"
+        android:layout_height="36dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:gravity="center"
+        android:text="@string/iconfont_map_plus"
         android:textColor="@color/font_blue"
         android:textSize="24dp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/item_icon_font"
+        android:layout_height="70dp"
         android:layout_centerVertical="true"
-        android:orientation="vertical" >
+        android:layout_toRightOf="@id/item_icon_font" >
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:layout_centerVertical="true"
             android:singleLine="true"
             android:textColor="@color/font_blue"
             android:textSize="16dp" />
-
-        <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/item_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:textColor="@color/font_dark"
-            android:textSize="13dp" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

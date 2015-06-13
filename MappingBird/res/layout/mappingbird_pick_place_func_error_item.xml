@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@drawable/cards_background" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="vertical" >
+
+            <com.mappingbird.widget.MappingbirdTextView
+                android:id="@+id/item_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@color/font_dark"
+                android:text="@string/error_search_place_error"
+                android:textSize="16dp" />
+
+            <com.mappingbird.widget.MappingbirdFontIcon
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+        		android:layout_gravity="center_horizontal"        
+                android:gravity="center"
+                android:text="@string/iconfont_refresh"
+                android:textColor="@color/font_dark"
+                android:textSize="24dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/item_description"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:gravity="center"
+        android:text="@string/error_search_place_hint"
+        android:textColor="@color/font_dark"
+        android:background="#00000000"
+        android:textSize="16dp" />
+</LinearLayout>

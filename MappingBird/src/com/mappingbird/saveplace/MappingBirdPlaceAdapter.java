@@ -9,14 +9,15 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
+import com.mappingbird.widget.MappingbirdFontIcon;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.Utils;
 
@@ -28,6 +29,7 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 	private ArrayList<MappingBirdPlaceItem> mData = new ArrayList<MappingBirdPlaceItem>();
 	private ArrayList<MappingBirdPlaceItem> mItems = new ArrayList<MappingBirdPlaceItem>();
 	private String mFilterString = "";
+	private String mAddPlaceName = "";
 	
 	public MappingBirdPlaceAdapter(Context context) {
 		mContext = context;
@@ -36,32 +38,18 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 
 	public void setPlaceData(ArrayList<MappingBirdPlaceItem> items) {
 		mData.clear();
-		if(items.size() > 0) {
-			mData.addAll(items);
-		} else {
-			prepareNoData();
-		}
+		mData.addAll(items);
+
 		mFilterString = "";
 		setFilter("");
 	}
 
-	private void prepareNoData() {
-		// 新增此地點
-		mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE, 
-				mContext.getString(R.string.pick_place_add_create_location_title_no_filter_str),
-				mContext.getString(R.string.pick_place_add_create_location_des)));
-//		// 收尋別的字串
-//		mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT, 
-//				String.format(mContext.getString(R.string.pick_place_add_serach_title), text),
-//				mContext.getString(R.string.pick_place_add_srarch_des)));
-	}
-
-	public void prepareErrorDara(int error) {
-		
-	}
-
 	public String getFilterStr() {
 		return mFilterString;
+	}
+
+	public String getAddPlaceName() {
+		return mAddPlaceName;
 	}
 
 	public void setFilter(String text) {
@@ -69,7 +57,24 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 		if(TextUtils.isEmpty(text)) {
 			mItems.clear();
 			mItems.addAll(mData);
+			// 如果 沒有資料的時候會出現這張卡片
+			if(mData.size() == 0) {
+				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_SEARCH_ERROR, 
+						mContext.getString(R.string.error_search_place_error),
+						""));
+			}
+			// 新增此地點
+			if(TextUtils.isEmpty(mAddPlaceName)) {
+				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE, 
+						mContext.getString(R.string.pick_place_add_create_location_title),
+						""));
+			} else {
+				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE, 
+						getSpecialString(R.string.pick_place_add_create_location_title_by_text, " "+mAddPlaceName+" "),
+						mContext.getString(R.string.pick_place_add_create_location_des)));
+			}
 		} else {
+			mAddPlaceName = text;
 			mItems.clear();
 			for(MappingBirdPlaceItem item : mData) {
 				if(!TextUtils.isEmpty(item.getName()) 
@@ -77,16 +82,24 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 					mItems.add(item);
 				}
 			}
-			// 新增此地點
-			mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE, 
-					String.format(mContext.getString(R.string.pick_place_add_create_location_title), text),
-					mContext.getString(R.string.pick_place_add_create_location_des)));
 			// 收尋別的字串
 			mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT, 
-					String.format(mContext.getString(R.string.pick_place_add_serach_title), text),
+					getSpecialString(R.string.pick_place_add_serach_title, " "+text+" "),
 					mContext.getString(R.string.pick_place_add_srarch_des)));
+			// 新增此地點
+			mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE, 
+					getSpecialString(R.string.pick_place_add_create_location_title_by_text, " "+text+" "),
+					mContext.getString(R.string.pick_place_add_create_location_des)));
 		}
 		notifyDataSetChanged();
+	}
+
+	private SpannableString getSpecialString(int strId, String filter) {
+		String str = String.format(mContext.getString(strId), filter);
+		SpannableString strSpan = new SpannableString(str);
+		strSpan.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.font_orange)), 
+				str.indexOf(filter), str.indexOf(filter) + filter.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		return strSpan;
 	}
 
 	@Override
@@ -126,23 +139,38 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 					host.mAddress 	= (TextView) convertView.findViewById(R.id.item_address);
 					host.mDistance 	= (TextView) convertView.findViewById(R.id.item_distance);
 					host.mUnit 		= (TextView) convertView.findViewById(R.id.item_unit);
-					host.mDistance.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							DeBug.i("Test", "onClick");
-						}
-					});
 					convertView.setTag(host);
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT:
-				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE: {
+				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
 					convertView = mInflater.inflate(R.layout.mappingbird_pick_place_func_item, parent, false);
 					ItemHost host = new ItemHost();
 					host.mIconFont	= (TextView) convertView.findViewById(R.id.item_icon_font);
 					host.mName 		= (TextView) convertView.findViewById(R.id.item_name);
 					host.mAddress 	= (TextView) convertView.findViewById(R.id.item_address);
+					convertView.setTag(host);
+					break;
+				}
+				case MappingBirdPlaceItem.TYPE_SEARCH_ERROR: {
+					convertView = mInflater.inflate(R.layout.mappingbird_pick_place_func_error_item, parent, false);
+					ItemHost host = new ItemHost();
+					host.mName 		= (TextView) convertView.findViewById(R.id.item_state);
+					// 不讓Description可以按
+					convertView.findViewById(R.id.item_description).setOnTouchListener(new OnTouchListener() {
+						@Override
+						public boolean onTouch(View v, MotionEvent event) {
+							return true;
+						}
+					});
+					convertView.setTag(host);
+					break;
+				}
+				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
+					convertView = mInflater.inflate(R.layout.mappingbird_pick_place_func_single_item, parent, false);
+					ItemHost host = new ItemHost();
+					host.mIconFont	= (TextView) convertView.findViewById(R.id.item_icon_font);
+					host.mName 		= (TextView) convertView.findViewById(R.id.item_name);
 					convertView.setTag(host);
 					break;
 				}
@@ -158,23 +186,45 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 					host.mName.setText(getfilterString(item.getName(),mFilterString));
 				}
 				host.mAddress.setText(item.getAddress());
-//				DeBug.d("Test", "p = "+position+", d = "+item.mDistance);
 				DistanceObject disObject = Utils.getDistanceObject(item.mDistance);
 				host.mDistance.setText(disObject.mDistance);
 				host.mUnit.setText(disObject.mUnit);
 				break;
 			}
-			case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE: {
+			case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
 				ItemHost host = (ItemHost)convertView.getTag();
-				host.mIconFont.setText(R.string.iconfont_map_maker);
-				host.mName.setText(item.getName());
+				host.mIconFont.setText(R.string.iconfont_map_plus);
+				if(host.mIconFont instanceof MappingbirdFontIcon) {
+					((MappingbirdFontIcon)host.mIconFont).
+						enableCircleBackground(mContext.getResources().getColor(R.color.graphic_blue_alpha));
+				}
+				host.mName.setText(item.getNameSpann());
 				host.mAddress.setText(item.getAddress());
+				break;
+			}
+			case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
+				ItemHost host = (ItemHost)convertView.getTag();
+				host.mIconFont.setText(R.string.iconfont_map_plus);
+				if(host.mIconFont instanceof MappingbirdFontIcon) {
+					((MappingbirdFontIcon)host.mIconFont).
+						enableCircleBackground(mContext.getResources().getColor(R.color.graphic_blue_alpha));
+				}
+				host.mName.setText(item.getName());
+				break;
+			}
+			case MappingBirdPlaceItem.TYPE_SEARCH_ERROR: {
+				ItemHost host = (ItemHost)convertView.getTag();
+				host.mName.setText(item.getName());
 				break;
 			}
 			case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT: {
 				ItemHost host = (ItemHost)convertView.getTag();
-				host.mIconFont.setText(R.string.iconfont_map_maker);
-				host.mName.setText(item.getName());
+				host.mIconFont.setText(R.string.iconfont_search);
+				if(host.mIconFont instanceof MappingbirdFontIcon) {
+					((MappingbirdFontIcon)host.mIconFont).
+						enableCircleBackground(mContext.getResources().getColor(R.color.graphic_blue_alpha));
+				}
+				host.mName.setText(item.getNameSpann());
 				host.mAddress.setText(item.getAddress());
 				break;
 			}

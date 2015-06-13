@@ -33,6 +33,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/title_btn_back"
             android:layout_toLeftOf="@id/title_btn_submit"
+            android:text="@string/create_location_title"
             android:singleLine="true"
             android:textColor="#FFF" />
     </RelativeLayout>
