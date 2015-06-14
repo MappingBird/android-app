@@ -80,6 +80,9 @@
     <string name="add_place_field_hyperlink">Hyperlink</string>
     <string name="add_place_create_new">Create new...</string>
 	<string name="add_place_add_tag_title">Add new or choose tags</string>
+	<string name="add_place_current_location_hint_title">The place will be public</string>
+	<string name="add_place_current_location_hint_message">The place where you create will be shared with all MappingBird Users.
+	    You will not able not modify if after it\'s created.</string>
     
     <!-- Pick place -->
     <string name="pick_place_title">Remember a place</string>

@@ -3,7 +3,7 @@
     android:id="@+id/pick_place_framelayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_grey" >
+    android:background="@color/bg_white" >
 
     <!-- Title -->
 
@@ -31,10 +31,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/title_btn_back"
             android:layout_toLeftOf="@id/title_btn_submit"
-            android:text="@string/create_location_title"
+            android:layout_toRightOf="@id/title_btn_back"
             android:singleLine="true"
+            android:text="@string/create_location_title"
             android:textColor="#FFF" />
     </RelativeLayout>
 
@@ -47,20 +47,63 @@
         android:layout_below="@id/title_bar" >
 
         <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/location_address"
+            android:id="@+id/location_hint_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="#fff"
-            android:padding="6dp"
-            android:textColor="#000"
-            android:textSize="16dp" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/add_place_current_location_hint_title"
+            android:textColor="@color/font_dark"
+            android:textSize="18dp" />
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/location_hint_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/location_hint_title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/add_place_current_location_hint_message"
+            android:textColor="@color/font_hint"
+            android:textSize="14dp" />
+
+        <LinearLayout
+            android:id="@+id/location_place_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/location_hint_message"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" >
+
+            <com.mappingbird.widget.MappingbirdFontIcon
+                android:id="@+id/lock_address_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:textColor="@color/font_dark"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="@string/iconfont_map_maker" />
+
+            <com.mappingbird.widget.MappingbirdEditText
+                android:id="@+id/location_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="6dp"
+                android:background="@drawable/edit_custom_drawable"
+                android:textCursorDrawable="@drawable/edit_cursor_drawable"
+                android:singleLine="true"
+                android:textColor="#000"
+                android:textSize="18dp" />
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/location_layout"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_below="@id/location_address" >
+            android:layout_below="@id/location_place_layout" >
 
             <fragment
                 android:id="@+id/location_map"
@@ -72,10 +115,10 @@
                 android:id="@+id/location_mark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="150dp"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
+                android:layout_marginBottom="150dp"
                 android:background="@drawable/map_mark_normal"
                 android:gravity="center"
                 android:text="@string/iconfont_general"

@@ -50,7 +50,7 @@
                 android:paddingLeft="28dp"
                 android:paddingRight="40dp"
                 android:singleLine="true"
-                android:textCursorDrawable="@drawable/edit_cursor_drawable"
+                android:textCursorDrawable="@drawable/edit_cursor_drawable_black"
                 android:textColor="@color/font_white"
                 android:textSize="16dp" />
 
