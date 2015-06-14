@@ -10,8 +10,8 @@
         android:layout_height="36dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="8dp"
         android:gravity="center"
         android:text="@string/iconfont_map_plus"
         android:textColor="@color/font_blue"
@@ -27,11 +27,11 @@
             android:id="@+id/item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
+            android:layout_marginRight="8dp"
             android:layout_centerVertical="true"
             android:singleLine="true"
-            android:textColor="@color/font_blue"
-            android:textSize="16dp" />
+            android:textColor="@color/font_deep_blue"
+            android:textSize="18dp" />
     </RelativeLayout>
 
 </RelativeLayout>

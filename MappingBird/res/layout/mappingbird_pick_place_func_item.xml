@@ -10,8 +10,8 @@
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="8dp"
         android:gravity="center"
         android:textColor="@color/font_blue"
         android:textSize="24dp" />
@@ -28,8 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="@color/font_blue"
-            android:textSize="16dp" />
+            android:textColor="@color/font_deep_blue"
+            android:textSize="18dp" />
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/item_address"
@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:textColor="@color/font_dark"
-            android:textSize="13dp" />
+            android:textColor="@color/font_normal"
+            android:textSize="14dp" />
     </LinearLayout>
 
 </RelativeLayout>

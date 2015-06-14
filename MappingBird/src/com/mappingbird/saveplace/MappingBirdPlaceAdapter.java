@@ -3,6 +3,7 @@ package com.mappingbird.saveplace;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -66,7 +67,7 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 			// 新增此地點
 			if(TextUtils.isEmpty(mAddPlaceName)) {
 				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE, 
-						mContext.getString(R.string.pick_place_add_create_location_title),
+						mContext.getString(R.string.pick_place_add_create_location_des),
 						""));
 			} else {
 				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE, 
@@ -97,8 +98,10 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 	private SpannableString getSpecialString(int strId, String filter) {
 		String str = String.format(mContext.getString(strId), filter);
 		SpannableString strSpan = new SpannableString(str);
-		strSpan.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.font_orange)), 
+		strSpan.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.font_heightlight_orange)), 
 				str.indexOf(filter), str.indexOf(filter) + filter.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		strSpan.setSpan(new StyleSpan(Typeface.BOLD), str.indexOf(filter), str.indexOf(filter) + filter.length(),
+				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		return strSpan;
 	}
 
@@ -196,7 +199,7 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 				host.mIconFont.setText(R.string.iconfont_map_plus);
 				if(host.mIconFont instanceof MappingbirdFontIcon) {
 					((MappingbirdFontIcon)host.mIconFont).
-						enableCircleBackground(mContext.getResources().getColor(R.color.graphic_blue_alpha));
+						enableCircleBackground(mContext.getResources().getColor(R.color.graphic_blue_shade));
 				}
 				host.mName.setText(item.getNameSpann());
 				host.mAddress.setText(item.getAddress());
@@ -207,7 +210,7 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 				host.mIconFont.setText(R.string.iconfont_map_plus);
 				if(host.mIconFont instanceof MappingbirdFontIcon) {
 					((MappingbirdFontIcon)host.mIconFont).
-						enableCircleBackground(mContext.getResources().getColor(R.color.graphic_blue_alpha));
+						enableCircleBackground(mContext.getResources().getColor(R.color.graphic_blue_shade));
 				}
 				host.mName.setText(item.getName());
 				break;
@@ -222,7 +225,7 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 				host.mIconFont.setText(R.string.iconfont_search);
 				if(host.mIconFont instanceof MappingbirdFontIcon) {
 					((MappingbirdFontIcon)host.mIconFont).
-						enableCircleBackground(mContext.getResources().getColor(R.color.graphic_blue_alpha));
+						enableCircleBackground(mContext.getResources().getColor(R.color.graphic_blue_shade));
 				}
 				host.mName.setText(item.getNameSpann());
 				host.mAddress.setText(item.getAddress());

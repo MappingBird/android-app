@@ -16,6 +16,9 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -311,7 +314,26 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 			if(s.length() > 0) {
 				mDeletSerachTextBtn.setVisibility(View.VISIBLE);
 			} else {
-				mDeletSerachTextBtn.setVisibility(View.GONE);
+				// 消失動畫
+				ScaleAnimation scale = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+				scale.setDuration(300);
+				scale.setAnimationListener(new AnimationListener() {
+					
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						mDeletSerachTextBtn.setVisibility(View.GONE);
+					}
+				});
+				mDeletSerachTextBtn.startAnimation(scale);
+//				mDeletSerachTextBtn.setVisibility(View.GONE);
 			}
 			mHandler.removeMessages(MSG_SEARCH_INPUT);
 			Message msg = new Message();
@@ -334,8 +356,10 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 		InputMethodManager inputManager = (InputMethodManager) this
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 	
-		inputManager.hideSoftInputFromWindow(this.getCurrentFocus()
-			.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		if(this.getCurrentFocus() != null && this.getCurrentFocus().getWindowToken() != null) {
+			inputManager.hideSoftInputFromWindow(this.getCurrentFocus()
+				.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		}
 	}
 
 	private void openIme(View view) {

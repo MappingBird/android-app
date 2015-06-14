@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="11dp"
             android:layout_toRightOf="@id/title_btn_back"
             android:background="@drawable/bg_underline_white"
             android:paddingLeft="4dp"
@@ -32,13 +32,13 @@
 
             <com.mappingbird.widget.MappingbirdFontIcon
                 android:id="@+id/title_icon_search"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="@string/iconfont_search"
                 android:textColor="@color/titlebar_button_text_color"
-                android:textSize="24dp" />
+                android:textSize="26dp" />
 
             <com.mappingbird.widget.MappingbirdEditText
                 android:id="@+id/title_input"
@@ -47,12 +47,12 @@
                 android:layout_centerVertical="true"
                 android:background="#00000000"
                 android:gravity="center_vertical"
-                android:paddingLeft="28dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="40dp"
                 android:singleLine="true"
                 android:textCursorDrawable="@drawable/edit_cursor_drawable_black"
                 android:textColor="@color/font_white"
-                android:textSize="16dp" />
+                android:textSize="18dp" />
 
             <com.mappingbird.widget.MappingbirdFontIcon
                 android:id="@+id/title_btn_delete"
@@ -63,7 +63,7 @@
                 android:gravity="center"
                 android:text="@string/iconfont_close_circle"
                 android:textColor="@color/titlebar_button_text_color"
-                android:textSize="24dp"
+                android:textSize="20dp"
                 android:visibility="gone" />
         </RelativeLayout>
 
