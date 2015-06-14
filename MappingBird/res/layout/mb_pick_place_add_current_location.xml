@@ -19,11 +19,34 @@
             android:layout_alignParentLeft="true"
             android:text="@string/iconfont_arrow_left" />
 
-        <com.mappingbird.widget.MappingbirdFontIcon
-            android:id="@+id/title_btn_submit"
-            style="@style/TitleButtonStyle"
+        <LinearLayout
+            android:id="@+id/title_btn_ok_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="8dp"
+            android:paddingRight="11dp"
+            android:background="@drawable/titlebar_button_bg"
             android:layout_alignParentRight="true"
-            android:text="@string/iconfont_checkbox_marked_circle" />
+            android:orientation="horizontal" >
+
+            <com.mappingbird.widget.MappingbirdTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/add_place_create"
+                android:textSize="14dp"
+                android:paddingRight="4dp"
+                android:textColor="@color/font_white" />
+
+            <com.mappingbird.widget.MappingbirdFontIcon
+                android:id="@+id/title_btn_submit"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="26dp"
+                android:textColor="@color/font_white"
+                android:text="@string/iconfont_map_plus" />
+        </LinearLayout>
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/title_text"
@@ -31,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/title_btn_submit"
+            android:layout_toLeftOf="@id/title_btn_ok_layout"
             android:layout_toRightOf="@id/title_btn_back"
             android:singleLine="true"
             android:text="@string/create_location_title"
@@ -46,85 +69,80 @@
         android:layout_height="match_parent"
         android:layout_below="@id/title_bar" >
 
-        <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/location_hint_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/add_place_current_location_hint_title"
-            android:textColor="@color/font_dark"
-            android:textSize="18dp" />
-
-        <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/location_hint_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/location_hint_title"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/add_place_current_location_hint_message"
-            android:textColor="@color/font_hint"
-            android:textSize="14dp" />
-
         <LinearLayout
             android:id="@+id/location_place_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/location_hint_message"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="18dp"
             android:orientation="horizontal" >
 
             <com.mappingbird.widget.MappingbirdFontIcon
                 android:id="@+id/lock_address_icon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:textColor="@color/font_dark"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:gravity="center"
-                android:textSize="18dp"
-                android:text="@string/iconfont_map_maker" />
+                android:text="@string/iconfont_map_maker"
+                android:textColor="@color/graphic_symbol"
+                android:textSize="20dp" />
 
             <com.mappingbird.widget.MappingbirdEditText
                 android:id="@+id/location_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="6dp"
-                android:background="@drawable/edit_custom_drawable"
-                android:textCursorDrawable="@drawable/edit_cursor_drawable"
+                android:background="#00000000"
+                android:paddingLeft="18dp"
                 android:singleLine="true"
-                android:textColor="#000"
-                android:textSize="18dp" />
+                android:textColor="@color/font_normal"
+                android:textCursorDrawable="@drawable/edit_cursor_drawable"
+                android:textSize="16dp" />
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/location_hint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical" >
+
+            <com.mappingbird.widget.MappingbirdTextView
+                android:id="@+id/location_hint_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_place_current_location_hint_title"
+                android:textColor="@color/font_normal"
+                android:textSize="16dp" />
+
+            <com.mappingbird.widget.MappingbirdTextView
+                android:id="@+id/location_hint_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/location_hint_title"
+                android:text="@string/add_place_current_location_hint_message"
+                android:textColor="@color/font_hint"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <com.mappingbird.saveplace.MBCrosshairLayout
             android:id="@+id/location_layout"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="match_parent"
+            android:layout_above="@id/location_hint_layout"
             android:layout_below="@id/location_place_layout" >
 
             <fragment
                 android:id="@+id/location_map"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="match_parent"
                 class="com.google.android.gms.maps.SupportMapFragment" />
 
-            <com.mappingbird.widget.MappingbirdFontIcon
-                android:id="@+id/location_mark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginBottom="150dp"
-                android:background="@drawable/map_mark_normal"
-                android:gravity="center"
-                android:text="@string/iconfont_general"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-        </RelativeLayout>
+        </com.mappingbird.saveplace.MBCrosshairLayout>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -26,6 +26,7 @@
 	<color name="graphic_default_background">#cccccc</color>
 	<color name="graphic_symbol">#ffa5a5a5</color>
 	<color name="graphic_alpha_background">#B2000000</color>
+	<color name="graphic_line_orange">#fff58829</color>
 		
 	<!-- font -->
 	<color name="font_heightlight_orange">#fff58829</color>

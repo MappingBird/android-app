@@ -110,4 +110,10 @@
     <dimen name="coll_card_marge_bottom">10dp</dimen>
     <dimen name="coll_card_marge_bottom_other">8dp</dimen>
     <dimen name="coll_card_shadow_height">6dp</dimen>
+    
+    <!-- Path -->
+    <dimen name="dash_line_width">1dp</dimen>
+    <dimen name="dash_line_space">2dp</dimen>
+    <dimen name="dash_line_length">2dp</dimen>
+    
 </resources>

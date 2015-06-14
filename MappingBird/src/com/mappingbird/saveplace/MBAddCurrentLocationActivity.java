@@ -61,7 +61,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	// Address
 	private EditText mAddress;
 	private RelativeLayout mLocationLayout;
-	private boolean mLockChanged = false;
+//	private boolean mLockChanged = false;
 	private Handler mHandler = new Handler() {
 
 		@Override
@@ -115,10 +115,6 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 				@Override
 				public void onCameraChange(CameraPosition position) {
 					mHandler.removeMessages(MSG_REQUEST_ADDRESS);
-					if(mLockChanged) {
-						mLockChanged = false;
-						return;
-					}
 					Message msg = new Message();
 					msg.what = MSG_REQUEST_ADDRESS;
 					Projection proj = mMap.getProjection();
@@ -137,7 +133,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		getLocationAddress(mLatitude, mLongitude);
 
 		findViewById(R.id.title_btn_back).setOnClickListener(mClickListener);
-		findViewById(R.id.title_btn_submit).setOnClickListener(mClickListener);
+		findViewById(R.id.title_btn_ok_layout).setOnClickListener(mClickListener);
 
 		mAddress.setEnabled(false);
 //		mAddress.addTextChangedListener(mTextWatcher);
@@ -149,10 +145,6 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		public void onTextChanged(CharSequence s, int start, int before,
 				int count) {
 			mHandler.removeMessages(MSG_REQUEST_LOCATION);
-			if(mLockChanged) {
-				mLockChanged = false;
-				return;
-			}
 			Message msg = new Message();
 			msg.what = MSG_REQUEST_LOCATION;
 			msg.obj = mAddress.getText().toString();
@@ -201,7 +193,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.title_btn_submit:
+			case R.id.title_btn_ok_layout:
 				Projection proj = mMap.getProjection();
 				LatLng latLng = proj.fromScreenLocation(new Point(
 						mLocationLayout.getWidth() / 2, mLocationLayout
@@ -243,7 +235,6 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 				mLatitude = add.getLatitude();
 				float nowZoom = mMap.getMaxZoomLevel() - 5;
 				LatLng latLng = new LatLng(mLatitude, mLongitude);
-				mLockChanged = true;
 				mMap.animateCamera(
 						CameraUpdateFactory.newLatLngZoom(latLng, nowZoom), 10,
 						null);
@@ -260,8 +251,6 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		geocoder = new Geocoder(this, Locale.getDefault());
 		try {
 			addresses = geocoder.getFromLocation(latitude, longitude, 1);
-
-			mLockChanged = true;
 			if (addresses != null && addresses.get(0) != null
 					&& addresses.get(0).getAddressLine(0) != null)
 				mAddress.setText(addresses.get(0).getAddressLine(0));
