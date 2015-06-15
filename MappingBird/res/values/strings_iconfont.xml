@@ -43,5 +43,7 @@
     <string name="iconfont_checkbox_marked" translatable="false">\uE62a</string>
     
     <string name="iconfont_refresh" translatable="false">\uE624</string>
+    <string name="iconfont_collections" translatable="false">\uE63B</string>
+    <string name="iconfont_camera_iris" translatable="false">\uE62F</string>
     
 </resources>

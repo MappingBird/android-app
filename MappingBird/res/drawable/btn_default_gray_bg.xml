@@ -3,13 +3,21 @@
 
     <item android:state_pressed="true">
         <shape >
-            <solid android:color="#969696"/>
+            <solid android:color="@color/graphic_btn_pressed"/>
+            <stroke android:width="1.0dp"  
+		        android:color="@color/graphic_btn_outline"  
+		        android:dashWidth="0.0dp"  
+		        android:dashGap="0.0dp" />  
         </shape> 
     </item>
     <item>
         <shape >
-            <solid android:color="#c6c6c6"/>
-        </shape> 
+            <solid android:color="@color/graphic_btn_white"/>
+            <stroke android:width="1.0dp"  
+		        android:color="@color/graphic_btn_outline"  
+		        android:dashWidth="0.0dp"  
+		        android:dashGap="0.0dp" />  
+            </shape> 
     </item>
 
 </selector>

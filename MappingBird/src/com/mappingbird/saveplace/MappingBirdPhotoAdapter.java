@@ -108,6 +108,7 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 			host.mPhoto1_image = (ImageView) convertView.findViewById(R.id.photo_1);
 			host.mPhoto1_check = (TextView) convertView.findViewById(R.id.photo_1_check);
 			host.mPhoto1_mask = convertView.findViewById(R.id.photo_1_mask);
+			host.mPhoto1_hint_layout = convertView.findViewById(R.id.photo_1_hint_layout);
 			
 			host.mPhoto2_Layout = convertView.findViewById(R.id.photo_2_layout);
 			host.mPhoto2_image = (ImageView) convertView.findViewById(R.id.photo_2);
@@ -130,10 +131,15 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 		if(item.getPath1() != null) {
 			host.mPhoto1_Layout.setVisibility(View.VISIBLE);
 			if(!item.getPath1().equals(TAG_CAMERA)) {
+				host.mPhoto1_Layout.setBackgroundDrawable(null);
+				host.mPhoto1_hint_layout.setVisibility(View.GONE);
+				host.mPhoto1_image.setVisibility(View.VISIBLE);
 				setLayoutData(host.mPhoto1_Layout, host.mPhoto1_image,
 						host.mPhoto1_check, host.mPhoto1_mask, item.getPath1());
 			} else {
-				host.mPhoto1_image.setImageResource(R.drawable.take_pic_btn);
+				host.mPhoto1_Layout.setBackgroundResource(R.drawable.btn_cell_bg);
+				host.mPhoto1_hint_layout.setVisibility(View.VISIBLE);
+				host.mPhoto1_image.setVisibility(View.GONE);
 				host.mPhoto1_check.setVisibility(View.GONE);
 				host.mPhoto1_mask.setVisibility(View.GONE);
 			}
@@ -168,12 +174,14 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 		mBitmapLoader.getBitmap(image, params);
 		layout.setTag(path);
 		if(mSelectPhotoList.contains(path)) {
+			checkView.setVisibility(View.VISIBLE);
 			checkView.setSelected(true);
 			checkView.setText(""+(mSelectPhotoList.indexOf(path)+1));
 			mask.setVisibility(View.VISIBLE);
 			layout.setScaleX(0.8f);
 			layout.setScaleY(0.8f);
 		} else {
+			checkView.setVisibility(View.GONE);
 			checkView.setSelected(false);
 			checkView.setText("");
 			mask.setVisibility(View.GONE);
@@ -235,6 +243,7 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 
 	class ItemHost {
 		public View mPhoto1_Layout;
+		public View mPhoto1_hint_layout;
 		public ImageView mPhoto1_image;
 		public TextView mPhoto1_check;
 		public View mPhoto1_mask;

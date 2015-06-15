@@ -27,6 +27,9 @@
 	<color name="graphic_symbol">#ffa5a5a5</color>
 	<color name="graphic_alpha_background">#B2000000</color>
 	<color name="graphic_line_orange">#fff58829</color>
+	<color name="graphic_btn_outline">#ffdbdbdb</color>
+	<color name="graphic_btn_white">#ffffffff</color>
+	<color name="graphic_btn_pressed">#fff2f2f2</color>
 		
 	<!-- font -->
 	<color name="font_heightlight_orange">#fff58829</color>

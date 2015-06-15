@@ -51,6 +51,7 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 	private View mPlaceOpenTimeLayout;
 	private View mPlaceHyperLinkLayout;
 	
+	private TextView mPlaceIcon;
 	// Place Field
 	private EditText mPlaceName;
 	private EditText mPlaceAddress;
@@ -103,6 +104,7 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		mPlaceOpenTimeLayout = findViewById(R.id.add_place_open_time_layout);
 		mPlaceHyperLinkLayout = findViewById(R.id.add_place_link_layout);
 		
+		mPlaceIcon = (TextView) findViewById(R.id.add_place_location_icon);
 		// Place Field
 		mPlaceDescription = (EditText) findViewById(R.id.add_place_about);
 		mPlaceName = (EditText) findViewById(R.id.add_place_location_name);
@@ -157,10 +159,11 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		}
 	};
 
-	public void setPlaceData(MappingBirdPlaceItem item) {
+	public void setPlaceData(MappingBirdPlaceItem item, int placeType) {
 		mPlaceData = item;
 		mPlaceName.setText(mPlaceData.getName());
 		mPlaceAddress.setText(mPlaceData.getAddress());
+		mPlaceIcon.setText(placeType);
 	}
 
 	/**
