@@ -625,8 +625,23 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		if (mLatLngs != null && mLatLngs.size() != 0) {
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
-			if (mMyLocation != null)
-				builder.include(mMyLocation);
+			if (mMyLocation != null) {
+				// 判斷Location是否與值偏差太遠.
+				float dis = Integer.MAX_VALUE;
+				for(LatLng lat : mLatLngs) {
+					float temp = Utils.getDistance(mMyLocation.latitude, mMyLocation.longitude,
+							lat.latitude, lat.longitude);
+					if(temp < dis) {
+						// 找出最小距離
+						dis = temp;
+					}
+				}
+
+				//最小距離小於3公里就方進去
+				if(dis <= 3000) {
+					builder.include(mMyLocation);
+				}
+			}
 			for (int i = 0; i < mLatLngs.size(); i++) {
 				builder.include(mLatLngs.get(i));
 			}
