@@ -6,6 +6,8 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -22,7 +24,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -64,7 +65,6 @@ import com.mappingbird.saveplace.MBSubmitMsgData;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mpbd.mappingbird.MBSettingsActivity;
 import com.mpbd.mappingbird.MappingBirdBitmap;
-import com.mpbd.mappingbird.MappingBirdBitmap.MappingBirdBitmapListner;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
@@ -73,6 +73,7 @@ import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
 import com.mpbd.place.MappingBirdPlaceActivity;
+import com.mpbd.services.MBServiceClient;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
@@ -240,6 +241,26 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				// 沒有資料
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED:
+				// 上傳失敗
+				mDialog = new MBDialog(mContext);
+				mDialog.setTitle(getString(R.string.error_dialog_submit_place_failed_title));
+				mDialog.setDescription(getString(R.string.error_dialog_submit_place_failed_message));
+				mDialog.setPositiveBtn(getString(R.string.str_retry), 
+						mSubmitFailedDialogOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.setNegativeBtn(getString(R.string.str_cancel), 
+						mSubmitFailedDialogCancelClickListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.setCanceledOnTouchOutside(false);
+				mDialog.setOnKeyListener(new OnKeyListener() {
+					@Override
+					public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+						//不讓Back有用
+						if(keyCode == KeyEvent.KEYCODE_BACK)
+							return true;
+						return false;
+					}
+				});
+				mDialog.show();
+				mMBCollectionListLayout.setProgress(data.getState(), 0, 0);
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED:
 				mMBCollectionListLayout.setProgress(data.getState(), data.getProgress(), data.getTotalProgress());
@@ -248,6 +269,29 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mMBCollectionListLayout.setProgress(data.getState(), data.getProgress(), data.getTotalProgress());
 				break;
 			}
+		}
+	};
+
+	// 上傳失敗區
+	private OnClickListener mSubmitFailedDialogOkClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			// 重新上穿
+			MBServiceClient.retryUpdate();
+			MainUIMessenger.getIns().addSubmitListener(mOnMBSubmitChangedListener);
+			mDialog.dismiss();
+		}
+	};
+
+	private OnClickListener mSubmitFailedDialogCancelClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			// 取消上傳
+			mDialog.dismiss();
+			// 這邊會出現兩種情況.
+			// 1. 上傳地點就失敗
+			
+			// 2. 上傳照片幾張失敗
 		}
 	};
 

@@ -3,6 +3,7 @@ package com.mpbd.mappingbird.common;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.DialogInterface.OnKeyListener;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -144,6 +145,11 @@ public class MBDialog {
 
 	public void setOnDismissListener(OnDismissListener listener) {
 		if(mDialog != null)
-			mDialog.setOnDismissListener(listener);		
+			mDialog.setOnDismissListener(listener);
+	}
+
+	public void setOnKeyListener(OnKeyListener listener) {
+		if(mDialog != null)
+			mDialog.setOnKeyListener(listener);
 	}
 }

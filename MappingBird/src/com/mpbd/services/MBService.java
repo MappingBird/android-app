@@ -72,10 +72,13 @@ public class MBService extends Service{
 		case CMD_ATTACH_MESSAGE:
 			if(DeBug.DEBUG)
 				DeBug.d(TAG, "Commond : CMD_ATTACH_MESSAGE");
+			if(DeBug.DEBUG)
+				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] Commond : CMD_ATTACH_MESSAGE");
 			attachMessager(intent);
 			break;
 		case CMD_RETRY_UPDATE: {
-			DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : update data");
+			if(DeBug.DEBUG)
+				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : update data");
 			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
 			boolean updateData = logic.submit();
 			if(updateData) {
@@ -147,10 +150,11 @@ public class MBService extends Service{
 				mUIMessenger = null;
 			} else {
 				mUIMessenger = (Messenger) p;
-				// 馬上傳送現在的狀態
 			}
 		}
+		// 馬上傳送現在的狀態
 		MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
+		logic.setSubmitLogicListener(mSubmitLogicListener);
 		Message msg = Message.obtain();
 		MBSubmitMsgData data = logic.getSubmitState();
 		msg.getData().putParcelable(MSG_SUBMIT, data);
@@ -160,7 +164,10 @@ public class MBService extends Service{
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		if(data.getState() == MBPlaceSubmitTask.MSG_NONE)  {
+		if(data.getState() == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
+			submitFailedNotification();
+		}
+		if(data.getState() != MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS)  {
 			// 沒有東西.關閉Service
 			stopSelf();
 		}
@@ -194,22 +201,10 @@ public class MBService extends Service{
 				MBServiceClient.stopService();
 				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED, progess, totle);
 			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
-				NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
-				if(notificationManager != null) {
-					Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
-							MappingBirdApplication.instance().getString(R.string.noti_update_error_title), 
-							MappingBirdApplication.instance().getString(R.string.noti_update_error_message));
-					notificationManager.notify(NOTIFY_ID, nm);
-				}				
+				submitFailedNotification();
 				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED, progess, totle);
 			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_GET_TOKEN_FAILED) {
-				NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
-				if(notificationManager != null) {
-					Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
-							MappingBirdApplication.instance().getString(R.string.noti_update_error_title), 
-							MappingBirdApplication.instance().getString(R.string.noti_update_error_message));
-					notificationManager.notify(NOTIFY_ID, nm);
-				}				
+				submitFailedNotification();	
 				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_GET_TOKEN_FAILED, progess, totle);
 			}
 		}
@@ -230,4 +225,14 @@ public class MBService extends Service{
 			sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS, progess, totle);
 		}
 	};
+	
+	private void submitFailedNotification() {
+		NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
+		if(notificationManager != null) {
+			Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
+					MappingBirdApplication.instance().getString(R.string.noti_update_error_title), 
+					MappingBirdApplication.instance().getString(R.string.noti_update_error_message));
+			notificationManager.notify(NOTIFY_ID, nm);
+		}
+	}
 }

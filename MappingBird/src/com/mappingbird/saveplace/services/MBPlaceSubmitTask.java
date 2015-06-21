@@ -92,6 +92,9 @@ public class MBPlaceSubmitTask implements Runnable{
 				} else {
 					// 沒有取得資料
 					mHandler.sendEmptyMessage(MSG_ADD_PLACE_FAILED);
+					AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
+					db.updatePlaceValue(
+							MBPlaceSubmitUtil.SUBMIT_STATE_PLACE_FAILED, null, mSubmitData.placeDBId);
 				}
 			}
 		});
@@ -129,6 +132,9 @@ public class MBPlaceSubmitTask implements Runnable{
 					} else {
 						//上傳失敗 回錯誤值
 						mHandler.sendEmptyMessage(MSG_ADD_PLACE_FAILED);
+						AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
+						db.updatePlaceValue(
+								MBPlaceSubmitUtil.SUBMIT_STATE_PLACE_FAILED, null, mSubmitData.placeDBId);
 					}
 				}
 			}, mSubmitData);

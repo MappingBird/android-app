@@ -121,7 +121,9 @@
     <string name="error_sign_up_fail_password_not_match_message">These passwords don\'t match. Try again?</string>
     <string name="error_search_place_error">Oops! There are some problems. Try to search or tap to refresh</string>
     <string name="error_search_place_hint">Otherwise you can...</string>
-
+    <string name="error_dialog_submit_place_failed_title">Submit failed</string>
+    <string name="error_dialog_submit_place_failed_message">Submit failed</string>
+    
     <!-- Notification -->
     <string name="noti_update_wait_title">Update wait</string>
     <string name="noti_update_wait_message">Update wait message</string>

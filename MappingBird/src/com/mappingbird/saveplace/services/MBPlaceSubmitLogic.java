@@ -116,7 +116,7 @@ public class MBPlaceSubmitLogic {
 		@Override
 		public void onStateChanged(int state, int process, int totle) {
 			if(DeBug.DEBUG)
-				DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : onStateChanged state = "+state+", process = "+process+", totle = "+totle);
+				DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : onStateChanged state = "+state+", process = "+process+", totle = "+totle+", mSubmitLogicListene = "+mSubmitLogicListener);
 			if(mSubmitLogicListener != null)
 				mSubmitLogicListener.onStateChanged(state, process, totle);
 		}
@@ -142,6 +142,15 @@ public class MBPlaceSubmitLogic {
 						", total = "+mSubmitTask.getTotalProgress());
 			MBSubmitMsgData data = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS, mSubmitTask.getProgress(), mSubmitTask.getTotalProgress());
 			return data;
+		} else {
+			// 沒有東西正在上傳, 檢查DB的值, 是否有要上傳的
+			AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
+			MBPlaceSubmitData data = db.getFirstData();
+			if(data != null && !data.isSubmitFinished()) {
+				// 有要上傳得值, 但是卻沒有上傳成功.
+				MBSubmitMsgData msg = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED);
+				return msg;
+			}
 		}
 		MBSubmitMsgData data = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_NONE);
 		return data;

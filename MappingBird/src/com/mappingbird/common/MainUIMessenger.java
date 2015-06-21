@@ -42,6 +42,8 @@ public class MainUIMessenger {
 	}
 
 	public void addSubmitListener(OnMBSubmitChangedListener listener) {
+		if(_submitListenerList.contains(listener))
+			_submitListenerList.remove(listener);
 		int count = _submitListenerList.size();
 		_submitListenerList.add(listener);
 		

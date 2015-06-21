@@ -19,6 +19,7 @@ import com.hlrt.common.DeBug;
 import com.mappingbird.collection.widget.MBProgressCircleLayout.ProgressListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
+import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.MBUtil;
@@ -30,6 +31,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private static final int MODE_CLOSE_ANIM = 2;
 	private static final int MODE_OPEN_ANIM = 3;
 	private static final int MODE_PROGRESSING = 4;
+	private static final int MODE_ERROR = 5;
 
 	private int mMode = MODE_CLOSE;
 	
@@ -429,19 +431,38 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		if(mMode != MODE_PROGRESSING) {
 			closeImm();
 		}
-
-		mMode = MODE_PROGRESSING;
-		mAddItemLayout.setMode(MBProgressCircleLayout.MODE_PROGRESS);
-		mAddItemLayout.setProgressListener(mProgressListener);
-		mAddItemLayout.startProcress(progress, total);
-		post(new Runnable() {
-			@Override
-			public void run() {
-				mAddItemText.setText(R.string.iconfont_cloud_upload);
-				mAddItemText.setTextColor(
-						MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
-			}
-		});
+		
+		if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED) {
+			
+		} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
+			// 上傳失敗
+			// 1. 清掉Progress狀態
+			mAddItemLayout.cleanProgress();
+			mAddItemLayout.setMode(MBProgressCircleLayout.MODE_NORMAL);
+			// 2. 換圖
+			post(new Runnable() {
+				@Override
+				public void run() {
+					mAddItemText.setText(R.string.iconfont_refresh);
+					mAddItemText.setTextColor(
+							MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
+				}
+			});			
+		} else {
+			// 上傳中
+			mMode = MODE_PROGRESSING;
+			mAddItemLayout.setMode(MBProgressCircleLayout.MODE_PROGRESS);
+			mAddItemLayout.setProgressListener(mProgressListener);
+			mAddItemLayout.startProcress(progress, total);
+			post(new Runnable() {
+				@Override
+				public void run() {
+					mAddItemText.setText(R.string.iconfont_cloud_upload);
+					mAddItemText.setTextColor(
+							MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
+				}
+			});
+		}
 	}
 	
 	private ProgressListener mProgressListener = new ProgressListener() {
