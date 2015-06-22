@@ -24,7 +24,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.location.LocationService;
@@ -86,6 +88,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private View mDrawerContentLayout;
 	private MBCollectionListItem mCurrentCollectionListItem;
 	private TextView mTitleText, mTitleNumber;
+	private RelativeLayout mLayoutAccount;
+	private LinearLayout mLayoutLoginSignUp;
 
 	private GoogleMap mMap;
 	private ArrayList<LatLng> mLatLngs = new ArrayList<LatLng>();
@@ -116,6 +120,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private MBCollectionListLayout mMBCollectionListLayout;
 
 	private TextView mAccountTextView;
+	private TextView tvSignIn;
+	private TextView tvSignUp;
 	
 	private ValueAnimator mClickMarkerAnimator = null;
 	private Point mPositionStart;
@@ -135,6 +141,16 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.collection_list);
 		mDrawerContentLayout = findViewById(R.id.collection_list_layout);
+		
+		mLayoutAccount = (RelativeLayout)findViewById(R.id.collection_user_info_layout);
+
+		mLayoutLoginSignUp = (LinearLayout)findViewById(R.id.collection_login_layout);
+		mLayoutLoginSignUp.setVisibility(MappingBirdPref.getIns().isGuestMode() ? View.VISIBLE : View.GONE);
+		
+        tvSignIn = (TextView) findViewById(R.id.tutoral_sign_in);
+        tvSignUp = (TextView) findViewById(R.id.tutoral_sign_up);		
+		mLayoutAccount.setVisibility(View.GONE);
+		mLayoutLoginSignUp.setVisibility(View.VISIBLE);
 
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
@@ -181,6 +197,28 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				invalidateOptionsMenu();
 			}
 		});
+		
+		
+        tvSignIn.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MappingBirdLoginActivity.class);
+                MappingBirdCollectionActivity.this.startActivity(intent);                        
+            }
+        });
+        
+        tvSignUp.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MappingBirdSignUpActivity.class);
+                MappingBirdCollectionActivity.this.startActivity(intent);                        
+            }
+        });        
+        
 
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
 		listObj.setOnGetCollectionListener(getCollectionListener);

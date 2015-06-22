@@ -14,6 +14,7 @@
     </string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="login">LOG IN</string>
     <string name="logining">Logging In</string>
     <string name="login1">Login</string>
@@ -30,6 +31,7 @@
     <string name="or">OR</string>
     <string name="str_retry">Retry</string>
     <string name="str_cancel">Cancel</string>
+    <string name="sign_up_content">Sign up a MappingBird account for backing up your favorite places, sync with devices and access them on mappingbird.</string>
 
     <!-- Tutorial -->
     <string name="tutorial_swipe_to_learn">Swipe to learn more about MappingBird.</string>

@@ -76,51 +76,122 @@
             android:layout_height="match_parent"
             android:layout_gravity="start" >
 
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/collection_account_layout"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@drawable/collection_item_bg" >
+                android:layout_height="wrap_content" >
 
-                <com.mappingbird.widget.MappingbirdFontIcon
-                    android:id="@+id/collection_account_icon"
-                    android:layout_width="54dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:text="@string/iconfont_account_circle"
-                    android:textColor="@color/iconfont_leading"
-                    android:textSize="26dp" />
-
-                <com.mappingbird.widget.MappingbirdFontIcon
-                    android:id="@+id/collection_logout_icon"
-                    android:layout_width="54dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:text="@string/iconfont_logout"
-                    android:textColor="@color/iconfont_leading"
-                    android:textSize="26dp" />
-
-                <com.mappingbird.widget.MappingbirdTextView
-                    android:id="@+id/collection_account"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/collection_logout_icon"
-                    android:layout_toRightOf="@id/collection_account_icon"
-                    android:paddingRight="16dp"
-                    android:textColor="@color/font_normal"
-                    android:textSize="16sp" />
-
-                <View
+                <RelativeLayout
+                    android:id="@+id/collection_user_info_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/default_divider" />
-            </RelativeLayout>
+                    android:layout_height="48dp"
+                    android:background="@drawable/collection_item_bg" >
+
+                    <com.mappingbird.widget.MappingbirdFontIcon
+                        android:id="@+id/collection_account_icon"
+                        android:layout_width="54dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:text="@string/iconfont_account_circle"
+                        android:textColor="@color/iconfont_leading"
+                        android:textSize="26dp" />
+
+                    <com.mappingbird.widget.MappingbirdFontIcon
+                        android:id="@+id/collection_logout_icon"
+                        android:layout_width="54dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:text="@string/iconfont_logout"
+                        android:textColor="@color/iconfont_leading"
+                        android:textSize="26dp"
+                        android:visibility="gone" />
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:id="@+id/collection_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/collection_logout_icon"
+                        android:layout_toRightOf="@id/collection_account_icon"
+                        android:paddingRight="16dp"
+                        android:textColor="@color/font_normal"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/default_divider" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/collection_login_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/graphic_orange"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp" >
+
+                    <LinearLayout
+                        android:layout_width="112dp"
+                        android:layout_height="26dp"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/statusbar_icon" />
+
+                        <ImageView
+                            android:layout_marginLeft="4dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/mappingbird_logotype_large" />
+                    </LinearLayout>
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/sign_up_content"
+                        android:textColor="@color/font_white"
+                        android:textSize="@dimen/body_small_text_size" />
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:id="@+id/tutoral_sign_in"
+                        style="@style/BtnTransparent"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/login_selector"
+                        android:text="@string/tutorial_sign_in"
+                        android:textColor="@color/font_white" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="4dp"
+                        android:src="@drawable/instruction_or" />
+
+                    <com.mappingbird.widget.MappingbirdTextView
+                        android:id="@+id/tutoral_sign_up"
+                        style="@style/BtnTransparent"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/tutorial_sign_up"
+                        android:textColor="@color/font_white" />
+                </LinearLayout>
+            </FrameLayout>
 
             <RelativeLayout
                 android:id="@+id/collection_help_layout"
