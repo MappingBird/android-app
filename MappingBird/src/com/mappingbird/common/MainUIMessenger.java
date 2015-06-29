@@ -21,6 +21,8 @@ import com.mpbd.services.MBServiceClient;
  * @y.exclude
  */
 public class MainUIMessenger {
+	public static final int MSG_DISCONNECT = 0;
+	public static final int MSG_ADD_PLACE = 1;
 	private static Singleton<MainUIMessenger> MainMessenger = new Singleton<MainUIMessenger>() {
 		
 		@Override

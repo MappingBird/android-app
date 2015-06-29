@@ -187,9 +187,10 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 			data.placeOpenTime = mPlaceOpenTime.getText().toString();
 		if(!TextUtils.isEmpty(mPlaceHyperLink.getText()))
 			data.url = mPlaceHyperLink.getText().toString();
-
+		
 		data.tags = mTagsListStr;
 		data.collectionId = mCollectionListAdapter.getSelectionId();
+		data.collectionName = mCollectionListAdapter.getSelectionName();
 		data.lat = String.valueOf(mPlaceData.getLatitude());
 		data.lng = String.valueOf(mPlaceData.getLongitude());
 		return data;

@@ -1,5 +1,7 @@
 package com.mappingbird.saveplace.services;
 
+import android.text.TextUtils;
+
 import com.hlrt.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MBSubmitMsgData;
@@ -16,8 +18,9 @@ public class MBPlaceSubmitLogic {
 
 	private SubmitLogicListener mSubmitLogicListener = null;
 	public interface SubmitLogicListener {
-		public void onStateChanged(int state, int process, int totle);
-		public void onProcess(int process, int totle);
+		public void onStateChanged(MBPlaceSubmitData data, int state, int process, int totle);
+		public void onPlaceUpdating(MBPlaceSubmitData data, int progess, int totle);
+		public void onProcess(MBPlaceSubmitData data, int process, int totle);
 	}
 
 	public void setSubmitLogicListener(SubmitLogicListener listener) {
@@ -118,7 +121,7 @@ public class MBPlaceSubmitLogic {
 			if(DeBug.DEBUG)
 				DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : onStateChanged state = "+state+", process = "+process+", totle = "+totle+", mSubmitLogicListene = "+mSubmitLogicListener);
 			if(mSubmitLogicListener != null)
-				mSubmitLogicListener.onStateChanged(state, process, totle);
+				mSubmitLogicListener.onStateChanged(mSubmitData, state, process, totle);
 		}
 
 		@Override
@@ -126,7 +129,15 @@ public class MBPlaceSubmitLogic {
 			if(DeBug.DEBUG)
 				DeBug.e(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : procress : "+process+"/"+totle);
 			if(mSubmitLogicListener != null)
-				mSubmitLogicListener.onProcess(process, totle);
+				mSubmitLogicListener.onProcess(mSubmitData, process, totle);
+		}
+
+		@Override
+		public void onPlaceUpdating(int process, int totle) {
+			if(DeBug.DEBUG)
+				DeBug.e(MBPlaceSubmitUtil.ADD_TAG, "[SubmitLogic] : onPlaceUpdating : "+process+"/"+totle);
+			if(mSubmitLogicListener != null)
+				mSubmitLogicListener.onPlaceUpdating(mSubmitData, process, totle);
 		}
 	};
 	
@@ -148,7 +159,12 @@ public class MBPlaceSubmitLogic {
 			MBPlaceSubmitData data = db.getFirstData();
 			if(data != null && !data.isSubmitFinished()) {
 				// 有要上傳得值, 但是卻沒有上傳成功.
-				MBSubmitMsgData msg = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED);
+				
+				MBSubmitMsgData msg;
+				if(!TextUtils.isEmpty(data.placeId))
+					msg = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED);
+				else 
+					msg = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED);
 				return msg;
 			}
 		}
@@ -162,6 +178,13 @@ public class MBPlaceSubmitLogic {
 	public void cleanData() {
 		mSubmitData = null;
 		mSubmitTask = null;
+	}
+	
+	/**
+	 * 
+	 */
+	public MBPlaceSubmitData getCurrentUpdateData() {
+		return mSubmitData;
 	}
 }
 

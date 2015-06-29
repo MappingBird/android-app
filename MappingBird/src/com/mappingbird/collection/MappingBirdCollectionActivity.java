@@ -65,6 +65,7 @@ import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.MBSubmitMsgData;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
+import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.mappingbird.MBSettingsActivity;
 import com.mpbd.mappingbird.MappingBirdBitmap;
 import com.mpbd.mappingbird.MappingBirdDialog;
@@ -274,11 +275,20 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		
 		@Override
 		public void onSubmitChanged(MBSubmitMsgData data) {
+			if(DeBug.DEBUG) {
+				DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] get message"); 
+			}
 			switch(data.getState()) {
 			case MBPlaceSubmitTask.MSG_NONE:
+				if(DeBug.DEBUG) {
+					DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] MSG : MSG_NONE"); 
+				}
 				// 沒有資料
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED:
+				if(DeBug.DEBUG) {
+					DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] MSG : MSG_ADD_PLACE_FAILED"); 
+				}
 				// 上傳失敗
 				mDialog = new MBDialog(mContext);
 				mDialog.setTitle(getString(R.string.error_dialog_submit_place_failed_title));
@@ -301,9 +311,15 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mMBCollectionListLayout.setProgress(data.getState(), 0, 0);
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED:
+				if(DeBug.DEBUG) {
+					DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] MSG : MSG_ADD_PLACE_FINISHED"); 
+				}
 				mMBCollectionListLayout.setProgress(data.getState(), data.getProgress(), data.getTotalProgress());
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS:
+				if(DeBug.DEBUG) {
+					DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] MSG : MSG_ADD_PLACE_PROCRESS"); 
+				}
 				mMBCollectionListLayout.setProgress(data.getState(), data.getProgress(), data.getTotalProgress());
 				break;
 			}

@@ -12,8 +12,8 @@ public class MBPlaceSubmitUtil {
     public static final int SUBMIT_STATE_PLACE_READY = 2;
     public static final int SUBMIT_STATE_PHOTO_FAILED = 3;
     public static final int SUBMIT_STATE_PHOTO_READY = 4;
-    public static final int SUBMIT_STATE_CANCEL = 5;
-    public static final int SUBMIT_STATE_FINISHED = 6;
+    public static final int SUBMIT_STATE_FINISHED = 10;
+    public static final int SUBMIT_STATE_CANCEL = 11;
 
 
 	

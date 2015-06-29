@@ -19,6 +19,7 @@ public class MBPlaceAddDataToServer implements Serializable{
 	public String lat = null;
 	public String lng = null;
 	public String type = "";
+	public String collectionName = "";
 	public long collectionId = -1;
 
 	public ArrayList<String> imageList = new ArrayList<String>();

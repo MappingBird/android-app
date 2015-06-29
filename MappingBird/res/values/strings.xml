@@ -127,14 +127,21 @@
     <string name="error_dialog_submit_place_failed_message">Submit failed</string>
     
     <!-- Notification -->
-    <string name="noti_update_wait_title">Update wait</string>
-    <string name="noti_update_wait_message">Update wait message</string>
-    <string name="noti_update_error_title">Update error</string>
-    <string name="noti_update_error_message">Update error message</string>
-    <string name="noti_update_progress_title">Update progress</string>
-    <string name="noti_update_progress_message">Update %1$s / %2$s</string>
-    <string name="noti_update_finish_title">Update finished</string>
-    <string name="noti_update_finish_message">Update finished message</string>
+    <string name="noti_update_wait_title">Save wait</string>
+    <string name="noti_update_wait_message"></string>
+    <string name="noti_update_error_photos_title">Photos upload failed</string>
+    <string name="noti_update_error_place_title">Place save failed</string>
+    <string name="noti_update_error_upload_title">Upload failed</string>
+    <string name="noti_update_error_save_title">Save failed</string>
+    <string name="noti_update_error_title">Update fails</string>
+    <string name="noti_update_error_message">Tap to retry</string>
+    <string name="noti_update_tap_to_retry">Tap to retry</string>
+    <string name="noti_update_progress_title">Uploading photos %1$s of %2$s</string>
+    <string name="noti_update_progress_message">Tap to cancel</string>
+    <string name="noti_update_finish_title">\"%1$s\" saved to</string>
+    <string name="noti_update_place_title">Saving \"%1$s\" to</string>
+    <string name="noti_update_place_ticker">Saving place</string>
+    <string name="noti_update_place_finished_ticker">\"%1$s\" saved</string>
     
     <!-- Debug -->
     <string name="debug_dump_db">Dump DB</string>

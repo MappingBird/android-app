@@ -23,11 +23,12 @@ public class MBPlaceSubmitTask implements Runnable{
 	}
 
 	public static final int MSG_NONE				= -1;
-	public static final int MSG_ADD_PLACE_FAILED	= 0;
+	public static final int MSG_ADD_PLACE_FAILED	= 0; // 包含拿不到Token, 和上傳Place失敗
 	public static final int MSG_ADD_PLACE_PROCRESS 	= 1;
 	public static final int MSG_ADD_PLACE_UPDATE_IMAGE 	= 2;
+	public static final int MSG_ADD_IMAGE_PROCRESS 	= 3;
 	public static final int MSG_ADD_PLACE_FINISHED 	= 5;
-	public static final int MSG_ADD_PLACE_GET_TOKEN_FAILED	= 6;
+	public static final int MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED	= 6;
 	
 	private int mImageIndex = 0;
 
@@ -46,12 +47,11 @@ public class MBPlaceSubmitTask implements Runnable{
 			switch(msg.what) {
 			case MSG_ADD_PLACE_PROCRESS:
 				if(mSubmitTaskListener != null)
-					mSubmitTaskListener.onProcess(msg.arg1, mSubmitData.getTotleProcess());
+					mSubmitTaskListener.onPlaceUpdating(msg.arg1, mSubmitData.getTotleProcess());
 				break;
-			case MSG_ADD_PLACE_GET_TOKEN_FAILED:
-				isSubmit = false;
+			case MSG_ADD_IMAGE_PROCRESS:
 				if(mSubmitTaskListener != null)
-					mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_GET_TOKEN_FAILED, 0, 0);
+					mSubmitTaskListener.onProcess(msg.arg1, mSubmitData.getTotleProcess());
 				break;
 			case MSG_ADD_PLACE_FAILED:
 				isSubmit = false;
@@ -60,14 +60,21 @@ public class MBPlaceSubmitTask implements Runnable{
 				break;
 			case MSG_ADD_PLACE_FINISHED:
 				isSubmit = false;
+				// 確認是否有上傳成功
 				if(mSubmitData.isSubmitFinished()) {
+					// 上傳成功
 					AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
 					db.updatePlaceValue(
 							MBPlaceSubmitUtil.SUBMIT_STATE_FINISHED, mSubmitData.placeId, mSubmitData.placeDBId);
+
+					if(mSubmitTaskListener != null)
+						mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_FINISHED,  mSubmitData.getTotleProcess(),  mSubmitData.getTotleProcess());
+				} else {
+					// 有圖上傳失敗
+					if(mSubmitTaskListener != null)
+						mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED,  mSubmitData.getTotleProcess(),  mSubmitData.getTotleProcess());
 				}
 
-				if(mSubmitTaskListener != null)
-					mSubmitTaskListener.onStateChanged(MSG_ADD_PLACE_FINISHED,  mSubmitData.getTotleProcess(),  mSubmitData.getTotleProcess());
 				break;
 			case MSG_ADD_PLACE_UPDATE_IMAGE:
 				updateImage();
@@ -115,7 +122,7 @@ public class MBPlaceSubmitTask implements Runnable{
 				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] Place update start!!!");
 			MappingBirdAPI api = new MappingBirdAPI(MappingBirdApplication.instance());
 			mProgress = 0;
-			sendProcress(mProgress);
+			sendPlaceProcress(mProgress);
 			api.addPlace(new OnAddPlaceListener() {
 				@Override
 				public void onAddPlace(int statusCode, MBPointData data) {
@@ -158,7 +165,7 @@ public class MBPlaceSubmitTask implements Runnable{
 //					submitImage(i, mSubmitData.imageArrays.get(i));
 					submitImageForSession(i, mSubmitData.imageArrays.get(i));
 					mProgress = i+1;
-					sendProcress(mProgress);
+					sendImageProcress(mProgress);
 					return;
 				}
 			}
@@ -169,7 +176,7 @@ public class MBPlaceSubmitTask implements Runnable{
 			mHandler.sendEmptyMessage(MSG_ADD_PLACE_FINISHED);
 		}
 	}
-
+/*
 	private void submitImage(final int index, MBPlaceSubmitImageData data) {
 		if(DeBug.DEBUG)
 			DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] submitImage : place id = "+mSubmitData.placeId+
@@ -200,7 +207,7 @@ public class MBPlaceSubmitTask implements Runnable{
 			mHandler.sendEmptyMessage(MSG_ADD_PLACE_UPDATE_IMAGE);
 		}
 	}
-
+*/
 	private void submitImageForSession(final int index, MBPlaceSubmitImageData data) {
 		if(DeBug.DEBUG)
 			DeBug.v(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] updateImageTempBySession : place id = "+mSubmitData.placeId+
@@ -241,9 +248,16 @@ public class MBPlaceSubmitTask implements Runnable{
 		
 	}
 
-	private void sendProcress(int procress) {
+	private void sendPlaceProcress(int procress) {
 		Message msg = new Message();
 		msg.what = MSG_ADD_PLACE_PROCRESS;
+		msg.arg1 = procress;
+		mHandler.sendMessage(msg);
+	}
+
+	private void sendImageProcress(int procress) {
+		Message msg = new Message();
+		msg.what = MSG_ADD_IMAGE_PROCRESS;
 		msg.arg1 = procress;
 		mHandler.sendMessage(msg);
 	}
@@ -264,6 +278,7 @@ public class MBPlaceSubmitTask implements Runnable{
 	public interface SubmitTaskListener {
 		public void onStateChanged(int state, int process, int totle);
 		public void onProcess(int process, int totle);
+		public void onPlaceUpdating(int process, int totle);
 	}
 	
 	/**

@@ -24,6 +24,7 @@ public class MBPlaceSubmitData {
 	public String lng = null;
 	public String type = "";
 	public long collectionId = -1;
+	public String collectionName = "";
 
 	public ArrayList<MBPlaceSubmitImageData> imageArrays = new ArrayList<MBPlaceSubmitImageData>();
 
@@ -43,6 +44,7 @@ public class MBPlaceSubmitData {
 		placeAddress 	= data.placeAddress;
 		collectionId 	= data.collectionId;
 		description 	= data.description;
+		collectionName 	= data.collectionName;
 		imageArrays.clear();
 	}
 

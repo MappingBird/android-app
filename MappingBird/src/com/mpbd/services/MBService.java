@@ -12,10 +12,12 @@ import android.os.Parcelable;
 import android.os.RemoteException;
 
 import com.hlrt.common.DeBug;
+import com.mappingbird.common.MainUIMessenger;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MBSubmitMsgData;
 import com.mappingbird.saveplace.db.AppPlaceDB;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
+import com.mappingbird.saveplace.services.MBPlaceSubmitData;
 import com.mappingbird.saveplace.services.MBPlaceSubmitLogic;
 import com.mappingbird.saveplace.services.MBPlaceSubmitLogic.SubmitLogicListener;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
@@ -26,7 +28,7 @@ import com.mpbd.notification.MBNotificationCenter;
 public class MBService extends Service{
 	private static final String TAG = "CommonService";
 	private static final int NOTIFY_ID = 10020;
-	private static final int NOTIFY_FINISHED_ID = 10020;
+	private static final int NOTIFY_FINISHED_ID = 10021;
 	public static final String EXTRA_SERVICE_COMMEND = "extra_service_commend";
 	
 	public static final int CMD_START_LOCATUIN 	= 100;
@@ -50,9 +52,9 @@ public class MBService extends Service{
 		super.onCreate();
 		// start foreground
 		try {
-			Notification nm = MBNotificationCenter.getUpdateMessageNotification(this, 
+			Notification nm = MBNotificationCenter.getUpdateMessageNotification(this, "",
 					this.getString(R.string.noti_update_wait_title), 
-					this.getString(R.string.noti_update_wait_message));
+					this.getString(R.string.noti_update_wait_message), MBPlaceSubmitTask.MSG_NONE);
 			startForeground(NOTIFY_ID, nm);
 		} catch (Exception e) {
 			if(DeBug.DEBUG)
@@ -164,8 +166,9 @@ public class MBService extends Service{
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		if(data.getState() == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
-			submitFailedNotification();
+		if(data.getState() == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED ||
+				data.getState() == MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED) {
+			submitFailedNotification(data.getState());
 		}
 		if(data.getState() != MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS)  {
 			// 沒有東西.關閉Service
@@ -174,9 +177,10 @@ public class MBService extends Service{
 
 	}
 
-	private void sendMessage(int state, int progress, int total) {
+	private void sendAddPlaceStateMessage(int state, int progress, int total) {
 		MBSubmitMsgData data = new MBSubmitMsgData(state, progress, total);
 		Message msg = Message.obtain();
+		msg.what = MainUIMessenger.MSG_ADD_PLACE;
 		msg.getData().putParcelable(MSG_SUBMIT, data);
 		try {
 			if(mUIMessenger != null)
@@ -189,50 +193,125 @@ public class MBService extends Service{
 	private SubmitLogicListener mSubmitLogicListener = new SubmitLogicListener() {
 		
 		@Override
-		public void onStateChanged(int state, int progess, int totle) {
+		public void onStateChanged(MBPlaceSubmitData data, int state, int progess, int totle) {
 			if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED) {
 				NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
 				if(notificationManager != null) {
+					// 拿出現在正在上傳的資料
+					// 建立Title String
+					String title = String.format(
+							MappingBirdApplication.instance().getString(R.string.noti_update_finish_title),
+							data.placeName);
+					String ticker = String.format(
+							MappingBirdApplication.instance().getString(R.string.noti_update_place_finished_ticker),
+							data.placeName);
 					Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
-							MappingBirdApplication.instance().getString(R.string.noti_update_finish_title), 
-							MappingBirdApplication.instance().getString(R.string.noti_update_finish_message));
+							ticker, 
+							title, 
+							data.collectionName,
+							state);
 					notificationManager.notify(NOTIFY_FINISHED_ID, nm);
 				}
+				sendAddPlaceStateMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED, progess, totle);
 				MBServiceClient.stopService();
-				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED, progess, totle);
 			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
-				submitFailedNotification();
-				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED, progess, totle);
-			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_GET_TOKEN_FAILED) {
-				submitFailedNotification();	
-				sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_GET_TOKEN_FAILED, progess, totle);
+				submitFailedNotification(state);
+				sendAddPlaceStateMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED, progess, totle);
+			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED) {
+				submitFailedNotification(state);	
+				sendAddPlaceStateMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED, progess, totle);
 			}
 		}
 		
 		@Override
-		public void onProcess(int progess, int totle) {
+		public void onProcess(MBPlaceSubmitData data, int progess, int totle) {
+			cleanNotifyFinishedId();
 			NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
-			if(notificationManager != null) {
-				Notification nm = MBNotificationCenter.getUpdateProgressNotification(MappingBirdApplication.instance(), 
-						MappingBirdApplication.instance().getString(R.string.noti_update_progress_title), 
-						String.format(MappingBirdApplication.instance().getString(R.string.noti_update_finish_message),
-								progess, totle),
-						progess,
-						totle,
+			if(notificationManager != null && data != null) {
+				// 計算上傳照片的值
+				int nProgess = 0;
+				int nTotle = 0;
+				if(totle > 1) {
+					nProgess = progess - 1;
+					nTotle = totle - 1;
+				} else {
+					nProgess = progess;
+					nTotle = totle;
+				}
+				String title = String.format(
+						MappingBirdApplication.instance().getString(R.string.noti_update_progress_title),
+						nProgess, nTotle);
+				Notification nm = MBNotificationCenter.getUpdateProgressNotification(MappingBirdApplication.instance(),
+						"",
+						title, 
+						MappingBirdApplication.instance().getString(R.string.noti_update_progress_message),
+						nProgess,
+						nTotle,
 						true);
 				notificationManager.notify(NOTIFY_ID, nm);
 			}
-			sendMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS, progess, totle);
+			sendAddPlaceStateMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS, progess, totle);
+		}
+
+		@Override
+		public void onPlaceUpdating(MBPlaceSubmitData data, int progess, int totle) {
+			cleanNotifyFinishedId();
+			NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
+			if(notificationManager != null && data != null) {
+				String title = String.format(
+						MappingBirdApplication.instance().getString(R.string.noti_update_place_title), 
+						data.placeName);
+				Notification nm = MBNotificationCenter.getUpdateProgressNotification(MappingBirdApplication.instance(),
+						MappingBirdApplication.instance().getString(R.string.noti_update_place_ticker), 
+						title, 
+						data.collectionName,
+						0,
+						totle,
+						false);
+				notificationManager.notify(NOTIFY_ID, nm);
+			}
+			sendAddPlaceStateMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_PROCRESS, progess, totle);
 		}
 	};
 	
-	private void submitFailedNotification() {
+	private String getNotificationErrorTitle(int state) {
+		switch(state) {
+		case MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED:
+			return MappingBirdApplication.instance().getString(R.string.noti_update_error_place_title);
+		case MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED:
+			return MappingBirdApplication.instance().getString(R.string.noti_update_error_photos_title);
+		}
+		
+		return MappingBirdApplication.instance().getString(R.string.noti_update_error_title);
+	}
+
+	private String getNotificationErrorTicker(int state) {
+		switch(state) {
+		case MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED:
+			return MappingBirdApplication.instance().getString(R.string.noti_update_error_save_title);
+		case MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED:
+			return MappingBirdApplication.instance().getString(R.string.noti_update_error_upload_title);
+		}
+		
+		return "";
+	}
+
+	private void submitFailedNotification(int state) {
 		NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
 		if(notificationManager != null) {
 			Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
-					MappingBirdApplication.instance().getString(R.string.noti_update_error_title), 
-					MappingBirdApplication.instance().getString(R.string.noti_update_error_message));
-			notificationManager.notify(NOTIFY_ID, nm);
+					getNotificationErrorTicker(state),
+					getNotificationErrorTitle(state), 
+					MappingBirdApplication.instance().getString(R.string.noti_update_tap_to_retry),
+					state);
+			notificationManager.notify(NOTIFY_FINISHED_ID, nm);
+		}
+	}
+
+	private void cleanNotifyFinishedId() {
+		NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
+		if(notificationManager != null) {
+			notificationManager.cancel(NOTIFY_FINISHED_ID);
 		}
 	}
 }

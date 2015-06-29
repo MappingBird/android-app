@@ -433,7 +433,18 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		}
 		
 		if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED) {
-			
+			mMode = MODE_PROGRESSING;
+			mAddItemLayout.setMode(MBProgressCircleLayout.MODE_PROGRESS);
+			mAddItemLayout.setProgressListener(mProgressListener);
+			mAddItemLayout.startProcress(progress, total);
+			post(new Runnable() {
+				@Override
+				public void run() {
+					mAddItemText.setText(R.string.iconfont_cloud_upload);
+					mAddItemText.setTextColor(
+							MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
+				}
+			});			
 		} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
 			// 上傳失敗
 			// 1. 清掉Progress狀態
