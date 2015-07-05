@@ -21,6 +21,7 @@ import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.mappingbird.common.MBDialog;
+import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.services.MBServiceClient;
 
 public class MBSettingsActivity extends Activity {
@@ -111,13 +112,20 @@ public class MBSettingsActivity extends Activity {
 			MappingBirdAPI mApi = null;
 			mApi = new MappingBirdAPI(MBSettingsActivity.this.getApplicationContext());
 			if (mApi.logOut()) {
-				MappingBirdPref.getIns().getIns().setCollectionPosition(0);
+				MappingBirdPref.getIns().setCollectionPosition(0);
 				Intent intent = new Intent();
 				intent.setClass(MBSettingsActivity.this,
 						com.mpbd.tutorial.MBTutorialActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_TASK);
 				MBSettingsActivity.this.startActivity(intent);
 				finish();
+				
+	            AppAnalyticHelper.sendEvent(MBSettingsActivity.this, 
+	                    AppAnalyticHelper.CATEGORY_UI_ACTION, 
+	                    AppAnalyticHelper.ACTION_BUTTON_PRESS,
+	                    AppAnalyticHelper.LABEL_BUTTON_LOGOUT_OK,
+	                    AppAnalyticHelper.VALUE_OPERATION_SUCCESS);
+				
 			} else {
 				Toast.makeText(getApplicationContext(), getString(R.string.error_log_out_fail),
 						Toast.LENGTH_SHORT).show();
@@ -129,6 +137,13 @@ public class MBSettingsActivity extends Activity {
 		
 		@Override
 		public void onClick(View v) {
+		    
+		    AppAnalyticHelper.sendEvent(MBSettingsActivity.this, 
+                    AppAnalyticHelper.CATEGORY_UI_ACTION, 
+                    AppAnalyticHelper.ACTION_BUTTON_PRESS,
+                    AppAnalyticHelper.LABEL_BUTTON_LOGOUT_CANCEL,
+                    AppAnalyticHelper.VALUE_OPERATION_FAIL);
+		    
 			mDialog.dismiss();
 		}
 	};

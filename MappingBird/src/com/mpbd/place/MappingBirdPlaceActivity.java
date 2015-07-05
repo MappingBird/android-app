@@ -1,6 +1,8 @@
 package com.mpbd.place;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -28,6 +30,7 @@ import com.mappingbird.api.ImageDetail;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetPointsListener;
+import com.mappingbird.collection.MappingBirdCollectionActivity;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
@@ -39,6 +42,7 @@ import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
+import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.Utils;
 
 public class MappingBirdPlaceActivity extends Activity implements
@@ -105,6 +109,10 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private int mTitleScrollDistance = 0;
 	private BitmapLoader mBitmapLoader;
 	private String mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_restaurant.png";
+	
+	
+	Set<Integer> mPhotoSwiped;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -157,6 +165,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		findViewById(R.id.share_icon).setOnClickListener(mShareClickListener);
 
 		mTripMapView = (ImageView) findViewById(R.id.trip_map_view);
+		mTripMapView.setOnClickListener(this);
 
 		mScrollView = (MappingbirdScrollView) findViewById(R.id.trip_place_scrollview);
 		mScrollView.setOnScrollViewListener(mOnScrollViewListener);
@@ -183,6 +192,9 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mPinIcon.setText(Utils.getPinIconFont(mCurrentPoint.getTypeInt()));
 
 		ArrayList<ImageDetail> imagelist = mCurrentPoint.getImageDetails();
+		
+		mPhotoSwiped = new HashSet<Integer>();
+
 		ArrayList<String> list = new ArrayList<String>();
 		for(ImageDetail item : imagelist) {
 			list.add(item.getUrl());
@@ -254,6 +266,9 @@ public class MappingBirdPlaceActivity extends Activity implements
 			} else {
 				mPlacePhotoCountText.setText((position+1)+"/"+mGalleryAdapter.getCount());
 			}
+			
+			mPhotoSwiped.add(position);
+			
 		}
 		
 		@Override
@@ -364,6 +379,12 @@ public class MappingBirdPlaceActivity extends Activity implements
 //						+ mPoint.getLocation().getPlaceAddress() + "\n"
 //						+ mPoint.getUrl()+"\n";
 				getShareIntent("Share", placeInfo);
+				
+				
+	            AppAnalyticHelper.sendEvent(MappingBirdPlaceActivity.this, 
+	                    AppAnalyticHelper.CATEGORY_UI_ACTION, 
+	                    AppAnalyticHelper.ACTION_BUTTON_PRESS,
+	                    AppAnalyticHelper.LABEL_BUTTON_SHARE, 0);   
 			}
 
 		}
@@ -380,6 +401,15 @@ public class MappingBirdPlaceActivity extends Activity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.trip_map_view:
+		    
+		    AppAnalyticHelper.sendEvent(MappingBirdPlaceActivity.this, 
+                    AppAnalyticHelper.CATEGORY_UI_ACTION, 
+                    AppAnalyticHelper.ACTION_IMAGE_CLICK,
+                    AppAnalyticHelper.LABEL_MAP_IN_PLACE_PAGE, 0);   
+		    
+            break;
+		    
 		case R.id.back_icon:
 			finish();
 			break;
@@ -390,6 +420,14 @@ public class MappingBirdPlaceActivity extends Activity implements
 								+ mMyLatitude + "," + mMyLongitude + "&daddr="
 								+ mPlaceLatitude + "," + mPlaceLongitude));
 				startActivity(intent);
+				
+				AppAnalyticHelper.sendEvent(MappingBirdPlaceActivity.this, 
+                        AppAnalyticHelper.CATEGORY_UI_ACTION, 
+                        AppAnalyticHelper.ACTION_BUTTON_PRESS, 
+                        AppAnalyticHelper.LABEL_BUTTON_NAVIGATE, 0);
+
+				
+				
 			} catch (Exception e) {
 				try {
 					startActivity(new Intent(
@@ -450,4 +488,17 @@ public class MappingBirdPlaceActivity extends Activity implements
 		super.onStop();
 		EasyTracker.getInstance(this).activityStop(this); 
 	}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        
+        AppAnalyticHelper.sendEvent(MappingBirdPlaceActivity.this, 
+                AppAnalyticHelper.CATEGORY_UI_ACTION, 
+                AppAnalyticHelper.ACTION_SWIPE_PHOTO,
+                ""+mGalleryAdapter.getCount(),
+                mPhotoSwiped.size());
+    }
+	
+	
 }
