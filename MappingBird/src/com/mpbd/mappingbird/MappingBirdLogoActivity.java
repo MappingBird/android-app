@@ -12,6 +12,7 @@ import android.view.animation.RotateAnimation;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
+import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MappingBirdLogoActivity extends Activity {
@@ -73,13 +74,13 @@ public class MappingBirdLogoActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
+		AppAnalyticHelper.startSession(this);
 	}
 
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this); 
+	    AppAnalyticHelper.endSession(this); 
 	}
 }

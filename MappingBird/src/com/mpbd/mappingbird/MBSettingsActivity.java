@@ -62,14 +62,14 @@ public class MBSettingsActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
+		AppAnalyticHelper.startSession(this);
 	}
 
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this); 
+	      AppAnalyticHelper.endSession(this); 
 	}
 
 	private OnClickListener mOnClickListener = new OnClickListener() {

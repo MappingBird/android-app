@@ -6,6 +6,7 @@ import org.acra.annotation.ReportsCrashes;
 import android.app.ActivityManager;
 import android.app.Application;
 
+import com.flurry.android.FlurryAgent;
 import com.mappingbird.collection.data.MBCollectionListObject;
 
 @ReportsCrashes(
@@ -19,18 +20,24 @@ public class MappingBirdApplication extends Application {
 	private static MBCollectionListObject mMBCollectionObj;
 	private int memoryClass = 0;
 	private static BitmapLoader mBitmapLoader;
+	private static final String FLURRY_API_KEY = "C8DY53HJK42K8H3Z4RFF";
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
-		// The following line triggers the initialization of ACRA
-		if(!DeBug.DEBUG)
-			ACRA.init(this);
+		if(DeBug.DEBUG){
+			FlurryAgent.setLogEnabled(true);
+		}else{
+		    FlurryAgent.setLogEnabled(false);
+		    ACRA.init(this);
+		}
 		
 		mInstance = this;
 		mBitmapLoader = new BitmapLoader(this);
 		mMBCollectionObj = new MBCollectionListObject();
+		
+		FlurryAgent.init(this, FLURRY_API_KEY);
 	}
 
 	public static MBCollectionListObject getCollectionObj() {

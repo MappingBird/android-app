@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.widget.MappingBirdParallaxPager;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.MBUtil;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
@@ -68,14 +69,14 @@ public class MBTutorialActivity extends FragmentActivity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
+		AppAnalyticHelper.startSession(this);
 	}
 
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this); 
+	      AppAnalyticHelper.endSession(this); 
 	}
 
 	static class MBTutorPagerViewHolder {

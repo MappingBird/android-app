@@ -1,7 +1,9 @@
 package com.mpbd.mappingbird.util;
 
+import android.app.Activity;
 import android.content.Context;
 
+import com.flurry.android.FlurryAgent;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 
@@ -28,9 +30,7 @@ public class AppAnalyticHelper {
     public static final String LABEL_BUTTON_LOGOUT_OK = "label_logout_ok";
     public static final String LABEL_BUTTON_LOGOUT_CANCEL = "label_logout_cancel";
     public static final String LABEL_BUTTON_SHARE = "label_button_share";
-    
-    
-    
+
     public static final long VALUE_OPERATION_SUCCESS = 1000;
     public static final long VALUE_OPERATION_FAIL = 2000;
     
@@ -45,6 +45,19 @@ public class AppAnalyticHelper {
         return LazyHolder.INSTANCE;
     }
            
+    public static void startSession(Activity activity){
+        if (activity != null) {
+            EasyTracker.getInstance(activity).activityStart(activity);
+            FlurryAgent.onStartSession(activity);
+        }
+    }
+    
+    public static void endSession(Activity activity) {
+        if (activity != null) {
+            EasyTracker.getInstance(activity).activityStop(activity);
+            FlurryAgent.onEndSession(activity);
+        }
+    }
 
     // Event category (required)
     // Event action (required)

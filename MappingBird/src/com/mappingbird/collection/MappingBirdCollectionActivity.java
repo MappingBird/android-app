@@ -394,7 +394,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
+		AppAnalyticHelper.startSession(this);
 	}
 
 
@@ -403,7 +403,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		super.onStop();
 		if(mLocationService != null)
 			mLocationService.stopUsingGPS();
-		EasyTracker.getInstance(this).activityStop(this); 
+		AppAnalyticHelper.endSession(this); 
 		if(MBUtil.mEnableAddFunction)
 			MainUIMessenger.getIns().removeSubmitListener(mOnMBSubmitChangedListener);;
 	}
