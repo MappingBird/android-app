@@ -15,7 +15,7 @@ public class AppAnalyticHelper {
     public static final String ACTION_BUTTON_PRESS = "action_button_press";
     public static final String ACTION_COLLECTION_LIST_ITEM_PRESS = "action_collection_list_item_press";
     public static final String ACTION_PLACE_LIST_ITEM_PRESS = "action_place_list_item_press";
-    public static final String ACTION_SWIPE_PHOTO = "action_swipe_photo";
+    public static final String ACTION_IMAGE_SWIPE = "action_image_swipe";
     public static final String ACTION_IMAGE_CLICK = "action_image_click";
     
     public static final String LABEL_LIST_ITEM = "label_list_item";
@@ -25,6 +25,7 @@ public class AppAnalyticHelper {
     public static final String LABEL_LIST_ITEM_SIGN_IN = "label_list_item_sign_in";
     public static final String LABEL_LIST_ITEM_SIGN_UP = "label_list_item_sign_up";
     public static final String LABEL_MAP_IN_PLACE_PAGE = "label_map_in_place_page";
+    public static final String LABEL_SWIPE_IN_PLACE_PAGE = "label_swipe_in_place_page";
     
     public static final String LABEL_BUTTON_NAVIGATE = "label_button_navigate";
     public static final String LABEL_BUTTON_LOGOUT_OK = "label_logout_ok";

@@ -495,8 +495,8 @@ public class MappingBirdPlaceActivity extends Activity implements
         
         AppAnalyticHelper.sendEvent(MappingBirdPlaceActivity.this, 
                 AppAnalyticHelper.CATEGORY_UI_ACTION, 
-                AppAnalyticHelper.ACTION_SWIPE_PHOTO,
-                ""+mGalleryAdapter.getCount(),
+                AppAnalyticHelper.ACTION_IMAGE_SWIPE,
+                AppAnalyticHelper.LABEL_SWIPE_IN_PLACE_PAGE,
                 mPhotoSwiped.size());
     }
 	
