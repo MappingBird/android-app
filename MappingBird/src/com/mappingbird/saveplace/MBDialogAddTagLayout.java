@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -17,10 +18,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mappingbird.common.DeBug;
+import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.MBUtil;
 
 public class MBDialogAddTagLayout extends LinearLayout {
 
@@ -57,11 +62,32 @@ public class MBDialogAddTagLayout extends LinearLayout {
 			}
 		});
 
+		mTagGroup.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				View view = mTagGroup.getInputTagView();
+				if(view != null) {
+					openIme(view);
+				}
+					
+			}
+		});
+
 		mTagList = (ListView) findViewById(R.id.dialog_tag_list);
 		mTagListAdapter = new TagAdapter(getContext());
 		mTagList.setAdapter(mTagListAdapter);
 		mTagListAdapter.prepareData();
 		mTagList.setOnItemClickListener(mTagListItemListener);
+		// 確認ListView的高度
+		int itemCount = mTagListAdapter.getCount();
+		int windowHeight = MBUtil.getWindowHeight(MappingBirdApplication.instance());
+		float itemHeight = MappingBirdApplication.instance().getResources().getDimension(R.dimen.tag_item_height);
+		if(itemCount * itemHeight > windowHeight * 0.4f) {
+			LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mTagList.getLayoutParams();
+			params.height = (int)(windowHeight * 0.4f);
+			mTagList.setLayoutParams(params);
+		}
 	}
 
 	public String[] getTags() {

@@ -32,7 +32,7 @@
     <dimen name="progress_circle_width">2dp</dimen>
     <dimen name="progress_circle_radio">27dp</dimen>
 
-        <!-- Title -->
+    <!-- Title -->
     <dimen name="title_bar_height">56dp</dimen>
     <!-- Place -->
     <dimen name="place_item_card_distance_width">52dp</dimen>
@@ -116,4 +116,6 @@
     <dimen name="dash_line_space">2dp</dimen>
     <dimen name="dash_line_length">2dp</dimen>
     
+    <!-- Tag item -->
+    <dimen name="tag_item_height">41dp</dimen>
 </resources>
