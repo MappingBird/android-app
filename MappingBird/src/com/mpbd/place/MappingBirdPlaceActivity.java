@@ -252,8 +252,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 		findViewById(R.id.back_icon).setOnClickListener(this);
 		mGetDirection.setOnClickListener(this);
-<<<<<<< HEAD
-=======
 
 		Intent intent = this.getIntent();
 		mCurrentPoint = (MBPointData) intent.getSerializableExtra(EXTRA_MBPOINT);
@@ -314,7 +312,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mBitmapLoader = new BitmapLoader(this);
 		BitmapParameters params = BitmapParameters.getUrlBitmap(mapUrl);
 		mBitmapLoader.getBitmap(mTripMapView, params);
->>>>>>> origin/master
+
 	}
 
 	private ViewPager.OnPageChangeListener mGalleryListener = new OnPageChangeListener() {
