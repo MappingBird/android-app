@@ -74,6 +74,7 @@ import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
+import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
 import com.mpbd.place.MappingBirdPlaceActivity;
@@ -154,7 +155,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mLayoutAccount = (RelativeLayout)findViewById(R.id.collection_user_info_layout);
 
 		mLayoutLoginSignUp = (LinearLayout)findViewById(R.id.collection_login_layout);
-		mLayoutLoginSignUp.setVisibility(MappingBirdPref.getIns().isGuestMode() ? View.VISIBLE : View.GONE);
 		
         tvSignIn = (TextView) findViewById(R.id.tutoral_sign_in);
         tvSignUp = (TextView) findViewById(R.id.tutoral_sign_up);		
@@ -213,7 +213,13 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MappingBirdLoginActivity.class);
-                MappingBirdCollectionActivity.this.startActivity(intent);                        
+                MappingBirdCollectionActivity.this.startActivity(intent);   
+                
+                AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+                        AppAnalyticHelper.CATEGORY_UI_ACTION, 
+                        AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS,
+                        AppAnalyticHelper.LABEL_LIST_ITEM_SIGN_IN, 0);
+                
             }
         });
         
@@ -223,7 +229,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MappingBirdSignUpActivity.class);
-                MappingBirdCollectionActivity.this.startActivity(intent);                        
+                MappingBirdCollectionActivity.this.startActivity(intent);               
+                
+                AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+                        AppAnalyticHelper.CATEGORY_UI_ACTION, 
+                        AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS,
+                        AppAnalyticHelper.LABEL_LIST_ITEM_SIGN_IN, 0);                
             }
         });        
         
@@ -381,6 +392,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		mLayoutLoginSignUp.setVisibility(MappingBirdPref.getIns().isGuestMode() ? View.VISIBLE : View.GONE);
+
 		if(mLocationService != null)
 			mLocationService.start();
 		if(MBUtil.mEnableAddFunction)
@@ -409,7 +423,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
+		AppAnalyticHelper.startSession(this);
 	}
 
 
@@ -418,7 +432,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		super.onStop();
 		if(mLocationService != null)
 			mLocationService.stopUsingGPS();
-		EasyTracker.getInstance(this).activityStop(this); 
+		AppAnalyticHelper.endSession(this); 
 		if(MBUtil.mEnableAddFunction)
 			MainUIMessenger.getIns().removeSubmitListener(mOnMBSubmitChangedListener);;
 	}
@@ -509,6 +523,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			case R.id.collection_settings_layout: {
 				Intent intent = new Intent(mContext, MBSettingsActivity.class);
 				startActivity(intent);
+				
+				AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+				        AppAnalyticHelper.CATEGORY_UI_ACTION, 
+				        AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS, 
+				        AppAnalyticHelper.LABEL_LIST_ITEM_SETTING, 0);
+				
 				break;
 			}
 			case R.id.collection_help_layout: {
@@ -517,6 +537,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "feedback@mappingbird.com" });
 				intent.putExtra(Intent.EXTRA_SUBJECT, "MappingBird Feedback , ");
 				startActivity(intent);
+				
+                AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+                        AppAnalyticHelper.CATEGORY_UI_ACTION, 
+                        AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS,
+                        AppAnalyticHelper.LABEL_LIST_ITEM_HELP, 0);				
+				
 				break;
 			}
 			case R.id.collection_logout_icon: {
@@ -941,6 +967,13 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				intent.setClass(MappingBirdCollectionActivity.this,
 						com.mpbd.place.MappingBirdPlaceActivity.class);
 				MappingBirdCollectionActivity.this.startActivity(intent);
+				
+				AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+                        AppAnalyticHelper.CATEGORY_UI_ACTION, 
+                        AppAnalyticHelper.ACTION_PLACE_LIST_ITEM_PRESS,
+                        AppAnalyticHelper.LABEL_LIST_ITEM,
+                        point.getId());
+				
 			}
 		}
 

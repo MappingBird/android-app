@@ -33,6 +33,7 @@ import com.mappingbird.api.VenueCollection;
 import com.mappingbird.common.DeBug;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.AppAnalyticHelper;
 
 public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	private static final int REQUEST_ADD_PLACE = 0x001010;
@@ -124,14 +125,14 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
+		AppAnalyticHelper.startSession(this);
 	}
 
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this); 
+	      AppAnalyticHelper.endSession(this); 
 	}
 
 	@Override

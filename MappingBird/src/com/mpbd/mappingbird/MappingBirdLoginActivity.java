@@ -28,6 +28,7 @@ import com.mappingbird.api.User;
 import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
+import com.mpbd.mappingbird.util.AppAnalyticHelper;
 
 public class MappingBirdLoginActivity extends Activity implements
 		OnClickListener {
@@ -86,14 +87,14 @@ public class MappingBirdLoginActivity extends Activity implements
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
+		AppAnalyticHelper.startSession(this);
 	}
 
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this); 
+	      AppAnalyticHelper.endSession(this); 
 	}
 
 	private void isLoaing(boolean isLoading) {

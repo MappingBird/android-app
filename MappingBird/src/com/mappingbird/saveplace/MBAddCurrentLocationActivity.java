@@ -30,6 +30,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.AppAnalyticHelper;
 
 public class MBAddCurrentLocationActivity extends FragmentActivity {
 	private static final int REQUEST_ADD_PLACE = 0x001010;
@@ -164,13 +165,13 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
+		AppAnalyticHelper.startSession(this);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
+	      AppAnalyticHelper.endSession(this);
 	}
 
 	@Override
