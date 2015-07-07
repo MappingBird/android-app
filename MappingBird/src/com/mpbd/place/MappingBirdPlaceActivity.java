@@ -45,6 +45,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		OnClickListener {
 
 	public static final String EXTRA_MBPOINT = "mb_point";
+	public static final String EXTRA_PLACE_ID = "extra_place_id";
 	private static final String TAG = MappingBirdPlaceActivity.class.getName();
 
 	private Animation mDirectionAnimation = null;
@@ -52,7 +53,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private MappingbirdPlaceLayout mPlaceFrameLayout;
 
 	private View mGetDirection = null;
-	private MBPointData mCurrentPoint;
+	private MBPointData mCurrentPoint = null;
 	private TextView mTitle = null;
 	private TextView mPlaceName = null;
 	private TextView mDescription = null;
@@ -110,6 +111,79 @@ public class MappingBirdPlaceActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mappingbird_place);
+		initView();
+
+		Intent intent = this.getIntent();
+		// Current location
+		mMyLatitude = intent.getDoubleExtra("myLatitude", 0);
+		mMyLongitude = intent.getDoubleExtra("myLongitude", 0);
+
+		long placeId = 0;
+		if(intent.hasExtra(EXTRA_MBPOINT)) {
+			mCurrentPoint = (MBPointData) intent.getSerializableExtra(EXTRA_MBPOINT);
+			setDataByPoint(mCurrentPoint);
+			placeId = mCurrentPoint.getId();
+		} else if(intent.hasExtra(EXTRA_PLACE_ID)) {
+			placeId = intent.getLongExtra(EXTRA_PLACE_ID, 0);
+			if(placeId == 0)
+				finish();
+		} else {
+			// 沒有值 關閉
+			finish();
+		}
+
+		mApi = new MappingBirdAPI(this.getApplicationContext());
+
+		mApi.getPoints(mPointListener, placeId);
+		mContext = this;
+
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
+		mLoadingDialog.setCancelable(false);
+		mLoadingDialog.show();
+	}
+
+	private void setDataByPoint(MBPointData point) {
+
+		mPlaceLatitude = point.getLocation().getLatitude();
+		mPlaceLongitude = point.getLocation().getLongitude();
+
+		mTitle.setText(point.getTitle());
+		mPinIcon.setText(Utils.getPinIconFont(point.getTypeInt()));
+
+		ArrayList<ImageDetail> imagelist = point.getImageDetails();
+		ArrayList<String> list = new ArrayList<String>();
+		for(ImageDetail item : imagelist) {
+			list.add(item.getUrl());
+		}
+		if(list.size() == 0) {
+			mGalleryPager.setVisibility(View.GONE);
+			findViewById(R.id.trip_no_photo).setVisibility(View.VISIBLE);
+		} else if(list.size() <= 15) {
+			mGalleryAdapter.setPathList(list);
+			mGalleryPager.setVisibility(View.VISIBLE);
+			mPlacePhotoCountPoint.setVisibility(View.VISIBLE);
+			mPlacePhotoCountPoint.setSize(list.size());
+			mPlacePhotoCountText.setVisibility(View.GONE);
+		} else {
+			mGalleryAdapter.setPathList(list);
+			mGalleryPager.setVisibility(View.VISIBLE);
+			mPlacePhotoCountPoint.setVisibility(View.GONE);
+			mPlacePhotoCountText.setVisibility(View.VISIBLE);
+			mPlacePhotoCountText.setText("1/"+list.size());
+		}
+		
+		getPinIcon(point.getTypeInt());
+		String mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center="+mPlaceLatitude+","+mPlaceLongitude+
+				"&zoom=16&size=720x400"+
+				"&markers=icon:"+mIconUrl
+				+"%7C"+mPlaceLatitude+","+mPlaceLongitude;
+		DeBug.i(TAG, "mapUrl = "+mapUrl);
+		mBitmapLoader = new BitmapLoader(this);
+		BitmapParameters params = BitmapParameters.getUrlBitmap(mapUrl);
+		mBitmapLoader.getBitmap(mTripMapView, params);
+	}
+
+	private void initView() {
 		mPlaceFrameLayout = (MappingbirdPlaceLayout) findViewById(R.id.trip_place_framelayout);
 		mPlaceFrameLayout.setPlaceLayoutListener(new onPlaceLayoutListener() {
 			
@@ -144,7 +218,6 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mTitleBack = findViewById(R.id.trip_detail_title_back);
 		mTitleBack.setAlpha(0);
 		mDescription = (TextView) findViewById(R.id.trip_place_description);
-//		mPlacePhoto = (MappingbirdGallery) findViewById(R.id.trip_photo);
 		mGalleryPager = (ViewPager) findViewById(R.id.pace_viewpager);
 		mGalleryAdapter = new MBGalleryAdapter(this);
 		mGalleryPager.setAdapter(mGalleryAdapter);
@@ -170,76 +243,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 		findViewById(R.id.back_icon).setOnClickListener(this);
 		mGetDirection.setOnClickListener(this);
-
-		Intent intent = this.getIntent();
-		mCurrentPoint = (MBPointData) intent.getSerializableExtra(EXTRA_MBPOINT);
-		mMyLatitude = intent.getDoubleExtra("myLatitude", 0);
-		mMyLongitude = intent.getDoubleExtra("myLongitude", 0);
-
-		mPlaceLatitude = mCurrentPoint.getLocation().getLatitude();
-		mPlaceLongitude = mCurrentPoint.getLocation().getLongitude();
-
-		mTitle.setText(mCurrentPoint.getTitle());
-		mPinIcon.setText(Utils.getPinIconFont(mCurrentPoint.getTypeInt()));
-
-		ArrayList<ImageDetail> imagelist = mCurrentPoint.getImageDetails();
-		ArrayList<String> list = new ArrayList<String>();
-		for(ImageDetail item : imagelist) {
-			list.add(item.getUrl());
-		}
-		if(list.size() == 0) {
-			mGalleryPager.setVisibility(View.GONE);
-//			mPlacePhoto.setVisibility(View.GONE);
-			findViewById(R.id.trip_no_photo).setVisibility(View.VISIBLE);
-		} else if(list.size() <= 15) {
-			mGalleryAdapter.setPathList(list);
-			mGalleryPager.setVisibility(View.VISIBLE);
-//			mPlacePhoto.setData(list);
-//			mPlacePhoto.setGalleryListener(mGalleryListener);
-			mPlacePhotoCountPoint.setVisibility(View.VISIBLE);
-			mPlacePhotoCountPoint.setSize(list.size());
-			mPlacePhotoCountText.setVisibility(View.GONE);
-		} else {
-			mGalleryAdapter.setPathList(list);
-			mGalleryPager.setVisibility(View.VISIBLE);
-//			mPlacePhoto.setData(list);
-//			mPlacePhoto.setGalleryListener(mGalleryListener);
-			mPlacePhotoCountPoint.setVisibility(View.GONE);
-			mPlacePhotoCountText.setVisibility(View.VISIBLE);
-			mPlacePhotoCountText.setText("1/"+list.size());
-		}
-
-		mApi = new MappingBirdAPI(this.getApplicationContext());
-
-		mApi.getPoints(mPointListener, mCurrentPoint.getId());
-		mContext = this;
-
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
-		mLoadingDialog.setCancelable(false);
-		mLoadingDialog.show();
-
-		getPinIcon(mCurrentPoint.getTypeInt());
-		String mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center="+mPlaceLatitude+","+mPlaceLongitude+
-				"&zoom=16&size=720x400"+
-				"&markers=icon:"+mIconUrl
-				+"%7C"+mPlaceLatitude+","+mPlaceLongitude;
-		DeBug.i(TAG, "mapUrl = "+mapUrl);
-		mBitmapLoader = new BitmapLoader(this);
-		BitmapParameters params = BitmapParameters.getUrlBitmap(mapUrl);
-		mBitmapLoader.getBitmap(mTripMapView, params);
 	}
-
-//	private MBGalleryListener mGalleryListener = new MBGalleryListener() {
-//		
-//		@Override
-//		public void changeIndex(int index, int size) {
-//			if(mPlacePhotoCountPoint.getVisibility() == View.VISIBLE) {
-//				mPlacePhotoCountPoint.setSelectIndex(index);
-//			} else {
-//				mPlacePhotoCountText.setText((index+1)+"/"+size);
-//			}
-//		}
-//	};
 
 	private ViewPager.OnPageChangeListener mGalleryListener = new OnPageChangeListener() {
 		
@@ -303,6 +307,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 				mLoadingDialog.dismiss();
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
 				mPoint = point;
+				if(mCurrentPoint == null)
+					setDataByPoint(mPoint);
 				mPlaceName.setText(point.getLocation().getPlaceName());
 				mDescription.setText(point.getDescription());
 				mPlaceAddressOnMap.setText(point.getLocation().getPlaceAddress());

@@ -64,6 +64,7 @@ import com.mappingbird.common.MainUIMessenger.OnMBSubmitChangedListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.MBSubmitMsgData;
+import com.mappingbird.saveplace.db.AppPlaceDB;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.mappingbird.MBSettingsActivity;
@@ -81,9 +82,16 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MappingBirdCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
-
 	private static final String TAG = "MappingBird";
+	
+	public static final String EXTRA_NOTIFY = "extra_notify";
+	public static final int NOTIFY_CANCEL_UPLOAD_IMAGE = 4;
+	public static final int NOTIFY_FAIL_SAVE_PLACE = 5;
+	public static final int NOTIFY_FAIL_UPLOAD_IMAGE = 6;
+	public static final int NOTIFY_FINISHED = 10;
 
+	public static final String EXTRA_PLACE_ID = "extra_place_id";
+	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private View mDrawerContentLayout;
@@ -150,8 +158,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		
         tvSignIn = (TextView) findViewById(R.id.tutoral_sign_in);
         tvSignUp = (TextView) findViewById(R.id.tutoral_sign_up);		
-		mLayoutAccount.setVisibility(View.GONE);
-		mLayoutLoginSignUp.setVisibility(View.VISIBLE);
+		mLayoutAccount.setVisibility(MappingBirdPref.getIns().isGuestMode() ? View.GONE : View.VISIBLE);
 
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
 				GravityCompat.START);
@@ -235,7 +242,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mLoading = (ProgressWheel) mLoadingDialog.findViewById(R.id.image);
 		mLoading.stopSpinning();
 
-		showLoadingDialog();
+		DeBug.d("Test", "onCreate : ");
+		if(!checkInetnt(getIntent()))
+			showLoadingDialog();
 	}
 
 	OnGetCollectionsListener getCollectionListener = new OnGetCollectionsListener() {
@@ -286,13 +295,26 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				// 沒有資料
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED:
+			case MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED:
 				if(DeBug.DEBUG) {
 					DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] MSG : MSG_ADD_PLACE_FAILED"); 
 				}
+				String title = "";
+				String msg = "";
+				if(data.getState() == MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED) {
+					title = MappingBirdApplication.instance().getString(R.string.error_dialog_upload_images_failed_title);
+					msg = MappingBirdApplication.instance().getString(R.string.error_dialog_upload_images_failed_message);
+				} else {
+					title = MappingBirdApplication.instance().getString(R.string.error_dialog_submit_place_failed_title);
+					msg = MappingBirdApplication.instance().getString(R.string.error_dialog_submit_place_failed_message);
+				}
+				if(mDialog != null && mDialog.isShowing())
+					mDialog.dismiss();
+
 				// 上傳失敗
 				mDialog = new MBDialog(mContext);
-				mDialog.setTitle(getString(R.string.error_dialog_submit_place_failed_title));
-				mDialog.setDescription(getString(R.string.error_dialog_submit_place_failed_message));
+				mDialog.setTitle(title);
+				mDialog.setDescription(msg);
 				mDialog.setPositiveBtn(getString(R.string.str_retry), 
 						mSubmitFailedDialogOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
 				mDialog.setNegativeBtn(getString(R.string.str_cancel), 
@@ -311,6 +333,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mMBCollectionListLayout.setProgress(data.getState(), 0, 0);
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED:
+				if(mDialog != null && mDialog.isShowing()) {
+					mDialog.dismiss();
+					
+				}
+
 				if(DeBug.DEBUG) {
 					DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] MSG : MSG_ADD_PLACE_FINISHED"); 
 				}
@@ -341,11 +368,13 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			// 取消上傳
-			mDialog.dismiss();
 			// 這邊會出現兩種情況.
 			// 1. 上傳地點就失敗
-			
 			// 2. 上傳照片幾張失敗
+			// 全部取消上傳
+			AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
+			db.cancelSavePlace();
+			mDialog.dismiss();
 		}
 	};
 
@@ -1012,5 +1041,101 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mLoading.stopSpinning();
 			mLoadingDialog.dismiss();
 		}
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		DeBug.d("Test", "onNewIntent : ");
+		checkInetnt(intent);
+	}
+
+	private boolean checkInetnt(Intent intent) {
+		if(intent == null) {
+			return false;
+		}
+		DeBug.d("Test", "checkInetnt : ");
+		// 先確認是否有登入
+		MappingBirdAPI api = new MappingBirdAPI(this.getApplicationContext());
+		boolean isLogin = api.getCurrentUser() == null ? false : true;
+		DeBug.d("Test", "checkInetnt : isLogin = "+isLogin);
+		if(!isLogin) {
+			// 沒有登入：開啓
+			Intent startIntent = new Intent();
+			intent.setClass(MappingBirdCollectionActivity.this,
+					com.mpbd.tutorial.MBTutorialActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			MappingBirdCollectionActivity.this.startActivity(startIntent);
+			finish();
+			return false;
+		} else {
+			// 有登入. 開啓Place
+			DeBug.d("Test", "checkInetnt : 1");
+			if(intent.hasExtra(EXTRA_NOTIFY)) {
+				int state = intent.getIntExtra(EXTRA_NOTIFY, 0);
+				DeBug.d("Test", "checkInetnt : state = "+state);
+				if(state == NOTIFY_FINISHED) {
+					if(intent.hasExtra(EXTRA_PLACE_ID)) {
+						long placeId = intent.getLongExtra(EXTRA_PLACE_ID, 0);
+						DeBug.d("Test", "checkInetnt : placeId = "+placeId);
+						if(placeId != 0) {
+							Intent placeIntent = new Intent();
+							placeIntent.putExtra(MappingBirdPlaceActivity.EXTRA_PLACE_ID, placeId);
+							placeIntent.putExtra("myLatitude", mMyLocation.latitude);
+							placeIntent.putExtra("myLongitude", mMyLocation.longitude);
+				
+							placeIntent.setClass(MappingBirdCollectionActivity.this,
+									com.mpbd.place.MappingBirdPlaceActivity.class);
+							MappingBirdCollectionActivity.this.startActivity(placeIntent);
+							return true;
+						}
+					}
+				}
+			} else {
+				DeBug.e("Test", "checkInetnt : no EXTRA_NOTIFY");
+			}
+		}
+		return false;
+	}
+	
+	// Dialog Area
+	// 
+	private void showCancelUploadDialog() {
+		if(mDialog != null && mDialog.isShowing()) {
+			mDialog.dismiss();
+		}
+		
+		mDialog = new MBDialog(mContext);
+		mDialog.setTitle(getString(R.string.dialog_hint_uploading_photos_title));
+		mDialog.setDescription(getString(R.string.dialog_hint_uploading_photos_message));
+		mDialog.setPositiveBtn(getString(R.string.str_conitune), 
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if(mDialog != null && mDialog.isShowing())
+							// 繼續上傳.
+							mDialog.dismiss();
+					}
+				}, MBDialog.BTN_STYLE_DEFAULT);
+		mDialog.setNegativeBtn(getString(R.string.str_cancel_upload), 
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						// 停止上傳
+						if(mDialog != null && mDialog.isShowing())
+							mDialog.dismiss();
+					}
+				}, MBDialog.BTN_STYLE_DEFAULT);
+		mDialog.setCanceledOnTouchOutside(false);
+		mDialog.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+				//不讓Back有用
+				if(keyCode == KeyEvent.KEYCODE_BACK)
+					return true;
+				return false;
+			}
+		});
+		mDialog.show();
 	}
 }

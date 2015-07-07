@@ -445,7 +445,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 							MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
 				}
 			});			
-		} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
+		} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED ||
+				state == MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED) {
 			// 上傳失敗
 			// 1. 清掉Progress狀態
 			mAddItemLayout.cleanProgress();

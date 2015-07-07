@@ -36,6 +36,7 @@ public class MBService extends Service{
 	public static final int CMD_ATTACH_MESSAGE 	= 102;
 	public static final int CMD_ADD_PLACE_ITEM	= 103;
 	public static final int CMD_RETRY_UPDATE 	= 104;
+	public static final int CMD_STOP_TO_UPLOAD 	= 105;
 	
 	public static final int CMD_STOP_SERVICE 	= 110;
 
@@ -54,7 +55,7 @@ public class MBService extends Service{
 		try {
 			Notification nm = MBNotificationCenter.getUpdateMessageNotification(this, "",
 					this.getString(R.string.noti_update_wait_title), 
-					this.getString(R.string.noti_update_wait_message), MBPlaceSubmitTask.MSG_NONE);
+					this.getString(R.string.noti_update_wait_message), MBPlaceSubmitTask.MSG_NONE, "");
 			startForeground(NOTIFY_ID, nm);
 		} catch (Exception e) {
 			if(DeBug.DEBUG)
@@ -112,7 +113,7 @@ public class MBService extends Service{
 				}
 			}
 			break;
-		case CMD_STOP_SERVICE:
+		case CMD_STOP_SERVICE: {
 			if(DeBug.DEBUG)
 				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] : stop service commend");
 			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
@@ -122,6 +123,16 @@ public class MBService extends Service{
 				stopSelf();
 			}
 			break;
+		}
+		case CMD_STOP_TO_UPLOAD: {
+			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
+			boolean updateData = logic.hasSubmit();
+			if(updateData) {
+				// 停止上傳.
+				
+			}
+			break;
+		}
 		}
 		return START_NOT_STICKY;
 	}
@@ -202,14 +213,17 @@ public class MBService extends Service{
 					String title = String.format(
 							MappingBirdApplication.instance().getString(R.string.noti_update_finish_title),
 							data.placeName);
+					String message = String.format(
+							MappingBirdApplication.instance().getString(R.string.noti_update_finish_message),
+							data.collectionName);
 					String ticker = String.format(
 							MappingBirdApplication.instance().getString(R.string.noti_update_place_finished_ticker),
 							data.placeName);
 					Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
 							ticker, 
 							title, 
-							data.collectionName,
-							state);
+							message,
+							state, data.placeId);
 					notificationManager.notify(NOTIFY_FINISHED_ID, nm);
 				}
 				sendAddPlaceStateMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED, progess, totle);
@@ -261,10 +275,13 @@ public class MBService extends Service{
 				String title = String.format(
 						MappingBirdApplication.instance().getString(R.string.noti_update_place_title), 
 						data.placeName);
+				String message = String.format(
+						MappingBirdApplication.instance().getString(R.string.noti_update_place_message),
+						data.collectionName);
 				Notification nm = MBNotificationCenter.getUpdateProgressNotification(MappingBirdApplication.instance(),
 						MappingBirdApplication.instance().getString(R.string.noti_update_place_ticker), 
 						title, 
-						data.collectionName,
+						message,
 						0,
 						totle,
 						false);
@@ -303,7 +320,7 @@ public class MBService extends Service{
 					getNotificationErrorTicker(state),
 					getNotificationErrorTitle(state), 
 					MappingBirdApplication.instance().getString(R.string.noti_update_tap_to_retry),
-					state);
+					state, "");
 			notificationManager.notify(NOTIFY_FINISHED_ID, nm);
 		}
 	}

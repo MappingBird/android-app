@@ -31,6 +31,8 @@
     <string name="or">OR</string>
     <string name="str_retry">Retry</string>
     <string name="str_cancel">Cancel</string>
+    <string name="str_conitune">Conitune</string>
+    <string name="str_cancel_upload">Cancel upload</string>
     <string name="sign_up_content">Sign up a MappingBird account for backing up your favorite places, sync with devices and access them on mappingbird.</string>
 
     <!-- Tutorial -->
@@ -107,6 +109,10 @@
     <string name="str_log_out">Log out</string>
     <string name="str_take_picture">Take picture</string>
 
+    <!-- Hint Dialog -->
+    <string name="dialog_hint_uploading_photos_title">Uploading photos</string>
+    <string name="dialog_hint_uploading_photos_message">New place has saved. Now is uploading photos. Do you want to cancel upload?</string>
+
     <!-- Error -->
     <string name="error_normal_title">Oops!</string>
     <string name="error_location_title">Location Error</string>
@@ -123,23 +129,28 @@
     <string name="error_sign_up_fail_password_not_match_message">These passwords don\'t match. Try again?</string>
     <string name="error_search_place_error">Oops! There are some problems. Try to search or tap to refresh</string>
     <string name="error_search_place_hint">Otherwise you can...</string>
-    <string name="error_dialog_submit_place_failed_title">Submit failed</string>
-    <string name="error_dialog_submit_place_failed_message">Submit failed</string>
+    <string name="error_dialog_submit_place_failed_title">Save place failed</string>
+    <string name="error_dialog_submit_place_failed_message">Check your intent connection and retry</string>
+    <string name="error_dialog_upload_images_failed_title">Photos upload failed</string>
+    <string name="error_dialog_upload_images_failed_message">New place has saved, but something went wrong with uploading photos.</string>
+    
     
     <!-- Notification -->
     <string name="noti_update_wait_title">Save wait</string>
     <string name="noti_update_wait_message"></string>
-    <string name="noti_update_error_photos_title">Photos upload failed</string>
-    <string name="noti_update_error_place_title">Place save failed</string>
+    <string name="noti_update_error_photos_title">Upload photos failed</string>
+    <string name="noti_update_error_place_title">Save place failed</string>
     <string name="noti_update_error_upload_title">Upload failed</string>
     <string name="noti_update_error_save_title">Save failed</string>
     <string name="noti_update_error_title">Update fails</string>
-    <string name="noti_update_error_message">Tap to retry</string>
-    <string name="noti_update_tap_to_retry">Tap to retry</string>
-    <string name="noti_update_progress_title">Uploading photos %1$s of %2$s</string>
+    <string name="noti_update_error_message">Tap to options</string>
+    <string name="noti_update_tap_to_retry">Tap to options</string>
+    <string name="noti_update_progress_title">Uploading photos:%1$s of %2$s</string>
     <string name="noti_update_progress_message">Tap to cancel</string>
-    <string name="noti_update_finish_title">\"%1$s\" saved to</string>
-    <string name="noti_update_place_title">Saving \"%1$s\" to</string>
+    <string name="noti_update_finish_title">\"%1$s\" saved</string>
+    <string name="noti_update_finish_message">to %1$s</string>
+    <string name="noti_update_place_title">Saving \"%1$s\"</string>
+    <string name="noti_update_place_message">to %1$s</string>
     <string name="noti_update_place_ticker">Saving place</string>
     <string name="noti_update_place_finished_ticker">\"%1$s\" saved</string>
     

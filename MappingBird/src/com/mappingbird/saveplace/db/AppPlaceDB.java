@@ -17,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.mappingbird.common.DeBug;
+import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 import com.mappingbird.saveplace.services.MBPlaceSubmitData;
 import com.mappingbird.saveplace.services.MBPlaceSubmitImageData;
@@ -28,6 +29,35 @@ public class AppPlaceDB {
     
     public AppPlaceDB(Context context) {
         mHelper = new AppPlaceDBHelper(context);
+    }
+
+    public void cancelSavePlace() {
+    	SQLiteDatabase db = mHelper.getWritableDatabase();
+    	Cursor cursor = db.query(AppPlaceDBHelper.ADD_PLACE_TABLE_NAME,
+    			AppPlaceDBHelper.ADD_PLACE_TABLE_COLUMNS,
+    			AppPlaceDBHelper.ADD_PLACE_STATE + " < " +MBPlaceSubmitUtil.SUBMIT_STATE_FINISHED, null, null, null, null);
+    	boolean haveData = cursor != null && cursor.getCount() > 0;
+    	int placeDBId = -1;
+    	if(DeBug.DEBUG)
+    		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[AppPlaceDB] : have data submit need to cancel = "+haveData);
+    	if(haveData) {
+    		
+    		cursor.moveToFirst();
+        	SQLiteDatabase sql = mHelper.getWritableDatabase();
+			while(!cursor.isAfterLast()) {
+	    		placeDBId	= cursor.getInt(cursor.getColumnIndex(AppPlaceDBHelper.ADD_PLACE_ID));
+	        	String[] args = {String.valueOf(placeDBId)};
+	        	ContentValues cv = new ContentValues();
+	        	cv.put(AppPlaceDBHelper.ADD_PLACE_STATE, MBPlaceSubmitUtil.SUBMIT_STATE_CANCEL);
+	        	int output = sql.update(AppPlaceDBHelper.ADD_PLACE_TABLE_NAME, cv, 
+	        			AppPlaceDBHelper.ADD_PLACE_ID+"=?", args);
+	        	if(DeBug.DEBUG)
+	        		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[AppPlaceDB] : CancelPlaceValue ["+placeDBId+"], state = SUBMIT_STATE_CANCEL"
+	        				+ ", resule = "+output);
+			}
+        	sql.close();
+			cursor.close();
+    	}
     }
 
     public int setAppPlaceData(MBPlaceAddDataToServer data) {

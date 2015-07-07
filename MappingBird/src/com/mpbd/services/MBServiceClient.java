@@ -43,4 +43,9 @@ public class MBServiceClient {
 			e.printStackTrace();
 		}
 	}
+
+	public static void stopToUploadPlace() {
+		Intent intent = createIntent(MBService.CMD_STOP_TO_UPLOAD);
+		startService(intent);
+	}
 }

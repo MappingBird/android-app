@@ -9,30 +9,29 @@
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
         android:singleLine="true"
         android:textColor="#333"
-        android:paddingTop="16dp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
         android:textSize="20dp" />
 
-    <View 
+    <View
         android:id="@+id/dialog_title_padding_bottom"
         android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        />
+        android:layout_height="16dp" />
 
     <com.mappingbird.widget.MappingbirdTextView
         android:id="@+id/dialog_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="12dp"
-        android:paddingTop="8dp"
-        android:paddingRight="16dp"
         android:paddingLeft="16dp"
-        android:visibility="gone"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
         android:textColor="#7f7f7f"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
@@ -49,11 +48,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/btn_dialog_bg"
             android:gravity="center"
+            android:textAllCaps="true"
             android:textColor="#7f7f7f"
             android:textSize="16dp"
-            android:visibility="gone"
-            android:background="@drawable/btn_dialog_bg" />
+            android:visibility="gone" />
 
         <View
             android:id="@+id/dialog_divider"
@@ -69,11 +69,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/btn_dialog_bg"
             android:gravity="center"
+            android:textAllCaps="true"
             android:textColor="#7f7f7f"
             android:textSize="16dp"
-            android:visibility="gone"
-            android:background="@drawable/btn_dialog_bg" />
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

@@ -36,6 +36,9 @@ public class MBPlaceSubmitTask implements Runnable{
 	private int mProgress = 0;
 	private boolean isSubmit = false;
 	
+	// 強制停止上傳
+	private boolean cancelUpload = false;
+	
 	// 先測試上傳圖片的機制
 	private MBPlaceSubmitUserToken mUserToken;
 

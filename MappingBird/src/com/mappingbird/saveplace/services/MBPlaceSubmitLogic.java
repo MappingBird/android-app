@@ -181,6 +181,15 @@ public class MBPlaceSubmitLogic {
 	}
 	
 	/**
+	 * 停止上傳
+	 */
+	public void stopSubmit() {
+		if(mSubmitTask != null) {
+			
+		}
+	}
+	
+	/**
 	 * 
 	 */
 	public MBPlaceSubmitData getCurrentUpdateData() {
