@@ -252,67 +252,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 
 		findViewById(R.id.back_icon).setOnClickListener(this);
 		mGetDirection.setOnClickListener(this);
-
-		Intent intent = this.getIntent();
-		mCurrentPoint = (MBPointData) intent.getSerializableExtra(EXTRA_MBPOINT);
-		mMyLatitude = intent.getDoubleExtra("myLatitude", 0);
-		mMyLongitude = intent.getDoubleExtra("myLongitude", 0);
-
-		mPlaceLatitude = mCurrentPoint.getLocation().getLatitude();
-		mPlaceLongitude = mCurrentPoint.getLocation().getLongitude();
-
-		mTitle.setText(mCurrentPoint.getTitle());
-		mPinIcon.setText(Utils.getPinIconFont(mCurrentPoint.getTypeInt()));
-
-		ArrayList<ImageDetail> imagelist = mCurrentPoint.getImageDetails();
 		
 		mPhotoSwiped = new HashSet<Integer>();
-
-		ArrayList<String> list = new ArrayList<String>();
-		for(ImageDetail item : imagelist) {
-			list.add(item.getUrl());
-		}
-		if(list.size() == 0) {
-			mGalleryPager.setVisibility(View.GONE);
-//			mPlacePhoto.setVisibility(View.GONE);
-			findViewById(R.id.trip_no_photo).setVisibility(View.VISIBLE);
-		} else if(list.size() <= 15) {
-			mGalleryAdapter.setPathList(list);
-			mGalleryPager.setVisibility(View.VISIBLE);
-//			mPlacePhoto.setData(list);
-//			mPlacePhoto.setGalleryListener(mGalleryListener);
-			mPlacePhotoCountPoint.setVisibility(View.VISIBLE);
-			mPlacePhotoCountPoint.setSize(list.size());
-			mPlacePhotoCountText.setVisibility(View.GONE);
-		} else {
-			mGalleryAdapter.setPathList(list);
-			mGalleryPager.setVisibility(View.VISIBLE);
-//			mPlacePhoto.setData(list);
-//			mPlacePhoto.setGalleryListener(mGalleryListener);
-			mPlacePhotoCountPoint.setVisibility(View.GONE);
-			mPlacePhotoCountText.setVisibility(View.VISIBLE);
-			mPlacePhotoCountText.setText("1/"+list.size());
-		}
-
-		mApi = new MappingBirdAPI(this.getApplicationContext());
-
-		mApi.getPoints(mPointListener, mCurrentPoint.getId());
-		mContext = this;
-
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
-		mLoadingDialog.setCancelable(false);
-		mLoadingDialog.show();
-
-		getPinIcon(mCurrentPoint.getTypeInt());
-		String mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center="+mPlaceLatitude+","+mPlaceLongitude+
-				"&zoom=16&size=720x400"+
-				"&markers=icon:"+mIconUrl
-				+"%7C"+mPlaceLatitude+","+mPlaceLongitude;
-		DeBug.i(TAG, "mapUrl = "+mapUrl);
-		mBitmapLoader = new BitmapLoader(this);
-		BitmapParameters params = BitmapParameters.getUrlBitmap(mapUrl);
-		mBitmapLoader.getBitmap(mTripMapView, params);
-
 	}
 
 	private ViewPager.OnPageChangeListener mGalleryListener = new OnPageChangeListener() {
