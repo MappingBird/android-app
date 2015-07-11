@@ -14,6 +14,19 @@ import com.mpbd.mappingbird.R;
 
 public class MBNotificationCenter {
 
+	public static Notification getUpdateMessageNotification(Context context, String ticker, String title, String message) {
+		
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+		builder.setSmallIcon(R.drawable.statusbar_icon);
+		builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
+		builder.setContentText(message);
+		builder.setContentTitle(title);
+		if(!TextUtils.isEmpty(ticker))
+			builder.setTicker(ticker);
+		builder.setAutoCancel(true);
+		return builder.build();
+	}
+	
 	public static Notification getUpdateMessageNotification(Context context, String ticker, String title, String message,
 			int state, String placeId) {
 		

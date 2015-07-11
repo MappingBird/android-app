@@ -253,7 +253,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mLoading = (ProgressWheel) mLoadingDialog.findViewById(R.id.image);
 		mLoading.stopSpinning();
 
-		DeBug.d("Test", "onCreate : ");
 		if(!checkInetnt(getIntent()))
 			showLoadingDialog();
 	}
@@ -785,7 +784,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			@Override
 			public void onAnimationUpdate(ValueAnimator animation) {
 				float rate = animation.getAnimatedFraction();
-				DeBug.d("Test", "rate = "+rate);
 				Projection proj = mMap.getProjection();
 				mClickedMarker.setPosition(proj.fromScreenLocation(
 						new Point(
@@ -1079,7 +1077,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
-		DeBug.d("Test", "onNewIntent : ");
 		checkInetnt(intent);
 	}
 
@@ -1087,11 +1084,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if(intent == null) {
 			return false;
 		}
-		DeBug.d("Test", "checkInetnt : ");
+
 		// 先確認是否有登入
 		MappingBirdAPI api = new MappingBirdAPI(this.getApplicationContext());
 		boolean isLogin = api.getCurrentUser() == null ? false : true;
-		DeBug.d("Test", "checkInetnt : isLogin = "+isLogin);
 		if(!isLogin) {
 			// 沒有登入：開啓
 			Intent startIntent = new Intent();
@@ -1103,19 +1099,18 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			return false;
 		} else {
 			// 有登入. 開啓Place
-			DeBug.d("Test", "checkInetnt : 1");
 			if(intent.hasExtra(EXTRA_NOTIFY)) {
 				int state = intent.getIntExtra(EXTRA_NOTIFY, 0);
-				DeBug.d("Test", "checkInetnt : state = "+state);
 				if(state == NOTIFY_FINISHED) {
 					if(intent.hasExtra(EXTRA_PLACE_ID)) {
 						long placeId = intent.getLongExtra(EXTRA_PLACE_ID, 0);
-						DeBug.d("Test", "checkInetnt : placeId = "+placeId);
 						if(placeId != 0) {
 							Intent placeIntent = new Intent();
 							placeIntent.putExtra(MappingBirdPlaceActivity.EXTRA_PLACE_ID, placeId);
-							placeIntent.putExtra("myLatitude", mMyLocation.latitude);
-							placeIntent.putExtra("myLongitude", mMyLocation.longitude);
+							if(mMyLocation != null) {
+								placeIntent.putExtra("myLatitude", mMyLocation.latitude);
+								placeIntent.putExtra("myLongitude", mMyLocation.longitude);
+							}
 				
 							placeIntent.setClass(MappingBirdCollectionActivity.this,
 									com.mpbd.place.MappingBirdPlaceActivity.class);
@@ -1125,7 +1120,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					}
 				}
 			} else {
-				DeBug.e("Test", "checkInetnt : no EXTRA_NOTIFY");
 			}
 		}
 		return false;

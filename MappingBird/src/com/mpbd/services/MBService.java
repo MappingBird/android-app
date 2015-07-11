@@ -55,7 +55,7 @@ public class MBService extends Service{
 		try {
 			Notification nm = MBNotificationCenter.getUpdateMessageNotification(this, "",
 					this.getString(R.string.noti_update_wait_title), 
-					this.getString(R.string.noti_update_wait_message), MBPlaceSubmitTask.MSG_NONE, "");
+					this.getString(R.string.noti_update_wait_message));
 			startForeground(NOTIFY_ID, nm);
 		} catch (Exception e) {
 			if(DeBug.DEBUG)

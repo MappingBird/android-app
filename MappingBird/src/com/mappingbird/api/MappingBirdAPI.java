@@ -30,8 +30,8 @@ public class MappingBirdAPI {
 	
 	public static final int RESULT_UNKNOW_ERROR = 6;
 	
-//	private static final String mHost = "https://mappingbird.com";
-	private static final String mHost = "http://stage.mappingbird.com";
+	private static final String mHost = "https://mappingbird.com";
+//	private static final String mHost = "http://stage.mappingbird.com";
 
 	private Context mContext = null;
 	private MappingBirdUtil mUtil = null;
