@@ -52,7 +52,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mpbd.mappingbird.MappingBirdSignUpActivity"
+            android:name="com.mpbd.mappingbird.MBSignUpActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity

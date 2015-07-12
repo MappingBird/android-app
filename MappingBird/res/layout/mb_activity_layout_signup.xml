@@ -41,9 +41,20 @@
             android:paddingRight="16dp"
             android:paddingTop="20dp" >
 
+            <com.mappingbird.widget.MappingbirdTextView
+                android:id="@+id/sign_up_detail_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/font_normal"
+                android:textSize="14dp"
+                android:text="@string/sign_up_detail"
+                />
+            
             <RelativeLayout
                 android:id="@+id/input_email_layout"
                 android:layout_width="match_parent"
+                android:layout_below="@id/sign_up_detail_layout"
+                android:layout_marginTop="16dp"
                 android:layout_height="48dp" >
 
                 <com.mappingbird.widget.MappingbirdEditText
@@ -147,18 +158,11 @@
                     android:textSize="16dp" />
             </RelativeLayout>
             
-            <View
-                android:id="@+id/field_divider_3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/confirm_password_layout"
-                android:background="#DDDDDD" />            
-
             <RelativeLayout
                 android:id="@+id/login"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_below="@id/field_divider_3"
+                android:layout_below="@id/confirm_password_layout"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/login_selector" >
 

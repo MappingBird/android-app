@@ -226,7 +226,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MappingBirdSignUpActivity.class);
+                intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MBSignUpActivity.class);
                 MappingBirdCollectionActivity.this.startActivity(intent);               
                 
                 AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 

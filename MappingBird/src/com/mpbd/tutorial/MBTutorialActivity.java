@@ -232,7 +232,7 @@ public class MBTutorialActivity extends FragmentActivity{
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MappingBirdSignUpActivity.class);
+                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MBSignUpActivity.class);
                         MBTutorialActivity.this.startActivity(intent);                        
                     }
                 });

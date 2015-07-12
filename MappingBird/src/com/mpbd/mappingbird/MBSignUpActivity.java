@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -20,10 +19,8 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.OnSignUpListener;
@@ -34,14 +31,13 @@ import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 
-public class MappingBirdSignUpActivity extends Activity implements
+public class MBSignUpActivity extends Activity implements
 		OnClickListener {
 
 	private RelativeLayout mLogIn = null;
 	private EditText mEmail = null;
 	private EditText mPassword = null;
 	private EditText mConfirmPassword = null;
-	private TextView mLoginText = null;
 	private MappingBirdAPI mApi = null;
 	private String mEmails = null;
 	private String mPasswords = null;
@@ -62,7 +58,6 @@ public class MappingBirdSignUpActivity extends Activity implements
 		mEmail = (EditText) findViewById(R.id.input_email);
 		mPassword = (EditText) findViewById(R.id.input_password);
 		mConfirmPassword = (EditText) findViewById(R.id.confirm_input_password);
-		mLoginText = (TextView) findViewById(R.id.login_loading_text);
 		isLoading(false);
 		findViewById(R.id.back_icon).setOnClickListener(this);
 		findViewById(R.id.question_icon).setOnClickListener(this);
@@ -92,13 +87,9 @@ public class MappingBirdSignUpActivity extends Activity implements
 
 	private void isLoading(boolean isLoading) {
 		if (isLoading) {
-			mLoginText.setText(this.getResources().getString(R.string.tutorial_sign_up));
-			mLoginText.setTextColor(Color.WHITE);
 			showLoadingDialog();
 			mLogIn.setEnabled(false);
 		} else {
-			mLoginText.setText(this.getResources().getString(R.string.tutorial_sign_up));
-			mLoginText.setTextColor(Color.WHITE);
 			closeLoadingDialog();
 			mLogIn.setEnabled(true);
 		}
@@ -144,13 +135,13 @@ public class MappingBirdSignUpActivity extends Activity implements
 		public void onSignUp(int statusCode, User user) {
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
 				Intent intent = new Intent();
-				intent.setClass(MappingBirdSignUpActivity.this,
+				intent.setClass(MBSignUpActivity.this,
 						com.mappingbird.collection.MappingBirdCollectionActivity.class);
 		
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 						| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-				MappingBirdSignUpActivity.this.startActivity(intent);
+				MBSignUpActivity.this.startActivity(intent);
 			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_NETWORK_ERROR) {
 				isLoading(false);
 				mEmail.setEnabled(true);
@@ -172,9 +163,9 @@ public class MappingBirdSignUpActivity extends Activity implements
 	};
 
 	private void onLoginError(int statusCode) {
-		mErrorDialog = new MBDialog(MappingBirdSignUpActivity.this);
-		mErrorDialog.setTitle(MBErrorMessageControl.getErrorTitle(statusCode, MappingBirdSignUpActivity.this));
-		mErrorDialog.setDescription(MBErrorMessageControl.getErrorMessage(statusCode, MappingBirdSignUpActivity.this));
+		mErrorDialog = new MBDialog(MBSignUpActivity.this);
+		mErrorDialog.setTitle(MBErrorMessageControl.getErrorTitle(statusCode, MBSignUpActivity.this));
+		mErrorDialog.setDescription(MBErrorMessageControl.getErrorMessage(statusCode, MBSignUpActivity.this));
 		mErrorDialog.setPositiveBtn(getString(R.string.ok), 
 				mLoginOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
 		mErrorDialog.setCanceledOnTouchOutside(false);
@@ -205,7 +196,7 @@ public class MappingBirdSignUpActivity extends Activity implements
 	private void showLoadingDialog() {
 		if(mLoadingDialog != null)
 			return;
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(MappingBirdSignUpActivity.this);
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(MBSignUpActivity.this);
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
 	}
@@ -316,12 +307,12 @@ public class MappingBirdSignUpActivity extends Activity implements
 	
 	private void startInActivity() {
 		Intent intent = new Intent();
-		intent.setClass(MappingBirdSignUpActivity.this,
+		intent.setClass(MBSignUpActivity.this,
 				com.mappingbird.collection.MappingBirdCollectionActivity.class);
 
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		MappingBirdSignUpActivity.this.startActivity(intent);
+		MBSignUpActivity.this.startActivity(intent);
 	}
 }

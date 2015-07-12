@@ -22,7 +22,6 @@
     <string name="str_cancel">Cancel</string>
     <string name="str_conitune">Conitune</string>
     <string name="str_cancel_upload">Cancel upload</string>
-    <string name="sign_up_content">Sign up a MappingBird account for backing up your favorite places, sync with devices and access them on mappingbird.</string>
 
     <!-- Sign in and Sign up activity and  -->
     <string name="login_content_title">Log In Mappingbird Account</string>
@@ -31,6 +30,8 @@
     <string name="login_hint_password">Password</string>
     <string name="login_btn">LOG IN</string>
     <string name="login_logging">LOGGING IN</string>
+    <string name="sign_up_detail">Sign up a MappingBird ccount for backing up your favorite
+        places, sync ith other devices and access them on mappingbird.com</string>
     
     <!-- Forgot password -->
     <string name="forgot_password_title">Reset password email sent!</string>
