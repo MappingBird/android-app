@@ -31,7 +31,6 @@ import android.widget.TextView;
 
 import com.common.location.LocationService;
 import com.common.location.LocationService.LocationServiceListener;
-import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -113,10 +112,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private LatLng mMyLocation = null;
 	private Marker mMyMarker = null;
 
-	private MappingBirdBitmap mLoadBitmap = null;
 	private Context mContext = null;
 
-	private Dialog mLoadingDialog = null;
 	private ProgressWheel mLoading = null;
 
 	private ClusterManager<MappingBirdItem> mClusterManager;
@@ -140,6 +137,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private Handler mHandler = new Handler();
 	
 	private MBDialog mDialog = null;
+	private Dialog mLoadingDialog = null;
 	
 	private long mClickButtonTime = 0;
 	@Override
@@ -212,7 +210,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MappingBirdLoginActivity.class);
+                intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MBLoginActivity.class);
                 MappingBirdCollectionActivity.this.startActivity(intent);   
                 
                 AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
@@ -245,7 +243,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		mApi = new MappingBirdAPI(this);
 		mAccountTextView.setText(mApi.getCurrentUser().getEmail());
 
-		mLoadBitmap = new MappingBirdBitmap(this.getApplicationContext());
 		mContext = this;
 		
 		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
@@ -273,19 +270,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					setTitle(R.string.no_data);
 				}
 			} else {
-				String title = "";
-				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
-				String error = "";
-				error = MBErrorMessageControl.getErrorMessage(statusCode, mContext);
-				
-				mDialog = new MBDialog(mContext);
-				mDialog.setTitle(title);
-				mDialog.setDescription(error);
-				mDialog.setPositiveBtn(getString(R.string.ok), 
-						mErrorDialogOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
-				mDialog.setCanceledOnTouchOutside(false);
-				mDialog.show();
-
+				DFshowDialog(DIALOG_ERROR_NO_NETWORK, statusCode, mErrorDialogOkClickListener);
 			}
 		}
 	};
@@ -980,6 +965,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			// 當上傳完成後. 重讀
 			refreshThisCollections();
 		}
+
+		@Override
+		public void onCancelUpload() {
+			showCancelUploadDialog();
+		}
 	};
 
 	class MappingBirdRender extends DefaultClusterRenderer<MappingBirdItem> {
@@ -1164,5 +1154,84 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			}
 		});
 		mDialog.show();
+	}
+	
+	// --- Dialog ---------------------------
+	private final static int DIALOG_LOADING = 5; // 特別, 用另外一個Dialog
+	private final static int DIALOG_NONE = 1000;
+	private final static int DIALOG_ERROR_NO_NETWORK = 0; // 拿Collection list或 一個Collection資料有問題.
+	private final static int DIALOG_LOCATION_NO_EXIST = 1; // Location拿不到
+	private final static int DIALOG_UPLOAD_SUCESSED = 10;
+	private final static int DIALOG_UPLOAD_FAILED = 11;
+	private final static int DIALOG_CANCEL_UPLOAD = 12;
+	
+	private int mDialogMode = DIALOG_NONE; 
+	
+	private void DFshowDialog(int mode, int statusCode, OnClickListener listener) {
+		if(mode > mDialogMode)
+			return;
+				
+		switch(mode) {
+		case DIALOG_ERROR_NO_NETWORK:
+			//先關閉之前的dialog
+			DFdismiss();
+			mDialogMode = DIALOG_ERROR_NO_NETWORK;
+			DFShowErrorDialog(mode, statusCode, listener);
+			break;
+		case DIALOG_CANCEL_UPLOAD:
+			//先關閉之前的dialog
+			DFdismiss();
+			mDialogMode = DIALOG_CANCEL_UPLOAD;
+			break;
+		case DIALOG_UPLOAD_FAILED:
+			//先關閉之前的dialog
+			DFdismiss();
+			mDialogMode = DIALOG_UPLOAD_FAILED;
+			break;
+		case DIALOG_UPLOAD_SUCESSED:
+			if(mDialogMode == DIALOG_CANCEL_UPLOAD) {
+				// 之前有關閉上傳. 所以要跳
+				DFdismiss();
+				mDialogMode = DIALOG_UPLOAD_SUCESSED;
+				
+			} else {
+				// 不需要做什麼事情
+				DFdismiss();
+			}
+			
+			break;
+		case DIALOG_LOCATION_NO_EXIST:
+			mDialogMode = DIALOG_LOCATION_NO_EXIST;
+			break;
+		}
+	}
+	
+	private void DFShowErrorDialog(int mode, int statusCode, OnClickListener listener) {
+		String title = "";
+		title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
+		String error = "";
+		error = MBErrorMessageControl.getErrorMessage(statusCode, mContext);
+		
+		if(mDialog != null && mDialog.isShowing())
+			mDialog.dismiss();
+
+		mDialog = new MBDialog(mContext);
+		mDialog.setTitle(title);
+		mDialog.setDescription(error);
+		mDialog.setPositiveBtn(getString(R.string.ok), 
+				listener, MBDialog.BTN_STYLE_DEFAULT);
+		mDialog.setCanceledOnTouchOutside(false);
+		mDialog.show();
+	}
+	
+	private boolean DFisShowing() {
+		return mDialog != null & mDialog.isShowing();
+	}
+
+	private void DFdismiss() {
+		if(mDialog != null && mDialog.isShowing())
+			mDialog.dismiss();
+		mDialog = null;
+		mDialogMode = DIALOG_NONE;
 	}
 }

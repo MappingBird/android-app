@@ -291,6 +291,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 	public interface NewCardClickListener {
 		public void onClickCard(MBPointData point);
 		public void onProgressFinished();
+		public void onCancelUpload();
 		
 	}
 
@@ -738,6 +739,11 @@ public class MBCollectionListLayout extends RelativeLayout {
 		public void onProgressFinished() {
 			if(mNewCardClickListener != null)
 				mNewCardClickListener.onProgressFinished();
+		}
+
+		@Override
+		public void onCancelUpload() {
+			mNewCardClickListener.onCancelUpload();
 		}
 	};
 

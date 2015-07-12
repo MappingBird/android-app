@@ -193,7 +193,7 @@ public class MBTutorialActivity extends FragmentActivity{
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MappingBirdLoginActivity.class);
+                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MBLoginActivity.class);
                         MBTutorialActivity.this.startActivity(intent);
                         
                     }
@@ -213,7 +213,7 @@ public class MBTutorialActivity extends FragmentActivity{
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MappingBirdLoginActivity.class);
+                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MBLoginActivity.class);
                         MBTutorialActivity.this.startActivity(intent);                        
                     }
                 });

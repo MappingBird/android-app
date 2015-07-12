@@ -46,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:text="@string/login_content"
                 android:textColor="@color/font_normal"
                 android:textSize="14dp" />
 
@@ -64,7 +65,7 @@
                     android:layout_marginRight="8dp"
                     android:background="#00000000"
                     android:gravity="center_vertical"
-                    android:hint="@string/email"
+                    android:hint="@string/login_hint_email"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/font_normal"
                     android:textColorHint="@color/font_hint"
@@ -85,7 +86,7 @@
                 android:layout_below="@id/field_divider" >
 
                 <com.mappingbird.widget.MappingbirdFontIcon
-                    android:id="@+id/question_icon"
+                    android:id="@+id/login_hint_password_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
@@ -94,20 +95,20 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="@string/iconfont_help_circle"
+                    android:text="@string/iconfont_eye_off"
                     android:textColor="@color/font_normal"
                     android:textSize="24dp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
                 <com.mappingbird.widget.MappingbirdEditText
                     android:id="@+id/input_password"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_toLeftOf="@id/question_icon"
+                    android:layout_toLeftOf="@id/login_hint_password_icon"
                     android:background="#00000000"
                     android:gravity="center_vertical"
-                    android:hint="@string/password"
+                    android:hint="@string/login_hint_password"
                     android:inputType="textPassword"
                     android:textColor="@color/font_normal"
                     android:textColorHint="@color/font_hint"
@@ -128,11 +129,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/login"
+                    android:text="@string/login_btn"
                     android:textAllCaps="true"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp" />
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/login_forgot_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_below="@id/login"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                android:orientation="horizontal" >
+
+                <com.mappingbird.widget.MappingbirdFontIcon
+                    android:id="@+id/login_forgot_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:text="@string/iconfont_help_circle"
+                    android:textColor="@color/font_blue"
+                    android:textSize="24dp"
+                    android:visibility="visible" />
+
+                <com.mappingbird.widget.MappingbirdTextView
+                    android:id="@+id/login_forgot_text"
+                    style="@style/TextStyle_Label"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/forgot_password_text"
+                    android:textColor="@color/font_blue"
+                    android:textSize="18dp" />
+            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 

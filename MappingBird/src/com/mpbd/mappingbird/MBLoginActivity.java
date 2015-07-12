@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
+import android.text.InputType;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,31 +23,35 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.hlrt.common.DeBug;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.User;
 import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
+import com.mpbd.mappingbird.common.MBInputDialog;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 
-public class MappingBirdLoginActivity extends Activity implements
+public class MBLoginActivity extends Activity implements
 		OnClickListener {
 	private RelativeLayout mLogIn = null;
 	private EditText mEmail = null;
 	private EditText mPassword = null;
-	private TextView mLoginDescription = null;
-	private TextView mLoginText = null;
-	private MappingBirdAPI mApi = null;
+	private TextView mLoginBtn = null;
+	private TextView mHintPassword = null;
+	private View mForgotPassword = null;
 	private String mEmails = null;
 	private String mPasswords = null;
+
+	private MappingBirdAPI mApi = null;
 
 	private Dialog mLoadingDialog = null;
 
 	private MBDialog mErrorDialog;
-	
+	private boolean isShowPassword = false;
+
+	private MBInputDialog mInputEmailDialog = null;
+	private String mForgotemail = "";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,15 +60,20 @@ public class MappingBirdLoginActivity extends Activity implements
 		mLogIn = (RelativeLayout) findViewById(R.id.login);
 		mEmail = (EditText) findViewById(R.id.input_email);
 		mPassword = (EditText) findViewById(R.id.input_password);
-		mLoginDescription = (TextView) findViewById(R.id.login_content_text);
-		mLoginText = (TextView) findViewById(R.id.login_loading_text);
+		mLoginBtn = (TextView) findViewById(R.id.login_loading_text);
+		
+		mHintPassword = (TextView)findViewById(R.id.login_hint_password_icon);
+		mForgotPassword = findViewById(R.id.login_forgot_layout);
+		
+		// Hide password init
+		mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		isShowPassword = false;
 		isLoaing(false);
+		findViewById(R.id.login_hint_password_icon).setOnClickListener(this);
 		findViewById(R.id.back_icon).setOnClickListener(this);
-		findViewById(R.id.question_icon).setOnClickListener(this);
+		mForgotPassword.setOnClickListener(this);
 		mLogIn.setOnClickListener(this);
-		mLoginDescription.setMovementMethod(LinkMovementMethod.getInstance());
-		mLoginDescription.setText(Html
-				.fromHtml(getString(R.string.login_content)));
+
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 		
 		// 接收 ok key event
@@ -99,17 +111,15 @@ public class MappingBirdLoginActivity extends Activity implements
 
 	private void isLoaing(boolean isLoading) {
 		if (isLoading) {
-			mLoginText
-					.setText(this.getResources().getString(R.string.logining));
-			mLoginText.setTextColor(Color.WHITE);
+			mLoginBtn
+					.setText(this.getResources().getString(R.string.login_logging));
+			mLoginBtn.setTextColor(Color.WHITE);
 			showLoadingDialog();
-			mLoginDescription.setEnabled(false);
 			mLogIn.setEnabled(false);
 		} else {
-			mLoginText.setText(this.getResources().getString(R.string.login));
-			mLoginText.setTextColor(Color.WHITE);
+			mLoginBtn.setText(this.getResources().getString(R.string.login_btn));
+			mLoginBtn.setTextColor(Color.WHITE);
 			closeLoadingDialog();
-			mLoginDescription.setEnabled(true);
 			mLogIn.setEnabled(true);
 		}
 	}
@@ -120,12 +130,70 @@ public class MappingBirdLoginActivity extends Activity implements
 		case R.id.back_icon:
 			finish();
 			break;
-		case R.id.question_icon:
+		case R.id.login_hint_password_icon:
+			isShowPassword = !isShowPassword;
+			if(isShowPassword) {
+				mPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+				mHintPassword.setText(R.string.iconfont_eye);
+			} else {
+				mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+				mHintPassword.setText(R.string.iconfont_eye_off);				
+			}
+			break;
+		case R.id.login_forgot_layout:
+			// 寄信的動作
+			mInputEmailDialog = new MBInputDialog(MBLoginActivity.this);
+			mInputEmailDialog.setTitle(getString(R.string.forgot_password_enter_email_title));
+//			mInputEmailDialog.setInput("",getContext().getString(R.string.dialog_create_collection_hint));
+			mInputEmailDialog.setCanceledOnTouchOutside(false);
+			mInputEmailDialog.setPositiveBtn(getString(R.string.ok), 
+					new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							if(!TextUtils.isEmpty(mInputEmailDialog.getInputText())) {
+								forgotPassword(mInputEmailDialog.getInputText());
+							}
+							mInputEmailDialog.dismiss();
+						}
+					}, MBInputDialog.BTN_STYLE_DEFAULT);
+			mInputEmailDialog.setNegativeBtn(getString(R.string.str_cancel), 
+					new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							mInputEmailDialog.dismiss();
+						}
+					}, MBInputDialog.BTN_STYLE_DEFAULT);
+			mInputEmailDialog.setCanceledOnTouchOutside(false);
+			mInputEmailDialog.show();
+
+			mEmails = mEmail.getText().toString();
 			break;
 		case R.id.login:
 			login();
 			break;
 		}
+	}
+
+	private void forgotPassword(String email) {
+		// 送email到Server
+		final MBDialog dialog = new MBDialog(MBLoginActivity.this);
+		String msg = String.format(MBLoginActivity.this.getString(R.string.forgot_password_message),
+				email);
+		SpannableString spann = new SpannableString(msg);
+		spann.setSpan(new ForegroundColorSpan(0xff01A9E7), msg.indexOf(email),
+				msg.indexOf(email) + email.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		dialog.setTitle(MBLoginActivity.this.getString(R.string.forgot_password_title));
+		dialog.setDescription(spann);
+		dialog.setPositiveBtn(MBLoginActivity.this.getString(R.string.ok),
+				new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if(dialog != null && dialog.isShowing())
+							dialog.dismiss();
+					}
+				}, MBDialog.BTN_STYLE_DEFAULT);
+		dialog.show();
 	}
 
 	private void login() {
@@ -174,19 +242,19 @@ public class MappingBirdLoginActivity extends Activity implements
 
 	private void startInActivity() {
 		Intent intent = new Intent();
-		intent.setClass(MappingBirdLoginActivity.this,
+		intent.setClass(MBLoginActivity.this,
 				com.mappingbird.collection.MappingBirdCollectionActivity.class);
 
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		MappingBirdLoginActivity.this.startActivity(intent);
+		MBLoginActivity.this.startActivity(intent);
 	}
 
 	private void onLoginError(int statusCode) {
-		mErrorDialog = new MBDialog(MappingBirdLoginActivity.this);
-		mErrorDialog.setTitle(MBErrorMessageControl.getErrorTitle(statusCode, MappingBirdLoginActivity.this));
-		mErrorDialog.setDescription(MBErrorMessageControl.getErrorMessage(statusCode, MappingBirdLoginActivity.this));
+		mErrorDialog = new MBDialog(MBLoginActivity.this);
+		mErrorDialog.setTitle(MBErrorMessageControl.getErrorTitle(statusCode, MBLoginActivity.this));
+		mErrorDialog.setDescription(MBErrorMessageControl.getErrorMessage(statusCode, MBLoginActivity.this));
 		mErrorDialog.setPositiveBtn(getString(R.string.ok), 
 				mLoginOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
 		mErrorDialog.setCanceledOnTouchOutside(false);
@@ -217,7 +285,7 @@ public class MappingBirdLoginActivity extends Activity implements
 	private void showLoadingDialog() {
 		if(mLoadingDialog != null)
 			return;
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(MappingBirdLoginActivity.this);
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(MBLoginActivity.this);
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
 	}

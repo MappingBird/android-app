@@ -46,4 +46,7 @@
     <string name="iconfont_collections" translatable="false">\uE63B</string>
     <string name="iconfont_camera_iris" translatable="false">\uE62F</string>
     
+    <string name="iconfont_eye_off" translatable="false">\uE620</string>
+    <string name="iconfont_eye" translatable="false">\uE621</string>
+    
 </resources>

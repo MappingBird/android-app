@@ -41,7 +41,6 @@ public class AppPlaceDB {
     	if(DeBug.DEBUG)
     		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[AppPlaceDB] : have data submit need to cancel = "+haveData);
     	if(haveData) {
-    		
     		cursor.moveToFirst();
         	SQLiteDatabase sql = mHelper.getWritableDatabase();
 			while(!cursor.isAfterLast()) {
@@ -54,6 +53,7 @@ public class AppPlaceDB {
 	        	if(DeBug.DEBUG)
 	        		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[AppPlaceDB] : CancelPlaceValue ["+placeDBId+"], state = SUBMIT_STATE_CANCEL"
 	        				+ ", resule = "+output);
+	        	cursor.moveToNext();
 			}
         	sql.close();
 			cursor.close();

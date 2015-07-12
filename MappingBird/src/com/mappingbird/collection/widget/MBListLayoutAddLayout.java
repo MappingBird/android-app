@@ -218,6 +218,11 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		
 		@Override
 		public void onClick(View v) {
+			// 上傳中按下add button
+			if(mMode == MODE_PROGRESSING && v.getId() == R.id.item_add_layout) {
+				mOnSelectKindLayoutListener.onCancelUpload();
+				return;
+			}
 			if(mMode != MODE_CLOSE
 					&& mMode != MODE_OPEN)
 				return;
@@ -420,6 +425,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		public void openSelect();
 		public void closeSelect();
 		public void onProgressFinished();
+		public void onCancelUpload();
 	}
 	
 	// Progress ---------------------------------

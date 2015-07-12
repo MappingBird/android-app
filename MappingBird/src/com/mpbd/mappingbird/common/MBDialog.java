@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.graphics.Typeface;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -79,6 +80,14 @@ public class MBDialog {
 	}
 
 	public void setDescription(String description) {
+		if(mDialogDescription != null) {
+			mDialogTitlePaddingBottom.setVisibility(View.GONE);
+			mDialogDescription.setVisibility(View.VISIBLE);
+			mDialogDescription.setText(description);
+		}
+	}
+
+	public void setDescription(SpannableString description) {
 		if(mDialogDescription != null) {
 			mDialogTitlePaddingBottom.setVisibility(View.GONE);
 			mDialogDescription.setVisibility(View.VISIBLE);
