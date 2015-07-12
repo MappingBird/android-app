@@ -258,6 +258,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		@Override
 		public void onGetCollections(int statusCode, Collections collection) {
+			if(MappingBirdCollectionActivity.this.isFinishing())
+				return;
+
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
 				mCollections = collection;
 				if (collection.getCount() > 0) {
@@ -282,6 +285,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			if(DeBug.DEBUG) {
 				DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] get message"); 
 			}
+
+			if(MappingBirdCollectionActivity.this.isFinishing())
+				return;
+
 			switch(data.getState()) {
 			case MBPlaceSubmitTask.MSG_NONE:
 				if(DeBug.DEBUG) {
@@ -1168,6 +1175,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private int mDialogMode = DIALOG_NONE; 
 	
 	private void DFshowDialog(int mode, int statusCode, OnClickListener listener) {
+		if(MappingBirdCollectionActivity.this.isFinishing())
+			return;
+
 		if(mode > mDialogMode)
 			return;
 				
