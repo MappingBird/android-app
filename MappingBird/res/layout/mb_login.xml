@@ -116,12 +116,12 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/login"
+                android:id="@+id/login_bnt_layout"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_below="@id/input_password_layout"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/login_selector" >
+                android:background="@drawable/login_btn_selector_bg" >
 
                 <com.mappingbird.widget.MappingbirdTextView
                     android:id="@+id/login_loading_text"

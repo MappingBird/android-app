@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
@@ -34,7 +36,7 @@ import com.mpbd.mappingbird.util.AppAnalyticHelper;
 
 public class MBLoginActivity extends Activity implements
 		OnClickListener {
-	private RelativeLayout mLogIn = null;
+	private RelativeLayout mLogInBtnLayout = null;
 	private EditText mEmail = null;
 	private EditText mPassword = null;
 	private TextView mLoginBtn = null;
@@ -56,8 +58,8 @@ public class MBLoginActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.mappingbird_login);
-		mLogIn = (RelativeLayout) findViewById(R.id.login);
+		setContentView(R.layout.mb_login);
+		mLogInBtnLayout = (RelativeLayout) findViewById(R.id.login_bnt_layout);
 		mEmail = (EditText) findViewById(R.id.input_email);
 		mPassword = (EditText) findViewById(R.id.input_password);
 		mLoginBtn = (TextView) findViewById(R.id.login_loading_text);
@@ -65,6 +67,10 @@ public class MBLoginActivity extends Activity implements
 		mHintPassword = (TextView)findViewById(R.id.login_hint_password_icon);
 		mForgotPassword = findViewById(R.id.login_forgot_layout);
 		
+		// Name password
+		mEmail.addTextChangedListener(mTextWatcher);
+		mPassword.addTextChangedListener(mTextWatcher);
+
 		// Hide password init
 		mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		isShowPassword = false;
@@ -72,13 +78,12 @@ public class MBLoginActivity extends Activity implements
 		findViewById(R.id.login_hint_password_icon).setOnClickListener(this);
 		findViewById(R.id.back_icon).setOnClickListener(this);
 		mForgotPassword.setOnClickListener(this);
-		mLogIn.setOnClickListener(this);
+		mLogInBtnLayout.setOnClickListener(this);
 
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 		
 		// 接收 ok key event
 		mPassword.setOnEditorActionListener(new OnEditorActionListener() {
-			
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if(actionId == EditorInfo.IME_ACTION_DONE) {
@@ -102,12 +107,34 @@ public class MBLoginActivity extends Activity implements
 		AppAnalyticHelper.startSession(this);
 	}
 
-
 	@Override
 	protected void onStop() {
 		super.onStop();
 	      AppAnalyticHelper.endSession(this); 
 	}
+
+	private TextWatcher mTextWatcher = new TextWatcher() {
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			if(!TextUtils.isEmpty(mEmail.getText().toString()) 
+					&& !TextUtils.isEmpty(mPassword.getText().toString())) {
+				// 有輸入值
+				
+			} else {
+				// 其中有一個沒有輸入值
+				
+			}
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+		}
+	};
 
 	private void isLoaing(boolean isLoading) {
 		if (isLoading) {
@@ -115,12 +142,12 @@ public class MBLoginActivity extends Activity implements
 					.setText(this.getResources().getString(R.string.login_logging));
 			mLoginBtn.setTextColor(Color.WHITE);
 			showLoadingDialog();
-			mLogIn.setEnabled(false);
+			mLogInBtnLayout.setEnabled(false);
 		} else {
 			mLoginBtn.setText(this.getResources().getString(R.string.login_btn));
 			mLoginBtn.setTextColor(Color.WHITE);
 			closeLoadingDialog();
-			mLogIn.setEnabled(true);
+			mLogInBtnLayout.setEnabled(true);
 		}
 	}
 
@@ -213,7 +240,6 @@ public class MBLoginActivity extends Activity implements
 	}
 
 	OnLogInListener mLoginListener = new OnLogInListener() {
-
 		@Override
 		public void onLogIn(int statusCode, User user) {
 			if (statusCode == MappingBirdAPI.RESULT_OK) {

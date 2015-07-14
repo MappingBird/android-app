@@ -32,139 +32,83 @@
         android:layout_height="match_parent"
         android:layout_below="@id/login_title" >
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/login_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="20dp" >
 
             <com.mappingbird.widget.MappingbirdTextView
-                android:id="@+id/sign_up_detail_layout"
+                android:id="@+id/sign_up_detail_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/font_normal"
-                android:textSize="14dp"
                 android:text="@string/sign_up_detail"
-                />
-            
-            <RelativeLayout
-                android:id="@+id/input_email_layout"
-                android:layout_width="match_parent"
-                android:layout_below="@id/sign_up_detail_layout"
-                android:layout_marginTop="16dp"
-                android:layout_height="48dp" >
+                android:textColor="@color/font_normal"
+                android:textSize="14dp" />
 
-                <com.mappingbird.widget.MappingbirdEditText
-                    android:id="@+id/input_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#00000000"
-                    android:gravity="center_vertical"
-                    android:hint="@string/login_hint_email"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/font_normal"
-                    android:textColorHint="@color/font_hint"
-                    android:textSize="16dp" />
-            </RelativeLayout>
+            <com.mappingbird.widget.MappingbirdEditText
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:background="#00000000"
+                android:gravity="center_vertical"
+                android:hint="@string/login_hint_email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/font_normal"
+                android:textColorHint="@color/font_hint"
+                android:textSize="16dp" />
 
             <View
                 android:id="@+id/field_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/input_email_layout"
                 android:background="#DDDDDD" />
 
-            <RelativeLayout
-                android:id="@+id/input_password_layout"
+            <com.mappingbird.widget.MappingbirdEditText
+                android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_below="@id/field_divider" >
-
-                <com.mappingbird.widget.MappingbirdFontIcon
-                    android:id="@+id/question_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/btn_question_bg"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:text="@string/iconfont_help_circle"
-                    android:textColor="@color/font_normal"
-                    android:textSize="24dp"
-                    android:visibility="gone" />
-
-                <com.mappingbird.widget.MappingbirdEditText
-                    android:id="@+id/input_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toLeftOf="@id/question_icon"
-                    android:background="#00000000"
-                    android:gravity="center_vertical"
-                    android:hint="@string/login_hint_password"
-                    android:inputType="textPassword"
-                    android:textColor="@color/font_normal"
-                    android:textColorHint="@color/font_hint"
-                    android:textSize="16dp" />
-            </RelativeLayout>
+                android:layout_marginLeft="8dp"
+                android:background="#00000000"
+                android:gravity="center_vertical"
+                android:hint="@string/login_hint_password"
+                android:inputType="textPassword"
+                android:textColor="@color/font_normal"
+                android:textColorHint="@color/font_hint"
+                android:textSize="16dp" />
 
             <View
                 android:id="@+id/field_divider_2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/input_password_layout"
                 android:background="#DDDDDD" />
-            
-            <RelativeLayout
-                android:id="@+id/confirm_password_layout"
+
+            <com.mappingbird.widget.MappingbirdEditText
+                android:id="@+id/confirm_input_password"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_below="@id/field_divider_2" >
+                android:layout_marginLeft="8dp"
+                android:background="#00000000"
+                android:gravity="center_vertical"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:textColor="@color/font_normal"
+                android:textColorHint="@color/font_hint"
+                android:textSize="16dp" />
 
-                <com.mappingbird.widget.MappingbirdFontIcon
-                    android:id="@+id/confirm_question_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/btn_question_bg"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:text="@string/iconfont_help_circle"
-                    android:textColor="@color/font_normal"
-                    android:textSize="24dp"
-                    android:visibility="gone" />
-
-                <com.mappingbird.widget.MappingbirdEditText
-                    android:id="@+id/confirm_input_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toLeftOf="@id/confirm_question_icon"
-                    android:background="#00000000"
-                    android:gravity="center_vertical"
-                    android:hint="@string/confirm_password"
-                    android:inputType="textPassword"
-                    android:textColor="@color/font_normal"
-                    android:textColorHint="@color/font_hint"
-                    android:textSize="16dp" />
-            </RelativeLayout>
-            
             <RelativeLayout
                 android:id="@+id/login"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_below="@id/confirm_password_layout"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/login_selector" >
+                android:background="@drawable/login_btn_selector_bg" >
 
                 <com.mappingbird.widget.MappingbirdTextView
                     android:id="@+id/login_loading_text"
@@ -174,10 +118,10 @@
                     android:layout_centerInParent="true"
                     android:text="@string/tutorial_sign_up"
                     android:textAllCaps="true"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/login_btn_text_color"
                     android:textSize="18sp" />
             </RelativeLayout>
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>

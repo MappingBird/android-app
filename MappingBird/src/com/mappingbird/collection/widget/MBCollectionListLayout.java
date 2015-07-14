@@ -684,7 +684,10 @@ public class MBCollectionListLayout extends RelativeLayout {
 				mChangeCardAnimBoj.setVisiable(false);
 				mListView.setVisibility(View.VISIBLE);
 			}
-			mListView.setY(mDragY);
+			if(mDragY >= 0)
+				mListView.setY(mDragY);
+			else
+				mListView.scrollTo(0, -(int)mDragY);
 			float alpha = mDragY * 1.0f / (getHeight() -  mCardMaxHeight);
 			if(alpha > 1)
 				alpha = 1;

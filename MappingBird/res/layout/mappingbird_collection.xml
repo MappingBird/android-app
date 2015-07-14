@@ -170,7 +170,7 @@
                         android:layout_height="36dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
-                        android:background="@drawable/login_selector"
+                        android:background="@drawable/login_btn_selector_bg"
                         android:text="@string/tutorial_sign_in"
                         android:textColor="@color/font_white" />
 

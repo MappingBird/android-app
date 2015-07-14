@@ -13,12 +13,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.Html;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mappingbird.api.MappingBirdAPI;
@@ -34,14 +40,13 @@ import com.mpbd.mappingbird.util.AppAnalyticHelper;
 public class MBSignUpActivity extends Activity implements
 		OnClickListener {
 
-	private RelativeLayout mLogIn = null;
+	private RelativeLayout mLogInBtnLayout = null;
 	private EditText mEmail = null;
 	private EditText mPassword = null;
 	private EditText mConfirmPassword = null;
 	private MappingBirdAPI mApi = null;
-	private String mEmails = null;
-	private String mPasswords = null;
-	private String mConfirmPasswords = null;
+	private String mEmailStr = null;
+	private String mPasswordStr = null;
 
 	private Dialog mLoadingDialog = null;
 
@@ -54,17 +59,49 @@ public class MBSignUpActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mb_activity_layout_signup);
-		mLogIn = (RelativeLayout) findViewById(R.id.login);
+		mLogInBtnLayout = (RelativeLayout) findViewById(R.id.login);
 		mEmail = (EditText) findViewById(R.id.input_email);
 		mPassword = (EditText) findViewById(R.id.input_password);
 		mConfirmPassword = (EditText) findViewById(R.id.confirm_input_password);
 		isLoading(false);
+		
+		mEmail.addTextChangedListener(mTextWatcher);
+		mPassword.addTextChangedListener(mTextWatcher);
+		mConfirmPassword.addTextChangedListener(mTextWatcher);
+		
+		TextView detail = (TextView) findViewById(R.id.sign_up_detail_text);
+		detail.setMovementMethod(LinkMovementMethod.getInstance());
+		detail.setText(Html
+				.fromHtml(getString(R.string.sign_up_detail_link)));
+		
 		findViewById(R.id.back_icon).setOnClickListener(this);
-		findViewById(R.id.question_icon).setOnClickListener(this);
-		mLogIn.setOnClickListener(this);
+		mLogInBtnLayout.setOnClickListener(this);
+		mLogInBtnLayout.setEnabled(false);
 
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 	}
+
+	private TextWatcher mTextWatcher = new TextWatcher() {
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			if(TextUtils.isEmpty(mEmail.getText()) ||
+					TextUtils.isEmpty(mPassword.getText()) ||
+					TextUtils.isEmpty(mConfirmPassword.getText())) {
+				mLogInBtnLayout.setEnabled(false);
+			} else {
+				mLogInBtnLayout.setEnabled(true);
+			}
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+		}
+	};
 
 	@Override
 	protected void onPause() {
@@ -88,10 +125,10 @@ public class MBSignUpActivity extends Activity implements
 	private void isLoading(boolean isLoading) {
 		if (isLoading) {
 			showLoadingDialog();
-			mLogIn.setEnabled(false);
+			mLogInBtnLayout.setEnabled(false);
 		} else {
 			closeLoadingDialog();
-			mLogIn.setEnabled(true);
+			mLogInBtnLayout.setEnabled(true);
 		}
 	}
 
@@ -101,25 +138,24 @@ public class MBSignUpActivity extends Activity implements
 		case R.id.back_icon:
 			finish();
 			break;
-		case R.id.question_icon:
-			break;
 		case R.id.login:
-			mEmails = mEmail.getText().toString();
-			mPasswords = mPassword.getText().toString();
-			mConfirmPasswords = mConfirmPassword. getText().toString();
+			mEmailStr = mEmail.getText().toString();
+			mPasswordStr = mPassword.getText().toString();
+			String confirmPasswords = mConfirmPassword. getText().toString();
 			
-			if(!mConfirmPasswords.equalsIgnoreCase(mPasswords)){
+			if(!confirmPasswords.equalsIgnoreCase(mPasswordStr)){
 			    onLoginError(MappingBirdAPI.RESULT_SIGN_UP_ERROR_PASSWORD_NOT_MATCH);
 			    return;
 			}			
 			
 			isLoading(true);
-			if (!mEmails.equals("") && !mPasswords.equals("")) {
+			if (!TextUtils.isEmpty(mEmailStr) && !TextUtils.isEmpty(mPasswordStr)) {
 				closeIME();
 				mEmail.setEnabled(false);
 				mPassword.setEnabled(false);
+				mConfirmPassword.setEnabled(false);
 //				mApi.signUp(mSignUpListener, mEmails, mPasswords);
-				api_signup(mEmails, mPasswords);
+				api_signup(mEmailStr, mPasswordStr);
 			} else {
 				isLoading(false);
 				Toast.makeText(getApplicationContext(),
@@ -146,17 +182,20 @@ public class MBSignUpActivity extends Activity implements
 				isLoading(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
+				mConfirmPassword.setEnabled(true);
 				onLoginError(statusCode);
 				
 			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_ACCOUNT_ERROR) {
 				isLoading(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
+				mConfirmPassword.setEnabled(true);
 				onLoginError(statusCode);
 			} else {
 				isLoading(false);
 				mEmail.setEnabled(true);
 				mPassword.setEnabled(true);
+				mConfirmPassword.setEnabled(true);
 				onLoginError(statusCode);
 			}
 		}
@@ -167,21 +206,18 @@ public class MBSignUpActivity extends Activity implements
 		mErrorDialog.setTitle(MBErrorMessageControl.getErrorTitle(statusCode, MBSignUpActivity.this));
 		mErrorDialog.setDescription(MBErrorMessageControl.getErrorMessage(statusCode, MBSignUpActivity.this));
 		mErrorDialog.setPositiveBtn(getString(R.string.ok), 
-				mLoginOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if(mErrorDialog != null) {
+							mErrorDialog.dismiss();
+							mErrorDialog = null;
+						}
+					}
+				}, MBDialog.BTN_STYLE_DEFAULT);
 		mErrorDialog.setCanceledOnTouchOutside(false);
 		mErrorDialog.show();
 	}
-
-	private OnClickListener mLoginOkClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			if(mErrorDialog != null) {
-				mErrorDialog.dismiss();
-				mErrorDialog = null;
-			}
-		}
-	};
 
 	private void closeIME() {
 		if(this.getCurrentFocus() != null) {
@@ -260,7 +296,7 @@ public class MBSignUpActivity extends Activity implements
 			@Override
 			public void run() {
 				// 建立成功接下來就是login
-				mApi.logIn(mLoginListener, mEmails, mPasswords);
+				mApi.logIn(mLoginListener, mEmailStr, mPasswordStr);
 			}
 		});
     }
@@ -282,8 +318,8 @@ public class MBSignUpActivity extends Activity implements
 		@Override
 		public void onLogIn(int statusCode, User user) {
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
-				MappingBirdPref.getIns().setUserU(mEmails);
-				MappingBirdPref.getIns().setUserP(mPasswords);
+				MappingBirdPref.getIns().setUserU(mEmailStr);
+				MappingBirdPref.getIns().setUserP(mPasswordStr);
 				startInActivity();
 			} else if (statusCode == MappingBirdAPI.RESULT_LOGIN_NETWORK_ERROR) {
 				isLoading(false);

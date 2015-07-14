@@ -209,7 +209,7 @@
             android:layout_width="272dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/login_selector"
+            android:background="@drawable/login_btn_selector_bg"
             android:maxWidth="272dp"
             android:minWidth="208dp"
             android:text="@string/tutorial_sign_in"

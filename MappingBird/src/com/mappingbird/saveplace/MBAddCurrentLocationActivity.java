@@ -229,7 +229,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		Geocoder coder = new Geocoder(this, Locale.getDefault());
 		try {
 			ArrayList<Address> adresses = (ArrayList<Address>) coder
-					.getFromLocationName("Your Address", 5);
+					.getFromLocationName(address, 5);
 			if(adresses.size() > 0) {
 				Address add = adresses.get(0);
 				mLongitude = add.getLongitude();

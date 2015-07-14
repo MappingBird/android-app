@@ -5,8 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="get_start">Get Started</string>
-
-    <string name="confirm_password">Confirm Password</string>    
+    <string name="confirm_password">Confirm Password</string>
     <string name="logout">LOG OUT</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="change_password">Change Password</string>
@@ -23,7 +22,7 @@
     <string name="str_conitune">Conitune</string>
     <string name="str_cancel_upload">Cancel upload</string>
 
-    <!-- Sign in and Sign up activity and  -->
+    <!-- Sign in and Sign up activity and -->
     <string name="login_content_title">Log In Mappingbird Account</string>
     <string name="login_content">Once you log in your account, you can view all your saved places on Mappingbird.</string>
     <string name="login_hint_email">Enter your Email</string>
@@ -32,13 +31,20 @@
     <string name="login_logging">LOGGING IN</string>
     <string name="sign_up_detail">Sign up a MappingBird ccount for backing up your favorite
         places, sync ith other devices and access them on mappingbird.com</string>
-    
+    <string name="sign_up_detail_link">
+		<![CDATA[
+        Sign up a MappingBird ccount for backing up your favorite
+        places, sync ith other devices and access them on  
+        <font color=#01A9E7><a href="https://mappingbird.com/">www.mappingbird.com</a></font>
+        ]]>
+    </string>
+
     <!-- Forgot password -->
     <string name="forgot_password_title">Reset password email sent!</string>
     <string name="forgot_password_message">An email about how to reset your password has been sent to %1$s</string>
     <string name="forgot_password_enter_email_title">Enter your email</string>
     <string name="forgot_password_text">Forgot password</string>
-    
+
     <!-- Tutorial -->
     <string name="tutorial_swipe_to_learn">Swipe to learn more about MappingBird.</string>
     <string name="tutorial_already_have_account">Already have a account?</string>
@@ -87,11 +93,11 @@
     <string name="add_place_field_open_time">Open time</string>
     <string name="add_place_field_hyperlink">Hyperlink</string>
     <string name="add_place_create_new">Create new...</string>
-	<string name="add_place_add_tag_title">Add new or choose tags</string>
-	<string name="add_place_current_location_hint_title">The place will be public</string>
-	<string name="add_place_current_location_hint_message">The place where you create will be shared with all MappingBird Users.
+    <string name="add_place_add_tag_title">Add new or choose tags</string>
+    <string name="add_place_current_location_hint_title">The place will be public</string>
+    <string name="add_place_current_location_hint_message">The place where you create will be shared with all MappingBird Users.
 	    You will not able not modify if after it\'s created.</string>
-    
+
     <!-- Pick place -->
     <string name="pick_place_title">Remember a place</string>
     <string name="pick_place_new_location">Add a new location</string>
@@ -137,8 +143,7 @@
     <string name="error_dialog_submit_place_failed_message">Check your intent connection and retry</string>
     <string name="error_dialog_upload_images_failed_title">Photos upload failed</string>
     <string name="error_dialog_upload_images_failed_message">New place has saved, but something went wrong with uploading photos.</string>
-    
-    
+
     <!-- Notification -->
     <string name="noti_update_wait_title">Save wait</string>
     <string name="noti_update_wait_message"></string>
@@ -157,14 +162,15 @@
     <string name="noti_update_place_message">to %1$s</string>
     <string name="noti_update_place_ticker">Saving place</string>
     <string name="noti_update_place_finished_ticker">\"%1$s\" saved</string>
-    
+
     <!-- Debug -->
     <string name="debug_dump_db">Dump DB</string>
     <string name="debug_update_item">Update item</string>
 
     <!-- Share -->
     <string name="share_string">%1$s &#091;Shared from MappingBird - Remember places for later&#093; %2$s</string>
-    
+
     <!-- Address -->
     <string name="pick_address_no_address">No address</string>
+
 </resources>
