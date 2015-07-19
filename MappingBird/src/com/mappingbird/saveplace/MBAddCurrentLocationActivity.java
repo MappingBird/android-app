@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.location.Address;
@@ -14,9 +15,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +35,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
+import com.mpbd.mappingbird.util.MBUtil;
 
 public class MBAddCurrentLocationActivity extends FragmentActivity {
 	private static final int REQUEST_ADD_PLACE = 0x001010;
@@ -53,6 +58,8 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	private double mLatitude = 0;
 	private double mLongitude = 0;
 	private String mTitleStr = "";
+	
+	private View mMainLayout;
 
 	//
 	private static final int MSG_REQUEST_ADDRESS = 0;
@@ -61,7 +68,8 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	private GoogleMap mMap;
 	// Address
 	private EditText mAddress;
-	private RelativeLayout mLocationLayout;
+	private MBCrosshairLayout mLocationLayout;
+	private View mRefreshBtn;
 //	private boolean mLockChanged = false;
 	private Handler mHandler = new Handler() {
 
@@ -86,7 +94,6 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mb_pick_place_add_current_location);
-		initTitleLayout();
 
 		Intent intent = getIntent();
 		if (intent != null) {
@@ -115,6 +122,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 
 				@Override
 				public void onCameraChange(CameraPosition position) {
+					mMainLayout.requestFocus();
 					mHandler.removeMessages(MSG_REQUEST_ADDRESS);
 					Message msg = new Message();
 					msg.what = MSG_REQUEST_ADDRESS;
@@ -128,37 +136,41 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 			});
 		}
 
+		mMainLayout = findViewById(R.id.pick_place_add_current_layout);
+		mTitleText = (TextView) findViewById(R.id.title_text);
 		// init address textview
 		mAddress = (EditText) findViewById(R.id.location_address);
-		mLocationLayout = (RelativeLayout) findViewById(R.id.location_layout);
+		mRefreshBtn = findViewById(R.id.lock_address_refresh);
+		mLocationLayout = (MBCrosshairLayout) findViewById(R.id.location_layout);
+		mLocationLayout.setPlaceKind(MBUtil.getPlaceTypeIconFont(mType));
 		getLocationAddress(mLatitude, mLongitude);
 
 		findViewById(R.id.title_btn_back).setOnClickListener(mClickListener);
 		findViewById(R.id.title_btn_ok_layout).setOnClickListener(mClickListener);
+		mRefreshBtn.setOnClickListener(mClickListener);
 
-		mAddress.setEnabled(false);
-//		mAddress.addTextChangedListener(mTextWatcher);
+		mAddress.setOnFocusChangeListener(mEditFocusChangeListner);
+		
+		mTitleText.requestFocus();
 	}
 
-	private TextWatcher mTextWatcher = new TextWatcher() {
-
+	private OnFocusChangeListener mEditFocusChangeListner = new OnFocusChangeListener() {
+		
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
-			mHandler.removeMessages(MSG_REQUEST_LOCATION);
-			Message msg = new Message();
-			msg.what = MSG_REQUEST_LOCATION;
-			msg.obj = mAddress.getText().toString();
-			mHandler.sendMessageDelayed(msg, 1500);
-		}
-
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-		}
-
-		@Override
-		public void afterTextChanged(Editable s) {
+		public void onFocusChange(View v, boolean hasFocus) {
+			
+			if(hasFocus) {
+				mAddress.setPadding(0, 0, 
+						(int)getResources().getDimension(R.dimen.add_current_location_input_padding_right), 
+						(int)getResources().getDimension(R.dimen.add_current_location_input_padding_bottom));
+				mRefreshBtn.setVisibility(View.VISIBLE);
+				MBUtil.openIme(MBAddCurrentLocationActivity.this, mAddress);
+			} else {
+				mAddress.setPadding(0, 0, 0, 
+						(int)getResources().getDimension(R.dimen.add_current_location_input_padding_bottom));
+				mRefreshBtn.setVisibility(View.GONE);
+				MBUtil.closeIME(MBAddCurrentLocationActivity.this, mAddress);
+			}
 		}
 	};
 
@@ -188,12 +200,21 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	protected void onPause() {
 		super.onPause();
 	}
+	
+	private void searchByAdress() {
+		if(!TextUtils.isEmpty(mAddress.getText())) {
+			getAddressLocation(mAddress.getText().toString());
+		}
+	}
 
 	private OnClickListener mClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.lock_address_refresh:
+				searchByAdress();
+				break;
 			case R.id.title_btn_ok_layout:
 				Projection proj = mMap.getProjection();
 				LatLng latLng = proj.fromScreenLocation(new Point(
@@ -216,10 +237,6 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 			}
 		}
 	};
-
-	private void initTitleLayout() {
-		mTitleText = (TextView) findViewById(R.id.title_text);
-	}
 
 	private void setTitleText(String title) {
 		mTitleText.setText(title);
@@ -252,7 +269,8 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		geocoder = new Geocoder(this, Locale.getDefault());
 		try {
 			addresses = geocoder.getFromLocation(latitude, longitude, 1);
-			if (addresses != null && addresses.get(0) != null
+			if (addresses != null && 
+					addresses.size() > 0 && addresses.get(0) != null
 					&& addresses.get(0).getAddressLine(0) != null)
 				mAddress.setText(addresses.get(0).getAddressLine(0));
 			else

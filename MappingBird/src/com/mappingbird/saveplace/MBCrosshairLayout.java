@@ -1,6 +1,7 @@
 package com.mappingbird.saveplace;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
@@ -8,16 +9,25 @@ import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PathEffect;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.google.maps.android.ui.IconGenerator;
+import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
 
 public class MBCrosshairLayout extends RelativeLayout {
 
 	private Paint mPaint;
 	private Drawable mIcon;
+	private final IconGenerator mClusterIconGenerator = new IconGenerator(
+			MappingBirdApplication.instance());
+
 	public MBCrosshairLayout(Context context) {
 		super(context);
 	}
@@ -44,8 +54,16 @@ public class MBCrosshairLayout extends RelativeLayout {
 		}, getResources().getDimension(R.dimen.dash_line_space));  
 		mPaint.setPathEffect(effects);
 		
-		// Default icon
-		mIcon = getResources().getDrawable(R.drawable.map_mark_normal);
+		View multiProfile = LayoutInflater.from(getContext()).inflate(
+				R.layout.mappingbird_pin_normal, null);
+		mClusterIconGenerator.setContentView(multiProfile);
+		
+	}
+	
+	public void setPlaceKind(int strId) {
+		String iconStr = getResources().getString(strId);
+		Bitmap icon = mClusterIconGenerator.makeIcon(iconStr);
+		mIcon = new BitmapDrawable(icon);
 	}
 
 	@Override
@@ -59,13 +77,15 @@ public class MBCrosshairLayout extends RelativeLayout {
         canvas.drawPath(path, mPaint);
         
         // icon
-        Rect bounds = new Rect(
-        		(getWidth()-mIcon.getIntrinsicWidth())/2, 
-        		getHeight()/2 - mIcon.getIntrinsicHeight(), 
-        		(getWidth()+mIcon.getIntrinsicWidth())/2, 
-        		getHeight()/2);
-        mIcon.setBounds(bounds);
-        mIcon.draw(canvas);
+        if(mIcon != null) {
+	        Rect bounds = new Rect(
+	        		(getWidth()-mIcon.getIntrinsicWidth()*2)/2, 
+	        		getHeight()/2 - mIcon.getIntrinsicHeight()*2, 
+	        		(getWidth()+mIcon.getIntrinsicWidth()*2)/2, 
+	        		getHeight()/2);
+	        mIcon.setBounds(bounds);
+	        mIcon.draw(canvas);
+        }
 	}
 
 	@Override
