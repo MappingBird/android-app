@@ -28,6 +28,9 @@
     <dimen name="pick_place_add_location_height">60dp</dimen>
     <dimen name="pick_place_add_location_layout_height">210dp</dimen>
     
+    <!-- Add current location -->
+    <dimen name="add_current_location_input_padding_bottom">10dp</dimen>
+    <dimen name="add_current_location_input_padding_right">30dp</dimen>
     <!-- Progress Circle -->
     <dimen name="progress_circle_width">2dp</dimen>
     <dimen name="progress_circle_radio">27dp</dimen>

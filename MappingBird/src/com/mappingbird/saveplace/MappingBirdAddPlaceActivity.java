@@ -37,6 +37,7 @@ import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBAnimation;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
+import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.services.MBServiceClient;
 
 public class MappingBirdAddPlaceActivity extends FragmentActivity  {
@@ -109,7 +110,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		mListView = (ListView) findViewById(R.id.add_place_list);
 		mAddPlaceInfoLayout = (MappingbirdAddPlaceInfoLayout)inflater.inflate(R.layout.mappingbird_add_place_info_layout, null, false);
 		mAddPlaceInfoLayout.setPlaceInfoListener(mPlaceInfoListener);
-		mAddPlaceInfoLayout.setPlaceData(mItem, getPlaceTypeIconFont(mType));
+		mAddPlaceInfoLayout.setPlaceData(mItem, MBUtil.getPlaceTypeIconFont(mType));
 		
 		mListView.addHeaderView(mAddPlaceInfoLayout);
 		mAdapter = new MappingBirdPhotoAdapter(this);
@@ -120,23 +121,6 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
 		mLoadingDialog.show();
 		mHandler.sendEmptyMessageDelayed(MSG_START_SCANE, 200);
-	}
-
-	private int getPlaceTypeIconFont(String type) {
-		if(type.equals(MappingBirdPickPlaceActivity.TYPE_DEFAULT)) {
-			return R.string.iconfont_general;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_BAR)) {
-			return R.string.iconfont_bar;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_HOTEL)) {
-			return R.string.iconfont_hotel;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_MALL)) {
-			return R.string.iconfont_shopping;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_RESTURANT)) {
-			return R.string.iconfont_restaurant;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_SCENE)) {
-			return R.string.iconfont_camera;
-		}
-		return R.string.iconfont_general;
 	}
 
 	private void setTitleText(String title) {

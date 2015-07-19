@@ -221,7 +221,6 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			DeBug.d("Test", "onItemClick");
 			MappingBirdPlaceItem item = (MappingBirdPlaceItem)mPlaceAdapter.getItem(position-1);
 			switch(item.getType()) {
 				case MappingBirdPlaceItem.TYPE_PLACE: {
@@ -235,6 +234,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LAT, mLatitude);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LONG, mLongitude);
+					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TYPE, mType);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TITLE, mPlaceAdapter.getAddPlaceName());
 					
 					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
@@ -244,6 +244,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LAT, mLatitude);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LONG, mLongitude);
+					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TYPE, mType);
 					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
