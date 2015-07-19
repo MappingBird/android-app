@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
 
 public class MBListLayoutCardView extends RelativeLayout {
@@ -33,10 +35,12 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private ImageView mIcon;
 	private BitmapLoader mBitmapLoader;
 	private MBPointData mPoint;
-	private TextView mTitle, mSubTitle, mDistance, mUnit;
+	private TextView mTitle, mDistance, mUnit;
 	private GradientDrawable mDrawable;
 	private View mContentLayout;
 	private int mContentMarginLeft = 0;
+	
+	private int mTitleWidth = 0;
 
 	// View : Change to Item uesed
 	private TextView mItemAddress;
@@ -68,7 +72,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 		super.onFinishInflate();
 		mIcon = (ImageView) findViewById(R.id.card_icon);
 		mTitle = (TextView) findViewById(R.id.card_title);
-		mSubTitle = (TextView) findViewById(R.id.card_subtitle);
 		mDistance = (TextView) findViewById(R.id.card_distance);
 		mUnit = (TextView) findViewById(R.id.card_unit);
 		mBitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
@@ -84,6 +87,12 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mItemDistance 		= (TextView) findViewById(R.id.item_distance);
 		mItemUnit 			= (TextView) findViewById(R.id.item_unit);
 		mItemSinglerName 	= (TextView) findViewById(R.id.item_title_single);
+		
+		mTitleWidth = (int)(MBUtil.getWindowWidth(getContext()) 
+				- getResources().getDimension(R.dimen.card_icon_width)
+				- getResources().getDimension(R.dimen.place_item_card_distance_width)
+				- getResources().getDimension(R.dimen.card_title_margin_left)
+				- getResources().getDimension(R.dimen.card_title_margin_right));
 	}
 
 	boolean isTouchCard(float x, float y) {
@@ -164,7 +173,10 @@ public class MBListLayoutCardView extends RelativeLayout {
 			mIcon.setScaleType(ScaleType.CENTER_CROP);
 			mIcon.setImageResource(R.drawable.default_noimages);
 		}
+		
 		mTitle.setText(mPoint.getTitle());
+		int textSize = MBUtil.getTextSize(mPoint.getTitle(), 20, 16, mTitleWidth);
+		mTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
 		mItemName.setText(mPoint.getTitle());
 		if(mPoint.getTags().size() == 0) {
 			mItemSinglerName.setVisibility(View.VISIBLE);
@@ -178,7 +190,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 			mItemName.setVisibility(View.VISIBLE);
 			mItemTag.setVisibility(View.VISIBLE);
 		}
-		mSubTitle.setText(mPoint.getLocation().getPlaceAddress());
 		mItemAddress.setText(mPoint.getLocation().getPlaceAddress());
 		if(mylocation != null) {
 			DistanceObject disObject = Utils.getDistanceObject(

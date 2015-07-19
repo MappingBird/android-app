@@ -93,6 +93,9 @@
     <dimen name="card_distance_less_four_text_size">32dp</dimen>
     <dimen name="card_unit_padding_right">8dp</dimen>
     <dimen name="card_unit_text_size">16dp</dimen>
+    <dimen name="card_icon_width">76dp</dimen>
+    <dimen name="card_title_margin_right">8dp</dimen>
+    <dimen name="card_title_margin_left">8dp</dimen>
 
     <!-- Collection list item -->
     <dimen name="coll_list_item_headline_text_size">16dp</dimen>
@@ -107,12 +110,8 @@
     <dimen name="coll_list_item_tag_span_padding_right">6dp</dimen>
     
     <!-- Collection new list layout -->
-    <dimen name="coll_card_icon_height">70dp</dimen>
-    <dimen name="coll_card_marge_left">4dp</dimen>
-    <dimen name="coll_card_marge_right">4dp</dimen>
     <dimen name="coll_card_marge_bottom">10dp</dimen>
     <dimen name="coll_card_marge_bottom_other">8dp</dimen>
-    <dimen name="coll_card_shadow_height">6dp</dimen>
     
     <!-- Path -->
     <dimen name="dash_line_width">1dp</dimen>

@@ -1,16 +1,20 @@
 package com.mpbd.mappingbird.util;
 
-import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
-import com.mpbd.mappingbird.R;
-
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
+import com.mpbd.mappingbird.R;
 
 
 public class MBUtil {
@@ -87,4 +91,26 @@ public class MBUtil {
 		return R.string.iconfont_general;
 	}
 
+	public static int getTextSize(String str, int maxSizeDP, int minSizeDP, int width) {
+		Paint paint = new Paint();
+		Rect bounds = new Rect();
+		
+		for(int i = maxSizeDP; i >= minSizeDP; i-- ) {
+			paint.setTextSize(getPixelsFromDip(i));
+			paint.getTextBounds(str, 0, str.length(), bounds);
+			if(width > bounds.width()) {
+				return i;
+			}
+		}
+		
+		return minSizeDP;
+	}
+	
+	public static float getPixelsFromDip(int dip) {
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 
+                dip,
+                Resources.getSystem().getDisplayMetrics()
+        ); 
+} 
 }
