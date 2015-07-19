@@ -16,9 +16,9 @@
     <dimen name="col_map_camera_padding">80dp</dimen>
     
     <!-- Collection : Add -->
-    <dimen name="col_add_place_margin_bottom">200dp</dimen>
-    <dimen name="col_add_place_padding_top">25dp</dimen>
-    <dimen name="col_add_place_padding_right">20dp</dimen>
+    <dimen name="col_add_place_margin_bottom">190dp</dimen>
+    <dimen name="col_add_place_padding_top">12dp</dimen>
+    <dimen name="col_add_place_padding_right">12dp</dimen>
     <dimen name="col_select_place_item_radius">90dp</dimen>
     
     <dimen name="col_select_place_item_width">48dp</dimen>
@@ -33,7 +33,7 @@
     <dimen name="add_current_location_input_padding_right">30dp</dimen>
     <!-- Progress Circle -->
     <dimen name="progress_circle_width">2dp</dimen>
-    <dimen name="progress_circle_radio">27dp</dimen>
+    <dimen name="progress_circle_radio">23dp</dimen>
 
     <!-- Title -->
     <dimen name="title_bar_height">56dp</dimen>

@@ -449,6 +449,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					mAddItemText.setText(R.string.iconfont_cloud_upload);
 					mAddItemText.setTextColor(
 							MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
+					mAddItemLayout.setBackgroundResource(R.drawable.btn_white_circle);
 				}
 			});			
 		} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED ||
@@ -463,7 +464,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				public void run() {
 					mAddItemText.setText(R.string.iconfont_refresh);
 					mAddItemText.setTextColor(
-							MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
+							MappingBirdApplication.instance().getResources().getColor(R.color.white));
+					mAddItemLayout.setBackgroundResource(R.drawable.btn_bule_circle);
 				}
 			});			
 		} else {
@@ -478,6 +480,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					mAddItemText.setText(R.string.iconfont_cloud_upload);
 					mAddItemText.setTextColor(
 							MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
+					mAddItemLayout.setBackgroundResource(R.drawable.btn_white_circle);
 				}
 			});
 		}
@@ -501,7 +504,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	public void resetState() {
 		mAddItemText.setText(R.string.iconfont_addplace);
 		mAddItemText.setTextColor(
-				MappingBirdApplication.instance().getResources().getColor(R.color.graphic_orange));
+				MappingBirdApplication.instance().getResources().getColor(R.color.white));
+		mAddItemLayout.setBackgroundResource(R.drawable.btn_bule_circle);
 	}
 	// 移出動畫
 	public void setTranlatorX(float x) {
