@@ -14,11 +14,14 @@
     <RelativeLayout
         android:id="@+id/item_info_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_layout_item_info_height"
-        android:layout_alignParentBottom="true"
+        android:layout_height="80dp"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="36dp"
         android:visibility="gone" >
+
+        <View
+            android:id="@+id/item_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/item_title_single"
@@ -31,8 +34,7 @@
             android:layout_marginRight="@dimen/place_item_card_distance_width"
             android:singleLine="true"
             android:textColor="#fff"
-            android:textSize="16sp"
-            android:visibility="gone" />
+            android:textSize="16sp" />
     </RelativeLayout>
 
     <RelativeLayout

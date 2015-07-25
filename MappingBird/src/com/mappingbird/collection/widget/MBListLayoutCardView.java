@@ -50,11 +50,15 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private TextView mItemDistance;
 	private TextView mItemUnit;
 	private TextView mItemSinglerName;
+	private View mMaskView;
 
 	private int mParentHeight = 0;
 	private float mCard0_Position = 0;
 	private float mCardMaxHeight = 0;
 	private float mCardPoisition = 0;
+	
+	private GradientDrawable mLightMaskDrawable;
+
 	public MBListLayoutCardView(Context context) {
 		super(context);
 	}
@@ -88,12 +92,18 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mItemDistance 		= (TextView) findViewById(R.id.item_distance);
 		mItemUnit 			= (TextView) findViewById(R.id.item_unit);
 		mItemSinglerName 	= (TextView) findViewById(R.id.item_title_single);
+		mMaskView			= findViewById(R.id.item_mask);
 		
 		mTitleWidth = (int)(MBUtil.getWindowWidth(getContext()) 
 				- getResources().getDimension(R.dimen.card_icon_width)
 				- getResources().getDimension(R.dimen.place_item_card_distance_width)
 				- getResources().getDimension(R.dimen.card_title_margin_left)
 				- getResources().getDimension(R.dimen.card_title_margin_right));
+		
+		mLightMaskDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+				new int[] { 0x00000000, 0x80000000 });
+		mLightMaskDrawable.setShape(GradientDrawable.RECTANGLE);
+		mMaskView.setBackgroundDrawable(mLightMaskDrawable);
 	}
 
 	boolean isTouchCard(float x, float y) {
@@ -112,11 +122,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 		          GradientDrawable.Orientation.RIGHT_LEFT, new int[] { 0xFFFFFFFF, 0x00000000});
 		
 		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-	}
-
-	void setInfoLayoutBackground(Drawable drawable) {
-		if(mItemLayout != null)
-			mItemLayout.setBackgroundDrawable(drawable);
 	}
 
 	public MBPointData getPoint() {
@@ -180,6 +185,8 @@ public class MBListLayoutCardView extends RelativeLayout {
 		int textSize = MBUtil.getTextSize(mPoint.getTitle(), 20, 16, mTitleWidth);
 		mTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
 		mItemSinglerName.setText(mPoint.getTitle());
+		textSize = MBUtil.getTextSize(mPoint.getTitle(), 32, 20, mTitleWidth);
+		mItemSinglerName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
 		if(mPoint.getTags().size() == 0) {
 			mItemTag.setText("");
 		} else {
