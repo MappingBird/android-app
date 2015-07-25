@@ -2,10 +2,12 @@ package com.mpbd.mappingbird.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
 import com.mpbd.mappingbird.R;
 
@@ -112,5 +115,11 @@ public class MBUtil {
                 dip,
                 Resources.getSystem().getDisplayMetrics()
         ); 
-} 
+	}
+	
+	public static void startLocationSettings() {
+		Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		MappingBirdApplication.instance().startActivity(intent);
+	}
 }
