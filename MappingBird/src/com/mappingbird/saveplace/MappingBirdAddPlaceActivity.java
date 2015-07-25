@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +27,8 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPhotoAdapter.PhotoAdapterListener;
@@ -64,8 +65,9 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 	private String mPicturePath;
 
 	private Dialog mLoadingDialog;
-
+	
 	private MappingbirdAddPlaceInfoLayout mAddPlaceInfoLayout;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -325,6 +327,4 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		}
 		return super.onKeyUp(keyCode, event);
 	}
-	
-	
 }

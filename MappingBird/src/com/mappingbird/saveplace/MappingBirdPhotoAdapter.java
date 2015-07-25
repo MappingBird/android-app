@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.MBUtil;
 
 public class MappingBirdPhotoAdapter extends BaseAdapter  {
 	
@@ -29,6 +32,8 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 	private ArrayList<String> mSelectPhotoList = new ArrayList<String>();
 	private ArrayList<MappingBirdPhotoItem> mItems = new ArrayList<MappingBirdPhotoItem>();
 	
+	private Toast mMoreThenTenToast;
+
 	public MappingBirdPhotoAdapter(Context context) {
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);
@@ -178,8 +183,8 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 			checkView.setSelected(true);
 			checkView.setText(""+(mSelectPhotoList.indexOf(path)+1));
 			mask.setVisibility(View.VISIBLE);
-			layout.setScaleX(0.8f);
-			layout.setScaleY(0.8f);
+			layout.setScaleX(0.9f);
+			layout.setScaleY(0.9f);
 		} else {
 			checkView.setVisibility(View.GONE);
 			checkView.setSelected(false);
@@ -206,9 +211,13 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 				} else {
 					if(mSelectPhotoList.contains(path)) {
 						mSelectPhotoList.remove(path);
-					} else if(mSelectPhotoList.size() < MAX_PHOTO_NUMBER){
-						mSelectPhotoList.add(path);
-					}
+					} else { 
+						if(mSelectPhotoList.size() < MAX_PHOTO_NUMBER){
+							mSelectPhotoList.add(path);
+						} else {
+							moreThenTenToast();
+						}
+					} 
 					notifyDataSetChanged();
 				}
 				break;
@@ -219,9 +228,13 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 				String path = String.valueOf(v.getTag());
 				if(mSelectPhotoList.contains(path)) {
 					mSelectPhotoList.remove(path);
-				} else if(mSelectPhotoList.size() < MAX_PHOTO_NUMBER){
-					mSelectPhotoList.add(path);
-				}
+				} else { 
+					if(mSelectPhotoList.size() < MAX_PHOTO_NUMBER){
+						mSelectPhotoList.add(path);
+					} else {
+						moreThenTenToast();
+					}
+				} 
 				notifyDataSetChanged();
 				break;
 			}
@@ -231,15 +244,35 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 				String path = String.valueOf(v.getTag());
 				if(mSelectPhotoList.contains(path)) {
 					mSelectPhotoList.remove(path);
-				} else if(mSelectPhotoList.size() < MAX_PHOTO_NUMBER){
-					mSelectPhotoList.add(path);
-				}
+				} else { 
+					if(mSelectPhotoList.size() < MAX_PHOTO_NUMBER){
+						mSelectPhotoList.add(path);
+					} else {
+						moreThenTenToast();
+					}
+				} 
 				notifyDataSetChanged();
 				break;
 			}
 			}
 		}
 	};
+
+	private void moreThenTenToast() {
+		if(mMoreThenTenToast != null)
+			mMoreThenTenToast.cancel();
+
+		LayoutInflater inflater = LayoutInflater.from(mContext);
+		View layout = inflater.inflate(R.layout.mb_toast_layout, null);
+		TextView text = (TextView) layout.findViewById(R.id.toast_text);
+		text.setText(R.string.add_place_toast_more_then_ten);
+		
+		mMoreThenTenToast = new Toast(mContext);
+		mMoreThenTenToast.setView(layout);
+		mMoreThenTenToast.setGravity(Gravity.BOTTOM, 0, 
+				(int)(MBUtil.getWindowHeight(mContext)*0.15f));
+		mMoreThenTenToast.show();
+	}
 
 	class ItemHost {
 		public View mPhoto1_Layout;
