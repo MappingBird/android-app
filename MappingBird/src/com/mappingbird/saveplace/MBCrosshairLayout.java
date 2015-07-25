@@ -25,6 +25,8 @@ public class MBCrosshairLayout extends RelativeLayout {
 
 	private Paint mPaint;
 	private Drawable mIcon;
+	private int mIconWidth = 0, mIconHeight = 0;
+	private Rect mIconRect = null;
 	private final IconGenerator mClusterIconGenerator = new IconGenerator(
 			MappingBirdApplication.instance());
 
@@ -55,9 +57,12 @@ public class MBCrosshairLayout extends RelativeLayout {
 		mPaint.setPathEffect(effects);
 		
 		View multiProfile = LayoutInflater.from(getContext()).inflate(
-				R.layout.mappingbird_pin_normal, null);
+				R.layout.mappingbird_pin_normal, this, false);
 		mClusterIconGenerator.setContentView(multiProfile);
 		
+		Drawable background = getResources().getDrawable(R.drawable.map_mark_normal);
+		mIconWidth = background.getIntrinsicWidth();
+		mIconHeight = background.getIntrinsicHeight();
 	}
 	
 	public void setPlaceKind(int strId) {
@@ -78,12 +83,14 @@ public class MBCrosshairLayout extends RelativeLayout {
         
         // icon
         if(mIcon != null) {
-	        Rect bounds = new Rect(
-	        		(getWidth()-mIcon.getIntrinsicWidth()*2)/2, 
-	        		getHeight()/2 - mIcon.getIntrinsicHeight()*2, 
-	        		(getWidth()+mIcon.getIntrinsicWidth()*2)/2, 
-	        		getHeight()/2);
-	        mIcon.setBounds(bounds);
+        	if(mIconRect == null) {
+        		mIconRect = new Rect(
+    	        		(getWidth()-mIconWidth)/2, 
+    	        		getHeight()/2 - mIconHeight, 
+    	        		(getWidth()+mIconWidth)/2, 
+    	        		getHeight()/2);
+    	        mIcon.setBounds(mIconRect);
+        	}
 	        mIcon.draw(canvas);
         }
 	}

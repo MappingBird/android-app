@@ -100,6 +100,7 @@
                 android:background="@drawable/edit_custom_drawable"
                 android:gravity="center_vertical"
                 android:singleLine="true"
+                android:ellipsize="end"
                 android:textColor="@color/font_normal"
                 android:textCursorDrawable="@drawable/edit_cursor_drawable"
                 android:imeOptions="actionSearch"
@@ -112,8 +113,7 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:text="@string/iconfont_sync"
-                android:textColor="@color/graphic_blue"
-                android:background="@drawable/titlebar_button_bg"
+                android:textColor="@color/btn_text_blue_color"
                 android:textSize="20dp"
                 android:visibility="gone" />
         </RelativeLayout>

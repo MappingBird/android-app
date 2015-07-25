@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBListDialog;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
@@ -75,7 +77,8 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	private MBCrosshairLayout mLocationLayout;
 	private View mRefreshBtn;
 	//Dialog
-	private MBListDialog mListDialog;
+	private MBListDialog mListDialog = null;
+	private Dialog mLoadingDialog = null;
 	
 	// Select address
 	private AddressAdapter mAddressAdapter;
@@ -260,28 +263,42 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		}
 	}
 
-	private void getAddressLocation(String address) {
-		Geocoder coder = new Geocoder(this, Locale.getDefault());
-		try {
-			ArrayList<Address> adresses = (ArrayList<Address>) coder
-					.getFromLocationName(address, 3);
-			if(adresses.size() > 0) {
-				if(adresses.size() == 1) {
-					Address add = adresses.get(0);
-					mLongitude = add.getLongitude();
-					mLatitude = add.getLatitude();
-					float nowZoom = mMap.getMaxZoomLevel() - 5;
-					LatLng latLng = new LatLng(mLatitude, mLongitude);
-					mMap.animateCamera(
-							CameraUpdateFactory.newLatLngZoom(latLng, nowZoom), 10,
-							null);
-				} else {
-					showAddressListDialog(adresses);
+	private void getAddressLocation(final String address) {
+		showLoadingDialog();
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				Geocoder coder = new Geocoder(MBAddCurrentLocationActivity.this, Locale.getDefault());
+				try {
+					final ArrayList<Address> adresses = (ArrayList<Address>) coder
+							.getFromLocationName(address, 3);
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							dismissLoadingDialog();
+							if(adresses.size() > 0) {
+								if(adresses.size() == 1) {
+									Address add = adresses.get(0);
+									mLongitude = add.getLongitude();
+									mLatitude = add.getLatitude();
+									float nowZoom = mMap.getMaxZoomLevel() - 5;
+									LatLng latLng = new LatLng(mLatitude, mLongitude);
+									mMap.animateCamera(
+											CameraUpdateFactory.newLatLngZoom(latLng, nowZoom), 10,
+											null);
+								} else {
+									showAddressListDialog(adresses);
+								}
+							}
+						}
+					});
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		}).start();
 	}
 	
 	private void showAddressListDialog(ArrayList<Address> adresses) {
@@ -361,6 +378,18 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 			text.setText(address.getAddressLine(0));
 			return convertView;
 		}
+	}
+	
+	private void showLoadingDialog() {
+		if(mLoadingDialog != null && mLoadingDialog.isShowing())
+			return;
 		
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
+		mLoadingDialog.show();
+	}
+	
+	private void dismissLoadingDialog() {
+		if(mLoadingDialog != null && mLoadingDialog.isShowing())
+			mLoadingDialog.dismiss();
 	}
 }
