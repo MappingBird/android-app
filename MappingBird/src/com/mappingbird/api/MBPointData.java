@@ -23,6 +23,13 @@ public class MBPointData implements Serializable {
 	public static final int TYPE_HOTEL = 3;
 	public static final int TYPE_BAR = 4;
 	public static final int TYPE_MISC = 5;
+	
+	public static final int DEF_TYPE_RESTAURANT_RES = R.drawable.default_img_restaurant;
+	public static final int DEF_TYPE_MALL_RES = R.drawable.default_img_shopping;
+	public static final int DEF_TYPE_SCENOCSPOT_RES = R.drawable.default_img_landscape;
+	public static final int DEF_TYPE_HOTEL_RES = R.drawable.default_img_hotel;
+	public static final int DEF_TYPE_BAR_RES = R.drawable.default_img_bar;
+	public static final int DEF_TYPE_MISC_RES = R.drawable.default_img_pin;
 
 	private long mId;
 	private String mTitle;
@@ -138,6 +145,24 @@ public class MBPointData implements Serializable {
 			return TYPE_BAR;
 		} else if (type.equals("misc")) {
 			return TYPE_MISC;
+		}
+		return -1;
+	}
+	
+	public int getDefTypeResource() {
+		String type = mType;
+		if (type.equals("restaurant")) {
+			return DEF_TYPE_RESTAURANT_RES;
+		} else if (type.equals("mall")) {
+			return DEF_TYPE_MALL_RES;
+		} else if (type.equals("scenicspot")) {
+			return DEF_TYPE_SCENOCSPOT_RES;
+		} else if (type.equals("hotel")) {
+			return DEF_TYPE_HOTEL_RES;
+		} else if (type.equals("bar")) {
+			return DEF_TYPE_BAR_RES;
+		} else if (type.equals("misc")) {
+			return DEF_TYPE_MISC_RES;
 		}
 		return -1;
 	}

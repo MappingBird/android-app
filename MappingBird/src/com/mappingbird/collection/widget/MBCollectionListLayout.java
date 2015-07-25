@@ -45,7 +45,6 @@ import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
 
 public class MBCollectionListLayout extends RelativeLayout {
-	private final static float MAX_ALPHA = 0.8f;
 	private final static String TAG = "MB.Collection.List";
 	
 	private boolean isInited = false;
@@ -129,7 +128,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 	}
 
 	public void closeLayout() {
-		// TODO : 關閉Layout
 	}
 
 	public void setMyLocation(LatLng location) {
@@ -693,7 +691,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 				alpha = 1;
 			else if(alpha < 0)
 				alpha = 0;
-			int bgColor = Color.argb((int)(0xff*(MAX_ALPHA*(1 - alpha))), 0x00, 0x00, 0x00);
+			int bgColor = Color.argb((int)(0xff*(1 - alpha)), 0xE7, 0xE7, 0xE7);
 			setBackgroundColor(bgColor);
 		}
 	}
@@ -901,7 +899,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 			if(convertView == null) {
 				convertView = mInflater.inflate(R.layout.mappingbird_place_item, parent, false);
 			}
-			ListItem item = mItems.get(position);
+			final ListItem item = mItems.get(position);
 			ImageView image = (ImageView) convertView.findViewById(R.id.card_icon);
 			TextView title = (TextView) convertView.findViewById(R.id.card_title);
 			TextView tag = (TextView) convertView.findViewById(R.id.card_subtitle);
@@ -919,6 +917,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 							BitmapParameters params) {
 						if(icon != null && icon.getTag().equals(params.getKey())) {
 							icon.setScaleType(ScaleType.CENTER_CROP);
+							icon.setImageResource(item.mPoint.getDefTypeResource());
 							icon.setImageResource(R.drawable.default_problem_big);
 						}
 					}
@@ -934,7 +933,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 				mBitmapLoader.getBitmap(image, params, false);
 			} else {
 				image.setScaleType(ScaleType.CENTER_CROP);
-				image.setImageResource(R.drawable.default_noimages);
+				image.setImageResource(item.mPoint.getDefTypeResource());
 			}
 
 			

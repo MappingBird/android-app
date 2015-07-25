@@ -275,4 +275,13 @@
         </RelativeLayout>
     </android.support.v4.widget.DrawerLayout>
 
+    <TextView 
+        android:id="@+id/debug_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="40dp"
+        android:textColor="#80000000"
+        android:visibility="gone"
+        android:text="Debug"/>
 </RelativeLayout>

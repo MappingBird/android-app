@@ -146,6 +146,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.mappingbird_collection);
 
+		if(DeBug.DEBUG)
+			findViewById(R.id.debug_text).setVisibility(View.VISIBLE);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.collection_list);
 		mDrawerContentLayout = findViewById(R.id.collection_list_layout);
