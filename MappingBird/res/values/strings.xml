@@ -110,6 +110,7 @@
     <!-- Add current location -->
     <string name="create_location_title">Locating a new place</string>
     <string name="create_location_title_with_text">Locating %s</string>
+    <string name="create_location_dialog_title_mean">Do you mean?</string>
     <!-- Settings -->
     <string name="settings_about_title">About MappingBird</string>
     <string name="settings_about_subtitle">Version : %s</string>

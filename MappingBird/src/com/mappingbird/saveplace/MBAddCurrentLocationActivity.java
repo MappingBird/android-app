@@ -14,18 +14,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
@@ -33,7 +36,9 @@ import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.common.MBListDialog;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.MBUtil;
 
@@ -63,16 +68,19 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 
 	//
 	private static final int MSG_REQUEST_ADDRESS = 0;
-	private static final int MSG_REQUEST_LOCATION = 1;
 	// 地圖
 	private GoogleMap mMap;
 	// Address
 	private EditText mAddress;
 	private MBCrosshairLayout mLocationLayout;
 	private View mRefreshBtn;
-//	private boolean mLockChanged = false;
-	private Handler mHandler = new Handler() {
+	//Dialog
+	private MBListDialog mListDialog;
+	
+	// Select address
+	private AddressAdapter mAddressAdapter;
 
+	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -81,13 +89,8 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 				LatLng latLng = (LatLng) msg.obj;
 				getLocationAddress(latLng.latitude, latLng.longitude);
 				break;
-			case MSG_REQUEST_LOCATION:
-				String address = (String) msg.obj;
-				getAddressLocation(address);
-				break;
 			}
 		}
-
 	};
 
 	@Override
@@ -103,7 +106,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 			mLongitude = intent.getDoubleExtra(EXTRA_LONG, 0);
 			if (intent.hasExtra(EXTRA_TITLE)) {
 				mTitleStr = intent.getStringExtra(EXTRA_TITLE);
-				setTitleText(String.format(
+				mTitleText.setText(String.format(
 						getString(R.string.create_location_title_with_text),
 						mTitleStr));
 			}
@@ -119,7 +122,6 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 					CameraUpdateFactory.newLatLngZoom(latLng, nowZoom), 300,
 					null);
 			mMap.setOnCameraChangeListener(new OnCameraChangeListener() {
-
 				@Override
 				public void onCameraChange(CameraPosition position) {
 					mMainLayout.requestFocus();
@@ -150,24 +152,36 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		mRefreshBtn.setOnClickListener(mClickListener);
 
 		mAddress.setOnFocusChangeListener(mEditFocusChangeListner);
+		mAddress.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+		                event.getAction() == KeyEvent.ACTION_UP &&
+		                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+					if(!TextUtils.isEmpty(mAddress.getText())) {
+						getAddressLocation(mAddress.getText().toString());
+					}
+		            return true; 
+		        } 
+				return false;
+			}
+		});
 		
 		mTitleText.requestFocus();
 	}
 
 	private OnFocusChangeListener mEditFocusChangeListner = new OnFocusChangeListener() {
-		
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
-			
 			if(hasFocus) {
 				mAddress.setPadding(0, 0, 
 						(int)getResources().getDimension(R.dimen.add_current_location_input_padding_right), 
-						(int)getResources().getDimension(R.dimen.add_current_location_input_padding_bottom));
+						0);
 				mRefreshBtn.setVisibility(View.VISIBLE);
 				MBUtil.openIme(MBAddCurrentLocationActivity.this, mAddress);
 			} else {
-				mAddress.setPadding(0, 0, 0, 
-						(int)getResources().getDimension(R.dimen.add_current_location_input_padding_bottom));
+				mAddress.setPadding(0, 0, 0, 0);
 				mRefreshBtn.setVisibility(View.GONE);
 				MBUtil.closeIME(MBAddCurrentLocationActivity.this, mAddress);
 			}
@@ -183,7 +197,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-	      AppAnalyticHelper.endSession(this);
+	    AppAnalyticHelper.endSession(this);
 	}
 
 	@Override
@@ -196,24 +210,14 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		}
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-	
-	private void searchByAdress() {
-		if(!TextUtils.isEmpty(mAddress.getText())) {
-			getAddressLocation(mAddress.getText().toString());
-		}
-	}
-
 	private OnClickListener mClickListener = new OnClickListener() {
-
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.lock_address_refresh:
-				searchByAdress();
+				if(!TextUtils.isEmpty(mAddress.getText())) {
+					getAddressLocation(mAddress.getText().toString());
+				}
 				break;
 			case R.id.title_btn_ok_layout:
 				Projection proj = mMap.getProjection();
@@ -238,31 +242,6 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		}
 	};
 
-	private void setTitleText(String title) {
-		mTitleText.setText(title);
-	}
-
-	private void getAddressLocation(String address) {
-		Geocoder coder = new Geocoder(this, Locale.getDefault());
-		try {
-			ArrayList<Address> adresses = (ArrayList<Address>) coder
-					.getFromLocationName(address, 5);
-			if(adresses.size() > 0) {
-				Address add = adresses.get(0);
-				mLongitude = add.getLongitude();
-				mLatitude = add.getLatitude();
-				float nowZoom = mMap.getMaxZoomLevel() - 5;
-				LatLng latLng = new LatLng(mLatitude, mLongitude);
-				mMap.animateCamera(
-						CameraUpdateFactory.newLatLngZoom(latLng, nowZoom), 10,
-						null);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-	}
-
 	private void getLocationAddress(double latitude, double longitude) {
 		Geocoder geocoder;
 		List<Address> addresses;
@@ -279,6 +258,109 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 			e.printStackTrace();
 			mAddress.setText(R.string.pick_address_no_address);
 		}
+	}
 
+	private void getAddressLocation(String address) {
+		Geocoder coder = new Geocoder(this, Locale.getDefault());
+		try {
+			ArrayList<Address> adresses = (ArrayList<Address>) coder
+					.getFromLocationName(address, 3);
+			if(adresses.size() > 0) {
+				if(adresses.size() == 1) {
+					Address add = adresses.get(0);
+					mLongitude = add.getLongitude();
+					mLatitude = add.getLatitude();
+					float nowZoom = mMap.getMaxZoomLevel() - 5;
+					LatLng latLng = new LatLng(mLatitude, mLongitude);
+					mMap.animateCamera(
+							CameraUpdateFactory.newLatLngZoom(latLng, nowZoom), 10,
+							null);
+				} else {
+					showAddressListDialog(adresses);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void showAddressListDialog(ArrayList<Address> adresses) {
+		if(mListDialog != null && mListDialog.isShowing())
+			mListDialog.dismiss();
+		mAddressAdapter = new AddressAdapter(MBAddCurrentLocationActivity.this);
+		mAddressAdapter.setData(adresses);
+		mListDialog = new MBListDialog(MBAddCurrentLocationActivity.this);
+		mListDialog.setTitle(MappingBirdApplication.instance().getString(R.string.create_location_dialog_title_mean));
+		mListDialog.setAdapter(mAddressAdapter);
+		mListDialog.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Address add = (Address)mAddressAdapter.getItem(position);
+				mAddress.setText(add.getAddressLine(0));
+				mLongitude = add.getLongitude();
+				mLatitude = add.getLatitude();
+				float nowZoom = mMap.getMaxZoomLevel() - 5;
+				LatLng latLng = new LatLng(mLatitude, mLongitude);
+				mMap.animateCamera(
+						CameraUpdateFactory.newLatLngZoom(latLng, nowZoom), 10,
+						null);
+				mListDialog.dismiss();
+			}
+		});
+		mListDialog.setNegativeBtn(MappingBirdApplication.instance().getString(R.string.str_cancel),
+			new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mListDialog.dismiss();
+				}
+			},
+			MBListDialog.BTN_STYLE_DEFAULT);
+		mListDialog.show();
+		
+	}
+	
+	private class AddressAdapter extends BaseAdapter {
+		private ArrayList<Address> mItems = new ArrayList<Address>();
+		private Context mContext;
+		private LayoutInflater mInflater;
+		public AddressAdapter(Context context) {
+			mContext = context;
+			mInflater = LayoutInflater.from(context);
+		}
+
+		public void setData(ArrayList<Address> list) {
+			mItems.clear();
+			mItems.addAll(list);
+			notifyDataSetChanged();
+		}
+		
+		@Override
+		public int getCount() {
+			return mItems.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return mItems.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if(convertView == null) {
+				convertView = mInflater.inflate(R.layout.mb_pick_place_add_current_select_item, parent, false);
+			}
+			
+			TextView text = (TextView)convertView.findViewById(R.id.item_text);
+			Address address = mItems.get(position);
+			text.setText(address.getAddressLine(0));
+			return convertView;
+		}
+		
 	}
 }

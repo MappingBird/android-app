@@ -77,14 +77,14 @@
             android:layout_height="40dp"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal" >
 
             <com.mappingbird.widget.MappingbirdFontIcon
                 android:id="@+id/lock_address_icon"
                 android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/iconfont_map_maker"
                 android:textColor="@color/graphic_symbol"
@@ -93,26 +93,27 @@
             <com.mappingbird.widget.MappingbirdEditText
                 android:id="@+id/location_address"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="18dp"
+                android:layout_marginRight="10dp"
                 android:layout_toRightOf="@id/lock_address_icon"
                 android:background="@drawable/edit_custom_drawable"
                 android:gravity="center_vertical"
-                android:paddingBottom="@dimen/add_current_location_input_padding_bottom"
                 android:singleLine="true"
                 android:textColor="@color/font_normal"
                 android:textCursorDrawable="@drawable/edit_cursor_drawable"
+                android:imeOptions="actionSearch"
                 android:textSize="16dp" />
 
             <com.mappingbird.widget.MappingbirdFontIcon
                 android:id="@+id/lock_address_refresh"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="36dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_marginLeft="8dp"
                 android:gravity="center"
                 android:text="@string/iconfont_sync"
                 android:textColor="@color/graphic_blue"
+                android:background="@drawable/titlebar_button_bg"
                 android:textSize="20dp"
                 android:visibility="gone" />
         </RelativeLayout>

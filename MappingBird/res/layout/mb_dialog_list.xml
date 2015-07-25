@@ -12,28 +12,24 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
+        android:paddingBottom="8dp"
         android:singleLine="true"
         android:textColor="#333"
         android:textSize="20dp" />
-    
-    <View
-        android:id="@+id/dialog_title_padding_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp" />
 
-    <com.mappingbird.widget.MappingbirdTextView
-        android:id="@+id/dialog_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="12dp"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/default_divider" />
+
+	<ListView
+	    android:id="@+id/dialog_list" 
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="8dp"
-        android:textColor="#7f7f7f"
-        android:textSize="14dp"
-        android:visibility="gone" />
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"/>
 
-    <View
+	<View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/default_divider" />
