@@ -1,133 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:background="@drawable/cards_background" >
 
     <RelativeLayout
+        android:id="@+id/place_item_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/cards_background" >
+        android:layout_height="@dimen/list_layout_item_icon_height" >
 
-        <RelativeLayout
-            android:id="@+id/place_item_layout"
+        <ImageView
+            android:id="@+id/card_icon"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/list_layout_item_icon_height" >
+            android:layout_height="@dimen/list_layout_item_icon_height"
+            android:background="#cccccc"
+            android:scaleType="centerCrop" />
 
-            <ImageView
-                android:id="@+id/card_icon"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/list_layout_item_icon_height"
-                android:background="#cccccc"
-                android:scaleType="centerCrop" />
-
-            <RelativeLayout
-                android:id="@+id/card_info_layout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/list_layout_item_info_height"
-                android:layout_alignParentBottom="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="@dimen/list_layout_item_address_height"
-                android:orientation="vertical" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/card_gradient"
-                    android:orientation="vertical"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="8dp" >
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp" >
-
-                        <com.mappingbird.widget.MappingbirdTextViewLight
-                            android:id="@+id/card_distance"
-                            android:layout_width="@dimen/place_item_card_distance_width"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:gravity="right"
-                            android:paddingRight="@dimen/card_distance_padding_right"
-                            android:textColor="#fff"
-                            android:textSize="32dp" />
-
-                        <com.mappingbird.widget.MappingbirdTextView
-                            android:id="@+id/card_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_marginBottom="4dp"
-                            android:layout_marginRight="4dp"
-                            android:layout_toLeftOf="@id/card_distance"
-                            android:singleLine="true"
-                            android:textColor="#fff"
-                            android:textSize="16sp" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="26dp"
-                        android:layout_marginTop="-10dp" >
-
-                        <com.mappingbird.widget.MappingbirdTextView
-                            android:id="@+id/card_unit"
-                            android:layout_width="@dimen/place_item_card_distance_width"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginTop="-3dp"
-                            android:gravity="right"
-                            android:paddingRight="@dimen/card_unit_padding_right"
-                            android:singleLine="true"
-                            android:textColor="#fff"
-                            android:textSize="16dp" />
-
-                        <com.mappingbird.widget.MappingbirdTextView
-                            android:id="@+id/card_subtitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="18dp"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginRight="4dp"
-                            android:layout_toLeftOf="@id/card_unit"
-                            android:gravity="top"
-                            android:singleLine="true"
-                            android:textColor="#fff"
-                            android:textSize="12dp" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <com.mappingbird.widget.MappingbirdTextView
-                    android:id="@+id/card_title_single"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="@dimen/place_item_card_distance_width"
-                    android:singleLine="true"
-                    android:textColor="#fff"
-                    android:textSize="16sp"
-                    android:visibility="gone" />
-            </RelativeLayout>
-        </RelativeLayout>
+        <View
+            android:id="@+id/card_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/card_address"
+            android:id="@+id/card_title_single"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/list_layout_item_address_height"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="#fff"
-            android:gravity="center_vertical"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:singleLine="true"
-            android:textColor="@color/font_normal"
-            android:textSize="14dp" />
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingBottom="8dp"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/card_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_layout_item_address_height"
+        android:layout_below="@id/place_item_layout" >
+
+        <LinearLayout
+            android:id="@+id/card_distance_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            android:paddingLeft="8dp" >
+
+            <com.mappingbird.widget.MappingbirdTextViewLight
+                android:id="@+id/card_distance"
+                android:layout_width="@dimen/place_item_card_distance_width"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="@dimen/card_distance_padding_right"
+                android:textColor="@color/font_normal"
+                android:textSize="32dp" />
+
+            <com.mappingbird.widget.MappingbirdTextView
+                android:id="@+id/card_unit"
+                android:layout_width="@dimen/place_item_card_distance_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-12dp"
+                android:gravity="right"
+                android:paddingRight="@dimen/card_unit_padding_right"
+                android:singleLine="true"
+                android:textColor="@color/font_normal"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/card_place_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/card_distance_layout"
+            android:orientation="vertical"
+            android:paddingLeft="8dp" >
+
+            <com.mappingbird.widget.MappingbirdTextView
+                android:id="@+id/card_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textColor="@color/font_normal"
+                android:textSize="14dp" />
+
+            <com.mappingbird.widget.MappingbirdTextView
+                android:id="@+id/card_tag_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textColor="#fff"
+                android:textSize="12dp" />
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>

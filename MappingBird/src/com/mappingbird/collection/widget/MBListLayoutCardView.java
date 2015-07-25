@@ -43,9 +43,9 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private int mTitleWidth = 0;
 
 	// View : Change to Item uesed
+	private View mBottomLayout;
 	private TextView mItemAddress;
 	private View mItemLayout;
-	private TextView mItemName;
 	private TextView mItemTag;
 	private TextView mItemDistance;
 	private TextView mItemUnit;
@@ -80,10 +80,11 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mCard0_Position = (int)getResources().getDimension(R.dimen.list_layout_card0_position_height);
 		mContentMarginLeft = (int) getResources().getDimension(R.dimen.list_layout_card_icon_width);
 		
+		// List item
+		mBottomLayout 		= findViewById(R.id.card_bottom_layout);
 		mItemAddress 		= (TextView) findViewById(R.id.item_address);
 		mItemLayout 		= findViewById(R.id.item_info_layout);
-		mItemName 			= (TextView) findViewById(R.id.item_title);
-		mItemTag 			= (TextView) findViewById(R.id.item_subtitle);
+		mItemTag 			= (TextView) findViewById(R.id.item_tag_list);
 		mItemDistance 		= (TextView) findViewById(R.id.item_distance);
 		mItemUnit 			= (TextView) findViewById(R.id.item_unit);
 		mItemSinglerName 	= (TextView) findViewById(R.id.item_title_single);
@@ -171,25 +172,18 @@ public class MBListLayoutCardView extends RelativeLayout {
 			}
 		} else {
 			mIcon.setScaleType(ScaleType.CENTER_CROP);
-//			mIcon.setImageResource(R.drawable.default_noimages);
 			mIcon.setImageResource(mPoint.getDefTypeResource());
 		}
 		
+		// 
 		mTitle.setText(mPoint.getTitle());
 		int textSize = MBUtil.getTextSize(mPoint.getTitle(), 20, 16, mTitleWidth);
 		mTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
-		mItemName.setText(mPoint.getTitle());
+		mItemSinglerName.setText(mPoint.getTitle());
 		if(mPoint.getTags().size() == 0) {
-			mItemSinglerName.setVisibility(View.VISIBLE);
-			mItemSinglerName.setText(mPoint.getTitle());
-			mItemName.setVisibility(View.GONE);
-			mItemTag.setVisibility(View.GONE);
+			mItemTag.setText("");
 		} else {
-			mItemSinglerName.setVisibility(View.GONE);
-			mItemName.setText(mPoint.getTitle());
 			mItemTag.setText(mPoint.getTagsStringSpan());
-			mItemName.setVisibility(View.VISIBLE);
-			mItemTag.setVisibility(View.VISIBLE);
 		}
 		mItemAddress.setText(mPoint.getLocation().getPlaceAddress());
 		if(mylocation != null) {
@@ -230,8 +224,8 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mStartHeight = getHeight();
 		mEndHeight = (int) getResources().getDimension(R.dimen.list_layout_item_height);
 		// View Change to Item
-		mItemAddress.setVisibility(View.VISIBLE);
-		mItemAddress.setAlpha(0);
+		mBottomLayout.setVisibility(View.VISIBLE);
+		mBottomLayout.setAlpha(0);
 		mItemLayout.setVisibility(View.VISIBLE);
 		mItemLayout.setAlpha(0);
 		ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchAnimation", 0.0f, 1.0f);
@@ -251,10 +245,10 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mIcon.setLayoutParams(lp);
 		mIcon.setX((int)(mIconXStarted + (mIconXEnd - mIconXStarted)*value));
 		if(value < 0.5f) {
-			mItemAddress.setAlpha(0);
+			mBottomLayout.setAlpha(0);
 			mItemLayout.setAlpha(0);
 		} else {
-			mItemAddress.setAlpha((value-0.5f)*2);
+			mBottomLayout.setAlpha((value-0.5f)*2);
 			mItemLayout.setAlpha((value-0.5f)*2);
 		}
 	}
@@ -272,7 +266,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 		this.setLayoutParams(lp);
 		mContentLayout.setX(mContentMarginLeft);
 		mContentLayout.setAlpha(1);
-		mItemAddress.setVisibility(View.GONE);
+		mBottomLayout.setVisibility(View.GONE);
 		mItemLayout.setVisibility(View.GONE);
 	}
 
@@ -322,8 +316,8 @@ public class MBListLayoutCardView extends RelativeLayout {
 				if(alpha < 0)
 					alpha = 0;
 				mContentLayout.setAlpha(alpha);
-				if(mItemAddress.getVisibility() == View.VISIBLE) {
-					mItemAddress.setVisibility(View.GONE);
+				if(mBottomLayout.getVisibility() == View.VISIBLE) {
+					mBottomLayout.setVisibility(View.GONE);
 					mItemLayout.setVisibility(View.GONE);
 				}
 			} else {
@@ -333,18 +327,13 @@ public class MBListLayoutCardView extends RelativeLayout {
 				if(alpha > 1)
 					alpha = 1;
 				mContentLayout.setAlpha(0);
-				if(mItemAddress.getVisibility() != View.VISIBLE) {
-					mItemAddress.setVisibility(View.VISIBLE);
+				if(mBottomLayout.getVisibility() != View.VISIBLE) {
+					mBottomLayout.setVisibility(View.VISIBLE);
 					mItemLayout.setVisibility(View.VISIBLE);
 				}
-				mItemAddress.setAlpha((alpha-0.5f)*2);
+				mBottomLayout.setAlpha((alpha-0.5f)*2);
 				mItemLayout.setAlpha((alpha-0.5f)*2);
 			}
 		}
-	}
-
-	@Override
-	public void setY(float y) {
-		super.setY(y);
 	}
 }

@@ -195,7 +195,7 @@ public class MBLoginActivity extends Activity implements
 
 			mEmails = mEmail.getText().toString();
 			break;
-		case R.id.login:
+		case R.id.login_bnt_layout:
 			login();
 			break;
 		}

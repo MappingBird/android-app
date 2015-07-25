@@ -12,8 +12,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
+import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.LayoutInflater;
@@ -91,6 +95,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 	private static final int ANIMATOR_CARD = 300;
 	private ValueAnimator mValueAnimator;
 
+	private int mItemWidth = 0;
 	public MBCollectionListLayout(Context context) {
 		super(context);
 	}
@@ -125,6 +130,13 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mListView.setAdapter(mItemAdapter);
 		
 		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
+		
+		mItemWidth = (int)(MBUtil.getWindowWidth(getContext()) 
+				- getResources().getDimension(R.dimen.card_icon_width)
+				- getResources().getDimension(R.dimen.place_item_card_distance_width)
+				- getResources().getDimension(R.dimen.card_title_margin_left)
+				- getResources().getDimension(R.dimen.card_title_margin_right));
+
 	}
 
 	public void closeLayout() {
@@ -804,9 +816,13 @@ public class MBCollectionListLayout extends RelativeLayout {
 		private ArrayList<ListItem> mItems = new ArrayList<ListItem>();
 		private ListItem mSelectPoint = null;
 		private LayoutInflater mInflater;
-
+		private GradientDrawable mLightMaskDrawable;
 		public ItemAdapter(Context context) {
 			mInflater = LayoutInflater.from(context);
+			
+			mLightMaskDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+					new int[] { 0x00000000, 0x80000000 });
+			mLightMaskDrawable.setShape(GradientDrawable.RECTANGLE);  
 		}
 
 		public synchronized void setItem(ArrayList<MBPointData> items) {
@@ -900,14 +916,15 @@ public class MBCollectionListLayout extends RelativeLayout {
 				convertView = mInflater.inflate(R.layout.mappingbird_place_item, parent, false);
 			}
 			final ListItem item = mItems.get(position);
+			final View maskView = convertView.findViewById(R.id.card_mask);
 			ImageView image = (ImageView) convertView.findViewById(R.id.card_icon);
-			TextView title = (TextView) convertView.findViewById(R.id.card_title);
-			TextView tag = (TextView) convertView.findViewById(R.id.card_subtitle);
+			TextView tag = (TextView) convertView.findViewById(R.id.card_tag_list);
 			TextView titleSingle = (TextView) convertView.findViewById(R.id.card_title_single);
 			String imagePath = null;
+			maskView.setBackgroundColor(0x00000000);
+			image.setImageResource(R.drawable.default_thumbnail);
 			if(item.mPoint.getImageDetails().size() > 0) {
 				image.setScaleType(ScaleType.CENTER);
-				image.setImageResource(R.drawable.default_thumbnail);
 				if(TextUtils.isEmpty(imagePath))
 					imagePath = item.mPoint.getImageDetails().get(0).getUrl();
 				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
@@ -919,6 +936,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 							icon.setScaleType(ScaleType.CENTER_CROP);
 							icon.setImageResource(item.mPoint.getDefTypeResource());
 							icon.setImageResource(R.drawable.default_problem_big);
+							maskView.setBackgroundDrawable(mLightMaskDrawable);
 						}
 					}
 					
@@ -927,6 +945,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 							BitmapParameters params) {
 						if(icon != null && icon.getTag().equals(params.getKey())) {
 							icon.setScaleType(ScaleType.CENTER_CROP);
+							maskView.setBackgroundDrawable(mLightMaskDrawable);
 						}
 					}
 				};
@@ -934,20 +953,18 @@ public class MBCollectionListLayout extends RelativeLayout {
 			} else {
 				image.setScaleType(ScaleType.CENTER_CROP);
 				image.setImageResource(item.mPoint.getDefTypeResource());
+				maskView.setBackgroundDrawable(mLightMaskDrawable);
 			}
 
 			
+			titleSingle.setText(item.mPoint.getTitle());
+			int textSize = MBUtil.getTextSize(item.mPoint.getTitle(), 32, 20, mItemWidth);
+			titleSingle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+
 			if(item.mPoint.getTags().size() == 0) {
-				tag.setVisibility(View.GONE);
-				title.setVisibility(View.GONE);
-				titleSingle.setVisibility(View.VISIBLE);
-				titleSingle.setText(item.mPoint.getTitle());
+				tag.setText("");
 			} else {
-				title.setVisibility(View.VISIBLE);
-				titleSingle.setVisibility(View.GONE);
-				tag.setVisibility(View.VISIBLE);
 				tag.setText(item.mPoint.getTagsStringSpan(), TextView.BufferType.SPANNABLE);
-				title.setText(item.mPoint.getTitle());
 			}
 
 			TextView dis = (TextView) convertView.findViewById(R.id.card_distance);
