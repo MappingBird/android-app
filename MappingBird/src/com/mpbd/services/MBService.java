@@ -126,11 +126,16 @@ public class MBService extends Service{
 		}
 		case CMD_STOP_TO_UPLOAD: {
 			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
-			boolean updateData = logic.hasSubmit();
-			if(updateData) {
-				// 停止上傳.
-				
+			// 停止上傳Task running.
+			boolean hasSubmit = logic.hasSubmit();
+			if(hasSubmit) {
+				logic.stopSubmit();
 			}
+			// 清除資料
+			AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
+			db.cancelSavePlace();
+			cleanNotifyFinishedId();
+			stopSelf();
 			break;
 		}
 		}

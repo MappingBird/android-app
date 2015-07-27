@@ -73,7 +73,13 @@ public class MBNotificationCenter {
 	public static Notification getUpdateProgressNotification(
 			Context context, String ticker, String title, String message
 			, int max, int progress, boolean indeterminate) {
-		
+		// 回到主畫面的Intent
+		Intent intent = new Intent(context, MappingBirdCollectionActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra(MappingBirdCollectionActivity.EXTRA_NOTIFY,
+				MappingBirdCollectionActivity.NOTIFY_CANCEL_UPLOAD_IMAGE);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 100, intent, 
+				PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 		builder.setSmallIcon(R.drawable.statusbar_icon);
@@ -82,6 +88,7 @@ public class MBNotificationCenter {
 		builder.setContentTitle(title);
 		builder.setProgress(max, progress, indeterminate);
 		builder.setAutoCancel(false);
+		builder.setContentIntent(pendingIntent);
 		if(!TextUtils.isEmpty(ticker)) {
 			builder.setTicker(ticker);
 		}

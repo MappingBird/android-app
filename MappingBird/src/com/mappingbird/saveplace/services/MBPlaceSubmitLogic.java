@@ -185,7 +185,8 @@ public class MBPlaceSubmitLogic {
 	 */
 	public void stopSubmit() {
 		if(mSubmitTask != null) {
-			
+			mSubmitTask.cancelUpload();
+			mSubmitTask = null;
 		}
 	}
 	

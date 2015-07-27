@@ -63,11 +63,9 @@ import com.mappingbird.common.MainUIMessenger.OnMBSubmitChangedListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.MBSubmitMsgData;
-import com.mappingbird.saveplace.db.AppPlaceDB;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.mappingbird.MBSettingsActivity;
-import com.mpbd.mappingbird.MappingBirdBitmap;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
@@ -337,11 +335,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				mMBCollectionListLayout.setProgress(data.getState(), 0, 0);
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED:
-				if(mDialog != null && mDialog.isShowing()) {
-					mDialog.dismiss();
-					
-				}
-
+				DFshowDialog(DIALOG_UPLOAD_SUCESSED, 0 , null);
 				if(DeBug.DEBUG) {
 					DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] MSG : MSG_ADD_PLACE_FINISHED"); 
 				}
@@ -376,8 +370,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			// 1. 上傳地點就失敗
 			// 2. 上傳照片幾張失敗
 			// 全部取消上傳
-			AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
-			db.cancelSavePlace();
+			MBServiceClient.stopToUploadPlace();
 			mDialog.dismiss();
 		}
 	};
@@ -858,71 +851,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public View getInfoWindow(final Marker marker) {
 			return null;
-//			
-//			DeBug.i(TAG, "getInfoContents");
-//			int position = -1;
-//			if (mClickedClusterItem != null) {
-//				position = mClickedClusterItem.getIndex();
-//			}
-//
-//			if (marker.equals(mMyMarker)) {
-//				position = -1;
-//			}
-//
-//			View view = mContents;
-//			ImageView icon = ((ImageView) view.findViewById(R.id.badge));
-//			ImageView details = ((ImageView) view.findViewById(R.id.details));
-//			TextView titleUi = ((TextView) view.findViewById(R.id.title));
-//			TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
-//
-//			if (position > -1) {
-//				icon.setVisibility(View.VISIBLE);
-//				titleUi.setVisibility(View.VISIBLE);
-//				snippetUi.setVisibility(View.VISIBLE);
-//				details.setVisibility(View.VISIBLE);
-//			} else {
-//				icon.setVisibility(View.GONE);
-//				titleUi.setVisibility(View.VISIBLE);
-//				snippetUi.setVisibility(View.GONE);
-//				details.setVisibility(View.GONE);
-//			}
-//
-//			if (position > -1
-//					&& mCollection.getPointsObj().get(position)
-//							.getImageDetails().size() > 0) {
-//				String imagePath = null;
-//				imagePath = mCollection.getPointsObj().get(position)
-//						.getImageDetails().get(0).getUrl();
-//				DeBug.i(TAG, "imagePath =" + imagePath);
-//
-//				mLoadBitmap.getBitmapByURL(icon, imagePath,
-//						mLoadBitmap.ICON_TYPE_CONTENT_INFO_ICON);
-//
-//				mLoadBitmap
-//						.setMappingBirdBitmapListner(new MappingBirdBitmapListner() {
-//
-//							@Override
-//							public void loadBitmapFinish(String key) {
-//								DeBug.i(TAG, "callback");
-//								marker.showInfoWindow();
-//							}
-//						});
-//			}
-//
-//			String title = marker.getTitle();
-//			if (title != null) {
-//				titleUi.setText(title);
-//			} else {
-//				titleUi.setText("");
-//			}
-//
-//			String snippet = marker.getSnippet();
-//			if (snippet != null) {
-//				snippetUi.setText(snippet +" m");
-//			} else {
-//				snippetUi.setText("");
-//			}
-//			return mContents;
 		}
 
 		@Override
@@ -977,7 +905,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		@Override
 		public void onCancelUpload() {
-			showCancelUploadDialog();
+			DFshowDialog(DIALOG_CANCEL_UPLOAD, 0, null);
 		}
 	};
 
@@ -1117,6 +1045,8 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 							return true;
 						}
 					}
+				} else if(state == NOTIFY_CANCEL_UPLOAD_IMAGE) {
+					DFshowDialog(DIALOG_CANCEL_UPLOAD, 0, null);
 				}
 			} else {
 			}
@@ -1124,52 +1054,12 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		return false;
 	}
 	
-	// Dialog Area
-	// 
-	private void showCancelUploadDialog() {
-		if(mDialog != null && mDialog.isShowing()) {
-			mDialog.dismiss();
-		}
-		
-		mDialog = new MBDialog(mContext);
-		mDialog.setTitle(getString(R.string.dialog_hint_uploading_photos_title));
-		mDialog.setDescription(getString(R.string.dialog_hint_uploading_photos_message));
-		mDialog.setPositiveBtn(getString(R.string.str_conitune), 
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if(mDialog != null && mDialog.isShowing())
-							// 繼續上傳.
-							mDialog.dismiss();
-					}
-				}, MBDialog.BTN_STYLE_DEFAULT);
-		mDialog.setNegativeBtn(getString(R.string.str_cancel_upload), 
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						// 停止上傳
-						if(mDialog != null && mDialog.isShowing())
-							mDialog.dismiss();
-					}
-				}, MBDialog.BTN_STYLE_DEFAULT);
-		mDialog.setCanceledOnTouchOutside(false);
-		mDialog.setOnKeyListener(new OnKeyListener() {
-			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-				//不讓Back有用
-				if(keyCode == KeyEvent.KEYCODE_BACK)
-					return true;
-				return false;
-			}
-		});
-		mDialog.show();
-	}
-	
+	// Dialog Area	
 	// --- Dialog ---------------------------
-	private final static int DIALOG_LOADING = 5; // 特別, 用另外一個Dialog
 	private final static int DIALOG_NONE = 1000;
 	private final static int DIALOG_ERROR_NO_NETWORK = 0; // 拿Collection list或 一個Collection資料有問題.
 	private final static int DIALOG_LOCATION_NO_EXIST = 1; // Location拿不到
+	private final static int DIALOG_LOADING = 5; // 特別, 用另外一個Dialog
 	private final static int DIALOG_UPLOAD_SUCESSED = 10;
 	private final static int DIALOG_UPLOAD_FAILED = 11;
 	private final static int DIALOG_CANCEL_UPLOAD = 12;
@@ -1194,6 +1084,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			//先關閉之前的dialog
 			DFdismiss();
 			mDialogMode = DIALOG_CANCEL_UPLOAD;
+			DFShowMessageDialog(mDialogMode,
+					getString(R.string.collection_dialog_cancel_upload_photos_title), 
+					getString(R.string.collection_dialog_cancel_upload_photos_message), 
+					getString(R.string.str_conitune), mCloseDialogListener, MBDialog.BTN_STYLE_BLUE,
+					getString(R.string.str_cancel), mCancelUploadListener, MBDialog.BTN_STYLE_DEFAULT);
 			break;
 		case DIALOG_UPLOAD_FAILED:
 			//先關閉之前的dialog
@@ -1201,14 +1096,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mDialogMode = DIALOG_UPLOAD_FAILED;
 			break;
 		case DIALOG_UPLOAD_SUCESSED:
+			DFdismiss();
 			if(mDialogMode == DIALOG_CANCEL_UPLOAD) {
 				// 之前有關閉上傳. 所以要跳
-				DFdismiss();
 				mDialogMode = DIALOG_UPLOAD_SUCESSED;
 				
-			} else {
-				// 不需要做什麼事情
-				DFdismiss();
 			}
 			
 			break;
@@ -1216,6 +1108,38 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 			mDialogMode = DIALOG_LOCATION_NO_EXIST;
 			break;
 		}
+	}
+	
+	private OnClickListener mCancelUploadListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			MBServiceClient.stopToUploadPlace();
+			DFdismiss();
+		}
+	};
+	
+	private OnClickListener mCloseDialogListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			DFdismiss();
+		}
+	};
+	
+	private void DFShowMessageDialog(int mode, String title, String message,
+			String okStr, OnClickListener oklistener, int okStyle,
+			String cancelStr, OnClickListener cancellistener, int cancelStyle) {
+		if(mDialog != null && mDialog.isShowing())
+			mDialog.dismiss();
+
+		mDialog = new MBDialog(mContext);
+		mDialog.setTitle(title);
+		mDialog.setDescription(message);
+		mDialog.setPositiveBtn(okStr, 
+				oklistener, okStyle);
+		mDialog.setNegativeBtn(cancelStr, 
+				cancellistener, cancelStyle);
+		mDialog.setCanceledOnTouchOutside(false);
+		mDialog.show();
 	}
 	
 	private void DFShowErrorDialog(int mode, int statusCode, OnClickListener listener) {

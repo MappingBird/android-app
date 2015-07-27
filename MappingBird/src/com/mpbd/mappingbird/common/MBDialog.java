@@ -100,6 +100,7 @@ public class MBDialog {
 			mDialogNegativeBtn.setVisibility(View.VISIBLE);
 			mDialogNegativeBtn.setOnClickListener(listener);
 			mDialogNegativeBtn.setText(text);
+			mDialogPositiveBtn.setAllCaps(true);
 			setBtnStyle(mDialogNegativeBtn, style);
 			if(mDialogPositiveBtn.getVisibility() == View.VISIBLE) {
 				mDialogDivider.setVisibility(View.VISIBLE);
@@ -112,6 +113,7 @@ public class MBDialog {
 			mDialogPositiveBtn.setVisibility(View.VISIBLE);
 			mDialogPositiveBtn.setOnClickListener(listener);
 			mDialogPositiveBtn.setText(text);
+			mDialogPositiveBtn.setAllCaps(true);
 			setBtnStyle(mDialogPositiveBtn, style);
 			if(mDialogNegativeBtn.getVisibility() == View.VISIBLE) {
 				mDialogDivider.setVisibility(View.VISIBLE);

@@ -47,6 +47,8 @@ public class MBPlaceSubmitTask implements Runnable{
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
+			if(cancelUpload)
+				return;
 			switch(msg.what) {
 			case MSG_ADD_PLACE_PROCRESS:
 				if(mSubmitTaskListener != null)
@@ -90,6 +92,8 @@ public class MBPlaceSubmitTask implements Runnable{
 	public void run() {
 		mImageIndex = 0;
 		isSubmit = true;
+		if(cancelUpload)
+			return;
 		// 先拿取Token
 		mUserToken.getTokenFromServer(new UserTokenListener() {
 			
@@ -118,6 +122,8 @@ public class MBPlaceSubmitTask implements Runnable{
 	private void updatePlaceData() {
 		if(DeBug.DEBUG)
 			DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[MBPlaceSubmitTask] updatePlaceData");
+		if(cancelUpload)
+			return;
 		// 先確認是否已經上傳過Place
 		if(mSubmitData.placeState < MBPlaceSubmitUtil.SUBMIT_STATE_PLACE_READY) {
 			// 還沒上傳過或失敗. 需要上傳
@@ -160,6 +166,10 @@ public class MBPlaceSubmitTask implements Runnable{
 	 * 上傳照片
 	 */
 	private void updateImage() {
+		if(cancelUpload)
+			return;
+		if(true)
+			return;
 		//Update Image
 		if(mSubmitData.imageArrays.size() > 0) {
 			// 有Image 需要上傳
@@ -298,6 +308,14 @@ public class MBPlaceSubmitTask implements Runnable{
 	 */
 	public synchronized int getTotalProgress() {
 		return mSubmitData.getTotleProcess();
+	}
+	
+	/**
+	 * 取消上傳
+	 */
+	public synchronized void cancelUpload() {
+		cancelUpload = true;
+		isSubmit = false;
 	}
 }
 
