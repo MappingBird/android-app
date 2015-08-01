@@ -56,8 +56,6 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private int mSelectItemCenterOpenPositionX = 0;
 	private int mSelectItemCenterOpenPositionY = 0;
 	
-//	private int mSelectItemCenterPositionX = 0;
-//	private int mSelectItemCenterPositionY = 0;
 	// select_scene
 	private View mSelectScene;
 	private int mSelectScenePositionX = 0;
@@ -89,6 +87,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	
 	private OnSelectKindLayoutListener mOnSelectKindLayoutListener = null;
 	
+	private ArrayList<TextView> mHintTextArrays = new ArrayList<TextView>();
 	// 滑出滑入動畫需要知道行徑的距離
 	private float mSlideAnimationDistance = 0;
 	public MBListLayoutAddLayout(Context context) {
@@ -222,6 +221,14 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		mItemViewList.add(mSelectBar);
 		mItemViewXList.add(mSelectBarPositionX);
 		mItemViewYList.add(mSelectBarPositionY);
+		
+		// Hint Text
+		TextView textView;
+		RelativeLayout.LayoutParams params;
+		mHintTextArrays.clear();
+		textView = (TextView)findViewById(R.id.item_text_scene);
+		params = (RelativeLayout.LayoutParams)textView.getLayoutParams();
+//		params.setMargins(0, 0, right, bottom);
 	}
 	
 	@Override

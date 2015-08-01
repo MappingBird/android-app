@@ -80,6 +80,14 @@
     <string name="distance_kilometer">KM</string>
     <string name="distance_max_kilometer">+KM</string>
 
+    <!-- Add place hint -->
+    <string name="aph_kind_landscape">Landscape</string>
+    <string name="aph_kind_restaurant">Restaurant</string>
+    <string name="aph_kind_shopping">Shopping</string>
+    <string name="aph_kind_hotel">Hotel</string>
+    <string name="aph_kind_bar">Bar</string>
+    <string name="aph_kind_pin">Pin</string>
+    
     <!-- Add place -->
     <string name="add_place_pick_category">Pick a category for the place you are going to save.</string>
     <string name="add_place_save">Save</string>
