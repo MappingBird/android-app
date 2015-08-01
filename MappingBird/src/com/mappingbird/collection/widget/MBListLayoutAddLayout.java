@@ -37,18 +37,27 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	
 	// Animation space
 	private float mAnimSpace = 0.5f;
-	private int mAnimDuration = 500;
+	private static final int ANIM_DURATION = 500;
+	private static final int ANIM_MOVE_DURATION = 300;
 	
+	// 有沒有卡片
+	private boolean mHasCard = false;
 	// Add
 	private MBProgressCircleLayout mAddItemLayout;
 	private TextView mAddItemText;
 	private int mAddItemWidth = 0;
-	private int mAddItemPositionY = 0;
+	private int mAddItemOpenPositionY = 0;
+	private int mAddItemClosePositionY = 0;
 	private int mAddItemPaddingTop = 0;
 	private int mAddItemPaddingRight = 0;
 	
-	private int mSelectItemCenterPositionX = 0;
-	private int mSelectItemCenterPositionY = 0;
+	private int mSelectItemCenterClosePositionX = 0;
+	private int mSelectItemCenterClosePositionY = 0;
+	private int mSelectItemCenterOpenPositionX = 0;
+	private int mSelectItemCenterOpenPositionY = 0;
+	
+//	private int mSelectItemCenterPositionX = 0;
+//	private int mSelectItemCenterPositionY = 0;
 	// select_scene
 	private View mSelectScene;
 	private int mSelectScenePositionX = 0;
@@ -116,6 +125,11 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		mSelectDefault.setOnClickListener(mItemClickListener);
 		mSelectMall.setOnClickListener(mItemClickListener);
 		mSelectBar.setOnClickListener(mItemClickListener);
+//		initLayout();
+	}
+	
+	public void init(boolean hasCard) {
+		mHasCard = hasCard; 
 		initLayout();
 	}
 	
@@ -125,16 +139,26 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		int windowHeight = MBUtil.getWindowHeight(getContext());
 		int titleBarHeight = (int)getContext().getResources().getDimension(R.dimen.title_bar_height);
 		int add_margin_bottom = (int) getContext().getResources().getDimension(R.dimen.col_add_place_margin_bottom);
-		mAddItemPositionY = windowHeight - titleBarHeight - add_margin_bottom;
-		setMarginInView(mAddItemLayout, 0, mAddItemPositionY, 0, 0);
+		int add_margin_bottom_open = (int) getResources().getDimension(R.dimen.col_add_place_margin_bottom_end);
+		int add_margin_bottom_nocard = (int) getResources().getDimension(R.dimen.col_add_place_no_card_margin_bottom);
+		
+//		mAddItemClosePositionY_NoCard = windowHeight - titleBarHeight - add_margin_bottom;
+		mAddItemClosePositionY = mHasCard ? windowHeight - titleBarHeight - add_margin_bottom
+				:  windowHeight - titleBarHeight - add_margin_bottom_nocard;
+		mAddItemOpenPositionY = windowHeight - titleBarHeight - add_margin_bottom_open;
+		setMarginInView(mAddItemLayout, 0, mAddItemClosePositionY, 0, 0);
 		
 		mAddItemPaddingTop = (int) getContext().getResources().getDimension(R.dimen.col_add_place_padding_top);
 		mAddItemPaddingRight = (int) getContext().getResources().getDimension(R.dimen.col_add_place_padding_right);
 
 		int selectItemWidth = (int)getResources().getDimension(R.dimen.col_select_place_item_width);
+				
+		mSelectItemCenterOpenPositionX = windowWidth - mAddItemPaddingRight - selectItemWidth;
+		mSelectItemCenterOpenPositionY = mAddItemOpenPositionY + mAddItemPaddingTop;
 		
-		mSelectItemCenterPositionX = windowWidth - mAddItemPaddingRight - selectItemWidth;
-		mSelectItemCenterPositionY = mAddItemPositionY + mAddItemPaddingTop;
+		mSelectItemCenterClosePositionX = mSelectItemCenterOpenPositionX;
+		mSelectItemCenterClosePositionY = mAddItemClosePositionY + mAddItemPaddingTop;
+		
 		
 		int radius = (int) getResources().getDimension(R.dimen.col_select_place_item_radius);
 		double angle = 0;
@@ -143,9 +167,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		mItemViewYList.clear();
 		//
 		setMarginInView(mSelectScene, 0, 0, mAddItemPaddingRight, 0);
-		mSelectScenePositionX = mSelectItemCenterPositionX;
-		mSelectScenePositionY = mSelectItemCenterPositionY - radius;
-		mSelectScene.setY(mSelectItemCenterPositionY);
+		mSelectScenePositionX = mSelectItemCenterOpenPositionX;
+		mSelectScenePositionY = mSelectItemCenterOpenPositionY - radius;
+		mSelectScene.setY(mSelectItemCenterClosePositionY);
 		mItemViewList.add(mSelectScene);
 		mItemViewXList.add(mSelectScenePositionX);
 		mItemViewYList.add(mSelectScenePositionY);
@@ -153,9 +177,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		//
 		angle = 54 * Math.PI / 180;
 		setMarginInView(mSelectRestaurant, 0, 0, mAddItemPaddingRight, 0);
-		mSelectRestaurantPositionX = mSelectItemCenterPositionX + (int)(- radius * Math.cos(angle));
-		mSelectRestaurantPositionY = mSelectItemCenterPositionY - (int)(radius * Math.sin(angle));
-		mSelectRestaurant.setY(mSelectItemCenterPositionY);
+		mSelectRestaurantPositionX = mSelectItemCenterOpenPositionX + (int)(- radius * Math.cos(angle));
+		mSelectRestaurantPositionY = mSelectItemCenterOpenPositionY - (int)(radius * Math.sin(angle));
+		mSelectRestaurant.setY(mSelectItemCenterClosePositionY);
 		mItemViewList.add(mSelectRestaurant);
 		mItemViewXList.add(mSelectRestaurantPositionX);
 		mItemViewYList.add(mSelectRestaurantPositionY);
@@ -163,9 +187,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		//
 		angle = 18 * Math.PI / 180;
 		setMarginInView(mSelectHotel, 0, 0, mAddItemPaddingRight, 0);
-		mSelectHotelPositionX = mSelectItemCenterPositionX + (int)(- radius * Math.cos(angle));
-		mSelectHotelPositionY = mSelectItemCenterPositionY - (int)(radius * Math.sin(angle));
-		mSelectHotel.setY(mSelectItemCenterPositionY);
+		mSelectHotelPositionX = mSelectItemCenterOpenPositionX + (int)(- radius * Math.cos(angle));
+		mSelectHotelPositionY = mSelectItemCenterOpenPositionY - (int)(radius * Math.sin(angle));
+		mSelectHotel.setY(mSelectItemCenterClosePositionY);
 		mItemViewList.add(mSelectHotel);
 		mItemViewXList.add(mSelectHotelPositionX);
 		mItemViewYList.add(mSelectHotelPositionY);
@@ -173,9 +197,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		//
 		angle = 18 * Math.PI / 180;
 		setMarginInView(mSelectDefault, 0, 0, mAddItemPaddingRight, 0);
-		mSelectDefaultPositionX = mSelectItemCenterPositionX + (int)(- radius * Math.cos(angle));
-		mSelectDefaultPositionY = mSelectItemCenterPositionY + (int)(radius * Math.sin(angle));
-		mSelectDefault.setY(mSelectItemCenterPositionY);
+		mSelectDefaultPositionX = mSelectItemCenterOpenPositionX + (int)(- radius * Math.cos(angle));
+		mSelectDefaultPositionY = mSelectItemCenterOpenPositionY + (int)(radius * Math.sin(angle));
+		mSelectDefault.setY(mSelectItemCenterClosePositionY);
 		mItemViewList.add(mSelectDefault);
 		mItemViewXList.add(mSelectDefaultPositionX);
 		mItemViewYList.add(mSelectDefaultPositionY);
@@ -183,18 +207,18 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		//
 		setMarginInView(mSelectMall, 0, 0, mAddItemPaddingRight, 0);
 		angle = 54 * Math.PI / 180;
-		mSelectMallPositionX = mSelectItemCenterPositionX + (int)(- radius * Math.cos(angle));
-		mSelectMallPositionY = mSelectItemCenterPositionY + (int)(radius * Math.sin(angle));
-		mSelectMall.setY(mSelectItemCenterPositionY);
+		mSelectMallPositionX = mSelectItemCenterOpenPositionX + (int)(- radius * Math.cos(angle));
+		mSelectMallPositionY = mSelectItemCenterOpenPositionY + (int)(radius * Math.sin(angle));
+		mSelectMall.setY(mSelectItemCenterClosePositionY);
 		mItemViewList.add(mSelectMall);
 		mItemViewXList.add(mSelectMallPositionX);
 		mItemViewYList.add(mSelectMallPositionY);
 
 		//
 		setMarginInView(mSelectBar, 0, 0, mAddItemPaddingRight, 0);
-		mSelectBarPositionX = mSelectItemCenterPositionX;
-		mSelectBarPositionY = mSelectItemCenterPositionY + radius;
-		mSelectBar.setY(mSelectItemCenterPositionY);
+		mSelectBarPositionX = mSelectItemCenterOpenPositionX;
+		mSelectBarPositionY = mSelectItemCenterOpenPositionY + radius;
+		mSelectBar.setY(mSelectItemCenterClosePositionY);
 		mItemViewList.add(mSelectBar);
 		mItemViewXList.add(mSelectBarPositionX);
 		mItemViewYList.add(mSelectBarPositionY);
@@ -273,20 +297,21 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		if(mode == MODE_CLOSE) {
 			mMode = MODE_OPEN_ANIM;
 			ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
-			animator.setDuration(mAnimDuration);
-			animator.addUpdateListener(mOpenUpdateListener);
+			animator.setDuration(ANIM_MOVE_DURATION);
+			animator.addUpdateListener(mUpUpdateListener);
 			animator.setInterpolator(new DecelerateInterpolator());
-			animator.addListener(mAnimatorListener);
+			animator.addListener(mTranUpAnimatorListener);
 			animator.start();
 			if(mOnSelectKindLayoutListener != null)
 				mOnSelectKindLayoutListener.openSelect();
+
 		} else {
 			mMode = MODE_CLOSE_ANIM;
 			ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
-			animator.setDuration(mAnimDuration);
+			animator.setDuration(ANIM_DURATION);
 			animator.addUpdateListener(mCloseUpdateListener);
 			animator.setInterpolator(new DecelerateInterpolator());
-			animator.addListener(mAnimatorListener);
+			animator.addListener(mCloseAnimatorListener);
 			animator.start();
 			if(mOnSelectKindLayoutListener != null)
 				mOnSelectKindLayoutListener.closeSelect();
@@ -303,6 +328,21 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			startAnimation(mMode);
 		}
 	}
+
+	private AnimatorUpdateListener mUpUpdateListener = new AnimatorUpdateListener() {
+		@Override
+		public void onAnimationUpdate(ValueAnimator animation) {
+			float value = ((Float) (animation.getAnimatedValue()))
+                    .floatValue();
+			mAddItemLayout.setY(mAddItemClosePositionY + value * (mAddItemOpenPositionY - mAddItemClosePositionY));
+			View targeView = null;
+			for(int i = 0; i < mItemViewList.size(); i++) {
+				targeView = mItemViewList.get(i);
+				targeView.setY(mSelectItemCenterClosePositionY + 
+						(mSelectItemCenterOpenPositionY - mSelectItemCenterClosePositionY) * value);
+			}
+		}
+	};
 
 	private AnimatorUpdateListener mOpenUpdateListener = new AnimatorUpdateListener() {
 		@Override
@@ -329,10 +369,10 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					rate = (value - startValue)/mAnimSpace;
 					// y = (1 - b)x^2 + b*x , b = (d - c^2)/c(1-c)  (d,c) = (0.75, 1.2)
 					float rateN = -2.4f*rate*rate +3.4f * rate;
-					targeView.setX(mSelectItemCenterPositionX
-							+ (mItemViewXList.get(i)- mSelectItemCenterPositionX) * rateN);
-					targeView.setY(mSelectItemCenterPositionY
-							+ (mItemViewYList.get(i) - mSelectItemCenterPositionY) * rateN);
+					targeView.setX(mSelectItemCenterOpenPositionX
+							+ (mItemViewXList.get(i)- mSelectItemCenterOpenPositionX) * rateN);
+					targeView.setY(mSelectItemCenterOpenPositionY
+							+ (mItemViewYList.get(i) - mSelectItemCenterOpenPositionY) * rateN);
 					targeView.setRotation(-180*(1 - rate));
 				} else if(value >= startValue + mAnimSpace) {
 					targeView.setX(mItemViewXList.get(i));
@@ -344,6 +384,21 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		}
 	};
 	
+	private AnimatorUpdateListener mDownUpdateListener = new AnimatorUpdateListener() {
+		@Override
+		public void onAnimationUpdate(ValueAnimator animation) {
+			float value = ((Float) (animation.getAnimatedValue()))
+                    .floatValue();
+			mAddItemLayout.setY(mAddItemOpenPositionY - value * (mAddItemOpenPositionY - mAddItemClosePositionY));
+			View targeView = null;
+			for(int i = 0; i < mItemViewList.size(); i++) {
+				targeView = mItemViewList.get(i);
+				targeView.setY(mSelectItemCenterOpenPositionY - 
+						(mSelectItemCenterOpenPositionY - mSelectItemCenterClosePositionY) * value);
+			}
+		}
+	};
+
 	private AnimatorUpdateListener mCloseUpdateListener = new AnimatorUpdateListener() {
 		@Override
 		public void onAnimationUpdate(ValueAnimator animation) {
@@ -368,13 +423,13 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				if(value > startValue && value < startValue + mAnimSpace) {
 					rate = (value - startValue)/mAnimSpace;
 					targeView.setX(mItemViewXList.get(i)
-							- (mItemViewXList.get(i)- mSelectItemCenterPositionX) * rate);
+							- (mItemViewXList.get(i)- mSelectItemCenterOpenPositionX) * rate);
 					targeView.setY(mItemViewYList.get(i)
-							- (mItemViewYList.get(i) - mSelectItemCenterPositionY) * rate);
+							- (mItemViewYList.get(i) - mSelectItemCenterOpenPositionY) * rate);
 					targeView.setRotation(-180*(rate));
 				} else if(value >= startValue + mAnimSpace) {
-					targeView.setX(mSelectItemCenterPositionX);
-					targeView.setY(mSelectItemCenterPositionY);
+					targeView.setX(mSelectItemCenterOpenPositionY);
+					targeView.setY(mSelectItemCenterOpenPositionY);
 					targeView.setRotation(0);
 				}
 				startValue += 0.1f;
@@ -390,6 +445,83 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 
 		return super.onTouchEvent(event);
 	}
+
+	private AnimatorListener mTranUpAnimatorListener = new AnimatorListener() {
+		
+		@Override
+		public void onAnimationStart(Animator animation) {
+		}
+		
+		@Override
+		public void onAnimationRepeat(Animator animation) {
+		}
+		
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
+			animator.setDuration(ANIM_DURATION);
+			animator.addUpdateListener(mOpenUpdateListener);
+			animator.setInterpolator(new DecelerateInterpolator());
+			animator.addListener(mAnimatorListener);
+			animator.start();
+			if(mOnSelectKindLayoutListener != null)
+				mOnSelectKindLayoutListener.openSelect();
+		}
+		
+		@Override
+		public void onAnimationCancel(Animator animation) {
+		}
+	};
+	
+	private AnimatorListener mTranDownAnimatorListener = new AnimatorListener() {
+		
+		@Override
+		public void onAnimationStart(Animator animation) {
+		}
+		
+		@Override
+		public void onAnimationRepeat(Animator animation) {
+		}
+		
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			if(mMode == MODE_CLOSE_ANIM) {
+				mMode = MODE_CLOSE;
+			}
+			if(mMode == MODE_OPEN_ANIM) {
+				mMode = MODE_OPEN;
+			}
+		}
+		
+		@Override
+		public void onAnimationCancel(Animator animation) {
+		}
+	};
+
+	private AnimatorListener mCloseAnimatorListener = new AnimatorListener() {
+		
+		@Override
+		public void onAnimationStart(Animator animation) {
+		}
+		
+		@Override
+		public void onAnimationRepeat(Animator animation) {
+		}
+		
+		@Override
+		public void onAnimationEnd(Animator animation) {
+			ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
+			animator.setDuration(ANIM_MOVE_DURATION);
+			animator.addUpdateListener(mDownUpdateListener);
+			animator.setInterpolator(new DecelerateInterpolator());
+			animator.addListener(mTranDownAnimatorListener);
+			animator.start();
+		}
+		
+		@Override
+		public void onAnimationCancel(Animator animation) {
+		}
+	};
 
 	private AnimatorListener mAnimatorListener = new AnimatorListener() {
 		

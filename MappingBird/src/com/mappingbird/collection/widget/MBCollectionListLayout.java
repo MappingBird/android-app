@@ -117,10 +117,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 		
 		mAddLayout = (MBListLayoutAddLayout) findViewById(R.id.item_add_layout);
 		mAddLayout.setOnSelectKindLayoutListener(mOnSelectKindLayoutListener);
-		if(MBUtil.mEnableAddFunction)
-			mAddLayout.setVisibility(View.VISIBLE);
-		else
-			mAddLayout.setVisibility(View.GONE);
 
 		mListView = (ListView) findViewById(R.id.item_list);
 		mListView.setOnItemClickListener(mListViewItemClickListener);
@@ -181,6 +177,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		init();
 		initDefaultBitmap();
 		if(mItemAdapter.getCount() > 0) {
+			// 有資料
 			int windowHeight = MBUtil.getWindowHeight(getContext());
 			int titleBarHeight = (int)getContext().getResources().getDimension(R.dimen.title_bar_height);
 			if(mItemAdapter.getCount() * mCardHeight >= (windowHeight - titleBarHeight)) {
@@ -194,8 +191,17 @@ public class MBCollectionListLayout extends RelativeLayout {
 			mCurrentPoint = first.mPoint;
 			mCard.setData(mMyLocation, first.mPoint);
 			mCard.setVisibility(View.VISIBLE);
+			if(MBUtil.mEnableAddFunction) {
+				mAddLayout.init(true);
+				mAddLayout.setVisibility(View.VISIBLE);
+			}
 		} else {
+			// 無資料
 			mCard.setVisibility(View.GONE);
+			if(MBUtil.mEnableAddFunction) {
+				mAddLayout.init(false);
+				mAddLayout.setVisibility(View.VISIBLE);
+			}			
 		}
 	}
 
@@ -686,7 +692,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 				setBackgroundColor(0x00000000);
 			}
 			mCard.setTranlatorY(mDragY);
-			mAddLayout.setTranlatorX(mCardDefaultPositionY - mDragY);
+			if(MBUtil.mEnableAddFunction)
+				mAddLayout.setTranlatorX(mCardDefaultPositionY - mDragY);
 		} else {
 			if(mListView.getVisibility() != View.VISIBLE
 					|| mCard.getVisibility() == View.VISIBLE) {

@@ -16,7 +16,9 @@
     <dimen name="col_map_camera_padding">80dp</dimen>
     
     <!-- Collection : Add -->
-    <dimen name="col_add_place_margin_bottom">190dp</dimen>
+    <dimen name="col_add_place_margin_bottom_end">190dp</dimen>
+    <dimen name="col_add_place_margin_bottom">170dp</dimen>
+    <dimen name="col_add_place_no_card_margin_bottom">100dp</dimen>
     <dimen name="col_add_place_padding_top">12dp</dimen>
     <dimen name="col_add_place_padding_right">12dp</dimen>
     <dimen name="col_select_place_item_radius">90dp</dimen>
