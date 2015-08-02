@@ -139,8 +139,8 @@
                 android:id="@+id/login_forgot_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
-                android:layout_below="@id/login"
                 android:layout_marginTop="5dp"
+                android:layout_below="@id/login_bnt_layout"
                 android:layout_centerHorizontal="true"
                 android:visibility="gone"
                 android:orientation="horizontal" >

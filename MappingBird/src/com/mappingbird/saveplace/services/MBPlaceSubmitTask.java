@@ -168,8 +168,6 @@ public class MBPlaceSubmitTask implements Runnable{
 	private void updateImage() {
 		if(cancelUpload)
 			return;
-		if(true)
-			return;
 		//Update Image
 		if(mSubmitData.imageArrays.size() > 0) {
 			// 有Image 需要上傳

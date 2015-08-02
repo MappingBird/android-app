@@ -179,8 +179,8 @@ public class MBLoginActivity extends Activity implements
 						public void onClick(View v) {
 							if(!TextUtils.isEmpty(mInputEmailDialog.getInputText())) {
 								forgotPassword(mInputEmailDialog.getInputText());
+								mInputEmailDialog.dismiss();
 							}
-							mInputEmailDialog.dismiss();
 						}
 					}, MBInputDialog.BTN_STYLE_DEFAULT);
 			mInputEmailDialog.setNegativeBtn(getString(R.string.str_cancel), 
