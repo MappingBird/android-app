@@ -44,6 +44,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private boolean mHasCard = false;
 	// Add
 	private MBProgressCircleLayout mAddItemLayout;
+	private MBProgressCircleLayout mCurrentItemLayout;
 	private TextView mAddItemText;
 	private int mAddItemWidth = 0;
 	private int mAddItemOpenPositionY = 0;
@@ -55,6 +56,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private int mSelectItemCenterClosePositionY = 0;
 	private int mSelectItemCenterOpenPositionX = 0;
 	private int mSelectItemCenterOpenPositionY = 0;
+	
+	private int mCurrentPositionPositionX = 0;
+	private int mCurrentPositionPositionY = 0;
 	
 	// select_scene
 	private View mSelectScene;
@@ -88,6 +92,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	private OnSelectKindLayoutListener mOnSelectKindLayoutListener = null;
 	
 	private ArrayList<TextView> mHintTextArrays = new ArrayList<TextView>();
+	
+	private int mLayoutWidth = 0;
 	// 滑出滑入動畫需要知道行徑的距離
 	private float mSlideAnimationDistance = 0;
 	public MBListLayoutAddLayout(Context context) {
@@ -108,6 +114,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		
 		mAddItemLayout = (MBProgressCircleLayout)findViewById(R.id.item_add_layout);
 		mAddItemText = (TextView)findViewById(R.id.item_add);
+		
+		mCurrentItemLayout = (MBProgressCircleLayout)findViewById(R.id.item_current_position_layout);
+		mCurrentItemLayout.setOnClickListener(mItemClickListener);
 		
 		mSelectScene 		= findViewById(R.id.select_scene);
 		mSelectRestaurant 	= findViewById(R.id.select_restaurant);
@@ -134,30 +143,33 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 	
 	private void initLayout() {
 		// Add position
-		int windowWidth = MBUtil.getWindowWidth(getContext());
+		mLayoutWidth = MBUtil.getWindowWidth(getContext());
 		int windowHeight = MBUtil.getWindowHeight(getContext());
 		int titleBarHeight = (int)getContext().getResources().getDimension(R.dimen.title_bar_height);
 		int add_margin_bottom = (int) getContext().getResources().getDimension(R.dimen.col_add_place_margin_bottom);
 		int add_margin_bottom_open = (int) getResources().getDimension(R.dimen.col_add_place_margin_bottom_end);
 		int add_margin_bottom_nocard = (int) getResources().getDimension(R.dimen.col_add_place_no_card_margin_bottom);
+		int btn_btw_space = (int) getResources().getDimension(R.dimen.col_add_place_btn_bwt_space);
 		
-//		mAddItemClosePositionY_NoCard = windowHeight - titleBarHeight - add_margin_bottom;
 		mAddItemClosePositionY = mHasCard ? windowHeight - titleBarHeight - add_margin_bottom
 				:  windowHeight - titleBarHeight - add_margin_bottom_nocard;
 		mAddItemOpenPositionY = windowHeight - titleBarHeight - add_margin_bottom_open;
 		setMarginInView(mAddItemLayout, 0, mAddItemClosePositionY, 0, 0);
+
+		mCurrentPositionPositionX = mAddItemOpenPositionY;
+		mCurrentPositionPositionY = mAddItemClosePositionY - btn_btw_space;
+		setMarginInView(mCurrentItemLayout, 0, mCurrentPositionPositionY, 0, 0);
 		
 		mAddItemPaddingTop = (int) getContext().getResources().getDimension(R.dimen.col_add_place_padding_top);
 		mAddItemPaddingRight = (int) getContext().getResources().getDimension(R.dimen.col_add_place_padding_right);
 
 		int selectItemWidth = (int)getResources().getDimension(R.dimen.col_select_place_item_width);
-				
-		mSelectItemCenterOpenPositionX = windowWidth - mAddItemPaddingRight - selectItemWidth;
+						
+		mSelectItemCenterOpenPositionX = mLayoutWidth - mAddItemPaddingRight - selectItemWidth;
 		mSelectItemCenterOpenPositionY = mAddItemOpenPositionY + mAddItemPaddingTop;
 		
 		mSelectItemCenterClosePositionX = mSelectItemCenterOpenPositionX;
 		mSelectItemCenterClosePositionY = mAddItemClosePositionY + mAddItemPaddingTop;
-		
 		
 		int radius = (int) getResources().getDimension(R.dimen.col_select_place_item_radius);
 		double angle = 0;
@@ -260,6 +272,8 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			
 			if(v.getId() == R.id.item_add_layout) {
 				startAnimation(mMode);
+			} else if(v.getId() == R.id.item_current_position_layout) {
+				mOnSelectKindLayoutListener.onCurrentPosition();
 			} else {
 				if(mMode != MODE_OPEN)
 					return;
@@ -342,6 +356,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			float value = ((Float) (animation.getAnimatedValue()))
                     .floatValue();
 			mAddItemLayout.setY(mAddItemClosePositionY + value * (mAddItemOpenPositionY - mAddItemClosePositionY));
+			mCurrentItemLayout.setX(mLayoutWidth - (1 - value) * (mCurrentItemLayout.getWidth()));
 			View targeView = null;
 			for(int i = 0; i < mItemViewList.size(); i++) {
 				targeView = mItemViewList.get(i);
@@ -397,6 +412,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			float value = ((Float) (animation.getAnimatedValue()))
                     .floatValue();
 			mAddItemLayout.setY(mAddItemOpenPositionY - value * (mAddItemOpenPositionY - mAddItemClosePositionY));
+			mCurrentItemLayout.setX(mLayoutWidth - value * (mCurrentItemLayout.getWidth()));
 			View targeView = null;
 			for(int i = 0; i < mItemViewList.size(); i++) {
 				targeView = mItemViewList.get(i);
@@ -565,6 +581,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		public void closeSelect();
 		public void onProgressFinished();
 		public void onCancelUpload();
+		public void onCurrentPosition();
 	}
 	
 	// Progress ---------------------------------

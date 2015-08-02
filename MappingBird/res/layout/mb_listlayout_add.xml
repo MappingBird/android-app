@@ -95,6 +95,24 @@
             android:textSize="26dp" />
     </com.mappingbird.collection.widget.MBProgressCircleLayout>
     
+    <com.mappingbird.collection.widget.MBProgressCircleLayout
+        android:id="@+id/item_current_position_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/btn_white_circle" >
+
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/item_current_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:text="@string/iconfont_locate"
+            android:textColor="@color/font_blue"
+            android:textSize="26dp" />
+    </com.mappingbird.collection.widget.MBProgressCircleLayout>
+    
     <!-- TextLayout -->
 	<com.mappingbird.widget.MappingbirdTextView
 	    android:id="@+id/item_text_scene"

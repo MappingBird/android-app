@@ -683,7 +683,6 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 					@Override
 					public boolean onClusterClick(
 							Cluster<MappingBirdItem> cluster) {
-//						DeBug.v(TAG, "onClusterClick");
 						float nowZoom = mMap.getCameraPosition().zoom;
 						if(nowZoom < (mMap.getMaxZoomLevel() - 2)) {
 							nowZoom = nowZoom + 2;
@@ -906,6 +905,19 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onCancelUpload() {
 			DFshowDialog(DIALOG_CANCEL_UPLOAD, 0, null);
+		}
+
+		@Override
+		public void onCurrentPosition() {
+			if(mMyLocation != null && mMap != null) {
+				float nowZoom = mMap.getCameraPosition().zoom;
+				if(nowZoom < (mMap.getMaxZoomLevel() - 2)) {
+					nowZoom = nowZoom + 2;
+				} else {
+					nowZoom = mMap.getMaxZoomLevel();
+				}
+				mMap.animateCamera(CameraUpdateFactory.newLatLng(mMyLocation), 300, null);
+			}
 		}
 	};
 

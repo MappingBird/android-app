@@ -308,7 +308,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		public void onClickCard(MBPointData point);
 		public void onProgressFinished();
 		public void onCancelUpload();
-		
+		public void onCurrentPosition();
 	}
 
 	private static final int MOVE_POSITION_ANIMATION = 300;
@@ -763,7 +763,14 @@ public class MBCollectionListLayout extends RelativeLayout {
 
 		@Override
 		public void onCancelUpload() {
-			mNewCardClickListener.onCancelUpload();
+			if(mNewCardClickListener != null)
+				mNewCardClickListener.onCancelUpload();
+		}
+
+		@Override
+		public void onCurrentPosition() {
+			if(mNewCardClickListener != null)
+				mNewCardClickListener.onCurrentPosition();
 		}
 	};
 
