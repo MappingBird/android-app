@@ -101,6 +101,8 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mb_pick_place_add_current_location);
 
+		mTitleText = (TextView) findViewById(R.id.title_text);
+
 		Intent intent = getIntent();
 		if (intent != null) {
 			if (intent.hasExtra(EXTRA_TYPE))
@@ -142,7 +144,6 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		}
 
 		mMainLayout = findViewById(R.id.pick_place_add_current_layout);
-		mTitleText = (TextView) findViewById(R.id.title_text);
 		// init address textview
 		mAddress = (EditText) findViewById(R.id.location_address);
 		mRefreshBtn = findViewById(R.id.lock_address_refresh);

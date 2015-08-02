@@ -401,7 +401,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					targeView.setY(mItemViewYList.get(i));
 					targeView.setRotation(0);
 				}
-				startValue += 0.1f;
+				startValue += 0.08f;
 			}
 		}
 	};
@@ -455,7 +455,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 					targeView.setY(mSelectItemCenterOpenPositionY);
 					targeView.setRotation(0);
 				}
-				startValue += 0.1f;
+				startValue += 0.08f;
 			}
 
 		}
