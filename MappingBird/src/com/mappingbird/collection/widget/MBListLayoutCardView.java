@@ -36,7 +36,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private BitmapLoader mBitmapLoader;
 	private MBPointData mPoint;
 	private TextView mTitle, mDistance, mUnit;
-	private GradientDrawable mDrawable;
 	private View mContentLayout;
 	private int mContentMarginLeft = 0;
 	
@@ -80,7 +79,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mUnit = (TextView) findViewById(R.id.card_unit);
 		mBitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
 		mContentLayout = findViewById(R.id.card_content_layout);
-		createGradientView();
 		mCard0_Position = (int)getResources().getDimension(R.dimen.list_layout_card0_position_height);
 		mContentMarginLeft = (int) getResources().getDimension(R.dimen.list_layout_card_icon_width);
 		
@@ -116,14 +114,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 		return false;
 	}
 
-	private void createGradientView() {
-
-		mDrawable = new GradientDrawable(  
-		          GradientDrawable.Orientation.RIGHT_LEFT, new int[] { 0xFFFFFFFF, 0x00000000});
-		
-		mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-	}
-
 	public MBPointData getPoint() {
 		return mPoint;
 	}
@@ -149,8 +139,8 @@ public class MBListLayoutCardView extends RelativeLayout {
 			if(TextUtils.isEmpty(imagePath))
 				imagePath = mPoint.getImageDetails().get(0).getUrl();
 			if(!TextUtils.isEmpty(imagePath)) {
-				mIcon.setScaleType(ScaleType.CENTER);
-				mIcon.setImageResource(R.drawable.default_thumbnail);
+				mIcon.setScaleType(ScaleType.CENTER_CROP);
+				mIcon.setImageResource(mPoint.getDefTypeResource());
 				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
 				params.mBitmapDownloaded = new BitmapDownloadedListener() {
 					
@@ -172,7 +162,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 				};
 				mBitmapLoader.getBitmap(mIcon, params, false);
 			} else {
-				mIcon.setScaleType(ScaleType.CENTER);
+				mIcon.setScaleType(ScaleType.CENTER_CROP);
 				mIcon.setImageResource(mPoint.getDefTypeResource());
 			}
 		} else {

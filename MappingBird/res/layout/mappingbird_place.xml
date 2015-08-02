@@ -46,6 +46,12 @@
 				        android:background="#000"
 				        android:layout_height="@dimen/place_gallery_height" />
 
+ 					<View
+ 					    android:id="@+id/trip_mask"
+ 					    android:layout_width="match_parent"
+ 					    android:layout_height="@dimen/place_gallery_height"
+ 					    />
+ 					
  					<com.mappingbird.widget.MappingbirdFontIcon
                         android:id="@+id/pin_icon"
                         android:layout_width="64dp"

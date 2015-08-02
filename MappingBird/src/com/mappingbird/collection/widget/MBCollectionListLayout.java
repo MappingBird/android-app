@@ -12,8 +12,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -29,7 +27,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -83,7 +80,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 	// 當只有兩個Item的時候. 不能拉到最上面
 	private float mMostTopPosition = 0;
 	private float mCardHeight = 0;
-	
 
 	private MBPointData mCurrentPoint = null;
 
@@ -119,11 +115,11 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mAddLayout.setOnSelectKindLayoutListener(mOnSelectKindLayoutListener);
 
 		mListView = (ListView) findViewById(R.id.item_list);
-		mListView.setOnItemClickListener(mListViewItemClickListener);
 		mListView.setVisibility(View.INVISIBLE);
 		mBitmapLoader = new BitmapLoader(getContext());
 		mItemAdapter = new ItemAdapter(getContext());
 		mListView.setAdapter(mItemAdapter);
+		mListView.setOnItemClickListener(mListViewItemClickListener);
 		
 		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
 		
@@ -830,13 +826,8 @@ public class MBCollectionListLayout extends RelativeLayout {
 		private ArrayList<ListItem> mItems = new ArrayList<ListItem>();
 		private ListItem mSelectPoint = null;
 		private LayoutInflater mInflater;
-		private GradientDrawable mLightMaskDrawable;
 		public ItemAdapter(Context context) {
 			mInflater = LayoutInflater.from(context);
-			
-			mLightMaskDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-					new int[] { 0x00000000, 0x80000000 });
-			mLightMaskDrawable.setShape(GradientDrawable.RECTANGLE);  
 		}
 
 		public synchronized void setItem(ArrayList<MBPointData> items) {
@@ -928,17 +919,28 @@ public class MBCollectionListLayout extends RelativeLayout {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if(convertView == null) {
 				convertView = mInflater.inflate(R.layout.mappingbird_place_item, parent, false);
+				ViewHost host = new ViewHost();
+				host.mImageView = (ImageView) convertView.findViewById(R.id.card_icon);
+				host.mMaskView = convertView.findViewById(R.id.card_mask);
+				host.mTag = (TextView) convertView.findViewById(R.id.card_tag_list);
+				GradientDrawable lightMaskDrawable;
+				lightMaskDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+						new int[] { 0x00000000, 0x80000000 });
+				lightMaskDrawable.setShape(GradientDrawable.RECTANGLE);
+				host.mMaskView.setBackgroundDrawable(lightMaskDrawable);
+				host.mDistance = (TextView) convertView.findViewById(R.id.card_distance);
+				host.mUtil = (TextView) convertView.findViewById(R.id.card_unit);
+				host.mAddress = (TextView) convertView.findViewById(R.id.card_address);
+				host.mTitle = (TextView) convertView.findViewById(R.id.card_title_single);
+				convertView.setTag(host);
 			}
+
+			final ViewHost host = (ViewHost) convertView.getTag();
 			final ListItem item = mItems.get(position);
-			final View maskView = convertView.findViewById(R.id.card_mask);
-			ImageView image = (ImageView) convertView.findViewById(R.id.card_icon);
-			TextView tag = (TextView) convertView.findViewById(R.id.card_tag_list);
-			TextView titleSingle = (TextView) convertView.findViewById(R.id.card_title_single);
+			
 			String imagePath = null;
-			maskView.setBackgroundColor(0x00000000);
-			image.setImageResource(R.drawable.default_thumbnail);
+			host.mImageView.setImageResource(item.mPoint.getDefTypeResource());
 			if(item.mPoint.getImageDetails().size() > 0) {
-				image.setScaleType(ScaleType.CENTER);
 				if(TextUtils.isEmpty(imagePath))
 					imagePath = item.mPoint.getImageDetails().get(0).getUrl();
 				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
@@ -946,60 +948,51 @@ public class MBCollectionListLayout extends RelativeLayout {
 					@Override
 					public void onDownloadFaild(String url, ImageView icon,
 							BitmapParameters params) {
-						if(icon != null && icon.getTag().equals(params.getKey())) {
-							icon.setScaleType(ScaleType.CENTER_CROP);
-							icon.setImageResource(item.mPoint.getDefTypeResource());
-							icon.setImageResource(R.drawable.default_problem_big);
-							maskView.setBackgroundDrawable(mLightMaskDrawable);
-						}
 					}
 					
 					@Override
 					public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
 							BitmapParameters params) {
-						if(icon != null && icon.getTag().equals(params.getKey())) {
-							icon.setScaleType(ScaleType.CENTER_CROP);
-							maskView.setBackgroundDrawable(mLightMaskDrawable);
-						}
 					}
 				};
-				mBitmapLoader.getBitmap(image, params, false);
-			} else {
-				image.setScaleType(ScaleType.CENTER_CROP);
-				image.setImageResource(item.mPoint.getDefTypeResource());
-				maskView.setBackgroundDrawable(mLightMaskDrawable);
+				mBitmapLoader.getBitmap(host.mImageView, params, false);
 			}
-
 			
-			titleSingle.setText(item.mPoint.getTitle());
+			host.mTitle.setText(item.mPoint.getTitle());
 			int textSize = MBUtil.getTextSize(item.mPoint.getTitle(), 32, 20, mItemWidth);
-			titleSingle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+			host.mTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
 
 			if(item.mPoint.getTags().size() == 0) {
-				tag.setText("");
+				host.mTag.setText("");
 			} else {
-				tag.setText(item.mPoint.getTagsStringSpan(), TextView.BufferType.SPANNABLE);
+				host.mTag.setText(item.mPoint.getTagsStringSpan(), TextView.BufferType.SPANNABLE);
 			}
-
-			TextView dis = (TextView) convertView.findViewById(R.id.card_distance);
-			TextView util = (TextView) convertView.findViewById(R.id.card_unit);
 			
 			if(mMyLocation != null) {
 				DistanceObject disObject = Utils.getDistanceObject(
 						item.mDistance);
-				dis.setText(disObject.mDistance);
-				util.setText(disObject.mUnit);
+				host.mDistance.setText(disObject.mDistance);
+				host.mUtil.setText(disObject.mUnit);
 			} else {
-				dis.setText("");
-				util.setText("");
+				host.mDistance.setText("");
+				host.mUtil.setText("");
 			}
 
-			TextView address = (TextView) convertView.findViewById(R.id.card_address);
-			address.setText(item.mPoint.getLocation().getPlaceAddress());
+			host.mAddress.setText(item.mPoint.getLocation().getPlaceAddress());
 			return convertView;
 		}
 	}
 
+	private class ViewHost {
+		public View mMaskView;
+		public ImageView mImageView;
+		public TextView mTag;
+		public TextView mDistance;
+		public TextView mUtil;
+		public TextView mAddress;
+		public TextView mTitle;
+	}
+	
 	private class ListItem {
 		final MBPointData mPoint;
 		float mDistance = 0;

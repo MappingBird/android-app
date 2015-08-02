@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -114,6 +115,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 	Set<Integer> mPhotoSwiped;
 	
 	private ImageView mNoPhotoImageView;
+	private View mMaskView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +170,11 @@ public class MappingBirdPlaceActivity extends Activity implements
 			mGalleryPager.setVisibility(View.GONE);
 			mNoPhotoImageView.setVisibility(View.VISIBLE);
 			mNoPhotoImageView.setImageResource(point.getDefTypeResource());
+			mMaskView.setVisibility(View.VISIBLE);
+			GradientDrawable maskDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+					new int[] { 0x00000000, 0x80000000 });
+			maskDrawable.setShape(GradientDrawable.RECTANGLE);
+			mMaskView.setBackgroundDrawable(maskDrawable);
 		} else if(list.size() <= 15) {
 			mGalleryAdapter.setPathList(list);
 			mGalleryPager.setVisibility(View.VISIBLE);
@@ -203,7 +210,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 			}
 		});
 
-		mNoPhotoImageView = (ImageView) findViewById(R.id.trip_no_photo); 
+		mNoPhotoImageView = (ImageView) findViewById(R.id.trip_no_photo);
+		mMaskView = findViewById(R.id.trip_mask);
 				
 		mGetDirection = findViewById(R.id.get_direction_layout);
 		mTitle = (TextView) findViewById(R.id.trip_detail_title_name);

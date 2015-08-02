@@ -19,7 +19,7 @@
         <View
             android:id="@+id/card_mask"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="@dimen/list_layout_item_icon_height" />
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/card_title_single"
