@@ -35,22 +35,18 @@
                     <ImageView
                         android:id="@+id/trip_no_photo"
                         android:layout_width="match_parent"
+                        android:background="@color/bg_grey"
                         android:layout_height="@dimen/place_gallery_height"
-                        android:background="@drawable/default_noimages"
+                        android:scaleType="centerCrop"
                         android:visibility="gone" />
 
-<!--                     <com.mpbd.place.MappingbirdGallery
-                        android:id="@+id/trip_photo"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/place_gallery_height"
-                        android:background="#000" />
- -->
  					<com.mpbd.place.MBGalleryViewPager
 				        android:id="@+id/pace_viewpager"
 				        android:layout_width="match_parent"
 				        android:background="#000"
 				        android:layout_height="@dimen/place_gallery_height" />
-                    <com.mappingbird.widget.MappingbirdFontIcon
+
+ 					<com.mappingbird.widget.MappingbirdFontIcon
                         android:id="@+id/pin_icon"
                         android:layout_width="64dp"
                         android:layout_height="56dp"

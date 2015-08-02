@@ -111,9 +111,10 @@ public class MappingBirdPlaceActivity extends Activity implements
 	private BitmapLoader mBitmapLoader;
 	private String mIconUrl = "http://www.mappingbird.com/static/img/mobile/map_mark_genre_restaurant.png";
 	
-	
 	Set<Integer> mPhotoSwiped;
 	
+	private ImageView mNoPhotoImageView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -165,7 +166,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 		}
 		if(list.size() == 0) {
 			mGalleryPager.setVisibility(View.GONE);
-			findViewById(R.id.trip_no_photo).setVisibility(View.VISIBLE);
+			mNoPhotoImageView.setVisibility(View.VISIBLE);
+			mNoPhotoImageView.setImageResource(point.getDefTypeResource());
 		} else if(list.size() <= 15) {
 			mGalleryAdapter.setPathList(list);
 			mGalleryPager.setVisibility(View.VISIBLE);
@@ -201,6 +203,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 			}
 		});
 
+		mNoPhotoImageView = (ImageView) findViewById(R.id.trip_no_photo); 
+				
 		mGetDirection = findViewById(R.id.get_direction_layout);
 		mTitle = (TextView) findViewById(R.id.trip_detail_title_name);
 		mPlaceName = (TextView) findViewById(R.id.palce_name);
