@@ -389,8 +389,9 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 				targeView = mItemViewList.get(i);
 				if(value > startValue && value < startValue + mAnimSpace) {
 					rate = (value - startValue)/mAnimSpace;
-					// y = (1 - b)x^2 + b*x , b = (d - c^2)/c(1-c)  (d,c) = (0.75, 1.2)
-					float rateN = -2.4f*rate*rate +3.4f * rate;
+					// y = (1 - b)x^2 + b*x , b = (e - d^2)/d(1-d)  (d,e) = (0.75, 1.2) b = 3.4
+					// y = (1 - b)x^2 + b*x , b = (e - d^2)/d(1-d)  (d,e) = (0.75, 1.05) b = 2.6
+					float rateN = -1.6f*rate*rate +2.6f * rate;
 					targeView.setX(mSelectItemCenterOpenPositionX
 							+ (mItemViewXList.get(i)- mSelectItemCenterOpenPositionX) * rateN);
 					targeView.setY(mSelectItemCenterOpenPositionY
