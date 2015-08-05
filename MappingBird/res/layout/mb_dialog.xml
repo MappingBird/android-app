@@ -9,8 +9,8 @@
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingLeft="@dimen/dialog_padding_left"
+        android:paddingRight="@dimen/dialog_padding_right"
         android:paddingTop="16dp"
         android:singleLine="true"
         android:textColor="#333"
@@ -25,14 +25,23 @@
         android:id="@+id/dialog_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="12dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
+        android:paddingBottom="@dimen/dialog_description_padding_bottom"
+        android:paddingLeft="@dimen/dialog_padding_left"
+        android:paddingRight="@dimen/dialog_padding_right"
+        android:paddingTop="@dimen/dialog_description_padding_top"
         android:textColor="#7f7f7f"
         android:textSize="14dp"
         android:visibility="gone" />
 
+    <FrameLayout 
+        android:id="@+id/dialog_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dialog_padding_left"
+        android:paddingRight="@dimen/dialog_padding_right"
+        android:visibility="gone"
+        android:paddingBottom="8dp"/>
+    
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

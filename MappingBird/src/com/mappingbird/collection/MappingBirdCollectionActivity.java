@@ -20,6 +20,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -918,6 +919,19 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				}
 				mMap.animateCamera(CameraUpdateFactory.newLatLng(mMyLocation), 300, null);
 			}
+			
+//			mDialog = new MBDialog(mContext);
+//			mDialog.setTitle(getString(R.string.dialog_location_hint_title));
+//			mDialog.setDescription(getString(R.string.dialog_location_hint_content));
+//			View view = LayoutInflater.from(mContext).inflate(R.layout.mb_dialog_location_hint, null);
+//			mDialog.setView(view);
+//			mDialog.setNegativeBtn(getString(R.string.str_cancel), new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					mDialog.dismiss();
+//				}
+//			}, MBDialog.BTN_STYLE_DEFAULT);
+//			mDialog.show();
 		}
 	};
 

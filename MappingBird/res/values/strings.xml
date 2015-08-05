@@ -22,6 +22,7 @@
     <string name="str_conitune">Conitune</string>
     <string name="str_cancel_upload">Cancel upload</string>
     <string name="str_confirm">Confirm</string>
+    <string name="str_on">On</string>
 
     <!-- Sign in and Sign up activity and -->
     <string name="login_content_title">Log In Mappingbird Account</string>
@@ -64,6 +65,9 @@
     <!-- Dialog -->
     <string name="dialog_sign_out_title">Sign out!</string>
     <string name="dialog_sign_out_description">Signing out will remove all your cached files from your device. Do you want to sign out?</string>
+    <string name="dialog_location_hint_title">Turn on Location works better</string>
+    <string name="dialog_location_hint_content">It helps to improve location accuracy and display your current location on the map.</string>
+    <string name="dialog_location">Location</string>
     <!-- New Collection -->
     <string name="dialog_create_collection_title">Create new collection</string>
     <string name="dialog_create_collection_hint">Enter collection name</string>

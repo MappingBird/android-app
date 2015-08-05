@@ -5,6 +5,7 @@ dependencies {
     compile project(':google-play-services_lib')
     compile project(':CommonLib')
     compile project(':ViewPagerIndicator_library')
+    compile project(':EventBus')
 }
 
 android {

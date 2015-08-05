@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class MBDialog {
 	private TextView mDialogPositiveBtn;
 	private View mDialogTitlePaddingBottom;
 	private View mDialogDivider;
+	private FrameLayout mContextLayout;
 
 	// Style
 	public static final int BTN_STYLE_DEFAULT = 0;
@@ -48,6 +50,7 @@ public class MBDialog {
 			mDialogNegativeBtn = (TextView) view.findViewById(R.id.dialog_negative);
 			mDialogPositiveBtn = (TextView) view.findViewById(R.id.dialog_positive);
 			mDialogDivider = view.findViewById(R.id.dialog_divider);
+			mContextLayout = (FrameLayout) view.findViewById(R.id.dialog_content_layout);
 			mDialog = new Dialog(context, R.style.MBDialog);
 			setDialogSize(MBUtil.getWindowWidth(context), 0);
 			mDialog.setContentView(view);
@@ -95,6 +98,18 @@ public class MBDialog {
 		}
 	}
 
+	public void setView(View view) {
+		if(view != null) {
+			mContextLayout.removeAllViews();
+			mContextLayout.addView(view);
+			mContextLayout.setVisibility(View.VISIBLE);
+			mDialogDescription.setPadding(
+					(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.dialog_padding_left),
+					(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.dialog_description_padding_top),
+					(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.dialog_padding_left),
+					0);
+		}
+	}
 	public void setNegativeBtn(String text, OnClickListener listener, int style) {
 		if(mDialogNegativeBtn != null) {
 			mDialogNegativeBtn.setVisibility(View.VISIBLE);
