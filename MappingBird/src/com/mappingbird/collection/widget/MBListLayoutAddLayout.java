@@ -488,8 +488,6 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			animator.setInterpolator(new DecelerateInterpolator());
 			animator.addListener(mAnimatorListener);
 			animator.start();
-			if(mOnSelectKindLayoutListener != null)
-				mOnSelectKindLayoutListener.openSelect();
 		}
 		
 		@Override
