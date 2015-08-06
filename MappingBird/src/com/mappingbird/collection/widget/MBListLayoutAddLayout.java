@@ -283,19 +283,19 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 						type = MappingBirdPickPlaceActivity.TYPE_SCENE;
 						break;
 					case R.id.select_restaurant:
-						type = MappingBirdPickPlaceActivity.TYPE_BAR;
+						type = MappingBirdPickPlaceActivity.TYPE_RESTURANT;
 						break;
 					case R.id.select_hotel:
 						type = MappingBirdPickPlaceActivity.TYPE_HOTEL;
 						break;
 					case R.id.select_default:
-						type = MappingBirdPickPlaceActivity.TYPE_RESTURANT;
+						type = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
 						break;
 					case R.id.select_mall:
 						type = MappingBirdPickPlaceActivity.TYPE_MALL;
 						break;
 					case R.id.select_bar:
-						type = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
+						type = MappingBirdPickPlaceActivity.TYPE_BAR;
 						break;				
 				}
 				if(mOnSelectKindLayoutListener  != null)
