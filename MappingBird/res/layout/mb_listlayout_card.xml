@@ -8,7 +8,7 @@
         android:id="@+id/card_icon"
         android:layout_width="@dimen/card_icon_width"
         android:layout_height="60dp"
-        android:background="@color/graphic_default_background"
+        android:background="@color/graphic_placeholder"
         android:scaleType="centerCrop" />
 
     <RelativeLayout
@@ -21,7 +21,7 @@
         <View
             android:id="@+id/item_mask"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="80dp" />
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/item_title_single"
