@@ -502,6 +502,10 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		mAddTagDialog = new Dialog(getContext(),R.style.CustomDialog);
 		mAddTagDialog.setContentView(R.layout.mb_dialog_add_tag);
 		final MBDialogAddTagLayout addTagLayout = (MBDialogAddTagLayout) mAddTagDialog.findViewById(R.id.dialog_framelayout);
+		if(!TextUtils.isEmpty(mTagsListStr)) {
+			addTagLayout.setTags(TextUtils.split(mTagsListStr, ","));
+		}
+
 		mAddTagDialog.findViewById(R.id.dialog_negative).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

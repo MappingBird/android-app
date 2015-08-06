@@ -90,6 +90,10 @@ public class MBDialogAddTagLayout extends LinearLayout {
 		}
 	}
 
+	public void setTags(String[] list) {
+		mTagGroup.setTags(list);
+	}
+	
 	public String[] getTags() {
 		return mTagGroup.getTags(); 
 	}
