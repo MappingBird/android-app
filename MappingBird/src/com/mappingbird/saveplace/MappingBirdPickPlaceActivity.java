@@ -317,25 +317,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 				mDeletSerachTextBtn.setVisibility(View.VISIBLE);
 			} else {
 				// 消失動畫
-				ScaleAnimation scale = new ScaleAnimation(1, 0, 1, 0, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-				scale.setDuration(300);
-				scale.setAnimationListener(new AnimationListener() {
-					
-					@Override
-					public void onAnimationStart(Animation animation) {
-					}
-					
-					@Override
-					public void onAnimationRepeat(Animation animation) {
-					}
-					
-					@Override
-					public void onAnimationEnd(Animation animation) {
-						mDeletSerachTextBtn.setVisibility(View.GONE);
-					}
-				});
-				mDeletSerachTextBtn.startAnimation(scale);
-//				mDeletSerachTextBtn.setVisibility(View.GONE);
+				mDeletSerachTextBtn.setVisibility(View.GONE);
 			}
 			mHandler.removeMessages(MSG_SEARCH_INPUT);
 			Message msg = new Message();
