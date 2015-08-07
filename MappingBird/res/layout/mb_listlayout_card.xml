@@ -48,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:orientation="vertical"
             android:paddingLeft="8dp" >
 
@@ -57,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:paddingRight="@dimen/card_distance_padding_right"
-                android:textColor="#0298c1"
+                android:textColor="@color/font_deep_blue"
                 android:textSize="32dp" />
 
             <com.mappingbird.widget.MappingbirdTextView
@@ -68,7 +69,7 @@
                 android:gravity="right"
                 android:paddingRight="@dimen/card_unit_padding_right"
                 android:singleLine="true"
-                android:textColor="#0298c1"
+                android:textColor="@color/font_deep_blue"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -97,6 +98,7 @@
             android:id="@+id/item_distance_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:orientation="vertical"
             android:paddingLeft="8dp" >
@@ -107,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:paddingRight="@dimen/card_distance_padding_right"
-                android:textColor="@color/font_normal"
+                android:textColor="@color/font_deep_blue"
                 android:textSize="32dp" />
 
             <com.mappingbird.widget.MappingbirdTextView
@@ -118,7 +120,7 @@
                 android:gravity="right"
                 android:paddingRight="@dimen/card_unit_padding_right"
                 android:singleLine="true"
-                android:textColor="@color/font_normal"
+                android:textColor="@color/font_deep_blue"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -137,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textColor="@color/font_normal"
+                android:textColor="@color/font_deep_blue"
                 android:textSize="14dp" />
 
             <com.mappingbird.widget.MappingbirdTextView

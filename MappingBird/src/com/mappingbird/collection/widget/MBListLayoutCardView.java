@@ -190,10 +190,8 @@ public class MBListLayoutCardView extends RelativeLayout {
 					mPoint.getLocation().getLatitude(), 
 					mPoint.getLocation().getLongitude()));
 			Utils.setDistanceToText(mDistance, disObject.mDistance);
-//			mDistance.setText(disObject.mDistance);
 			mUnit.setText(disObject.mUnit);
 			Utils.setDistanceToText(mItemDistance, disObject.mDistance);
-//			mItemDistance.setText(disObject.mDistance);
 			mItemUnit.setText(disObject.mUnit);
 		} else {
 			mDistance.setText("");

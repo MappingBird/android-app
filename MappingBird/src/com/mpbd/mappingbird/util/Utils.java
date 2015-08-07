@@ -121,7 +121,8 @@ public class Utils {
 				textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
 						MappingBirdApplication.instance().getResources().getDimension(R.dimen.card_distance_more_four_text_size));
 				textView.setText(dis);
-				textView.setPadding(0, 0, 
+				textView.setPadding(0, 
+						(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.card_distance_more_four_padding_top),
 						(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.card_distance_padding_right),
 						(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.card_distance_more_four_padding_bottom));
 			} else {

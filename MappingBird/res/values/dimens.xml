@@ -89,6 +89,7 @@
     <dimen name="card_headline_text_size">16dp</dimen>
     <dimen name="card_address_text_size">13dp</dimen>
     <dimen name="card_distance_padding_right">8dp</dimen>
+    <dimen name="card_distance_more_four_padding_top">3dp</dimen>
     <dimen name="card_distance_more_four_padding_bottom">7dp</dimen>
     <dimen name="card_distance_less_four_padding_bottom">0dp</dimen>
     <dimen name="card_distance_more_four_text_size">18dp</dimen>

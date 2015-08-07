@@ -971,7 +971,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 			if(mMyLocation != null) {
 				DistanceObject disObject = Utils.getDistanceObject(
 						item.mDistance);
-				host.mDistance.setText(disObject.mDistance);
+				Utils.setDistanceToText(host.mDistance, disObject.mDistance);
 				host.mUtil.setText(disObject.mUnit);
 			} else {
 				host.mDistance.setText("");
