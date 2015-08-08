@@ -33,6 +33,7 @@
             android:layout_toRightOf="@id/title_btn_back"
             android:layout_toLeftOf="@id/title_btn_submit"
             android:singleLine="true"
+            android:paddingLeft="4dp"
             android:textColor="#FFF" />
     </RelativeLayout>
 

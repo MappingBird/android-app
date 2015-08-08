@@ -57,6 +57,7 @@
             android:layout_toLeftOf="@id/title_btn_ok_layout"
             android:layout_toRightOf="@id/title_btn_back"
             android:singleLine="true"
+            android:paddingLeft="4dp"
             android:text="@string/create_location_title"
             android:textColor="#FFF" />
     </RelativeLayout>

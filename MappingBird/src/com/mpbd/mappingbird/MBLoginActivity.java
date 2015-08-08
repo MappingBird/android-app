@@ -39,6 +39,7 @@ public class MBLoginActivity extends Activity implements
 	private RelativeLayout mLogInBtnLayout = null;
 	private EditText mEmail = null;
 	private EditText mPassword = null;
+	private TextView mPasswordHint = null;
 	private TextView mLoginBtn = null;
 	private TextView mHintPassword = null;
 	private View mForgotPassword = null;
@@ -58,11 +59,12 @@ public class MBLoginActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.mb_login);
+		setContentView(R.layout.mb_activity_layout_login);
 		mLogInBtnLayout = (RelativeLayout) findViewById(R.id.login_bnt_layout);
 		mEmail = (EditText) findViewById(R.id.input_email);
 		mPassword = (EditText) findViewById(R.id.input_password);
 		mLoginBtn = (TextView) findViewById(R.id.login_loading_text);
+		mPasswordHint = (TextView) findViewById(R.id.input_password_hint);
 		
 		mHintPassword = (TextView)findViewById(R.id.login_hint_password_icon);
 		mForgotPassword = findViewById(R.id.login_forgot_layout);
@@ -70,6 +72,7 @@ public class MBLoginActivity extends Activity implements
 		// Name password
 		mEmail.addTextChangedListener(mTextWatcher);
 		mPassword.addTextChangedListener(mTextWatcher);
+		mPasswordHint.setVisibility(View.VISIBLE);
 
 		// Hide password init
 		mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -79,6 +82,7 @@ public class MBLoginActivity extends Activity implements
 		findViewById(R.id.back_icon).setOnClickListener(this);
 		mForgotPassword.setOnClickListener(this);
 		mLogInBtnLayout.setOnClickListener(this);
+		mLogInBtnLayout.setEnabled(false);
 
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 		
@@ -116,13 +120,19 @@ public class MBLoginActivity extends Activity implements
 	private TextWatcher mTextWatcher = new TextWatcher() {
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			if(!TextUtils.isEmpty(mEmail.getText().toString()) 
-					&& !TextUtils.isEmpty(mPassword.getText().toString())) {
+			if(!TextUtils.isEmpty(mEmail.getText()) 
+					&& !TextUtils.isEmpty(mPassword.getText())) {
 				// 有輸入值
-				
+				mLogInBtnLayout.setEnabled(true);
 			} else {
 				// 其中有一個沒有輸入值
-				
+				mLogInBtnLayout.setEnabled(false);
+			}
+			
+			if(!TextUtils.isEmpty(mPassword.getText())) {
+				mPasswordHint.setVisibility(View.GONE);
+			} else {
+				mPasswordHint.setVisibility(View.VISIBLE);
 			}
 		}
 		
