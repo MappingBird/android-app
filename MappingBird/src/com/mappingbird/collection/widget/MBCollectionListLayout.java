@@ -124,10 +124,10 @@ public class MBCollectionListLayout extends RelativeLayout {
 		mGestureDetector = new GestureDetector(getContext(), mGestureListener);
 		
 		mItemWidth = (int)(MBUtil.getWindowWidth(getContext()) 
-				- getResources().getDimension(R.dimen.card_icon_width)
-				- getResources().getDimension(R.dimen.place_item_card_distance_width)
-				- getResources().getDimension(R.dimen.card_title_margin_left)
-				- getResources().getDimension(R.dimen.card_title_margin_right));
+				- getResources().getDimension(R.dimen.coll_list_item_card_padding_right)
+				- getResources().getDimension(R.dimen.coll_list_item_card_padding_left)
+				- getResources().getDimension(R.dimen.coll_list_item_title_margin_left)
+				- getResources().getDimension(R.dimen.coll_list_item_title_margin_right));
 
 	}
 

@@ -24,14 +24,14 @@
             android:layout_height="80dp" />
 
         <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/item_title_single"
+            android:id="@+id/item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="@dimen/place_item_card_distance_width"
+            android:layout_marginLeft="@dimen/coll_list_item_title_margin_left"
+            android:layout_marginRight="@dimen/coll_list_item_title_margin_right"
             android:singleLine="true"
             android:textColor="#fff"
             android:textSize="16sp" />

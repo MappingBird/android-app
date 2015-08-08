@@ -21,6 +21,7 @@ import com.mappingbird.api.MBPointData;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
@@ -32,14 +33,15 @@ public class MBListLayoutCardView extends RelativeLayout {
 	public static final int MODE_ITEM = 0;
 	public static final int MODE_DRAG = 1;
 
-	private ImageView mIcon;
+	private ImageView mCardIcon;
 	private BitmapLoader mBitmapLoader;
 	private MBPointData mPoint;
-	private TextView mTitle, mDistance, mUnit;
-	private View mContentLayout;
+	private TextView mCardTitle, mCardDistance, mCardUnit;
+	private View mCardContentLayout;
 	private int mContentMarginLeft = 0;
 	
-	private int mTitleWidth = 0;
+	private int mCardTitleWidth = 0;
+	private int mItemTitleWidth = 0;
 
 	// View : Change to Item uesed
 	private View mBottomLayout;
@@ -48,7 +50,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private TextView mItemTag;
 	private TextView mItemDistance;
 	private TextView mItemUnit;
-	private TextView mItemSinglerName;
+	private TextView mItemTitleName;
 	private View mMaskView;
 
 	private int mParentHeight = 0;
@@ -73,12 +75,14 @@ public class MBListLayoutCardView extends RelativeLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		mIcon = (ImageView) findViewById(R.id.card_icon);
-		mTitle = (TextView) findViewById(R.id.card_title);
-		mDistance = (TextView) findViewById(R.id.card_distance);
-		mUnit = (TextView) findViewById(R.id.card_unit);
 		mBitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
-		mContentLayout = findViewById(R.id.card_content_layout);
+		
+		// Card
+		mCardIcon = (ImageView) findViewById(R.id.card_icon);
+		mCardTitle = (TextView) findViewById(R.id.card_title);
+		mCardDistance = (TextView) findViewById(R.id.card_distance);
+		mCardUnit = (TextView) findViewById(R.id.card_unit);
+		mCardContentLayout = findViewById(R.id.card_content_layout);
 		mCard0_Position = (int)getResources().getDimension(R.dimen.list_layout_card0_position_height);
 		mContentMarginLeft = (int) getResources().getDimension(R.dimen.list_layout_card_icon_width);
 		
@@ -89,14 +93,14 @@ public class MBListLayoutCardView extends RelativeLayout {
 		mItemTag 			= (TextView) findViewById(R.id.item_tag_list);
 		mItemDistance 		= (TextView) findViewById(R.id.item_distance);
 		mItemUnit 			= (TextView) findViewById(R.id.item_unit);
-		mItemSinglerName 	= (TextView) findViewById(R.id.item_title_single);
+		mItemTitleName 		= (TextView) findViewById(R.id.item_title);
 		mMaskView			= findViewById(R.id.item_mask);
 		
-		mTitleWidth = (int)(MBUtil.getWindowWidth(getContext()) 
-				- getResources().getDimension(R.dimen.card_icon_width)
-				- getResources().getDimension(R.dimen.place_item_card_distance_width)
-				- getResources().getDimension(R.dimen.card_title_margin_left)
-				- getResources().getDimension(R.dimen.card_title_margin_right));
+		mItemTitleWidth = (int)(MBUtil.getWindowWidth(getContext()) 
+				- getResources().getDimension(R.dimen.coll_list_item_card_padding_right)
+				- getResources().getDimension(R.dimen.coll_list_item_card_padding_left)
+				- getResources().getDimension(R.dimen.coll_list_item_title_margin_left)
+				- getResources().getDimension(R.dimen.coll_list_item_title_margin_right));
 		
 		mLightMaskDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
 				new int[] { 0x00000000, 0x80000000 });
@@ -120,14 +124,16 @@ public class MBListLayoutCardView extends RelativeLayout {
 
 	public void cleanData() {
 		mPoint = null;
-		mIcon.setImageDrawable(null);
-		mTitle.setText("");
-		mDistance.setText("");
-		mUnit.setText("");
+		mCardIcon.setImageDrawable(null);
+		mCardTitle.setText("");
+		mCardDistance.setText("");
+		mCardUnit.setText("");
 	}
 
-	public void setHeight() {
-		
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		mCardTitleWidth = mCardTitle.getWidth();
 	}
 
 	public void setData(LatLng mylocation, MBPointData point) {
@@ -139,44 +145,45 @@ public class MBListLayoutCardView extends RelativeLayout {
 			if(TextUtils.isEmpty(imagePath))
 				imagePath = mPoint.getImageDetails().get(0).getUrl();
 			if(!TextUtils.isEmpty(imagePath)) {
-				mIcon.setScaleType(ScaleType.CENTER_CROP);
-				mIcon.setImageResource(mPoint.getDefTypeResource());
+				mCardIcon.setScaleType(ScaleType.CENTER_CROP);
+				mCardIcon.setImageResource(mPoint.getDefTypeResource());
 				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
 				params.mBitmapDownloaded = new BitmapDownloadedListener() {
 					
 					@Override
 					public void onDownloadFaild(String url, ImageView icon,
 							BitmapParameters params) {
-						if(mIcon != null && icon != null && mIcon.getTag().equals(icon.getTag())) {
-							mIcon.setScaleType(ScaleType.CENTER_CROP);
-							mIcon.setImageResource(mPoint.getDefTypeResource());
+						if(mCardIcon != null && icon != null && mCardIcon.getTag().equals(icon.getTag())) {
+							mCardIcon.setScaleType(ScaleType.CENTER_CROP);
+							mCardIcon.setImageResource(mPoint.getDefTypeResource());
 						}
 					}
 					
 					@Override
 					public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
 							BitmapParameters params) {
-						if(mIcon != null && icon != null && mIcon.getTag().equals(icon.getTag()))
-							mIcon.setScaleType(ScaleType.CENTER_CROP);
+						if(mCardIcon != null && icon != null && mCardIcon.getTag().equals(icon.getTag()))
+							mCardIcon.setScaleType(ScaleType.CENTER_CROP);
 					}
 				};
-				mBitmapLoader.getBitmap(mIcon, params, false);
+				mBitmapLoader.getBitmap(mCardIcon, params, false);
 			} else {
-				mIcon.setScaleType(ScaleType.CENTER_CROP);
-				mIcon.setImageResource(mPoint.getDefTypeResource());
+				mCardIcon.setScaleType(ScaleType.CENTER_CROP);
+				mCardIcon.setImageResource(mPoint.getDefTypeResource());
 			}
 		} else {
-			mIcon.setScaleType(ScaleType.CENTER_CROP);
-			mIcon.setImageResource(mPoint.getDefTypeResource());
+			mCardIcon.setScaleType(ScaleType.CENTER_CROP);
+			mCardIcon.setImageResource(mPoint.getDefTypeResource());
 		}
 		
 		// 
-		mTitle.setText(mPoint.getTitle());
-		int textSize = MBUtil.getTextSize(mPoint.getTitle(), 20, 16, mTitleWidth);
-		mTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
-		mItemSinglerName.setText(mPoint.getTitle());
-		textSize = MBUtil.getTextSize(mPoint.getTitle(), 32, 20, mTitleWidth);
-		mItemSinglerName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+		String str = mPoint.getTitle();
+		mCardTitle.setText(str);
+		int textSize = MBUtil.getTextSize(str, 20, 16, mCardTitleWidth);
+		mCardTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
+		mItemTitleName.setText(str);
+		textSize = MBUtil.getTextSize(str, 32, 20, mItemTitleWidth);
+		mItemTitleName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
 		if(mPoint.getTags().size() == 0) {
 			mItemTag.setText("");
 		} else {
@@ -189,13 +196,13 @@ public class MBListLayoutCardView extends RelativeLayout {
 					mylocation.longitude, 
 					mPoint.getLocation().getLatitude(), 
 					mPoint.getLocation().getLongitude()));
-			Utils.setDistanceToText(mDistance, disObject.mDistance);
-			mUnit.setText(disObject.mUnit);
+			Utils.setDistanceToText(mCardDistance, disObject.mDistance);
+			mCardUnit.setText(disObject.mUnit);
 			Utils.setDistanceToText(mItemDistance, disObject.mDistance);
 			mItemUnit.setText(disObject.mUnit);
 		} else {
-			mDistance.setText("");
-			mUnit.setText("");
+			mCardDistance.setText("");
+			mCardUnit.setText("");
 			mItemDistance.setText("");
 			mItemUnit.setText("");
 		}
@@ -210,11 +217,11 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private int mIconXStarted = 0;
 	private int mIconXEnd = 0;
 	public void switchItemAnimation(AnimatorListener listener) {
-		mIconStartWidth = mIcon.getWidth();
-		mIconStartHeight = mIcon.getHeight();
+		mIconStartWidth = mCardIcon.getWidth();
+		mIconStartHeight = mCardIcon.getHeight();
 		mIconEndWidth = this.getWidth() - getPaddingLeft() - getPaddingRight();
 		mIconEndHeight = (int) getResources().getDimension(R.dimen.list_layout_item_icon_height);
-		mIconXStarted = (int) mIcon.getX();
+		mIconXStarted = (int) mCardIcon.getX();
 		mIconXEnd = getPaddingLeft();
 		mStartHeight = getHeight();
 		mEndHeight = (int) getResources().getDimension(R.dimen.list_layout_item_height);
@@ -234,11 +241,11 @@ public class MBListLayoutCardView extends RelativeLayout {
 		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)this.getLayoutParams();
 		lp.height = (int)(mStartHeight + (mEndHeight - mStartHeight) * value);
 		this.setLayoutParams(lp);
-		lp = (RelativeLayout.LayoutParams) mIcon.getLayoutParams();
+		lp = (RelativeLayout.LayoutParams) mCardIcon.getLayoutParams();
 		lp.width = (int)(mIconStartWidth + (mIconEndWidth - mIconStartWidth) * value);
 		lp.height = (int)(mIconStartHeight + (mIconEndHeight - mIconStartHeight) * value);
-		mIcon.setLayoutParams(lp);
-		mIcon.setX((int)(mIconXStarted + (mIconXEnd - mIconXStarted)*value));
+		mCardIcon.setLayoutParams(lp);
+		mCardIcon.setX((int)(mIconXStarted + (mIconXEnd - mIconXStarted)*value));
 		if(value < 0.5f) {
 			mBottomLayout.setAlpha(0);
 			mItemLayout.setAlpha(0);
@@ -251,16 +258,16 @@ public class MBListLayoutCardView extends RelativeLayout {
 	public void resetLayout() {
 		RelativeLayout.LayoutParams lp;
 		int width = (int) getResources().getDimension(R.dimen.list_layout_card_icon_width);
-		lp = (RelativeLayout.LayoutParams) mIcon.getLayoutParams();
+		lp = (RelativeLayout.LayoutParams) mCardIcon.getLayoutParams();
 		lp.width = width;
 		lp.height = width;
-		mIcon.setLayoutParams(lp);
+		mCardIcon.setLayoutParams(lp);
 		lp = (RelativeLayout.LayoutParams)this.getLayoutParams();
 		lp.height = (int) getResources().getDimension(R.dimen.list_layout_card_height);
 		lp.width = RelativeLayout.LayoutParams.MATCH_PARENT;
 		this.setLayoutParams(lp);
-		mContentLayout.setX(mContentMarginLeft);
-		mContentLayout.setAlpha(1);
+		mCardContentLayout.setX(mContentMarginLeft);
+		mCardContentLayout.setAlpha(1);
 		mBottomLayout.setVisibility(View.GONE);
 		mItemLayout.setVisibility(View.GONE);
 	}
@@ -275,11 +282,11 @@ public class MBListLayoutCardView extends RelativeLayout {
 	}
 
 	public void perpareDragCardParameter() {
-		mIconStartWidth = mIcon.getWidth();
-		mIconStartHeight = mIcon.getHeight();
+		mIconStartWidth = mCardIcon.getWidth();
+		mIconStartHeight = mCardIcon.getHeight();
 		mIconEndWidth = this.getWidth() - getPaddingLeft() - getPaddingRight();
 		mIconEndHeight = (int) getResources().getDimension(R.dimen.list_layout_item_icon_height);
-		mIconXStarted = (int) mIcon.getX();
+		mIconXStarted = (int) mCardIcon.getX();
 		mIconXEnd = getPaddingLeft();
 		mStartHeight = getHeight();
 		mEndHeight = (int) getResources().getDimension(R.dimen.list_layout_item_height);
@@ -297,11 +304,11 @@ public class MBListLayoutCardView extends RelativeLayout {
 			if(rate > 1.0f)
 				rate = 1;
 			
-			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mIcon.getLayoutParams();
+			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCardIcon.getLayoutParams();
 			lp.width = (int)(mIconStartWidth + (mIconEndWidth - mIconStartWidth) * rate);
 			lp.height = (int)(mIconStartHeight + (mIconEndHeight - mIconStartHeight) * rate);
-			mIcon.setLayoutParams(lp);
-			mIcon.setX((int)(mIconXStarted + (mIconXEnd - mIconXStarted)*rate));
+			mCardIcon.setLayoutParams(lp);
+			mCardIcon.setX((int)(mIconXStarted + (mIconXEnd - mIconXStarted)*rate));
 			lp = (RelativeLayout.LayoutParams)this.getLayoutParams();
 			lp.height = (int)(mStartHeight + (mEndHeight - mStartHeight) * rate);
 			this.setLayoutParams(lp);
@@ -310,7 +317,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 				float alpha = 1.0f - rate*4;
 				if(alpha < 0)
 					alpha = 0;
-				mContentLayout.setAlpha(alpha);
+				mCardContentLayout.setAlpha(alpha);
 				if(mBottomLayout.getVisibility() == View.VISIBLE) {
 					mBottomLayout.setVisibility(View.GONE);
 					mItemLayout.setVisibility(View.GONE);
@@ -321,7 +328,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 					alpha = 0;
 				if(alpha > 1)
 					alpha = 1;
-				mContentLayout.setAlpha(0);
+				mCardContentLayout.setAlpha(0);
 				if(mBottomLayout.getVisibility() != View.VISIBLE) {
 					mBottomLayout.setVisibility(View.VISIBLE);
 					mItemLayout.setVisibility(View.VISIBLE);
