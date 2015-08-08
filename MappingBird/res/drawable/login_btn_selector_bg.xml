@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/graphic_blue_pressed" android:state_pressed="true"/>
-    <item android:drawable="@color/graphic_blue_disable" android:state_enabled="false"/>
-    <item android:drawable="@color/graphic_blue"/>
+    
+    <item android:state_pressed="true">
+        <shape >
+            <solid android:color="@color/graphic_blue_pressed"/>
+            <corners android:radius="8px"/>
+        </shape> 
+    </item>
+    <item android:state_enabled="false">
+        <shape >
+            <solid android:color="@color/graphic_blue_disable"/>
+            <corners android:radius="8px"/>
+        </shape> 
+    </item>
+    <item >
+        <shape >
+            <solid android:color="@color/graphic_blue"/>
+            <corners android:radius="8px"/>
+        </shape> 
+    </item>
 </selector>
