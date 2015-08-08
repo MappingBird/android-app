@@ -89,13 +89,10 @@
 
                     <com.mappingbird.widget.MappingbirdFontIcon
                         android:id="@+id/collection_account_icon"
-                        android:layout_width="54dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
+                        style="@style/TitleButtonStyle"
+                        android:background="#00000000"
                         android:text="@string/iconfont_account_circle"
-                        android:textColor="@color/iconfont_leading"
-                        android:textSize="26dp" />
+                        android:textColor="@color/iconfont_leading" />
 
                     <com.mappingbird.widget.MappingbirdFontIcon
                         android:id="@+id/collection_logout_icon"
@@ -148,10 +145,10 @@
                             android:src="@drawable/statusbar_icon" />
 
                         <ImageView
-                            android:layout_marginLeft="4dp"
                             android:layout_width="wrap_content"
                             android:layout_height="26dp"
                             android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="4dp"
                             android:src="@drawable/mappingbird_logotype_large" />
                     </LinearLayout>
 
@@ -207,13 +204,10 @@
 
                 <com.mappingbird.widget.MappingbirdFontIcon
                     android:id="@+id/collection_help_icon"
-                    android:layout_width="54dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
+                    style="@style/TitleButtonStyle"
+                    android:background="#00000000"
                     android:text="@string/iconfont_help_circle"
-                    android:textColor="@color/iconfont_leading"
-                    android:textSize="26dp" />
+                    android:textColor="@color/iconfont_leading" />
 
                 <com.mappingbird.widget.MappingbirdTextView
                     android:id="@+id/collection_help"
@@ -241,13 +235,10 @@
 
                 <com.mappingbird.widget.MappingbirdFontIcon
                     android:id="@+id/collection_settings_icon"
-                    android:layout_width="54dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
+                    style="@style/TitleButtonStyle"
+                    android:background="#00000000"
                     android:text="@string/iconfont_settings"
-                    android:textColor="@color/iconfont_leading"
-                    android:textSize="26dp" />
+                    android:textColor="@color/iconfont_leading" />
 
                 <com.mappingbird.widget.MappingbirdTextView
                     android:id="@+id/collection_settings"
@@ -275,13 +266,14 @@
         </RelativeLayout>
     </android.support.v4.widget.DrawerLayout>
 
-    <TextView 
+    <TextView
         android:id="@+id/debug_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textSize="40dp"
+        android:text="Debug"
         android:textColor="#80000000"
-        android:visibility="gone"
-        android:text="Debug"/>
+        android:textSize="40dp"
+        android:visibility="gone" />
+
 </RelativeLayout>

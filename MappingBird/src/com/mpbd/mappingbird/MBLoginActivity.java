@@ -269,7 +269,7 @@ public class MBLoginActivity extends Activity implements
 	private void startInActivity() {
 		Intent intent = new Intent();
 		intent.setClass(MBLoginActivity.this,
-				com.mappingbird.collection.MappingBirdCollectionActivity.class);
+				com.mappingbird.collection.MBCollectionActivity.class);
 
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP

@@ -172,7 +172,7 @@ public class MBSignUpActivity extends Activity implements
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
 				Intent intent = new Intent();
 				intent.setClass(MBSignUpActivity.this,
-						com.mappingbird.collection.MappingBirdCollectionActivity.class);
+						com.mappingbird.collection.MBCollectionActivity.class);
 		
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -344,7 +344,7 @@ public class MBSignUpActivity extends Activity implements
 	private void startInActivity() {
 		Intent intent = new Intent();
 		intent.setClass(MBSignUpActivity.this,
-				com.mappingbird.collection.MappingBirdCollectionActivity.class);
+				com.mappingbird.collection.MBCollectionActivity.class);
 
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP

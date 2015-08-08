@@ -31,7 +31,7 @@ import com.mappingbird.api.ImageDetail;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetPointsListener;
-import com.mappingbird.collection.MappingBirdCollectionActivity;
+import com.mappingbird.collection.MBCollectionActivity;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;

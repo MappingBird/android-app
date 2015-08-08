@@ -79,7 +79,7 @@ import com.mpbd.place.MappingBirdPlaceActivity;
 import com.mpbd.services.MBServiceClient;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
-public class MappingBirdCollectionActivity extends FragmentActivity implements
+public class MBCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
 	private static final String TAG = "MappingBird";
 	
@@ -143,7 +143,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.mappingbird_collection);
+		setContentView(R.layout.mb_activity_layout_collection);
 
 		if(DeBug.DEBUG)
 			findViewById(R.id.debug_text).setVisibility(View.VISIBLE);
@@ -211,10 +211,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MBLoginActivity.class);
-                MappingBirdCollectionActivity.this.startActivity(intent);   
+                intent.setClass(MBCollectionActivity.this, com.mpbd.mappingbird.MBLoginActivity.class);
+                MBCollectionActivity.this.startActivity(intent);   
                 
-                AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+                AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
                         AppAnalyticHelper.CATEGORY_UI_ACTION, 
                         AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS,
                         AppAnalyticHelper.LABEL_LIST_ITEM_SIGN_IN, 0);
@@ -227,10 +227,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MappingBirdCollectionActivity.this, com.mpbd.mappingbird.MBSignUpActivity.class);
-                MappingBirdCollectionActivity.this.startActivity(intent);               
+                intent.setClass(MBCollectionActivity.this, com.mpbd.mappingbird.MBSignUpActivity.class);
+                MBCollectionActivity.this.startActivity(intent);               
                 
-                AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+                AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
                         AppAnalyticHelper.CATEGORY_UI_ACTION, 
                         AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS,
                         AppAnalyticHelper.LABEL_LIST_ITEM_SIGN_IN, 0);                
@@ -259,7 +259,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 
 		@Override
 		public void onGetCollections(int statusCode, Collections collection) {
-			if(MappingBirdCollectionActivity.this.isFinishing())
+			if(MBCollectionActivity.this.isFinishing())
 				return;
 
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
@@ -287,7 +287,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] get message"); 
 			}
 
-			if(MappingBirdCollectionActivity.this.isFinishing())
+			if(MBCollectionActivity.this.isFinishing())
 				return;
 
 			switch(data.getState()) {
@@ -498,7 +498,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			mDialog.dismiss();
-			MappingBirdCollectionActivity.this.finish();
+			MBCollectionActivity.this.finish();
 		}
 	};
 
@@ -511,7 +511,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				Intent intent = new Intent(mContext, MBSettingsActivity.class);
 				startActivity(intent);
 				
-				AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+				AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
 				        AppAnalyticHelper.CATEGORY_UI_ACTION, 
 				        AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS, 
 				        AppAnalyticHelper.LABEL_LIST_ITEM_SETTING, 0);
@@ -525,7 +525,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				intent.putExtra(Intent.EXTRA_SUBJECT, "MappingBird Feedback , ");
 				startActivity(intent);
 				
-                AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+                AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
                         AppAnalyticHelper.CATEGORY_UI_ACTION, 
                         AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS,
                         AppAnalyticHelper.LABEL_LIST_ITEM_HELP, 0);				
@@ -884,11 +884,11 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 				intent.putExtra("myLatitude", mMyLocation.latitude);
 				intent.putExtra("myLongitude", mMyLocation.longitude);
 	
-				intent.setClass(MappingBirdCollectionActivity.this,
+				intent.setClass(MBCollectionActivity.this,
 						com.mpbd.place.MappingBirdPlaceActivity.class);
-				MappingBirdCollectionActivity.this.startActivity(intent);
+				MBCollectionActivity.this.startActivity(intent);
 				
-				AppAnalyticHelper.sendEvent(MappingBirdCollectionActivity.this, 
+				AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
                         AppAnalyticHelper.CATEGORY_UI_ACTION, 
                         AppAnalyticHelper.ACTION_PLACE_LIST_ITEM_PRESS,
                         AppAnalyticHelper.LABEL_LIST_ITEM,
@@ -1044,10 +1044,10 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 		if(!isLogin) {
 			// 沒有登入：開啓
 			Intent startIntent = new Intent();
-			intent.setClass(MappingBirdCollectionActivity.this,
+			intent.setClass(MBCollectionActivity.this,
 					com.mpbd.tutorial.MBTutorialActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			MappingBirdCollectionActivity.this.startActivity(startIntent);
+			MBCollectionActivity.this.startActivity(startIntent);
 			finish();
 			return false;
 		} else {
@@ -1065,9 +1065,9 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 								placeIntent.putExtra("myLongitude", mMyLocation.longitude);
 							}
 				
-							placeIntent.setClass(MappingBirdCollectionActivity.this,
+							placeIntent.setClass(MBCollectionActivity.this,
 									com.mpbd.place.MappingBirdPlaceActivity.class);
-							MappingBirdCollectionActivity.this.startActivity(placeIntent);
+							MBCollectionActivity.this.startActivity(placeIntent);
 							return true;
 						}
 					}
@@ -1093,7 +1093,7 @@ public class MappingBirdCollectionActivity extends FragmentActivity implements
 	private int mDialogMode = DIALOG_NONE; 
 	
 	private void DFshowDialog(int mode, int statusCode, OnClickListener listener) {
-		if(MappingBirdCollectionActivity.this.isFinishing())
+		if(MBCollectionActivity.this.isFinishing())
 			return;
 
 		if(mode > mDialogMode)

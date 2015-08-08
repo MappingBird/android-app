@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
-import com.mappingbird.collection.MappingBirdCollectionActivity;
+import com.mappingbird.collection.MBCollectionActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mpbd.mappingbird.R;
 
@@ -31,27 +31,27 @@ public class MBNotificationCenter {
 			int state, String placeId) {
 		
 		// 回到主畫面的Intent
-		Intent intent = new Intent(context, MappingBirdCollectionActivity.class);
+		Intent intent = new Intent(context, MBCollectionActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		switch(state) {
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED:
-				intent.putExtra(MappingBirdCollectionActivity.EXTRA_NOTIFY,
-						MappingBirdCollectionActivity.NOTIFY_FINISHED);
+				intent.putExtra(MBCollectionActivity.EXTRA_NOTIFY,
+						MBCollectionActivity.NOTIFY_FINISHED);
 				if(!TextUtils.isEmpty(placeId)) {
 					try {
-						intent.putExtra(MappingBirdCollectionActivity.EXTRA_PLACE_ID, 
+						intent.putExtra(MBCollectionActivity.EXTRA_PLACE_ID, 
 								Long.parseLong(placeId));
 					} catch (Exception e) {
 					}
 				}
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED:
-				intent.putExtra(MappingBirdCollectionActivity.EXTRA_NOTIFY,
-						MappingBirdCollectionActivity.NOTIFY_FAIL_UPLOAD_IMAGE);
+				intent.putExtra(MBCollectionActivity.EXTRA_NOTIFY,
+						MBCollectionActivity.NOTIFY_FAIL_UPLOAD_IMAGE);
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED:
-				intent.putExtra(MappingBirdCollectionActivity.EXTRA_NOTIFY,
-						MappingBirdCollectionActivity.NOTIFY_FAIL_SAVE_PLACE);
+				intent.putExtra(MBCollectionActivity.EXTRA_NOTIFY,
+						MBCollectionActivity.NOTIFY_FAIL_SAVE_PLACE);
 				break;
 		}
 
@@ -74,10 +74,10 @@ public class MBNotificationCenter {
 			Context context, String ticker, String title, String message
 			, int max, int progress, boolean indeterminate) {
 		// 回到主畫面的Intent
-		Intent intent = new Intent(context, MappingBirdCollectionActivity.class);
+		Intent intent = new Intent(context, MBCollectionActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra(MappingBirdCollectionActivity.EXTRA_NOTIFY,
-				MappingBirdCollectionActivity.NOTIFY_CANCEL_UPLOAD_IMAGE);
+		intent.putExtra(MBCollectionActivity.EXTRA_NOTIFY,
+				MBCollectionActivity.NOTIFY_CANCEL_UPLOAD_IMAGE);
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 100, intent, 
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		
