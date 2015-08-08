@@ -49,13 +49,14 @@
     <string name="forgot_password_text">Forgot password</string>
 
     <!-- Tutorial -->
-    <string name="tutorial_swipe_to_learn">Swipe to learn more about MappingBird.</string>
+    <string name="tutorial_swipe_to_learn">Swipe to learn more</string>
+    <string name="tutorial_welocome_message_favorite_in_pockets">Your favorite places, restaurants, shopes, and bars all in your pockets.</string>
     <string name="tutorial_already_have_account">Already have a account?</string>
-    <string name="tutorial_sign_in">Sign in</string>
-    <string name="tutorial_sign_up">Sign up</string>
-    <string name="tutorial_page1_scenario_intro">MappingBird Chrome extension makes you easily bookmark physical location while you browsing the web on your desktop.</string>
-    <string name="tutorial_page2_scenario_intro">With less than 3 clicks, you can save places on maps for future reference which saves lots of your time.</string>
-    <string name="tutorial_page3_scenario_intro">After signing in the account which you create on MappingBird.com, you are able to view your bookmarked places when on the go.</string>
+    <string name="tutorial_sign_in">LOG IN</string>
+    <string name="tutorial_sign_up">SIGN UP</string>
+    <string name="tutorial_page1_scenario_intro">When you come across a nice place, save it to MappingBird.</string>
+    <string name="tutorial_page2_scenario_intro">Look for a great bar to have fun with friends? Check your MappingBird collection.</string>
+    <string name="tutorial_page3_scenario_intro">Go on a big trip? Plan it on your computer. View it on your phone.</string>
     <string name="tutorial_sign_up_title">Remember places for later.</string>
     <string name="tutorial_sign_up_descriptions">Sign in a MappingBird account to sync your collections which you have saved from your computer.</string>
     <string name="tutorial_create_account">Create a Free Account</string>

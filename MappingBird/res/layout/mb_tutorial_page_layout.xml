@@ -1,89 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent" >
 
     <!-- welcome -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/tutoral_welcome"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone" >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/tutoral_welcome_logo_layout"
+        <!-- placeholder for logo -->
+
+        <View
+            android:id="@+id/tutoral_welcome_empty_placehodler"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <com.mappingbird.widget.MappingbirdFontIcon
-                    android:id="@+id/logo_icon"
-                    android:layout_width="78dp"
-                    android:layout_height="78dp"
-                    android:text="@string/iconfont_mappingbird_logo"
-                    android:textColor="@color/font_white"
-                    android:textSize="78dp" />
-
-                <ImageView
-                    android:id="@+id/logo_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/mappingbird_logotype_large" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/mappingbird_viewer" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/tutoral_welcome_descript_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical" >
-
-            <com.mappingbird.widget.MappingbirdTextView
-                style="@style/TextStyle_Label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tutorial_swipe_to_learn"
-                android:textColor="@color/font_white"
-                android:textSize="14dp" />
-
-            <com.mappingbird.widget.MappingbirdTextView
-                style="@style/TextStyle_Label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tutorial_already_have_account"
-                android:textColor="@color/font_white"
-                android:textSize="14dp" />
-        </LinearLayout>
+            android:layout_height="125dp"
+            android:layout_centerInParent="true"
+            android:orientation="vertical" />
 
         <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/tutoral_sign_in"
-            style="@style/BtnTransparent"
-            android:layout_width="272dp"
+            style="@style/TextStyle_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tutoral_welcome_empty_placehodler"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
             android:maxWidth="272dp"
-            android:minWidth="208dp"
-            android:text="@string/tutorial_sign_in" />
-    </LinearLayout>
+            android:text="@string/tutorial_welocome_message_favorite_in_pockets"
+            android:textColor="@color/font_white"
+            android:textSize="16dp" />
+
+        <com.mappingbird.widget.MappingbirdTextView
+            style="@style/TextStyle_Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/tutorial_swipe_to_learn"
+            android:textColor="@color/font_white"
+            android:textSize="16dp" />
+    </RelativeLayout>
 
     <!-- Intro Page -->
 
@@ -91,60 +52,28 @@
         android:id="@+id/layout_tutoral_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
         android:visibility="gone" >
-
-        <LinearLayout
-            android:id="@+id/layout_logo_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal" >
-
-            <com.mappingbird.widget.MappingbirdFontIcon
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:text="@string/iconfont_mappingbird_logo"
-                android:textColor="@color/font_white"
-                android:textSize="37dp" />
-
-            <ImageView
-                android:layout_width="155dp"
-                android:layout_height="36dp"
-                android:layout_marginLeft="2dp"
-                android:src="@drawable/mappingbird_logotype_large" />
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layout_logo_container"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/mappingbird_viewer" />
-
-        <ImageView
-            android:id="@+id/page_intro_image"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
-            android:layout_above="@+id/page_intro_title"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/oobe_splash_001" />
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/page_intro_title"
             style="@style/TextStyle_Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="12dp"
+            android:layout_above="@+id/page_intro_image"
             android:gravity="center_horizontal"
             android:maxWidth="272dp"
             android:minWidth="208dp"
             android:text="@string/tutorial_page1_scenario_intro"
             android:textColor="@color/font_white"
-            android:textSize="14dp" />
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/page_intro_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/oobe_splash_001" />
     </RelativeLayout>
 
     <!-- Create account or do it later -->
@@ -153,7 +82,8 @@
         android:id="@+id/tutoral_create_or_do_later"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="wrap_content"

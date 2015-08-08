@@ -52,33 +52,37 @@ public class MappingBirdParallaxPager extends ViewPager {
         scaleType = FIT_HEIGHT;
         overlap = OVERLAP_HALF;
 
-        setOnPageChangeListener(new OnPageChangeListener() {
-            @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (bitmap != null) {
-                    source.left = (int) Math.floor((position + positionOffset - CORRECTION_PERCENTAGE) * chunkWidth);
-                    source.right = (int) Math.ceil((position + positionOffset + CORRECTION_PERCENTAGE) * chunkWidth + projectedWidth);
-                    destination.left = (int) Math.floor((position + positionOffset - CORRECTION_PERCENTAGE) * getWidth());
-                    destination.right = (int) Math.ceil((position + positionOffset + 1 + CORRECTION_PERCENTAGE) * getWidth());
-                    invalidate();
-                }
-
-                if (secondOnPageChangeListener != null) {
-                    secondOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                }
-            }
-
-            @Override public void onPageSelected(int position) {
-                if (secondOnPageChangeListener != null) {
-                    secondOnPageChangeListener.onPageSelected(position);
-                }
-            }
-
-            @Override public void onPageScrollStateChanged(int state) {
-                if (secondOnPageChangeListener != null) {
-                    secondOnPageChangeListener.onPageScrollStateChanged(state);
-                }
-            }
-        });
+//        setOnPageChangeListener(new OnPageChangeListener() {
+//            @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                if (bitmap != null) {
+//                    source.left = (int) Math.floor((position + positionOffset - CORRECTION_PERCENTAGE) * chunkWidth);
+//                    source.right = (int) Math.ceil((position + positionOffset + CORRECTION_PERCENTAGE) * chunkWidth + projectedWidth);
+//                    destination.left = (int) Math.floor((position + positionOffset - CORRECTION_PERCENTAGE) * getWidth());
+//                    destination.right = (int) Math.ceil((position + positionOffset + 1 + CORRECTION_PERCENTAGE) * getWidth());
+//                    invalidate();
+//                }
+//
+//                if (secondOnPageChangeListener != null) {
+//                    Log.d("hill", "onPageScrolled");
+//
+//                    secondOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+//                }
+//            }
+//
+//            @Override public void onPageSelected(int position) {
+//                if (secondOnPageChangeListener != null) {
+//                    Log.d("hill", "onPageSelected");
+//                    secondOnPageChangeListener.onPageSelected(position);
+//                }
+//            }
+//
+//            @Override public void onPageScrollStateChanged(int state) {
+//                if (secondOnPageChangeListener != null) {
+//                    Log.d("hill", "onPageScrollStateChanged");
+//                    secondOnPageChangeListener.onPageScrollStateChanged(state);
+//                }
+//            }
+//        });
     }
 
     @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
