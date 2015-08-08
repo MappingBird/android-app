@@ -38,13 +38,11 @@
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/settings_log_out_icon"
-            android:layout_width="54dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            style="@style/TitleButtonStyle"
+            android:background="#00000000"
             android:gravity="center"
             android:text="@string/iconfont_logout"
-            android:textColor="@color/iconfont_leading"
-            android:textSize="26dp" />
+            android:textColor="@color/iconfont_leading" />
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/ettings_log_out_text"
