@@ -5,12 +5,7 @@ import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.mappingbird.api.MappingBirdAPI;
 
 public class MappingBirdDialog {
 

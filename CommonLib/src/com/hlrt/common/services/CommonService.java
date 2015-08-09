@@ -12,7 +12,6 @@ import android.os.RemoteException;
 
 import com.common.location.LocationService;
 import com.common.location.LocationService.LocationServiceListener;
-import com.hlrt.common.DeBug;
 
 public class CommonService extends Service{
 	private static final String TAG = "CommonService";
@@ -42,8 +41,8 @@ public class CommonService extends Service{
 			Notification nm = new Notification();
 			startForeground(10020, nm);
 		} catch (Exception e) {
-			if(DeBug.DEBUG)
-				DeBug.e(TAG, "Foreground failed : "+e.getMessage());
+//			if(DeBug.DEBUG)
+//				DeBug.e(TAG, "Foreground failed : "+e.getMessage());
 		}
 	}
 
@@ -55,19 +54,19 @@ public class CommonService extends Service{
 		
 		switch(command) {
 		case CMD_START_LOCATUIN:
-			if(DeBug.DEBUG)
-				DeBug.d(TAG, "Commond : CMD_START_LOCATUIN");
+//			if(DeBug.DEBUG)
+//				DeBug.d(TAG, "Commond : CMD_START_LOCATUIN");
 
 			mLocationService.start();
 			break;
 		case CMD_STOP_LOCATUIN:
-			if(DeBug.DEBUG)
-				DeBug.d(TAG, "Commond : CMD_STOP_LOCATUIN");
+//			if(DeBug.DEBUG)
+//				DeBug.d(TAG, "Commond : CMD_STOP_LOCATUIN");
 			mLocationService.stopUsingGPS();
 			break;
 		case CMD_ATTACH_MESSAGE:
-			if(DeBug.DEBUG)
-				DeBug.d(TAG, "Commond : CMD_ATTACH_MESSAGE");
+//			if(DeBug.DEBUG)
+//				DeBug.d(TAG, "Commond : CMD_ATTACH_MESSAGE");
 			attachMessager(intent);
 			break;
 		}
@@ -76,8 +75,8 @@ public class CommonService extends Service{
 
 	@Override
 	public void onDestroy() {
-		if(DeBug.DEBUG)
-			DeBug.d(TAG, "onDestroy");
+//		if(DeBug.DEBUG)
+//			DeBug.d(TAG, "onDestroy");
 		stopForeground(true);
 		super.onDestroy();
 	}

@@ -2,6 +2,7 @@ package com.mappingbird.collection;
 
 import java.util.ArrayList;
 
+import android.R.plurals;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Dialog;
@@ -20,7 +21,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -64,8 +64,11 @@ import com.mappingbird.common.MainUIMessenger.OnMBSubmitChangedListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.MBSubmitMsgData;
+import com.mappingbird.saveplace.MappingBirdAddPlaceActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
+import com.mpbd.eventbus.MBAddPlaceEventBus;
+import com.mpbd.eventbus.MBAddPlaceEventBus.AddPlaceEventListener;
 import com.mpbd.mappingbird.MBSettingsActivity;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.MappingBirdItem;
@@ -139,6 +142,11 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private Dialog mLoadingDialog = null;
 	
 	private long mClickButtonTime = 0;
+	
+	// 要等refresh collection完了以後才會出現
+	private AddPlaceSuccessedDialogClass mAddPlaceSuccessedDialogClass = null;
+
+	private AddPlaceEvent mAddPlaceEvent = new AddPlaceEvent();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -253,36 +261,14 @@ public class MBCollectionActivity extends FragmentActivity implements
 
 		if(!checkInetnt(getIntent()))
 			showLoadingDialog();
+		
+		// EventBus
+		MBAddPlaceEventBus.getDefault().register(mAddPlaceEvent);
 	}
 
-	OnGetCollectionsListener getCollectionListener = new OnGetCollectionsListener() {
-
+	private class AddPlaceEvent implements AddPlaceEventListener {
 		@Override
-		public void onGetCollections(int statusCode, Collections collection) {
-			if(MBCollectionActivity.this.isFinishing())
-				return;
-
-			if (statusCode == MappingBirdAPI.RESULT_OK) {
-				mCollections = collection;
-				if (collection.getCount() > 0) {
-					mCollectionListAdapter.setData(collection);
-					if(MappingBirdPref.getIns().getIns().getCollectionPosition() >= mCollectionListAdapter.getCount()) {
-						MappingBirdPref.getIns().getIns().setCollectionPosition(0);
-					}
-					selectItem(MappingBirdPref.getIns().getIns().getCollectionPosition());
-				} else {
-					setTitle(R.string.no_data);
-				}
-			} else {
-				DFshowDialog(DIALOG_ERROR_NO_NETWORK, statusCode, mErrorDialogOkClickListener);
-			}
-		}
-	};
-
-	private OnMBSubmitChangedListener mOnMBSubmitChangedListener = new OnMBSubmitChangedListener() {
-		
-		@Override
-		public void onSubmitChanged(MBSubmitMsgData data) {
+		public void onEvent(Object event) {
 			if(DeBug.DEBUG) {
 				DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] get message"); 
 			}
@@ -290,6 +276,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 			if(MBCollectionActivity.this.isFinishing())
 				return;
 
+			MBSubmitMsgData data = (MBSubmitMsgData) event;
 			switch(data.getState()) {
 			case MBPlaceSubmitTask.MSG_NONE:
 				if(DeBug.DEBUG) {
@@ -336,7 +323,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 				mMBCollectionListLayout.setProgress(data.getState(), 0, 0);
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED:
-				DFshowDialog(DIALOG_UPLOAD_SUCESSED, 0 , null);
+				DFshowDialog(DIALOG_UPLOAD_SUCESSED, 0 , data, null);
 				if(DeBug.DEBUG) {
 					DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] MSG : MSG_ADD_PLACE_FINISHED"); 
 				}
@@ -350,6 +337,36 @@ public class MBCollectionActivity extends FragmentActivity implements
 				break;
 			}
 		}
+	}
+	
+	OnGetCollectionsListener getCollectionListener = new OnGetCollectionsListener() {
+
+		@Override
+		public void onGetCollections(int statusCode, Collections collection) {
+			if(MBCollectionActivity.this.isFinishing())
+				return;
+
+			if (statusCode == MappingBirdAPI.RESULT_OK) {
+				mCollections = collection;
+				if (collection.getCount() > 0) {
+					mCollectionListAdapter.setData(collection);
+					if(MappingBirdPref.getIns().getIns().getCollectionPosition() >= mCollectionListAdapter.getCount()) {
+						MappingBirdPref.getIns().getIns().setCollectionPosition(0);
+					}
+					selectItem(MappingBirdPref.getIns().getIns().getCollectionPosition());
+				} else {
+					setTitle(R.string.no_data);
+				}
+			} else {
+				DFshowDialog(DIALOG_ERROR_NO_NETWORK, statusCode, null, mErrorDialogOkClickListener);
+			}
+		}
+	};
+
+	private OnMBSubmitChangedListener mOnMBSubmitChangedListener = new OnMBSubmitChangedListener() {
+		@Override
+		public void onSubmitChanged(MBSubmitMsgData data) {
+		}
 	};
 
 	// 上傳失敗區
@@ -358,7 +375,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 		public void onClick(View v) {
 			// 重新上穿
 			MBServiceClient.retryUpdate();
-			MainUIMessenger.getIns().addSubmitListener(mOnMBSubmitChangedListener);
 			mDialog.dismiss();
 		}
 	};
@@ -385,7 +401,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 		if(mLocationService != null)
 			mLocationService.start();
 		if(MBUtil.mEnableAddFunction)
-			MainUIMessenger.getIns().addSubmitListener(mOnMBSubmitChangedListener);;
+			MBServiceClient.refreshAddPlaceState();
 	}
 	
 	@Override
@@ -403,7 +419,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 		if(mLoadingDialog != null)
 			mLoadingDialog.cancel();
 		mLoadingDialog = null;
-		
+		MBAddPlaceEventBus.getDefault().unregister(mAddPlaceEvent);
 	}
 
 
@@ -420,8 +436,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 		if(mLocationService != null)
 			mLocationService.stopUsingGPS();
 		AppAnalyticHelper.endSession(this); 
-		if(MBUtil.mEnableAddFunction)
-			MainUIMessenger.getIns().removeSubmitListener(mOnMBSubmitChangedListener);;
 	}
 
 	private class DrawerItemClickListener implements
@@ -905,7 +919,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 
 		@Override
 		public void onCancelUpload() {
-			DFshowDialog(DIALOG_CANCEL_UPLOAD, 0, null);
+			DFshowDialog(DIALOG_CANCEL_UPLOAD, 0, null, null);
 		}
 
 		@Override
@@ -1072,7 +1086,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 						}
 					}
 				} else if(state == NOTIFY_CANCEL_UPLOAD_IMAGE) {
-					DFshowDialog(DIALOG_CANCEL_UPLOAD, 0, null);
+					DFshowDialog(DIALOG_CANCEL_UPLOAD, 0, null, null);
 				}
 			} else {
 			}
@@ -1092,7 +1106,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 	
 	private int mDialogMode = DIALOG_NONE; 
 	
-	private void DFshowDialog(int mode, int statusCode, OnClickListener listener) {
+	
+	private void DFshowDialog(int mode, int statusCode, MBSubmitMsgData data, OnClickListener listener) {
 		if(MBCollectionActivity.this.isFinishing())
 			return;
 
@@ -1122,19 +1137,62 @@ public class MBCollectionActivity extends FragmentActivity implements
 			mDialogMode = DIALOG_UPLOAD_FAILED;
 			break;
 		case DIALOG_UPLOAD_SUCESSED:
-			DFdismiss();
 			if(mDialogMode == DIALOG_CANCEL_UPLOAD) {
 				// 之前有關閉上傳. 所以要跳
-				mDialogMode = DIALOG_UPLOAD_SUCESSED;
-				
+				DFdismiss();
+				if(data != null) {
+					mDialogMode = DIALOG_UPLOAD_SUCESSED;
+					String title = String.format(
+							MappingBirdApplication.instance().getString(R.string.collection_dialog_successed_upload_title),
+							data.getPlaceName());
+					String message = String.format(
+							MappingBirdApplication.instance().getString(R.string.collection_dialog_successed_upload_msg),
+							data.getCollectionName());
+
+					if(data.getPlaceId() != 0) {
+						final int placeId = data.getPlaceId();
+						DeBug.d("Test", "placeId = "+placeId);
+						DFShowMessageDialog(mDialogMode,
+								title, message, 
+								getString(R.string.collection_dialog_btn_check_it_now),
+									new CheckPlaceListener(data.getPlaceId()), MBDialog.BTN_STYLE_BLUE,
+								getString(R.string.str_cancel), mCloseDialogListener, MBDialog.BTN_STYLE_DEFAULT);
+					} else {
+						DFShowMessageDialog(mDialogMode,
+								title, message, 
+								getString(R.string.str_cancel), mCloseDialogListener, MBDialog.BTN_STYLE_DEFAULT);
+					}
+				}
+			} else {
+				DFdismiss();
 			}
-			
 			break;
 		case DIALOG_LOCATION_NO_EXIST:
 			mDialogMode = DIALOG_LOCATION_NO_EXIST;
 			break;
 		}
 	}
+	
+	private class CheckPlaceListener implements OnClickListener {
+		private long mPlaceId = 0;
+		public CheckPlaceListener(int placeId) {
+			mPlaceId = placeId;
+		}
+		
+		@Override
+		public void onClick(View v) {
+			DFdismiss();
+			Intent placeIntent = new Intent();
+			placeIntent.putExtra(MappingBirdPlaceActivity.EXTRA_PLACE_ID, mPlaceId);
+			if(mMyLocation != null) {
+				placeIntent.putExtra("myLatitude", mMyLocation.latitude);
+				placeIntent.putExtra("myLongitude", mMyLocation.longitude);
+			}
+			placeIntent.setClass(MBCollectionActivity.this,
+					com.mpbd.place.MappingBirdPlaceActivity.class);
+			MBCollectionActivity.this.startActivity(placeIntent);
+		}
+	};
 	
 	private OnClickListener mCancelUploadListener = new OnClickListener() {
 		@Override
@@ -1151,6 +1209,20 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 	};
 	
+	private void DFShowMessageDialog(int mode, String title, String message,
+			String okStr, OnClickListener oklistener, int okStyle) {
+		if(mDialog != null && mDialog.isShowing())
+			mDialog.dismiss();
+
+		mDialog = new MBDialog(mContext);
+		mDialog.setTitle(title);
+		mDialog.setDescription(message);
+		mDialog.setPositiveBtn(okStr, 
+				oklistener, okStyle);
+		mDialog.setCanceledOnTouchOutside(false);
+		mDialog.show();
+	}
+
 	private void DFShowMessageDialog(int mode, String title, String message,
 			String okStr, OnClickListener oklistener, int okStyle,
 			String cancelStr, OnClickListener cancellistener, int cancelStyle) {
@@ -1195,5 +1267,9 @@ public class MBCollectionActivity extends FragmentActivity implements
 			mDialog.dismiss();
 		mDialog = null;
 		mDialogMode = DIALOG_NONE;
+	}
+	
+	private class AddPlaceSuccessedDialogClass {
+		public MBSubmitMsgData data;
 	}
 }

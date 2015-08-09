@@ -12,7 +12,6 @@
         android:paddingLeft="@dimen/dialog_padding_left"
         android:paddingRight="@dimen/dialog_padding_right"
         android:paddingTop="16dp"
-        android:singleLine="true"
         android:textColor="#333"
         android:textSize="20dp" />
     

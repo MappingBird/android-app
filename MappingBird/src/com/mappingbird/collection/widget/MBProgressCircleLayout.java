@@ -12,8 +12,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.hlrt.common.DeBug;
-import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.mappingbird.R;
 
 public class MBProgressCircleLayout extends RelativeLayout {

@@ -2,7 +2,7 @@ package com.mappingbird.saveplace.services;
 
 import android.text.TextUtils;
 
-import com.hlrt.common.DeBug;
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MBSubmitMsgData;
 import com.mappingbird.saveplace.db.AppPlaceDB;

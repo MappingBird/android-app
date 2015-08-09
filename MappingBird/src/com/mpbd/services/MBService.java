@@ -6,13 +6,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.Parcelable;
-import android.os.RemoteException;
 
-import com.hlrt.common.DeBug;
-import com.mappingbird.common.MainUIMessenger;
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MBSubmitMsgData;
 import com.mappingbird.saveplace.db.AppPlaceDB;
@@ -22,6 +17,7 @@ import com.mappingbird.saveplace.services.MBPlaceSubmitLogic;
 import com.mappingbird.saveplace.services.MBPlaceSubmitLogic.SubmitLogicListener;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
+import com.mpbd.eventbus.MBAddPlaceEventBus;
 import com.mpbd.mappingbird.R;
 import com.mpbd.notification.MBNotificationCenter;
 
@@ -37,7 +33,7 @@ public class MBService extends Service{
 	public static final int CMD_ADD_PLACE_ITEM	= 103;
 	public static final int CMD_RETRY_UPDATE 	= 104;
 	public static final int CMD_STOP_TO_UPLOAD 	= 105;
-	
+	public static final int CMD_REFRESH_STATE 	= 106;
 	public static final int CMD_STOP_SERVICE 	= 110;
 
 	//
@@ -46,8 +42,6 @@ public class MBService extends Service{
 	
 	//
 	public static final String MSG_SUBMIT = "msg_submit";
-	private Messenger mUIMessenger = null;
-	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -72,12 +66,12 @@ public class MBService extends Service{
 			DeBug.e(TAG, "Start command : "+command);
 		
 		switch(command) {
-		case CMD_ATTACH_MESSAGE:
+		case CMD_REFRESH_STATE:
 			if(DeBug.DEBUG)
-				DeBug.d(TAG, "Commond : CMD_ATTACH_MESSAGE");
+				DeBug.d(TAG, "Commond : CMD_REFRESH_STATE");
 			if(DeBug.DEBUG)
-				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] Commond : CMD_ATTACH_MESSAGE");
-			attachMessager(intent);
+				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] Commond : CMD_REFRESH_STATE");
+			refreshState();
 			break;
 		case CMD_RETRY_UPDATE: {
 			if(DeBug.DEBUG)
@@ -135,6 +129,9 @@ public class MBService extends Service{
 			AppPlaceDB db = new AppPlaceDB(MappingBirdApplication.instance());
 			db.cancelSavePlace();
 			cleanNotifyFinishedId();
+			// 傳回Cancel
+			MBSubmitMsgData data = new MBSubmitMsgData(MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED);
+			MBAddPlaceEventBus.getDefault().post(data);
 			stopSelf();
 			break;
 		}
@@ -151,7 +148,6 @@ public class MBService extends Service{
 		MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
 		logic.setSubmitLogicListener(null);
 		stopForeground(true);
-		mUIMessenger = null;
 		super.onDestroy();
 	}
 
@@ -160,28 +156,12 @@ public class MBService extends Service{
 		return null;
 	}
 
-	private void attachMessager(Intent intent) {
-		if(null != intent && intent.hasExtra(EXTRA_MESSENGER)) {
-			Parcelable p = intent.getParcelableExtra(EXTRA_MESSENGER);
-			if(p == null) {
-				// detach
-				mUIMessenger = null;
-			} else {
-				mUIMessenger = (Messenger) p;
-			}
-		}
+	private void refreshState() {
 		// 馬上傳送現在的狀態
 		MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
 		logic.setSubmitLogicListener(mSubmitLogicListener);
-		Message msg = Message.obtain();
 		MBSubmitMsgData data = logic.getSubmitState();
-		msg.getData().putParcelable(MSG_SUBMIT, data);
-		try {
-			if(mUIMessenger != null)
-				mUIMessenger.send(msg);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		MBAddPlaceEventBus.getDefault().post(data);
 		if(data.getState() == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED ||
 				data.getState() == MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED) {
 			submitFailedNotification(data.getState());
@@ -190,20 +170,16 @@ public class MBService extends Service{
 			// 沒有東西.關閉Service
 			stopSelf();
 		}
-
 	}
 
 	private void sendAddPlaceStateMessage(int state, int progress, int total) {
 		MBSubmitMsgData data = new MBSubmitMsgData(state, progress, total);
-		Message msg = Message.obtain();
-		msg.what = MainUIMessenger.MSG_ADD_PLACE;
-		msg.getData().putParcelable(MSG_SUBMIT, data);
-		try {
-			if(mUIMessenger != null)
-				mUIMessenger.send(msg);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		MBAddPlaceEventBus.getDefault().post(data);
+	}
+
+	private void sendAddPlaceStateMessage(int state, int progress, int total, MBPlaceSubmitData submitData) {
+		MBSubmitMsgData data = new MBSubmitMsgData(state, progress, total, submitData);
+		MBAddPlaceEventBus.getDefault().post(data);
 	}
 
 	private SubmitLogicListener mSubmitLogicListener = new SubmitLogicListener() {
@@ -231,7 +207,8 @@ public class MBService extends Service{
 							state, data.placeId);
 					notificationManager.notify(NOTIFY_FINISHED_ID, nm);
 				}
-				sendAddPlaceStateMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED, progess, totle);
+				sendAddPlaceStateMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED,
+						progess, totle, data);
 				MBServiceClient.stopService();
 			} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED) {
 				submitFailedNotification(state);

@@ -19,7 +19,6 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.MediaColumns;
 import android.support.v4.app.FragmentActivity;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,6 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;

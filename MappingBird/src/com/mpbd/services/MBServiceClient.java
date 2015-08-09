@@ -1,16 +1,14 @@
 package com.mpbd.services;
 
-import com.mappingbird.common.MappingBirdApplication;
-import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Messenger;
 
+import com.mappingbird.common.MappingBirdApplication;
+import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
+
 public class MBServiceClient {
-	public static void attachMessenger(Messenger messenger) {
-		Intent intent = createIntent(MBService.CMD_ATTACH_MESSAGE);
-		intent.putExtra(MBService.EXTRA_MESSENGER, messenger);
+	public static void refreshAddPlaceState() {
+		Intent intent = createIntent(MBService.CMD_REFRESH_STATE);
 		startService(intent);
 	}
 

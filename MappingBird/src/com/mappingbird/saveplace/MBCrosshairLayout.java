@@ -15,7 +15,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.maps.android.ui.IconGenerator;
 import com.mappingbird.common.MappingBirdApplication;

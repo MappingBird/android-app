@@ -3,11 +3,10 @@ package com.mappingbird.saveplace.services;
 import android.os.Handler;
 import android.os.Message;
 
-import com.hlrt.common.DeBug;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnAddPlaceListener;
-import com.mappingbird.api.OnUploadImageListener;
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.db.AppPlaceDB;
 import com.mappingbird.saveplace.services.MBPlaceSubmitImageData.SubmitImageDataListener;

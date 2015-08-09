@@ -15,8 +15,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.hlrt.common.DeBug;
 import com.mappingbird.collection.widget.MBProgressCircleLayout.ProgressListener;
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
@@ -309,6 +309,7 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		ValueAnimator animator = ValueAnimator.ofFloat(0, 1.0f);
 		animator.setDuration(0);
 		animator.addUpdateListener(mCloseUpdateListener);
+		animator.addListener(mCloseAnimatorListener);
 		animator.start();
 		if(mOnSelectKindLayoutListener != null)
 			mOnSelectKindLayoutListener.closeSelect();
@@ -594,19 +595,31 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 		}
 		
 		if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED) {
-			mMode = MODE_PROGRESSING;
-			mAddItemLayout.setMode(MBProgressCircleLayout.MODE_PROGRESS);
-			mAddItemLayout.setProgressListener(mProgressListener);
-			mAddItemLayout.startProcress(progress, total);
-			post(new Runnable() {
-				@Override
-				public void run() {
-					mAddItemText.setText(R.string.iconfont_cloud_upload);
-					mAddItemText.setTextColor(
-							MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
-					mAddItemLayout.setBackgroundResource(R.drawable.btn_white_circle);
-				}
-			});			
+			if(total == 0) {
+				post(new Runnable() {
+					@Override
+					public void run() {
+						mMode = MODE_CLOSE;
+						resetState();
+						if(mOnSelectKindLayoutListener != null)
+							mOnSelectKindLayoutListener.onProgressFinished();
+					}
+				});
+			} else {
+				mMode = MODE_PROGRESSING;
+				mAddItemLayout.setMode(MBProgressCircleLayout.MODE_PROGRESS);
+				mAddItemLayout.setProgressListener(mProgressListener);
+				mAddItemLayout.startProcress(progress, total);
+				post(new Runnable() {
+					@Override
+					public void run() {
+						mAddItemText.setText(R.string.iconfont_cloud_upload);
+						mAddItemText.setTextColor(
+								MappingBirdApplication.instance().getResources().getColor(R.color.graphic_blue));
+						mAddItemLayout.setBackgroundResource(R.drawable.btn_white_circle);
+					}
+				});
+			}
 		} else if(state == MBPlaceSubmitTask.MSG_ADD_PLACE_FAILED ||
 				state == MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED) {
 			// 上傳失敗

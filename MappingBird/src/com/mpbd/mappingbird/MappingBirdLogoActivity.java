@@ -6,11 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.pnikosis.materialishprogress.ProgressWheel;

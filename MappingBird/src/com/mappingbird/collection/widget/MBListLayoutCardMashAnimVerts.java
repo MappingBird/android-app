@@ -1,11 +1,6 @@
 package com.mappingbird.collection.widget;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.view.View;
-
-import com.mappingbird.common.DeBug;
 
 
 public class MBListLayoutCardMashAnimVerts {

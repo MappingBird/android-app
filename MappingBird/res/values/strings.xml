@@ -75,7 +75,9 @@
     <string name="collection_dialog_cancel_upload_photos_title">Uploading photos</string>
     <string name="collection_dialog_cancel_upload_photos_message">New place has saved. Now is uploading photos.
         Do you want to cancel upload?</string>
-
+    <string name="collection_dialog_successed_upload_title">\"%1$s\" saved</string>
+    <string name="collection_dialog_successed_upload_msg">New place has been successfully saved to \"%1$s\"</string>
+    <string name="collection_dialog_btn_check_it_now">Check it now</string>
     <!--  -->
     <string name="place_last_update">Last edit - %s</string>
 

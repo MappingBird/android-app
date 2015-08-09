@@ -17,7 +17,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.mappingbird.common.DeBug;
-import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 import com.mappingbird.saveplace.services.MBPlaceSubmitData;
 import com.mappingbird.saveplace.services.MBPlaceSubmitImageData;

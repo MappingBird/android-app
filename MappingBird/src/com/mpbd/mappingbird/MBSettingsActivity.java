@@ -16,7 +16,6 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;

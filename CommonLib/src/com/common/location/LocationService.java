@@ -7,7 +7,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import com.hlrt.common.DeBug;
 import com.hlrt.common.Utils;
 
 public class LocationService implements LocationListener {
@@ -59,7 +58,7 @@ public class LocationService implements LocationListener {
         	mStartLocationService = true;
             try {
                 timer.start();
-                DeBug.i(TAG, "LocationService start");
+//                DeBug.i(TAG, "LocationService start");
                 locationManager = (LocationManager) mContext
                         .getSystemService(Context.LOCATION_SERVICE);
 
@@ -74,7 +73,7 @@ public class LocationService implements LocationListener {
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    DeBug.d(TAG, "Network Enabled");
+//                    DeBug.d(TAG, "Network Enabled");
                     if (locationManager != null) {
                         Location tempLocation = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -91,7 +90,7 @@ public class LocationService implements LocationListener {
                     locationManager.requestLocationUpdates(
                             LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES,
                             MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    DeBug.d(TAG, "GPS Enabled");
+//                    DeBug.d(TAG, "GPS Enabled");
                     if (locationManager != null) {
                         Location tempLocation = locationManager
                                 .getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -101,7 +100,7 @@ public class LocationService implements LocationListener {
                             location = tempLocation;
                     }
                 }
-                DeBug.d(TAG, "Location = "+ location);
+//                DeBug.d(TAG, "Location = "+ location);
                 if(mLocationServiceListener != null)
                 	mLocationServiceListener.onLocationChanged(location);
                 timer.cancel();
@@ -116,8 +115,8 @@ public class LocationService implements LocationListener {
     }
 
     public void stopUsingGPS() {
-    	if(DeBug.DEBUG)
-    		DeBug.e(TAG, "stopUsingGPS");
+//    	if(DeBug.DEBUG)
+//    		DeBug.e(TAG, "stopUsingGPS");
     	mStartLocationService = false;
         if (locationManager != null) {
             locationManager.removeUpdates(LocationService.this);
@@ -139,11 +138,11 @@ public class LocationService implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
     	timer.cancel();
-    	DeBug.i(TAG, "onLocationChanged : "+location.toString());
+//    	DeBug.i(TAG, "onLocationChanged : "+location.toString());
         if (location != null
                 && isBetterLocation(location, this.location)) {
             this.location = location;
-            DeBug.i(TAG, "onLocationChanged : loation changed");
+//            DeBug.i(TAG, "onLocationChanged : loation changed");
             if(mLocationServiceListener != null)
             	mLocationServiceListener.onLocationChanged(location);
         }

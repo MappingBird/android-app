@@ -1,13 +1,13 @@
 package com.mappingbird.collection.widget;
 
-import com.mappingbird.common.MappingBirdApplication;
-import com.mpbd.mappingbird.R;
-
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.RectF;
 import android.text.style.ReplacementSpan;
+
+import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.mappingbird.R;
 
 
 public class MBSpannBackground extends ReplacementSpan{

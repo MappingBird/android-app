@@ -12,9 +12,9 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.mappingbird.common.BitmapLoader;
+import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.MappingBirdApplication;
-import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mpbd.mappingbird.R;
 
 public class MBGalleryAdapter extends PagerAdapter {

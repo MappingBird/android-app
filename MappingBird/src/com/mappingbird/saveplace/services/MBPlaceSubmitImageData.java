@@ -12,9 +12,9 @@ import java.net.URL;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.hlrt.common.DeBug;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnUploadImageListener;
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 
 

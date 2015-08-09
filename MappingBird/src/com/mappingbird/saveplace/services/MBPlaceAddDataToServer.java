@@ -3,8 +3,6 @@ package com.mappingbird.saveplace.services;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import android.text.TextUtils;
-
 
 public class MBPlaceAddDataToServer implements Serializable{
 

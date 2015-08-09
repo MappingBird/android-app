@@ -10,7 +10,7 @@ import java.net.URLEncoder;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.hlrt.common.DeBug;
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
 
 

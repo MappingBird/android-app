@@ -49,16 +49,16 @@ public class MainUIMessenger {
 		int count = _submitListenerList.size();
 		_submitListenerList.add(listener);
 		
-		if(count == 0 && _submitListenerList.size() > 0)
-			MBServiceClient.attachMessenger(mUIMessenger);
+//		if(count == 0 && _submitListenerList.size() > 0)
+//			MBServiceClient.attachMessenger(mUIMessenger);
 	}
 
 	public void removeSubmitListener(OnMBSubmitChangedListener listener) {
 		int count = _submitListenerList.size();
 		_submitListenerList.remove(listener);
 		
-		if(count > 0 && _submitListenerList.size() == 0)
-			MBServiceClient.attachMessenger(null);
+//		if(count > 0 && _submitListenerList.size() == 0)
+//			MBServiceClient.attachMessenger(null);
 	}
 
 	public interface OnMBSubmitChangedListener {

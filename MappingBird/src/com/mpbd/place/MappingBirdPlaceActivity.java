@@ -26,12 +26,10 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.analytics.tracking.android.EasyTracker;
 import com.mappingbird.api.ImageDetail;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetPointsListener;
-import com.mappingbird.collection.MBCollectionActivity;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
@@ -129,6 +127,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		mMyLatitude = intent.getDoubleExtra("myLatitude", 0);
 		mMyLongitude = intent.getDoubleExtra("myLongitude", 0);
 
+		boolean isFinished = false;
 		long placeId = 0;
 		if(intent.hasExtra(EXTRA_MBPOINT)) {
 			mCurrentPoint = (MBPointData) intent.getSerializableExtra(EXTRA_MBPOINT);
@@ -136,21 +135,26 @@ public class MappingBirdPlaceActivity extends Activity implements
 			placeId = mCurrentPoint.getId();
 		} else if(intent.hasExtra(EXTRA_PLACE_ID)) {
 			placeId = intent.getLongExtra(EXTRA_PLACE_ID, 0);
-			if(placeId == 0)
+			if(placeId == 0) {
+				isFinished = true;
 				finish();
+			}
 		} else {
 			// 沒有值 關閉
+			isFinished = true;
 			finish();
 		}
 
-		mApi = new MappingBirdAPI(this.getApplicationContext());
-
-		mApi.getPoints(mPointListener, placeId);
-		mContext = this;
-
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
-		mLoadingDialog.setCancelable(false);
-		mLoadingDialog.show();
+		if(!isFinished) {
+			mApi = new MappingBirdAPI(this.getApplicationContext());
+	
+			mApi.getPoints(mPointListener, placeId);
+			mContext = this;
+	
+			mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
+			mLoadingDialog.setCancelable(false);
+			mLoadingDialog.show();
+		}
 	}
 
 	private void setDataByPoint(MBPointData point) {
