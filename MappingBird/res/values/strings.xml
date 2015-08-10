@@ -23,6 +23,7 @@
     <string name="str_cancel_upload">Cancel upload</string>
     <string name="str_confirm">Confirm</string>
     <string name="str_on">On</string>
+    <string name="str_abort">abort</string>
 
     <!-- Sign in and Sign up activity and -->
     <string name="login_content_title">Log In Mappingbird Account</string>

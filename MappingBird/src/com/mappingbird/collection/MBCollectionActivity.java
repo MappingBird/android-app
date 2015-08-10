@@ -173,7 +173,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 		mDrawerList.setAdapter(mCollectionListAdapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		findViewById(R.id.collection_logout_icon).setOnClickListener(mMenuClickListener);
 		findViewById(R.id.collection_help_layout).setOnClickListener(mMenuClickListener);
 		findViewById(R.id.collection_settings_layout).setOnClickListener(mMenuClickListener);
 
@@ -544,9 +543,6 @@ public class MBCollectionActivity extends FragmentActivity implements
                         AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS,
                         AppAnalyticHelper.LABEL_LIST_ITEM_HELP, 0);				
 				
-				break;
-			}
-			case R.id.collection_logout_icon: {
 				break;
 			}
 			default:
@@ -1129,7 +1125,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 					getString(R.string.collection_dialog_cancel_upload_photos_title), 
 					getString(R.string.collection_dialog_cancel_upload_photos_message), 
 					getString(R.string.str_conitune), mCloseDialogListener, MBDialog.BTN_STYLE_BLUE,
-					getString(R.string.str_cancel), mCancelUploadListener, MBDialog.BTN_STYLE_DEFAULT);
+					getString(R.string.str_abort), mCancelUploadListener, MBDialog.BTN_STYLE_DEFAULT);
 			break;
 		case DIALOG_UPLOAD_FAILED:
 			//先關閉之前的dialog

@@ -50,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:paddingLeft="4dp"
             android:layout_toRightOf="@id/settings_log_out_icon"
             android:paddingRight="16dp"
             android:text="@string/str_log_out"
