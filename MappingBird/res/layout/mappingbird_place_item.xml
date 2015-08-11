@@ -64,7 +64,7 @@
                 android:id="@+id/card_unit"
                 android:layout_width="@dimen/place_item_card_distance_width"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-12dp"
+                android:layout_marginTop="-10dp"
                 android:gravity="right"
                 android:paddingRight="@dimen/card_unit_padding_right"
                 android:singleLine="true"

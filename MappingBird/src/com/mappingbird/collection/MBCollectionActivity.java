@@ -695,8 +695,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 					public boolean onClusterClick(
 							Cluster<MappingBirdItem> cluster) {
 						float nowZoom = mMap.getCameraPosition().zoom;
-						if(nowZoom < (mMap.getMaxZoomLevel() - 2)) {
-							nowZoom = nowZoom + 2;
+						if(nowZoom < (mMap.getMaxZoomLevel() - 3)) {
+							nowZoom = nowZoom + 3;
 						} else {
 							nowZoom = mMap.getMaxZoomLevel();
 						}
