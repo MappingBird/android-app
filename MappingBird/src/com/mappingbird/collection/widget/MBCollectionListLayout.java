@@ -132,6 +132,15 @@ public class MBCollectionListLayout extends RelativeLayout {
 	}
 
 	public void closeLayout() {
+		if(mMode != MODE_SMALL_CARD) {
+			switchMode(MODE_ANIM_TO_SMALL_CARD);
+			mEndY = mCardDefaultPositionY;
+			ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchModeAnimation", 0.0f, 1.0f);
+			obj.addListener(mSwitchModeAnimationListener);
+			obj.setInterpolator(new  DecelerateInterpolator());
+			obj.setDuration(MOVE_POSITION_ANIMATION);
+			obj.start();
+		}
 	}
 
 	public void setMyLocation(LatLng location) {

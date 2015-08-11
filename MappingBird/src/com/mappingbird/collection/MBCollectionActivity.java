@@ -458,13 +458,13 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private void selectItem(int position) {
 
 		if (mCollectionListAdapter.getCount() > 0) {
+			mMBCollectionListLayout.closeLayout();
 			mDrawerList.setItemChecked(position, true);
 			setTitle((MBCollectionListItem)mCollectionListAdapter.getItem(position));
 			mDrawerLayout.closeDrawer(mDrawerContentLayout);
 		}
 		if (mCollections != null && mCollections.getCount() > 0) {
 			showLoadingDialog();
-			mMBCollectionListLayout.closeLayout();
 			mApi.getCollectionInfo(getCollectionInfoListener,
 					mCollections.get(position).getId());
 		}
