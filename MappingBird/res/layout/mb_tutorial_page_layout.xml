@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@android:color/transparent" >
 
     <!-- welcome -->
@@ -11,7 +11,8 @@
         android:id="@+id/tutoral_welcome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:visibility="gone" >
 
         <!-- placeholder for logo -->
 
@@ -78,99 +79,48 @@
 
     <!-- Create account or do it later -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/tutoral_create_or_do_later"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical" >
-
-                <com.mappingbird.widget.MappingbirdFontIcon
-                    android:layout_width="78dp"
-                    android:layout_height="78dp"
-                    android:text="@string/iconfont_mappingbird_logo"
-                    android:textColor="@color/font_white"
-                    android:textSize="78dp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/mappingbird_logotype_large" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/mappingbird_viewer" />
-            </LinearLayout>
-        </LinearLayout>
+        android:visibility="visible" >
 
         <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/tutoral_create_descripion"
-            style="@style/TextStyle_Label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:gravity="center_horizontal"
-            android:maxWidth="272dp"
-            android:minWidth="208dp"
-            android:text="@string/tutorial_sign_up_descriptions"
-            android:textColor="@color/font_white"
-            android:textSize="14dp" />
-
-        <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/tutoral_sign_in_2"
+            android:id="@+id/tutoral_sign_up"
             style="@style/BtnTransparent"
             android:layout_width="272dp"
+            android:layout_above="@+id/tutoral_or"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:background="@drawable/login_btn_selector_bg"
             android:maxWidth="272dp"
             android:minWidth="208dp"
-            android:text="@string/tutorial_sign_in"
-            android:textColor="@color/font_white" />
+            android:text="@string/tutorial_create_account" />
 
         <ImageView
+            android:id="@+id/tutoral_or"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/tutoral_log_in"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/instruction_or" />
 
         <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/tutoral_sign_up"
+            android:id="@+id/tutoral_log_in"
             style="@style/BtnTransparent"
             android:layout_width="272dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="50dp"
             android:maxWidth="272dp"
             android:minWidth="208dp"
-            android:text="@string/tutorial_sign_up" />
-
-        <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/tutoral_learn_more"
-            style="@style/BtnTransparent"
-            android:layout_width="272dp"
-            android:layout_gravity="center_horizontal"
-            android:maxWidth="272dp"
-            android:minWidth="208dp"
-            android:text="@string/tutorial_learn_more" />
-    </LinearLayout>
+            android:text="@string/tutorial_sign_in"
+            android:textColor="@color/font_white" />
+    </RelativeLayout>
 
 </FrameLayout>
