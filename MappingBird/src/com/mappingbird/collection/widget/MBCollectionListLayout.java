@@ -835,7 +835,9 @@ public class MBCollectionListLayout extends RelativeLayout {
 		private ArrayList<ListItem> mItems = new ArrayList<ListItem>();
 		private ListItem mSelectPoint = null;
 		private LayoutInflater mInflater;
+		private Context mContext;
 		public ItemAdapter(Context context) {
+			mContext = context;
 			mInflater = LayoutInflater.from(context);
 		}
 
@@ -988,6 +990,16 @@ public class MBCollectionListLayout extends RelativeLayout {
 			}
 
 			host.mAddress.setText(item.mPoint.getLocation().getPlaceAddress());
+
+			if(position == 0) {
+				host.mAddress.setTextColor(mContext.getResources().getColor(R.color.font_deep_blue));
+				host.mUtil.setTextColor(mContext.getResources().getColor(R.color.font_deep_blue));
+				host.mDistance.setTextColor(mContext.getResources().getColor(R.color.font_deep_blue));
+			} else {
+				host.mAddress.setTextColor(mContext.getResources().getColor(R.color.font_normal));
+				host.mUtil.setTextColor(mContext.getResources().getColor(R.color.font_normal));
+				host.mDistance.setTextColor(mContext.getResources().getColor(R.color.font_normal));
+			}
 			return convertView;
 		}
 	}

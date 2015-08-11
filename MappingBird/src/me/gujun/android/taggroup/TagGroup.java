@@ -778,7 +778,7 @@ public class TagGroup extends ViewGroup {
             mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
             mMarkPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            mMarkPaint.setColor(Color.WHITE);
+            mMarkPaint.setColor(getResources().getColor(R.color.tag_text_color));
             mMarkPaint.setStrokeWidth(4);
 
             mLeftCornerRectF = new RectF();
@@ -960,13 +960,13 @@ public class TagGroup extends ViewGroup {
                     mPaint.setStyle(Paint.Style.FILL);
                     mPaint.setColor(mBrightColor);
                     mPaint.setPathEffect(null);
-                    setTextColor(Color.WHITE);
+                    setTextColor(getResources().getColor(R.color.tag_text_color));
                 } else {
                     mPaint.setStyle(Paint.Style.STROKE);
                     mPaint.setStrokeWidth(mBorderStrokeWidth);
                     mPaint.setColor(mBrightColor);
                     mPaint.setPathEffect(null);
-                    setTextColor(Color.WHITE);
+                    setTextColor(getResources().getColor(R.color.tag_text_color));
                 }
 
             } else if (mState == STATE_INPUT) {

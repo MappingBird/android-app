@@ -20,7 +20,7 @@
             android:id="@+id/card_mask"
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
-            android:layout_height="80dp" />
+            android:layout_height="@dimen/list_layout_item_icon_height" />
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/card_title_single"
@@ -87,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:singleLine="true"
+                android:paddingBottom="5dp"
                 android:textColor="@color/font_deep_blue"
                 android:textSize="14dp" />
 
@@ -96,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textColor="#fff"
+                android:textColor="@color/tag_text_color"
                 android:textSize="12dp" />
         </LinearLayout>
     </RelativeLayout>

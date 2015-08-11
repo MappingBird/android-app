@@ -59,7 +59,8 @@
     <color name="default_divider">#e5e5e5</color>
 
     <!--  -->
-    <color name="tag_background">#C0191919</color>
+    <color name="tag_background">#14191919</color>
+    <color name="tag_text_color">#6f6f6f</color>
 
     <!-- Loading -->
     <color name="loader_blue_fillin">#ff00a8e6</color>

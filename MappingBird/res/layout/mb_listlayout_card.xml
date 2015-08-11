@@ -14,14 +14,13 @@
     <RelativeLayout
         android:id="@+id/item_info_layout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_centerVertical="true"
+        android:layout_height="140dp"
         android:visibility="gone" >
 
         <View
             android:id="@+id/item_mask"
             android:layout_width="match_parent"
-            android:layout_height="80dp" />
+            android:layout_height="140dp" />
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/item_title"
@@ -91,7 +90,7 @@
         android:id="@+id/card_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_layout_item_address_height"
-        android:layout_below="@id/item_info_layout"
+        android:layout_marginTop="140dp"
         android:visibility="gone" >
 
         <LinearLayout
@@ -139,6 +138,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:singleLine="true"
+                android:paddingBottom="5dp"
                 android:textColor="@color/font_deep_blue"
                 android:textSize="14dp" />
 
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:textColor="#fff"
+                android:textColor="@color/tag_text_color"
                 android:textSize="12dp" />
         </LinearLayout>
     </RelativeLayout>

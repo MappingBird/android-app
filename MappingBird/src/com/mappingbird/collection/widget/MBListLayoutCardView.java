@@ -235,23 +235,23 @@ public class MBListLayoutCardView extends RelativeLayout {
 		obj.start();
 	}
 
-	public void setSwitchAnimation(float value) {
-		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)this.getLayoutParams();
-		lp.height = (int)(mStartHeight + (mEndHeight - mStartHeight) * value);
-		this.setLayoutParams(lp);
-		lp = (RelativeLayout.LayoutParams) mCardIcon.getLayoutParams();
-		lp.width = (int)(mIconStartWidth + (mIconEndWidth - mIconStartWidth) * value);
-		lp.height = (int)(mIconStartHeight + (mIconEndHeight - mIconStartHeight) * value);
-		mCardIcon.setLayoutParams(lp);
-		mCardIcon.setX((int)(mIconXStarted + (mIconXEnd - mIconXStarted)*value));
-		if(value < 0.5f) {
-			mBottomLayout.setAlpha(0);
-			mItemLayout.setAlpha(0);
-		} else {
-			mBottomLayout.setAlpha((value-0.5f)*2);
-			mItemLayout.setAlpha((value-0.5f)*2);
-		}
-	}
+//	public void setSwitchAnimation(float value) {
+//		RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)this.getLayoutParams();
+//		lp.height = (int)(mStartHeight + (mEndHeight - mStartHeight) * value);
+//		this.setLayoutParams(lp);
+//		lp = (RelativeLayout.LayoutParams) mCardIcon.getLayoutParams();
+//		lp.width = (int)(mIconStartWidth + (mIconEndWidth - mIconStartWidth) * value);
+//		lp.height = (int)(mIconStartHeight + (mIconEndHeight - mIconStartHeight) * value);
+//		mCardIcon.setLayoutParams(lp);
+//		mCardIcon.setX((int)(mIconXStarted + (mIconXEnd - mIconXStarted)*value));
+//		if(value < 0.8f) {
+//			mBottomLayout.setAlpha(0);
+//			mItemLayout.setAlpha(0);
+//		} else {
+//			mBottomLayout.setAlpha((value-0.8f)*5);
+//			mItemLayout.setAlpha((value-0.8f)*5);
+//		}
+//	}
 
 	public void resetLayout() {
 		RelativeLayout.LayoutParams lp;
@@ -311,7 +311,7 @@ public class MBListLayoutCardView extends RelativeLayout {
 			lp.height = (int)(mStartHeight + (mEndHeight - mStartHeight) * rate);
 			this.setLayoutParams(lp);
 
-			if(rate < 0.5f) {
+			if(rate < 0.8f) {
 				float alpha = 1.0f - rate*4;
 				if(alpha < 0)
 					alpha = 0;
@@ -331,8 +331,8 @@ public class MBListLayoutCardView extends RelativeLayout {
 					mBottomLayout.setVisibility(View.VISIBLE);
 					mItemLayout.setVisibility(View.VISIBLE);
 				}
-				mBottomLayout.setAlpha((alpha-0.5f)*2);
-				mItemLayout.setAlpha((alpha-0.5f)*2);
+				mBottomLayout.setAlpha((alpha-0.8f)*5);
+				mItemLayout.setAlpha((alpha-0.8f)*5);
 			}
 		}
 	}
