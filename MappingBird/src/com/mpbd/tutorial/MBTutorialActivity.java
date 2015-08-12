@@ -62,8 +62,13 @@ public class MBTutorialActivity extends FragmentActivity {
         final View logoTextView = findViewById(R.id.tutoral_page_logo_text);
         final RelativeLayout.LayoutParams logoTextParams = (RelativeLayout.LayoutParams) logoTextView.getLayoutParams();
 
+        final View sloganImageView = findViewById(R.id.tutoral_page_slogan_img);
+        final RelativeLayout.LayoutParams sloganImageViewParams = (RelativeLayout.LayoutParams) sloganImageView.getLayoutParams();
+        
         final View layoutBottomBtns = findViewById(R.id.layout_tutoral_bottom_btns);
         final FrameLayout.LayoutParams bottomBtnsParams = (FrameLayout.LayoutParams) layoutBottomBtns.getLayoutParams();
+
+        
         
         final PageIndicator mIndicator = (CirclePageIndicator) findViewById(R.id.tutoral_pager_indicator);
         final RelativeLayout.LayoutParams indicatorParams = (RelativeLayout.LayoutParams) ((View) mIndicator).getLayoutParams();
@@ -85,6 +90,7 @@ public class MBTutorialActivity extends FragmentActivity {
                 float iconEndOffsetY = 0.08f;  // B_Y
                 
                 if(position == 0){
+                    sloganImageView.setVisibility(View.INVISIBLE);
                     
                     float iconScaleFactor = 1 - ((78f - 37f) / 78f) * positionOffset;
                     float textScaleFactor = 1 - ((45f - 36f) / 45f) * positionOffset;
@@ -141,8 +147,16 @@ public class MBTutorialActivity extends FragmentActivity {
                     logoTextView.setScaleY(textScaleFactor);
                     
                     
+                    // slogan
+                    sloganImageView.setVisibility(View.VISIBLE);
+                    sloganImageViewParams.topMargin = (int)(mScreenHeight * 0.36f + MBUtil.getPixelsFromDip(39) + MBUtil.getPixelsFromDip(10)*positionOffset );
+                    sloganImageViewParams.leftMargin =  (int)(mScreenWidth - MBUtil.getPixelsFromDip(200)  ) / 2  ;
+                    sloganImageView.setLayoutParams(sloganImageViewParams);
+                    sloganImageView.setAlpha(positionOffset);
+                    
                 }else if (position == 4){
                     ((View) mIndicator).setVisibility(View.INVISIBLE);
+                    
                     
                     float iconScaleFactor = 37f/78f + ((78f - 37f) / 78f) ;                    
                     float textScaleFactor = 36f/45f + ((45f - 36f) / 45f) ;
@@ -150,7 +164,6 @@ public class MBTutorialActivity extends FragmentActivity {
                     // set margin
                     logoIconParams.topMargin = (int)(mScreenHeight * ( iconEndOffsetY + ( iconStartOffsetY - iconEndOffsetY)));
                     logoIconParams.leftMargin =  (int)(mScreenWidth - MBUtil.getPixelsFromDip(iconEndOffsetX) + MBUtil.getPixelsFromDip(iconEndOffsetX - iconStartOffsetX) ) / 2  ;
-                   
                     logoIconView.setLayoutParams(logoIconParams);
                     
                     
@@ -165,9 +178,16 @@ public class MBTutorialActivity extends FragmentActivity {
                     logoTextView.setScaleX(textScaleFactor);
                     logoTextView.setScaleY(textScaleFactor);
                     
+                    // slogan
+                    sloganImageView.setVisibility(View.VISIBLE);
+                    sloganImageViewParams.topMargin = (int)(mScreenHeight * 0.36f + MBUtil.getPixelsFromDip(45 + 4) );
+                    sloganImageViewParams.leftMargin =  (int)(mScreenWidth - MBUtil.getPixelsFromDip(200)  ) / 2  ;
+                    sloganImageView.setLayoutParams(sloganImageViewParams);
+                    
                     
                 }else{  // position == 1 || position == 2 
-                 
+                    sloganImageView.setVisibility(View.INVISIBLE);
+                    
                     float iconScaleFactor = 1 - ((78f - 37f) / 78f) * 1;
                     float textScaleFactor = 1 - ((45f - 36f) / 45f) * 1;
                     

@@ -24,6 +24,15 @@
         android:layout_marginTop="200dp"
         android:src="@drawable/mappingbird_logotype_large" />
 
+    <ImageView
+        android:id="@+id/tutoral_page_slogan_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="250dp"
+        android:src="@drawable/mappingbird_slogan" />
+
     <com.mappingbird.widget.MappingBirdParallaxPager
         android:id="@+id/tutoral_pager"
         android:layout_width="match_parent"
