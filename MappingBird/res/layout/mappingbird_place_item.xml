@@ -94,8 +94,7 @@
             <com.mappingbird.widget.MappingbirdTextView
                 android:id="@+id/card_tag_list"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:layout_height="18dp"
                 android:singleLine="true"
                 android:textColor="@color/tag_text_color"
                 android:textSize="12dp" />

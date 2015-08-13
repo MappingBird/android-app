@@ -106,15 +106,18 @@
     <dimen name="coll_list_item_distance_text_size">32dp</dimen>
     <dimen name="coll_list_item_unit_text_size">16dp</dimen>
     <dimen name="coll_list_item_tag_text_size">12dp</dimen>
-    <dimen name="coll_list_item_tag_span_padding_top">0dp</dimen>
-    <dimen name="coll_list_item_tag_span_padding_botton">0dp</dimen>
-    <dimen name="coll_list_item_tag_span_padding_left">4dp</dimen>
-    <dimen name="coll_list_item_tag_span_padding_right">4dp</dimen>
     <dimen name="coll_list_item_title_margin_right">8dp</dimen>
     <dimen name="coll_list_item_title_margin_left">8dp</dimen>
     <dimen name="coll_list_item_card_padding_right">8dp</dimen>
     <dimen name="coll_list_item_card_padding_left">8dp</dimen>
-    
+
+    <!-- Tag -->
+    <dimen name="tag_span_padding_top">0dp</dimen>
+    <dimen name="tag_span_padding_bottom">0dp</dimen>
+    <dimen name="tag_span_padding_left">4dp</dimen>
+    <dimen name="tag_span_padding_right">4dp</dimen>
+    <dimen name="tag_span_space">4dp</dimen>
+
     <!-- Collection new list layout -->
     <dimen name="coll_card_marge_bottom">10dp</dimen>
     <dimen name="coll_card_marge_bottom_other">8dp</dimen>
