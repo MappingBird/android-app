@@ -50,29 +50,29 @@
                 android:paddingLeft="30dp"
                 android:paddingRight="40dp"
                 android:singleLine="true"
-                android:textCursorDrawable="@drawable/edit_cursor_drawable_black"
                 android:textColor="@color/font_white"
+                android:textCursorDrawable="@drawable/edit_cursor_drawable_black"
                 android:textSize="18dp" />
-
-            <com.mappingbird.widget.MappingbirdFontIcon
-                android:id="@+id/title_btn_delete"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:text="@string/iconfont_close_circle"
-                android:textColor="@color/titlebar_button_text_color"
-                android:textSize="20dp"
-                android:visibility="gone" />
         </RelativeLayout>
+
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/title_btn_delete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/iconfont_close_circle"
+            android:textColor="@color/titlebar_button_text_color"
+            android:textSize="20dp"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/title_bar_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="4dp"
-            android:layout_toRightOf="@id/title_btn_back" >
+            android:layout_toRightOf="@id/title_btn_back"
+            android:paddingLeft="4dp" >
 
             <com.mappingbird.widget.MappingbirdFontIcon
                 android:id="@+id/title_btn_search"

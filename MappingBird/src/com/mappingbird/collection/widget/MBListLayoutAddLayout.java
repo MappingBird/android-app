@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.mappingbird.collection.widget.MBProgressCircleLayout.ProgressListener;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
-import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
+import com.mappingbird.saveplace.MBPickPlaceActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.mappingbird.R;
@@ -277,25 +277,25 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			} else {
 				if(mMode != MODE_OPEN)
 					return;
-				String type = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
+				String type = MBPickPlaceActivity.TYPE_DEFAULT;
 				switch(v.getId()) {
 					case R.id.select_scene:
-						type = MappingBirdPickPlaceActivity.TYPE_SCENE;
+						type = MBPickPlaceActivity.TYPE_SCENE;
 						break;
 					case R.id.select_restaurant:
-						type = MappingBirdPickPlaceActivity.TYPE_RESTURANT;
+						type = MBPickPlaceActivity.TYPE_RESTURANT;
 						break;
 					case R.id.select_hotel:
-						type = MappingBirdPickPlaceActivity.TYPE_HOTEL;
+						type = MBPickPlaceActivity.TYPE_HOTEL;
 						break;
 					case R.id.select_default:
-						type = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
+						type = MBPickPlaceActivity.TYPE_DEFAULT;
 						break;
 					case R.id.select_mall:
-						type = MappingBirdPickPlaceActivity.TYPE_MALL;
+						type = MBPickPlaceActivity.TYPE_MALL;
 						break;
 					case R.id.select_bar:
-						type = MappingBirdPickPlaceActivity.TYPE_BAR;
+						type = MBPickPlaceActivity.TYPE_BAR;
 						break;				
 				}
 				if(mOnSelectKindLayoutListener  != null)

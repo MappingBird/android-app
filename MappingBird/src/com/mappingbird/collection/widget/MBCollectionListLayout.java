@@ -39,7 +39,7 @@ import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
-import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
+import com.mappingbird.saveplace.MBPickPlaceActivity;
 import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.MBUtil;
@@ -744,10 +744,10 @@ public class MBCollectionListLayout extends RelativeLayout {
 		@Override
 		public void onSelectKind(String type) {
 			
-			Intent intent = new Intent(getContext(), MappingBirdPickPlaceActivity.class);
-			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_TYPE, type);
-			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LAT, mMyLocation.latitude);
-			intent.putExtra(MappingBirdPickPlaceActivity.EXTRA_LONG, mMyLocation.longitude);
+			Intent intent = new Intent(getContext(), MBPickPlaceActivity.class);
+			intent.putExtra(MBPickPlaceActivity.EXTRA_TYPE, type);
+			intent.putExtra(MBPickPlaceActivity.EXTRA_LAT, mMyLocation.latitude);
+			intent.putExtra(MBPickPlaceActivity.EXTRA_LONG, mMyLocation.longitude);
 			getContext().startActivity(intent);
 		}
 		

@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.mappingbird.common.MappingBirdApplication;
-import com.mappingbird.saveplace.MappingBirdPickPlaceActivity;
+import com.mappingbird.saveplace.MBPickPlaceActivity;
 import com.mpbd.mappingbird.R;
 
 
@@ -78,17 +78,17 @@ public class MBUtil {
 	}
 	
 	public static int getPlaceTypeIconFont(String type) {
-		if(type.equals(MappingBirdPickPlaceActivity.TYPE_DEFAULT)) {
+		if(type.equals(MBPickPlaceActivity.TYPE_DEFAULT)) {
 			return R.string.iconfont_general;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_BAR)) {
+		} else if(type.equals(MBPickPlaceActivity.TYPE_BAR)) {
 			return R.string.iconfont_bar;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_HOTEL)) {
+		} else if(type.equals(MBPickPlaceActivity.TYPE_HOTEL)) {
 			return R.string.iconfont_hotel;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_MALL)) {
+		} else if(type.equals(MBPickPlaceActivity.TYPE_MALL)) {
 			return R.string.iconfont_shopping;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_RESTURANT)) {
+		} else if(type.equals(MBPickPlaceActivity.TYPE_RESTURANT)) {
 			return R.string.iconfont_restaurant;
-		} else if(type.equals(MappingBirdPickPlaceActivity.TYPE_SCENE)) {
+		} else if(type.equals(MBPickPlaceActivity.TYPE_SCENE)) {
 			return R.string.iconfont_camera;
 		}
 		return R.string.iconfont_general;

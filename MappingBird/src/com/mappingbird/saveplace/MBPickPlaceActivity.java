@@ -31,7 +31,7 @@ import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 
-public class MappingBirdPickPlaceActivity extends FragmentActivity  {
+public class MBPickPlaceActivity extends FragmentActivity  {
 	private static final int REQUEST_ADD_PLACE = 0x001010;
 
 	public static final String TYPE_SCENE 		= "scenicspot";
@@ -48,7 +48,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	private static final int MSG_SEARCH_INPUT = 0;
 
 	private ListView mPlaceListView;
-	private MappingBirdPlaceAdapter mPlaceAdapter;
+	private MBPlaceAdapter mPlaceAdapter;
 	private TextView mTitleText;
 	
 	private MappingBirdAPI mApi = null;
@@ -82,7 +82,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.mappingbird_pick_place);
+		setContentView(R.layout.mb_activity_layout_pick_place);
 		initTitleLayout();
 		mApi = new MappingBirdAPI(this.getApplicationContext());
 
@@ -91,9 +91,11 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 
 		mPlaceListView = (ListView) findViewById(R.id.pick_place_list);
 		// Header view : 為了上面的Padding
-		View headerView = LayoutInflater.from(this).inflate(R.layout.mappingbird_pick_place_header_item, mPlaceListView, false);
+		View headerView = LayoutInflater.from(this).inflate(R.layout.mb_layout_pick_place_header_item, mPlaceListView, false);
+		View footerView = LayoutInflater.from(this).inflate(R.layout.mb_layout_pick_place_footer_item, mPlaceListView, false);
 		mPlaceListView.addHeaderView(headerView);
-		mPlaceAdapter = new MappingBirdPlaceAdapter(this);
+		mPlaceListView.addFooterView(footerView);
+		mPlaceAdapter = new MBPlaceAdapter(this);
 		mPlaceListView.setAdapter(mPlaceAdapter);
 		mPlaceListView.setOnItemClickListener(mOnItemClickListener);
 		Intent intent = getIntent();
@@ -220,28 +222,28 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 			MappingBirdPlaceItem item = (MappingBirdPlaceItem)mPlaceAdapter.getItem(position-1);
 			switch(item.getType()) {
 				case MappingBirdPlaceItem.TYPE_PLACE: {
-					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MappingBirdAddPlaceActivity.class);
+					Intent intent = new Intent(MBPickPlaceActivity.this, MappingBirdAddPlaceActivity.class);
 					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_TYPE, mType);
 					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_ITEM, item);
-					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
+					MBPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
-					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
+					Intent intent = new Intent(MBPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LAT, mLatitude);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LONG, mLongitude);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TYPE, mType);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TITLE, mPlaceAdapter.getAddPlaceName());
 					
-					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
+					MBPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
-					Intent intent = new Intent(MappingBirdPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
+					Intent intent = new Intent(MBPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LAT, mLatitude);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LONG, mLongitude);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TYPE, mType);
-					MappingBirdPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
+					MBPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
 				case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT: {
@@ -344,7 +346,7 @@ public class MappingBirdPickPlaceActivity extends FragmentActivity  {
 
 	private void openIme(View view) {
 		InputMethodManager inputMethodManager=(InputMethodManager)
-				MappingBirdPickPlaceActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+				MBPickPlaceActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
 	    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(),
 	    		0, 0);
 	}

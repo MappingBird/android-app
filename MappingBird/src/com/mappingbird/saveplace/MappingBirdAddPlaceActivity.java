@@ -50,7 +50,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 	private static final int REQUEST_TAKE_PICTURE = 2;
 
 	private MappingBirdPlaceItem mItem;
-	private String mType = MappingBirdPickPlaceActivity.TYPE_DEFAULT;
+	private String mType = MBPickPlaceActivity.TYPE_DEFAULT;
 
 	private TextView mTitleText;
 	private View mSubmitBtn;

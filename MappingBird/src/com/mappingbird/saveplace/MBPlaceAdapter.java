@@ -22,7 +22,7 @@ import com.mappingbird.widget.MappingbirdFontIcon;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.Utils;
 
-public class MappingBirdPlaceAdapter extends BaseAdapter  {
+public class MBPlaceAdapter extends BaseAdapter  {
 	
 	private Context mContext;
 	private LayoutInflater mInflater;
@@ -32,7 +32,7 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 	private String mFilterString = "";
 	private String mAddPlaceName = "";
 	
-	public MappingBirdPlaceAdapter(Context context) {
+	public MBPlaceAdapter(Context context) {
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);
 	}
@@ -136,7 +136,7 @@ public class MappingBirdPlaceAdapter extends BaseAdapter  {
 		if(convertView == null) {
 			switch(type) {
 				case MappingBirdPlaceItem.TYPE_PLACE: {
-					convertView = mInflater.inflate(R.layout.mappingbird_pick_place_item, parent, false);
+					convertView = mInflater.inflate(R.layout.mb_layout_pick_place_item, parent, false);
 					ItemHost host = new ItemHost();
 					host.mName 		= (TextView) convertView.findViewById(R.id.item_name);
 					host.mAddress 	= (TextView) convertView.findViewById(R.id.item_address);
