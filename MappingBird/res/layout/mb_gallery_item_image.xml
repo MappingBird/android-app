@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_image"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#00000000"
-    />
+    android:layout_height="match_parent" >
+
+    <com.pnikosis.materialishprogress.ProgressWheel
+        xmlns:wheel="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/item_loading"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_below="@id/logo"
+        android:layout_centerInParent="true"
+        wheel:barColor="@color/loader_white_bg"
+        wheel:barWidth="3dp"
+        wheel:progressIndeterminate="true"
+        wheel:rimColor="@color/loader_white_fillin"
+        wheel:rimWidth="3dp" />
+
+    <ImageView
+        android:id="@+id/item_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000" />
+
+</RelativeLayout>

@@ -16,6 +16,7 @@ import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MBGalleryAdapter extends PagerAdapter {
 
@@ -49,7 +50,7 @@ public class MBGalleryAdapter extends PagerAdapter {
 		
 		final View viewHolder = mInflater.inflate(R.layout.mb_gallery_item_image, container, false);
 		final ImageView image = (ImageView)viewHolder.findViewById(R.id.item_image);
-		image.setImageResource(R.drawable.default_loading);
+		final ProgressWheel progress = (ProgressWheel) viewHolder.findViewById(R.id.item_loading);
 		BitmapParameters params = BitmapParameters.getUrlBitmap(path);
 		params.mBitmapDownloaded = new BitmapDownloadedListener() {
 			
@@ -58,14 +59,19 @@ public class MBGalleryAdapter extends PagerAdapter {
 					BitmapParameters params) {
 				if(image != null && icon != null && image.getTag().equals(icon.getTag())) {
 					image.setImageResource(R.drawable.default_problem_big);
+					progress.stopSpinning();
+					progress.setVisibility(View.GONE);
 				}
 			}
 			
 			@Override
 			public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
 					BitmapParameters params) {
-				if(image != null && icon != null && image.getTag().equals(icon.getTag()))
+				if(image != null && icon != null && image.getTag().equals(icon.getTag())) {
 					image.setScaleType(ScaleType.FIT_CENTER);
+					progress.stopSpinning();
+					progress.setVisibility(View.GONE);
+				}
 			}
 		};
 		mBitmapLoader.getBitmap(image, params, false);
