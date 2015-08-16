@@ -11,7 +11,9 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathEffect;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Editable;
@@ -772,6 +774,10 @@ public class TagGroup extends ViewGroup {
          */
         private PathEffect mPathEffect;
 
+        private Paint  myPaint= new Paint(Paint.ANTI_ALIAS_FLAG);  
+        private Typeface mFace;
+        private String mCloseStr = null;
+        
         public TagView(Context context, int state, CharSequence text) {
             super(context);
             mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -809,6 +815,13 @@ public class TagGroup extends ViewGroup {
             setFocusableInTouchMode(state == STATE_INPUT);
             setHint(state == STATE_INPUT ? mInputTagHint : null);
             setMovementMethod(state == STATE_INPUT ? ArrowKeyMovementMethod.getInstance() : null);
+
+            mFace = Typeface.createFromAsset(getContext().getAssets(),"fonts/iconfont.ttf");
+            myPaint.setColor(getResources().getColor(R.color.tag_text_color));
+            myPaint.setTypeface(mFace);
+            myPaint.setTextSize(dp2px(16));
+            
+            mCloseStr = getResources().getString(R.string.iconfont_close);
 
             if (state == STATE_INPUT) {
                 requestFocus();
@@ -985,13 +998,18 @@ public class TagGroup extends ViewGroup {
             if (isChecked) {
             	canvas.drawRect(mBorderRect, mBorderPaint);
 
-                canvas.save();
-                canvas.rotate(45, mCheckedMarkDrawBound.centerX(), mCheckedMarkDrawBound.centerY());
-                canvas.drawLine(mCheckedMarkDrawBound.left, mCheckedMarkDrawBound.centerY(),
-                        mCheckedMarkDrawBound.right, mCheckedMarkDrawBound.centerY(), mMarkPaint);
-                canvas.drawLine(mCheckedMarkDrawBound.centerX(), mCheckedMarkDrawBound.top,
-                        mCheckedMarkDrawBound.centerX(), mCheckedMarkDrawBound.bottom, mMarkPaint);
-                canvas.restore();
+            	Rect rect = new Rect();
+            	myPaint.getTextBounds(mCloseStr, 0, mCloseStr.length(), rect);
+            	int height = rect.bottom - rect.top;
+            	canvas.drawText(mCloseStr, mCheckedMarkDrawBound.left, 
+            			mCheckedMarkDrawBound.centerY() - rect.top*5/7, myPaint);
+//                canvas.save();
+//                canvas.rotate(45, mCheckedMarkDrawBound.centerX(), mCheckedMarkDrawBound.centerY());
+//                canvas.drawLine(mCheckedMarkDrawBound.left, mCheckedMarkDrawBound.centerY(),
+//                        mCheckedMarkDrawBound.right, mCheckedMarkDrawBound.centerY(), mMarkPaint);
+//                canvas.drawLine(mCheckedMarkDrawBound.centerX(), mCheckedMarkDrawBound.top,
+//                        mCheckedMarkDrawBound.centerX(), mCheckedMarkDrawBound.bottom, mMarkPaint);
+//                canvas.restore();
             } else {
             	if(mState != STATE_INPUT) {
             		canvas.drawRect(mBorderRect, mBorderPaint);

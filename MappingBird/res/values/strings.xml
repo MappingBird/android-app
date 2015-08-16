@@ -130,6 +130,11 @@
     <string name="pick_place_add_create_location_title_no_filter_str">Add current location</string>
     <string name="pick_place_add_serach_title">Search%s</string>
     <string name="pick_place_add_srarch_des">Search more pleaces nearby</string>
+    <string name="pick_place_error_no_suggest">There are no suggested places around. Try to search or create new one</string>
+    <string name="pick_place_error_no_search_result">No search result. Try other keyword or create new place</string>
+    <string name="pick_place_error_title">Oops! There are some problems.</string>
+    <string name="pick_place_error_refresh">tap to refresh!</string>
+    
     <!-- Add current location -->
     <string name="create_location_title">Locating a new place</string>
     <string name="create_location_title_with_text">Locating %s</string>
