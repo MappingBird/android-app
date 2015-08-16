@@ -2,7 +2,6 @@ package com.mappingbird.collection;
 
 import java.util.ArrayList;
 
-import android.R.plurals;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Dialog;
@@ -13,14 +12,17 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -59,12 +61,10 @@ import com.mappingbird.collection.data.MBCollectionListObject;
 import com.mappingbird.collection.widget.MBCollectionListLayout;
 import com.mappingbird.collection.widget.MBCollectionListLayout.NewCardClickListener;
 import com.mappingbird.common.DeBug;
-import com.mappingbird.common.MainUIMessenger;
 import com.mappingbird.common.MainUIMessenger.OnMBSubmitChangedListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.MBSubmitMsgData;
-import com.mappingbird.saveplace.MBAddPlaceActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.eventbus.MBAddPlaceEventBus;
@@ -626,19 +626,46 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private void setMyLocation(Location location) {
 		closeLoadingDialog();
 		if(location == null) {
-			// Error
-			String title = "";
-			title = getResources().getString(R.string.error_location_title);
-			String error = mContext.getString(R.string.error_location_message);
-			mDialog = new MBDialog(mContext);
-			mDialog.setTitle(title);
-			mDialog.setDescription(error);
-			mDialog.setNegativeBtn(getString(R.string.str_cancel), 
-					mCancelListener, MBDialog.BTN_STYLE_DEFAULT);
-			mDialog.setPositiveBtn(getString(R.string.str_retry), 
-					mLocationRetryListener, MBDialog.BTN_STYLE_DEFAULT);
-			mDialog.setCanceledOnTouchOutside(false);
-			mDialog.show();
+			// 確認是否有開啟GPS權限
+			if(mDialog != null && mDialog.isShowing())
+				mDialog.dismiss();
+			mDialog = null;
+			if(hasGPSProvider()) {
+				// Error
+				String title = "";
+				title = getResources().getString(R.string.error_location_title);
+				String error = mContext.getString(R.string.error_location_message);
+				mDialog = new MBDialog(mContext);
+				mDialog.setTitle(title);
+				mDialog.setDescription(error);
+				mDialog.setNegativeBtn(getString(R.string.str_cancel), 
+						mCancelListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.setPositiveBtn(getString(R.string.str_retry), 
+						mLocationRetryListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.setCanceledOnTouchOutside(false);
+				mDialog.show();
+			} else {
+				mDialog = new MBDialog(mContext);
+				mDialog.setTitle(getString(R.string.dialog_location_hint_title));
+				mDialog.setDescription(getString(R.string.dialog_location_hint_content));
+				View view = LayoutInflater.from(mContext).inflate(R.layout.mb_dialog_location_hint, null);
+				mDialog.setView(view);
+				mDialog.setCanceledOnTouchOutside(false);
+				mDialog.setNegativeBtn(getString(R.string.str_cancel), 
+						mCancelListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.setPositiveBtn(getString(R.string.str_retry), 
+						new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								mDialog.dismiss();
+								mDialog = null;
+								Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								startActivity(intent);
+							}
+						}, MBDialog.BTN_STYLE_BLUE);
+				mDialog.show();
+			}
 		} else {
 			DeBug.i(TAG, "mMyLocationChangedListener : location = "+location.toString());
 			mMyLocation = new LatLng(location.getLatitude(),
@@ -653,6 +680,15 @@ public class MBCollectionActivity extends FragmentActivity implements
 			} else {
 				setUpMap();
 			}
+		}
+	}
+	
+	private boolean hasGPSProvider() {
+		LocationManager status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
+		if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -929,19 +965,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 				}
 				mMap.animateCamera(CameraUpdateFactory.newLatLng(mMyLocation), 300, null);
 			}
-			
-//			mDialog = new MBDialog(mContext);
-//			mDialog.setTitle(getString(R.string.dialog_location_hint_title));
-//			mDialog.setDescription(getString(R.string.dialog_location_hint_content));
-//			View view = LayoutInflater.from(mContext).inflate(R.layout.mb_dialog_location_hint, null);
-//			mDialog.setView(view);
-//			mDialog.setNegativeBtn(getString(R.string.str_cancel), new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					mDialog.dismiss();
-//				}
-//			}, MBDialog.BTN_STYLE_DEFAULT);
-//			mDialog.show();
 		}
 	};
 
