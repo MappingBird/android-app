@@ -43,6 +43,7 @@ import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBListDialog;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.MBUtil;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MBAddCurrentLocationActivity extends FragmentActivity {
 	private static final int REQUEST_ADD_PLACE = 0x001010;
@@ -70,15 +71,20 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 
 	//
 	private static final int MSG_REQUEST_ADDRESS = 0;
+	private static final int MSG_RESULT_ADDRESS = 1;
 	// 地圖
 	private GoogleMap mMap;
 	// Address
 	private EditText mAddress;
 	private MBCrosshairLayout mLocationLayout;
 	private View mRefreshBtn;
+	private ProgressWheel mProgressWheel;
 	//Dialog
 	private MBListDialog mListDialog = null;
 	private Dialog mLoadingDialog = null;
+	
+	//Current
+	private RequestAddressObj mCurrentRequestObj;
 	
 	// Select address
 	private AddressAdapter mAddressAdapter;
@@ -92,6 +98,18 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 				LatLng latLng = (LatLng) msg.obj;
 				getLocationAddress(latLng.latitude, latLng.longitude);
 				break;
+			case MSG_RESULT_ADDRESS:
+				RequestAddressObj obj = (RequestAddressObj) msg.obj;
+				if(mCurrentRequestObj != null &&
+						mCurrentRequestObj.equale(obj)) {
+					if(!TextUtils.isEmpty(obj.result)) 
+						mAddress.setText(obj.result);
+					else
+						mAddress.setText(R.string.pick_address_no_address);
+					hideLoading();
+				}
+
+				break;
 			}
 		}
 	};
@@ -102,7 +120,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		setContentView(R.layout.mb_pick_place_add_current_location);
 
 		mTitleText = (TextView) findViewById(R.id.title_text);
-
+		mProgressWheel = (ProgressWheel) findViewById(R.id.lock_address_loading);
 		Intent intent = getIntent();
 		if (intent != null) {
 			if (intent.hasExtra(EXTRA_TYPE))
@@ -175,6 +193,23 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		mTitleText.requestFocus();
 	}
 
+	private void showLoading() {
+		if(mProgressWheel.getVisibility() != View.VISIBLE) {
+			mProgressWheel.setVisibility(View.VISIBLE);
+			mProgressWheel.spin();
+			mAddress.setPadding(0, 0, 
+					(int)getResources().getDimension(R.dimen.add_current_location_input_padding_right), 
+					0);
+		}
+	}
+	
+	private void hideLoading() {
+		if(mProgressWheel.getVisibility() == View.VISIBLE) {
+			mProgressWheel.stopSpinning();
+			mProgressWheel.setVisibility(View.GONE);
+			mAddress.setPadding(0, 0, 0, 0);
+		}
+	}
 	private OnFocusChangeListener mEditFocusChangeListner = new OnFocusChangeListener() {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
@@ -246,22 +281,28 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		}
 	};
 
-	private void getLocationAddress(double latitude, double longitude) {
-		Geocoder geocoder;
-		List<Address> addresses;
-		geocoder = new Geocoder(this, Locale.getDefault());
-		try {
-			addresses = geocoder.getFromLocation(latitude, longitude, 1);
-			if (addresses != null && 
-					addresses.size() > 0 && addresses.get(0) != null
-					&& addresses.get(0).getAddressLine(0) != null)
-				mAddress.setText(addresses.get(0).getAddressLine(0));
-			else
-				mAddress.setText(R.string.pick_address_no_address);
-		} catch (IOException e) {
-			e.printStackTrace();
-			mAddress.setText(R.string.pick_address_no_address);
-		}
+	private void getLocationAddress(final double latitude,final double longitude) {
+		showLoading();
+		mCurrentRequestObj = new RequestAddressObj(latitude, longitude);
+		new Thread(
+			new Runnable() {
+				public void run() {
+					RequestAddressObj requestObj = new RequestAddressObj(latitude, longitude);
+					Geocoder geocoder = new Geocoder(MappingBirdApplication.instance(), Locale.getDefault());
+					try {
+						List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+						if (addresses != null && 
+								addresses.size() > 0 && addresses.get(0) != null
+								&& addresses.get(0).getAddressLine(0) != null)
+							requestObj.result = addresses.get(0).getAddressLine(0);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					Message msg = mHandler.obtainMessage(MSG_RESULT_ADDRESS, requestObj);
+					msg.sendToTarget();
+				}
+			}
+		).start();
 	}
 
 	private void getAddressLocation(final String address) {
@@ -392,5 +433,24 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	private void dismissLoadingDialog() {
 		if(mLoadingDialog != null && mLoadingDialog.isShowing())
 			mLoadingDialog.dismiss();
+	}
+	
+	private class RequestAddressObj {
+		public double latitude;
+		public double longitude;
+		public String result = null;
+		
+		public RequestAddressObj(double latitude, double longitude) {
+			this.latitude = latitude;
+			this.longitude = longitude;
+		}
+		
+		public boolean equale(double latitude, double longitude) {
+			return this.latitude == latitude && this.longitude == longitude;
+		}
+
+		public boolean equale(RequestAddressObj obj) {
+			return this.latitude == obj.latitude && this.longitude == obj.longitude;
+		}
 	}
 }

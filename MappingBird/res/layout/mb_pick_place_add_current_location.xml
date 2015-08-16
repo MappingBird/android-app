@@ -56,8 +56,8 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/title_btn_ok_layout"
             android:layout_toRightOf="@id/title_btn_back"
-            android:singleLine="true"
             android:paddingLeft="4dp"
+            android:singleLine="true"
             android:text="@string/create_location_title"
             android:textColor="#FFF" />
     </RelativeLayout>
@@ -99,12 +99,12 @@
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@id/lock_address_icon"
                 android:background="@drawable/edit_custom_drawable"
-                android:gravity="center_vertical"
-                android:singleLine="true"
                 android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
                 android:textColor="@color/font_normal"
                 android:textCursorDrawable="@drawable/edit_cursor_drawable"
-                android:imeOptions="actionSearch"
                 android:textSize="16dp" />
 
             <com.mappingbird.widget.MappingbirdFontIcon
@@ -117,6 +117,22 @@
                 android:textColor="@color/btn_text_blue_color"
                 android:textSize="20dp"
                 android:visibility="gone" />
+
+            <com.pnikosis.materialishprogress.ProgressWheel
+                xmlns:wheel="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/lock_address_loading"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/dialog_bg_loading"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                wheel:barColor="@color/loader_blue_fillin"
+                wheel:barWidth="2dp"
+                wheel:progressIndeterminate="true"
+                wheel:rimColor="@color/loader_blue_bg"
+                wheel:rimWidth="2dp" />
         </RelativeLayout>
 
         <LinearLayout
