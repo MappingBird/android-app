@@ -11,7 +11,7 @@
         android:layout_height="40dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:background="@drawable/collection_item_bg" >
+        android:background="@drawable/item_transparent_background" >
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/field_phone_icon"
@@ -45,7 +45,7 @@
         android:layout_height="40dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:background="@drawable/collection_item_bg" >
+        android:background="@drawable/item_transparent_background" >
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/field_open_time_icon"
@@ -79,7 +79,7 @@
         android:layout_height="40dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:background="@drawable/collection_item_bg" >
+        android:background="@drawable/item_transparent_background" >
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/field_link__icon"
