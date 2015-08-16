@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent" >
+    android:background="@color/transparent" >
 
     <!-- welcome -->
 
@@ -12,24 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <!-- placeholder for logo -->
 
-        <View
-            android:id="@+id/tutoral_welcome_empty_placehodler"
-            android:layout_width="wrap_content"
-            android:layout_height="125dp"
-            android:layout_centerInParent="true"
-            android:orientation="vertical" />
-
         <com.mappingbird.widget.MappingbirdTextView
             style="@style/TextStyle_Label"
+            android:id="@+id/tutoral_welcome_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tutoral_welcome_empty_placehodler"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="380dp"
             android:gravity="center"
             android:maxWidth="272dp"
             android:text="@string/tutorial_welocome_message_favorite_in_pockets"
@@ -38,9 +31,11 @@
 
         <com.mappingbird.widget.MappingbirdTextView
             style="@style/TextStyle_Label"
+            android:id="@+id/tutoral_welcome_swipe_to_learn_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="400dp"
             android:layout_centerHorizontal="true"
             android:text="@string/tutorial_swipe_to_learn"
             android:textColor="@color/font_white"
@@ -60,6 +55,7 @@
             style="@style/TextStyle_Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:layout_above="@+id/page_intro_image"
             android:gravity="center_horizontal"
             android:maxWidth="272dp"
@@ -83,7 +79,7 @@
         android:id="@+id/tutoral_create_or_do_later"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/tutoral_sign_up"
@@ -112,6 +108,7 @@
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/tutoral_log_in"
             style="@style/BtnTransparent"
+            android:background="@drawable/tutorial_login_btn_selector_bg"
             android:layout_width="272dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"

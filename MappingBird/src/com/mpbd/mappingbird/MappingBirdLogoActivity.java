@@ -30,15 +30,21 @@ public class MappingBirdLogoActivity extends Activity {
 				// get token from db
 				if (!isLogin) {
 					intent.setClass(MappingBirdLogoActivity.this,
-							com.mpbd.tutorial.MBTutorialActivity.class);
+                            com.mpbd.tutorial.MBTutorialActivity.class);
 				} else {
 					intent.setClass(MappingBirdLogoActivity.this,
-							com.mappingbird.collection.MBCollectionActivity.class);
+                            com.mappingbird.collection.MBCollectionActivity.class);
 				}
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				MappingBirdLogoActivity.this.startActivity(intent);
-				overridePendingTransition(R.anim.activity_open_enter_animation, R.anim.activity_open_exit_animation);
-				finish();
+
+                if (!isLogin) {
+                    overridePendingTransition(0, 0);
+                } else {
+                    overridePendingTransition(R.anim.activity_open_enter_animation, R.anim.activity_open_exit_animation);
+                }
+                finish();
+
 				break;
 			}
 		}

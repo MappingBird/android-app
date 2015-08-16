@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/graphic_orange" >
 
+    <!-- IconFont Logo-->
     <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/tutoral_page_logo_icon"
         android:layout_width="wrap_content"
@@ -13,8 +14,9 @@
         android:layout_marginTop="100dp"
         android:text="@string/iconfont_mappingbird_logo"
         android:textColor="@color/font_white"
-        android:textSize="78dp" />
+        android:textSize="87dp" />
 
+    <!-- Image app name -->
     <ImageView
         android:id="@+id/tutoral_page_logo_text"
         android:layout_width="wrap_content"
@@ -24,6 +26,7 @@
         android:layout_marginTop="200dp"
         android:src="@drawable/mappingbird_logotype_large" />
 
+    <!-- Image slogan -->
     <ImageView
         android:id="@+id/tutoral_page_slogan_img"
         android:layout_width="wrap_content"
@@ -33,11 +36,13 @@
         android:layout_marginTop="250dp"
         android:src="@drawable/mappingbird_slogan" />
 
+    <!-- ViewPager -->
     <com.mappingbird.widget.MappingBirdParallaxPager
         android:id="@+id/tutoral_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!-- PageIndicator -->
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/tutoral_pager_indicator"
         android:layout_width="fill_parent"
@@ -46,7 +51,6 @@
         android:layout_marginBottom="80dp" />
 
     <!-- 底部的按鈕 -->
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="58dp"
