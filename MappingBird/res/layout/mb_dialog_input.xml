@@ -28,7 +28,7 @@
         android:visibility="gone"
         android:layout_height="16dp" />
 
-    <EditText
+    <com.mappingbird.widget.MappingbirdEditText
         android:id="@+id/dialog_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +40,8 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:singleLine="true"
-        android:textColor="#7f7f7f"
+        android:textColorHint="@color/font_hint"
+        android:textColor="@color/font_dark"
         android:textSize="14dp"
         android:visibility="visible" />
 
@@ -62,6 +63,7 @@
             android:background="@drawable/btn_dialog_bg"
             android:gravity="center"
             android:textColor="#7f7f7f"
+            android:textAllCaps="true"
             android:textSize="16dp"
             android:visibility="gone" />
 
@@ -81,6 +83,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn_dialog_bg"
             android:gravity="center"
+            android:textAllCaps="true"
             android:textColor="#7f7f7f"
             android:textSize="16dp"
             android:visibility="gone" />

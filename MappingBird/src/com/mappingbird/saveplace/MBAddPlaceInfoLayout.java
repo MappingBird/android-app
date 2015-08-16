@@ -34,7 +34,7 @@ import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.common.MBInputDialog;
 
-public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
+public class MBAddPlaceInfoLayout extends LinearLayout {
 
 	private View mCollectionLayout;
 	private TextView mCollectionText;
@@ -80,15 +80,15 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		public void placeNameChanged(String s);
 	}
 
-	public MappingbirdAddPlaceInfoLayout(Context context) {
+	public MBAddPlaceInfoLayout(Context context) {
 		super(context);
 	}
 
-	public MappingbirdAddPlaceInfoLayout(Context context, AttributeSet attrs) {
+	public MBAddPlaceInfoLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public MappingbirdAddPlaceInfoLayout(Context context, AttributeSet attrs, int defStyle) {
+	public MBAddPlaceInfoLayout(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
@@ -124,6 +124,7 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		mCollectionlistPopupWindow.setAdapter(mCollectionListAdapter);
 		mCollectionlistPopupWindow.setAnchorView(findViewById(R.id.add_place_top_layout));
 		mCollectionlistPopupWindow.setOnItemClickListener(mPopWindowClickListener);
+		mCollectionlistPopupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.dialog_bg_general));
 		
 		mListObject = MappingBirdApplication.instance().getCollectionObj();
 		resetCollectionList();
@@ -241,11 +242,13 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		public static final int TYPE_CREATE_NEW = 1;
 		public int type;
 		public String name;
+		public int size;
 		public int collectionPosition;
 		
 		public ListObject(Collection collection, int position) {
 			type = TYPE_COLLECTION;
 			name = collection.getName();
+			size = collection.getPoints().size();
 			collectionPosition = position;
 		}
 		
@@ -333,10 +336,6 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 			return mList.size();
 		}
 
-//		public Collection getCollectionItem(int position) {
-//			return mCollections.get(position);
-//		}
-//
 		@Override
 		public Object getItem(int position) {
 			return mList.get(position);
@@ -350,10 +349,21 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if(convertView == null) {
-				convertView = mInflater.inflate(R.layout.mappingbird_add_place_select_collection_item, parent, false);
+				convertView = mInflater.inflate(R.layout.mb_layout_add_place_select_collection_item, parent, false);
 			}
+			ListObject item = mList.get(position);
 			TextView name = (TextView) convertView.findViewById(R.id.item_name);
-			name.setText(mList.get(position).name);
+			name.setText(item.name);
+			
+			if(item.type != ListObject.TYPE_CREATE_NEW) {
+				TextView number = (TextView) convertView.findViewById(R.id.item_number);
+				number.setVisibility(View.VISIBLE);
+				number.setText(""+item.size);
+			} else {
+				TextView number = (TextView) convertView.findViewById(R.id.item_number);
+				number.setVisibility(View.GONE);
+			}
+			
 			if(position == 0) {
 				convertView.findViewById(R.id.item_checked).setVisibility(View.VISIBLE);
 			} else {
@@ -464,7 +474,7 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 			mAddFieldDialog.dismiss();
 		}
 
-		mAddFieldDialog = new Dialog(getContext(),R.style.CustomDialog);
+		mAddFieldDialog = new Dialog(getContext(),R.style.MBDialog);
 		mAddFieldDialog.setContentView(R.layout.mb_dialog_add_field);
 		if(mPlacePhoneLayout.getVisibility() == View.VISIBLE) {
 			mAddFieldDialog.findViewById(R.id.field_phone_layout).setVisibility(View.GONE);
@@ -521,7 +531,8 @@ public class MappingbirdAddPlaceInfoLayout extends LinearLayout {
 				// Save tags
 				MBSavePlaceUtil.saveTagArray(tags);
 				mTagsListStr = TextUtils.join(",", tags);
-				mPlaceTag.setText(MBSavePlaceUtil.getTagsStringSpan(tags));
+				mPlaceTag.setText(MBSavePlaceUtil.getTagsStringSpan(tags, 
+						(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.tag_span_line_space)));
 			}
 		});
 		mAddTagDialog.setCanceledOnTouchOutside(false);

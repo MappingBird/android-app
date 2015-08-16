@@ -64,7 +64,7 @@ import com.mappingbird.common.MainUIMessenger.OnMBSubmitChangedListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.MBSubmitMsgData;
-import com.mappingbird.saveplace.MappingBirdAddPlaceActivity;
+import com.mappingbird.saveplace.MBAddPlaceActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.eventbus.MBAddPlaceEventBus;

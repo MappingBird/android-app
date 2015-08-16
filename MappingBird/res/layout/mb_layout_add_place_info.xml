@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mappingbird.saveplace.MappingbirdAddPlaceInfoLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mappingbird.saveplace.MBAddPlaceInfoLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -21,13 +21,10 @@
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/add_place_collection_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            style="@style/InfoIcon"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="@string/iconfont_collections"
-            android:textColor="@color/font_normal"
-            android:textSize="16dp" />
+            android:text="@string/iconfont_collections" />
 
         <RelativeLayout
             android:id="@+id/add_place_collection_layout"
@@ -49,7 +46,6 @@
 
             <com.mappingbird.widget.MappingbirdTextView
                 android:id="@+id/add_place_collection_text"
-                style="@style/TextStyle_Body_Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -58,41 +54,36 @@
                 android:layout_toRightOf="@id/add_place_collection_arrow"
                 android:background="#00000000"
                 android:hint="@string/add_place_new_collection"
+                android:textColorHint="@color/font_hint"
+                android:textSize="16dp"
                 android:textColor="#000"
-                android:textColorHint="#DDDDDD"
                 android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="8dp" >
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/add_place_location_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            style="@style/InfoIcon"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/font_normal"
-            android:textSize="16dp" />
+            android:layout_centerVertical="true" />
 
         <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_location_name"
-            style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_height="match_parent"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/add_place_location_icon"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_location_name"
-            android:paddingBottom="10dp"
-            android:paddingTop="8dp"
-            android:textColorHint="#DDDDDD" />
+            android:textSize="16dp"
+            android:textColorHint="@color/font_hint" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -104,62 +95,22 @@
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/add_place_address_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            style="@style/InfoIcon"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="@string/iconfont_map_maker"
-            android:textColor="@color/font_normal"
-            android:textSize="16dp" />
+            android:text="@string/iconfont_map_maker" />
 
         <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_address"
-            style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/add_place_address_icon"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_address"
-            android:paddingBottom="10dp"
-            android:paddingTop="8dp"
+            android:textSize="16dp"
             android:singleLine="true"
-            android:textColorHint="#DDDDDD" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="8dp" >
-
-        <com.mappingbird.widget.MappingbirdFontIcon
-            android:id="@+id/add_place_tag_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/iconfont_tag"
-            android:textColor="@color/font_normal"
-            android:textSize="16dp" />
-
-        <com.mappingbird.widget.MappingbirdTextView
-            android:id="@+id/add_place_tag"
-            style="@style/TextStyle_Body_Small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
-            android:layout_toRightOf="@id/add_place_tag_icon"
-            android:background="@drawable/edit_custom_drawable"
-            android:hint="@string/add_place_add_tags"
-            android:paddingBottom="10dp"
-            android:paddingTop="8dp"
-            android:textSize="12dp"
-            android:textColor="@color/tag_text_color"
-            android:textColorHint="#DDDDDD" />
+            android:textColorHint="@color/font_hint" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -173,29 +124,23 @@
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/add_place_phone_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            style="@style/InfoIcon"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="@string/iconfont_phone"
-            android:textColor="@color/font_normal"
-            android:textSize="16dp" />
+            android:text="@string/iconfont_phone" />
 
         <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_phone"
-            style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_height="match_parent"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/add_place_phone_icon"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_add_phone"
             android:inputType="phone"
-            android:paddingBottom="10dp"
-            android:paddingTop="8dp"
+            android:textSize="16dp"
             android:singleLine="true"
-            android:textColorHint="#DDDDDD" />
+            android:textColorHint="@color/font_hint" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -209,34 +154,28 @@
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/add_place_open_time_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            style="@style/InfoIcon"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="@string/iconfont_clock"
-            android:textColor="@color/font_normal"
-            android:textSize="16dp" />
+            android:text="@string/iconfont_clock" />
 
         <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_open_time"
-            style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_height="match_parent"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/add_place_open_time_icon"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_add_open_time"
-            android:paddingBottom="10dp"
-            android:paddingTop="8dp"
             android:singleLine="true"
-            android:textColorHint="#DDDDDD" />
+            android:textSize="16dp"
+            android:textColorHint="@color/font_hint" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/add_place_link_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="8dp"
@@ -244,28 +183,55 @@
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/add_place_link_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            style="@style/InfoIcon"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="@string/iconfont_link"
-            android:textColor="@color/font_normal"
-            android:textSize="16dp" />
+            android:text="@string/iconfont_link" />
 
         <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_link"
-            style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/add_place_link_icon"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_add_link"
-            android:paddingBottom="10dp"
-            android:paddingTop="8dp"
             android:singleLine="true"
-            android:textColorHint="#DDDDDD" />
+            android:textSize="16dp"
+            android:textColorHint="@color/font_hint" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="8dp" >
+
+        <com.mappingbird.widget.MappingbirdFontIcon
+            android:id="@+id/add_place_tag_icon"
+            style="@style/InfoIcon"
+            android:layout_alignParentLeft="true"
+            android:paddingTop="10dp"
+            android:text="@string/iconfont_tag" />
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/add_place_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@id/add_place_tag_icon"
+            android:lineSpacingExtra="@dimen/tag_span_line_space"
+            android:background="@drawable/edit_custom_drawable"
+            android:hint="@string/add_place_add_tags"
+            android:textColor="@color/tag_text_color"
+            android:textSize="16dp"
+            android:paddingTop="11dp"
+            android:paddingBottom="11dp"
+            android:textColorHint="@color/font_hint" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -277,42 +243,37 @@
 
         <com.mappingbird.widget.MappingbirdFontIcon
             android:id="@+id/add_place_about_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            style="@style/InfoIcon"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/iconfont_description"
-            android:textColor="@color/font_normal"
-            android:textSize="16dp" />
+            android:paddingTop="10dp"
+            android:text="@string/iconfont_description" />
 
         <com.mappingbird.widget.MappingbirdEditText
             android:id="@+id/add_place_about"
-            style="@style/TextStyle_Body_Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="40dp"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/add_place_about_icon"
             android:background="@drawable/edit_custom_drawable"
             android:hint="@string/add_place_about_place"
-            android:paddingBottom="10dp"
-            android:paddingTop="8dp"
-            android:textColorHint="#DDDDDD" />
+            android:textSize="16dp"
+            android:textColorHint="@color/font_hint" />
     </RelativeLayout>
 
     <com.mappingbird.widget.MappingbirdTextView
         android:id="@+id/add_place_add_field"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="38dp"
         android:layout_marginRight="38dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/btn_default_gray_bg"
         android:gravity="center"
-        android:padding="10dp"
         android:singleLine="true"
-        android:textStyle="italic"
         android:text="@string/add_place_add_field"
-        android:textColor="@color/font_dark"
-        android:textSize="16dp" />
+        android:textColor="@color/font_normal"
+        android:textSize="16dp"
+        android:textStyle="italic" />
 
-</com.mappingbird.saveplace.MappingbirdAddPlaceInfoLayout>
+</com.mappingbird.saveplace.MBAddPlaceInfoLayout>

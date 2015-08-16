@@ -222,9 +222,9 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 			MappingBirdPlaceItem item = (MappingBirdPlaceItem)mPlaceAdapter.getItem(position-1);
 			switch(item.getType()) {
 				case MappingBirdPlaceItem.TYPE_PLACE: {
-					Intent intent = new Intent(MBPickPlaceActivity.this, MappingBirdAddPlaceActivity.class);
-					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_TYPE, mType);
-					intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_ITEM, item);
+					Intent intent = new Intent(MBPickPlaceActivity.this, MBAddPlaceActivity.class);
+					intent.putExtra(MBAddPlaceActivity.EXTRA_TYPE, mType);
+					intent.putExtra(MBAddPlaceActivity.EXTRA_ITEM, item);
 					MBPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}

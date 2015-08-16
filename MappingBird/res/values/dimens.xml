@@ -117,7 +117,8 @@
     <dimen name="tag_span_padding_left">4dp</dimen>
     <dimen name="tag_span_padding_right">4dp</dimen>
     <dimen name="tag_span_space">4dp</dimen>
-
+	<dimen name="tag_span_line_space">4dp</dimen>
+	
     <!-- Collection new list layout -->
     <dimen name="coll_card_marge_bottom">10dp</dimen>
     <dimen name="coll_card_marge_bottom_other">8dp</dimen>

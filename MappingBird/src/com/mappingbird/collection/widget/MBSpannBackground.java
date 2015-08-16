@@ -23,6 +23,8 @@ public class MBSpannBackground extends ReplacementSpan{
 	private int mPaddingBottom = 0;
 	
 	private int mPaddingSpace = 0;
+	
+	private int mLineSpacing = 0; 
 
 	public MBSpannBackground(int color) {
 	    this.mBackgroundColor = color;
@@ -37,6 +39,26 @@ public class MBSpannBackground extends ReplacementSpan{
 	    
 	    mPaddingSpace = (int)MappingBirdApplication.instance().getResources().getDimension(
 	    		R.dimen.tag_span_space);
+	    
+	    mLineSpacing = 0;
+	}
+
+	public MBSpannBackground(int color, int lineSpacing) {
+	    this.mBackgroundColor = color;
+	    mPaddingLeft = (int)MappingBirdApplication.instance().getResources().getDimension(
+	    		R.dimen.tag_span_padding_left);
+	    mPaddingRight = (int)MappingBirdApplication.instance().getResources().getDimension(
+	    		R.dimen.tag_span_padding_right);
+	    mPaddingTop = (int)MappingBirdApplication.instance().getResources().getDimension(
+	    		R.dimen.tag_span_padding_top);
+	    mPaddingBottom = (int)MappingBirdApplication.instance().getResources().getDimension(
+	    		R.dimen.tag_span_padding_bottom);
+	    
+	    mPaddingSpace = (int)MappingBirdApplication.instance().getResources().getDimension(
+	    		R.dimen.tag_span_space);
+	    
+	    mLineSpacing = lineSpacing;
+	    mPaddingBottom = -mLineSpacing/2;
 	}
 
 	@Override
@@ -49,7 +71,7 @@ public class MBSpannBackground extends ReplacementSpan{
 		int strHeight = bounds.bottom - bounds.top;
 		int strTop = bounds.top;
 
-		int textY = (bottom - top - strHeight)/2 - strTop;
+		int textY = (bottom - top - strHeight)/2 - strTop + top;
 	    RectF rect = new RectF(x, top-mPaddingTop, x + measureText(paint, text, start, end), bottom+mPaddingBottom);
 	    Paint paintbg = new Paint();
 	    paintbg.setColor(mBackgroundColor);

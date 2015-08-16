@@ -30,7 +30,7 @@ import android.widget.TextView;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MappingBirdPhotoAdapter.PhotoAdapterListener;
-import com.mappingbird.saveplace.MappingbirdAddPlaceInfoLayout.PlaceInfoListener;
+import com.mappingbird.saveplace.MBAddPlaceInfoLayout.PlaceInfoListener;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
@@ -39,7 +39,7 @@ import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.services.MBServiceClient;
 
-public class MappingBirdAddPlaceActivity extends FragmentActivity  {
+public class MBAddPlaceActivity extends FragmentActivity  {
 
 	public static final String EXTRA_TYPE = "extra_type";
 	public static final String EXTRA_ITEM = "extra_item";
@@ -64,12 +64,12 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 
 	private Dialog mLoadingDialog;
 	
-	private MappingbirdAddPlaceInfoLayout mAddPlaceInfoLayout;
+	private MBAddPlaceInfoLayout mAddPlaceInfoLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.mappingbird_add_place);
+		setContentView(R.layout.mb_activity_layout_add_place);
 		Intent intent = getIntent();
 		if(intent == null) {
 			finish();
@@ -108,7 +108,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 		setTitleText(getString(R.string.pick_place_title));
 		
 		mListView = (ListView) findViewById(R.id.add_place_list);
-		mAddPlaceInfoLayout = (MappingbirdAddPlaceInfoLayout)inflater.inflate(R.layout.mappingbird_add_place_info_layout, null, false);
+		mAddPlaceInfoLayout = (MBAddPlaceInfoLayout)inflater.inflate(R.layout.mb_layout_add_place_info, null, false);
 		mAddPlaceInfoLayout.setPlaceInfoListener(mPlaceInfoListener);
 		mAddPlaceInfoLayout.setPlaceData(mItem, MBUtil.getPlaceTypeIconFont(mType));
 		
@@ -284,7 +284,7 @@ public class MappingBirdAddPlaceActivity extends FragmentActivity  {
 	private void startCameraActivity() {
 	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 	    // Ensure that there's a camera activity to handle the intent
-	    if (takePictureIntent.resolveActivity(MappingBirdAddPlaceActivity.this.getPackageManager()) != null) {
+	    if (takePictureIntent.resolveActivity(MBAddPlaceActivity.this.getPackageManager()) != null) {
 	        // Create the File where the photo should go
 	        File photoFile = null;
 	        try {

@@ -45,7 +45,7 @@ public class MBSavePlaceUtil {
 		MappingBirdPref.getIns().setTagArray(tag_array);
 	}
 
-	public static Spannable getTagsStringSpan(String[] tags) {
+	public static Spannable getTagsStringSpan(String[] tags, int lineSpaceing) {
 		String tag = "";
 		if(tags.length == 0) {
 			SpannableString ss = new SpannableString("");
@@ -70,7 +70,7 @@ public class MBSavePlaceUtil {
 		if(positionList.size() > 0) {
 			for(Point position : positionList)
 				ss.setSpan(new MBSpannBackground(
-						MappingBirdApplication.instance().getResources().getColor(R.color.tag_background)),
+						MappingBirdApplication.instance().getResources().getColor(R.color.tag_background), lineSpaceing),
 						position.x, position.y, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		}
 

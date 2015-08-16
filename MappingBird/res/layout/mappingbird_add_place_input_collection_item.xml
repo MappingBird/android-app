@@ -6,7 +6,6 @@
 
     <com.mappingbird.widget.MappingbirdTextView
         android:id="@+id/item_btn_create"
-        style="@style/TextStyle_Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -14,11 +13,12 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/title_btn"
         android:text="@string/add_place_save"
+        android:textSize="16dp"
+        android:textStyle="bold"
         android:textColor="#F6892A" />
 
     <com.mappingbird.widget.MappingbirdEditText
         android:id="@+id/item_name"
-        style="@style/TextStyle_Body_Small"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_toRightOf="@id/item_btn_create"
@@ -27,6 +27,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textColor="#000"
+        android:textSize="14dp"
         android:textColorHint="#DDDDDD" />
 
 </RelativeLayout>

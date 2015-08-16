@@ -233,9 +233,9 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 						mTitleStr, mAddress.getText().toString(),
 						latLng.latitude, latLng.longitude);
 				Intent intent = new Intent(MBAddCurrentLocationActivity.this,
-						MappingBirdAddPlaceActivity.class);
-				intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_TYPE, mType);
-				intent.putExtra(MappingBirdAddPlaceActivity.EXTRA_ITEM, item);
+						MBAddPlaceActivity.class);
+				intent.putExtra(MBAddPlaceActivity.EXTRA_TYPE, mType);
+				intent.putExtra(MBAddPlaceActivity.EXTRA_ITEM, item);
 				MBAddCurrentLocationActivity.this.startActivityForResult(
 						intent, REQUEST_ADD_PLACE);
 				break;
