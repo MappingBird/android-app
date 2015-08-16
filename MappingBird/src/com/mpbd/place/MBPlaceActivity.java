@@ -44,12 +44,12 @@ import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.Utils;
 
-public class MappingBirdPlaceActivity extends Activity implements
+public class MBPlaceActivity extends Activity implements
 		OnClickListener {
 
 	public static final String EXTRA_MBPOINT = "mb_point";
 	public static final String EXTRA_PLACE_ID = "extra_place_id";
-	private static final String TAG = MappingBirdPlaceActivity.class.getName();
+	private static final String TAG = MBPlaceActivity.class.getName();
 
 	private Animation mDirectionAnimation = null;
 
@@ -119,7 +119,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.mappingbird_place);
+		setContentView(R.layout.mb_activity_layout_place);
 		initView();
 
 		Intent intent = this.getIntent();
@@ -182,12 +182,18 @@ public class MappingBirdPlaceActivity extends Activity implements
 		} else if(list.size() <= 15) {
 			mGalleryAdapter.setPathList(list);
 			mGalleryPager.setVisibility(View.VISIBLE);
+			GradientDrawable bgDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+					new int[] { 0xff262626, 0xff0d0d0d });
+			mGalleryPager.setBackgroundDrawable(bgDrawable);
 			mPlacePhotoCountPoint.setVisibility(View.VISIBLE);
 			mPlacePhotoCountPoint.setSize(list.size());
 			mPlacePhotoCountText.setVisibility(View.GONE);
 		} else {
 			mGalleryAdapter.setPathList(list);
 			mGalleryPager.setVisibility(View.VISIBLE);
+			GradientDrawable bgDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+					new int[] { 0xff262626, 0xff0d0d0d });
+			mGalleryPager.setBackgroundDrawable(bgDrawable);
 			mPlacePhotoCountPoint.setVisibility(View.GONE);
 			mPlacePhotoCountText.setVisibility(View.VISIBLE);
 			mPlacePhotoCountText.setText("1/"+list.size());
@@ -210,7 +216,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 			
 			@Override
 			public void onFinish() {
-				MappingBirdPlaceActivity.this.finish();
+				MBPlaceActivity.this.finish();
 			}
 		});
 
@@ -346,8 +352,8 @@ public class MappingBirdPlaceActivity extends Activity implements
 				setDataInLayout(point.getPlacePhone(), mPlacePhoneLayout, mPlacePhone);
 				// Address
 				setDataInLayout(point.getLocation().getPlaceAddress(), mPlaceAddressLayout, mPlaceAddress);
-				// Date
-				setDataInLayout(point.getCreateTime(), mPlaceDateLayout, mPlaceDate);
+//				// Date
+//				setDataInLayout(point.getCreateTime(), mPlaceDateLayout, mPlaceDate);
 				// Tags
 				setDataInLayout(point.getTagsString(), mPlaceTagLayout, mPlaceTag);
 				// Link
@@ -361,7 +367,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 								getString(R.string.place_last_update), point.getUpdateTime()));
 				}
 
-				mDirectionAnimation = AnimationUtils.loadAnimation(MappingBirdPlaceActivity.this,
+				mDirectionAnimation = AnimationUtils.loadAnimation(MBPlaceActivity.this,
 						R.anim.layout_scroll_from_bottom_to_up);
 				mGetDirection.setAnimation(mDirectionAnimation);
 				mGetDirection.setVisibility(View.VISIBLE);
@@ -402,7 +408,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 				getShareIntent("Share", placeInfo);
 				
 				
-	            AppAnalyticHelper.sendEvent(MappingBirdPlaceActivity.this, 
+	            AppAnalyticHelper.sendEvent(MBPlaceActivity.this, 
 	                    AppAnalyticHelper.CATEGORY_UI_ACTION, 
 	                    AppAnalyticHelper.ACTION_BUTTON_PRESS,
 	                    AppAnalyticHelper.LABEL_BUTTON_SHARE, 0);   
@@ -424,7 +430,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 		switch (v.getId()) {
 		case R.id.trip_map_view:
 		    
-		    AppAnalyticHelper.sendEvent(MappingBirdPlaceActivity.this, 
+		    AppAnalyticHelper.sendEvent(MBPlaceActivity.this, 
                     AppAnalyticHelper.CATEGORY_UI_ACTION, 
                     AppAnalyticHelper.ACTION_IMAGE_CLICK,
                     AppAnalyticHelper.LABEL_MAP_IN_PLACE_PAGE, 0);   
@@ -442,7 +448,7 @@ public class MappingBirdPlaceActivity extends Activity implements
 								+ mPlaceLatitude + "," + mPlaceLongitude));
 				startActivity(intent);
 				
-				AppAnalyticHelper.sendEvent(MappingBirdPlaceActivity.this, 
+				AppAnalyticHelper.sendEvent(MBPlaceActivity.this, 
                         AppAnalyticHelper.CATEGORY_UI_ACTION, 
                         AppAnalyticHelper.ACTION_BUTTON_PRESS, 
                         AppAnalyticHelper.LABEL_BUTTON_NAVIGATE, 0);
@@ -514,7 +520,7 @@ public class MappingBirdPlaceActivity extends Activity implements
     protected void onDestroy() {
         super.onDestroy();
         
-        AppAnalyticHelper.sendEvent(MappingBirdPlaceActivity.this, 
+        AppAnalyticHelper.sendEvent(MBPlaceActivity.this, 
                 AppAnalyticHelper.CATEGORY_UI_ACTION, 
                 AppAnalyticHelper.ACTION_IMAGE_SWIPE,
                 AppAnalyticHelper.LABEL_SWIPE_IN_PLACE_PAGE,

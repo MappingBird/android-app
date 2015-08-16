@@ -78,7 +78,7 @@ import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
-import com.mpbd.place.MappingBirdPlaceActivity;
+import com.mpbd.place.MBPlaceActivity;
 import com.mpbd.services.MBServiceClient;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
@@ -890,12 +890,12 @@ public class MBCollectionActivity extends FragmentActivity implements
 			if(Math.abs(System.currentTimeMillis() - mClickButtonTime) > 800) {
 				mClickButtonTime = System.currentTimeMillis();
 				Intent intent = new Intent();
-				intent.putExtra(MappingBirdPlaceActivity.EXTRA_MBPOINT, point);
+				intent.putExtra(MBPlaceActivity.EXTRA_MBPOINT, point);
 				intent.putExtra("myLatitude", mMyLocation.latitude);
 				intent.putExtra("myLongitude", mMyLocation.longitude);
 	
 				intent.setClass(MBCollectionActivity.this,
-						com.mpbd.place.MappingBirdPlaceActivity.class);
+						com.mpbd.place.MBPlaceActivity.class);
 				MBCollectionActivity.this.startActivity(intent);
 				
 				AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
@@ -1069,14 +1069,14 @@ public class MBCollectionActivity extends FragmentActivity implements
 						long placeId = intent.getLongExtra(EXTRA_PLACE_ID, 0);
 						if(placeId != 0) {
 							Intent placeIntent = new Intent();
-							placeIntent.putExtra(MappingBirdPlaceActivity.EXTRA_PLACE_ID, placeId);
+							placeIntent.putExtra(MBPlaceActivity.EXTRA_PLACE_ID, placeId);
 							if(mMyLocation != null) {
 								placeIntent.putExtra("myLatitude", mMyLocation.latitude);
 								placeIntent.putExtra("myLongitude", mMyLocation.longitude);
 							}
 				
 							placeIntent.setClass(MBCollectionActivity.this,
-									com.mpbd.place.MappingBirdPlaceActivity.class);
+									com.mpbd.place.MBPlaceActivity.class);
 							MBCollectionActivity.this.startActivity(placeIntent);
 							return true;
 						}
@@ -1179,13 +1179,13 @@ public class MBCollectionActivity extends FragmentActivity implements
 		public void onClick(View v) {
 			DFdismiss();
 			Intent placeIntent = new Intent();
-			placeIntent.putExtra(MappingBirdPlaceActivity.EXTRA_PLACE_ID, mPlaceId);
+			placeIntent.putExtra(MBPlaceActivity.EXTRA_PLACE_ID, mPlaceId);
 			if(mMyLocation != null) {
 				placeIntent.putExtra("myLatitude", mMyLocation.latitude);
 				placeIntent.putExtra("myLongitude", mMyLocation.longitude);
 			}
 			placeIntent.setClass(MBCollectionActivity.this,
-					com.mpbd.place.MappingBirdPlaceActivity.class);
+					com.mpbd.place.MBPlaceActivity.class);
 			MBCollectionActivity.this.startActivity(placeIntent);
 		}
 	};
