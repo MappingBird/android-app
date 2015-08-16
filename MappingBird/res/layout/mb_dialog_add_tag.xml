@@ -5,6 +5,7 @@
     android:id="@+id/dialog_framelayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg_general"
     android:orientation="vertical" >
 
     <com.mappingbird.widget.MappingbirdTextView

@@ -511,7 +511,7 @@ public class MBAddPlaceInfoLayout extends LinearLayout {
 		if(mAddTagDialog != null) {
 			mAddTagDialog.dismiss();
 		}
-		mAddTagDialog = new Dialog(getContext(),R.style.CustomDialog);
+		mAddTagDialog = new Dialog(getContext(),R.style.CustomTransparentDialog);
 		mAddTagDialog.setContentView(R.layout.mb_dialog_add_tag);
 		final MBDialogAddTagLayout addTagLayout = (MBDialogAddTagLayout) mAddTagDialog.findViewById(R.id.dialog_framelayout);
 		if(!TextUtils.isEmpty(mTagsListStr)) {
