@@ -7,7 +7,6 @@ import java.util.Set;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
@@ -26,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.api.ImageDetail;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
@@ -40,6 +40,7 @@ import com.mappingbird.widget.MappingbirdScrollView;
 import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.Utils;
@@ -96,8 +97,7 @@ public class MBPlaceActivity extends Activity implements
 
 	private double mPlaceLatitude = 0;
 	private double mPlaceLongitude = 0;
-	private double mMyLatitude = 0;
-	private double mMyLongitude = 0;
+	private LatLng mMyLocation = null;
 
 	private MappingBirdAPI mApi = null;
 	private MBPointData mPoint = null;
@@ -114,6 +114,9 @@ public class MBPlaceActivity extends Activity implements
 	
 	private ImageView mNoPhotoImageView;
 	private View mMaskView;
+	
+	//
+	MBDialog mDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +127,12 @@ public class MBPlaceActivity extends Activity implements
 
 		Intent intent = this.getIntent();
 		// Current location
-		mMyLatitude = intent.getDoubleExtra("myLatitude", 0);
-		mMyLongitude = intent.getDoubleExtra("myLongitude", 0);
+		if(intent.hasExtra("myLatitude")
+				&& intent.hasExtra("myLongitude")) {
+			double latitude = intent.getDoubleExtra("myLatitude", 0);
+			double longitude = intent.getDoubleExtra("myLongitude", 0);
+			mMyLocation = new LatLng(latitude, longitude);
+		}
 
 		boolean isFinished = false;
 		long placeId = 0;
@@ -367,19 +374,26 @@ public class MBPlaceActivity extends Activity implements
 								getString(R.string.place_last_update), point.getUpdateTime()));
 				}
 
-				mDirectionAnimation = AnimationUtils.loadAnimation(MBPlaceActivity.this,
-						R.anim.layout_scroll_from_bottom_to_up);
-				mGetDirection.setAnimation(mDirectionAnimation);
-				mGetDirection.setVisibility(View.VISIBLE);
+				if(mMyLocation != null) {
+					mDirectionAnimation = AnimationUtils.loadAnimation(MBPlaceActivity.this,
+							R.anim.layout_scroll_from_bottom_to_up);
+					mGetDirection.setAnimation(mDirectionAnimation);
+					mGetDirection.setVisibility(View.VISIBLE);
+				}
 
 			} else {
 				String title = "";
 				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
 				String error = "";
 				error = MBErrorMessageControl.getErrorMessage(statusCode, mContext);
-				MappingBirdDialog.createMessageDialog(mContext, title, error,
-						getResources().getString(R.string.ok),
-						positiveListener, null, null).show();
+				MBDialog mDialog = new MBDialog(mContext);
+				mDialog.setTitle(title);
+				mDialog.setDescription(error);
+				mDialog.setPositiveBtn(getResources().getString(R.string.ok),
+						mPositiveListener, MBDialog.BTN_STYLE_DEFAULT);
+				mDialog.setCanceledOnTouchOutside(false);
+				mDialog.show();
+
 			}
 		}
 	};
@@ -417,11 +431,12 @@ public class MBPlaceActivity extends Activity implements
 		}
 	};
 
-	android.content.DialogInterface.OnClickListener positiveListener = new android.content.DialogInterface.OnClickListener() {
+	View.OnClickListener mPositiveListener = new View.OnClickListener() {
 
 		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			dialog.dismiss();
+		public void onClick(View view) {
+			if(mDialog != null)
+				mDialog.dismiss();
 		}
 	};
 
@@ -444,7 +459,7 @@ public class MBPlaceActivity extends Activity implements
 			try {
 				Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
 						Uri.parse("http://maps.google.com/maps?saddr="
-								+ mMyLatitude + "," + mMyLongitude + "&daddr="
+								+ mMyLocation.latitude + "," + mMyLocation.longitude + "&daddr="
 								+ mPlaceLatitude + "," + mPlaceLongitude));
 				startActivity(intent);
 				
