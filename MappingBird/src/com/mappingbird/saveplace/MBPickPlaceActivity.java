@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,14 +59,24 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 	private double mLatitude = 0;
 	private double mLongitude = 0;
 
-	private ArrayList<MappingBirdPlaceItem> mRequestPlace = new ArrayList<MappingBirdPlaceItem>();
-	
 	// Search layout
 	private View mTitleLayout;
 	private View mSearchLayout;
 	private View mDeletSerachTextBtn;
 	private EditText mSearchInput;
+	private String mSearchText = null;
 	
+	// Hint
+	private static final int HINT_NONE = 0;
+	private static final int HINT_ERROR = 1;
+	private static final int HINT_NO_RESULT_EXPLORE = 2;
+	private static final int HINT_NO_RESULT_SEARCH = 3;
+	
+	private View mHintLayout;
+	private View mHintErrorLayout;
+	private View mHintNoResultLayout;
+	private TextView mHintNoResultText;
+
 	private Handler mHandler = new Handler() {
 
 		@Override
@@ -118,6 +129,13 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 		
 		mSearchInput = (EditText) findViewById(R.id.title_input);
 		mSearchInput.addTextChangedListener(mSearchInputTextWatcher);
+		
+		// Hint Layout
+		mHintLayout = findViewById(R.id.pick_place_hint);
+		mHintErrorLayout = findViewById(R.id.pick_refresh_layout);
+		mHintNoResultLayout = findViewById(R.id.pick_oops_layout);
+		mHintNoResultText = (TextView) findViewById(R.id.pick_oops_msg);
+		mHintErrorLayout.setOnClickListener(mHintClickListener);
 	}
 
 	@Override
@@ -153,9 +171,36 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
 		mLoadingDialog.show();
 //		mApi.explorefromFourSquare(mOnExploreFourSquareListener, mLatitude, mLongitude, 35);
+		mSearchText = filter;
 		mApi.searchfromFourSquare(mOnSearchFourSquareListener, mLatitude, mLongitude, filter, 50);
 	}
 
+	private void setHintLayout(int mode) {
+		switch(mode) {
+			case HINT_NONE:
+				mHintLayout.setVisibility(View.GONE);
+				mHintErrorLayout.setVisibility(View.GONE);
+				mHintNoResultLayout.setVisibility(View.GONE);
+				break;
+			case HINT_ERROR:
+				mHintLayout.setVisibility(View.VISIBLE);
+				mHintErrorLayout.setVisibility(View.VISIBLE);
+				mHintNoResultLayout.setVisibility(View.GONE);
+				break;
+			case HINT_NO_RESULT_EXPLORE:
+				mHintLayout.setVisibility(View.VISIBLE);
+				mHintErrorLayout.setVisibility(View.GONE);
+				mHintNoResultLayout.setVisibility(View.VISIBLE);
+				mHintNoResultText.setText(R.string.pick_place_error_no_suggest);
+				break;
+			case HINT_NO_RESULT_SEARCH:
+				mHintLayout.setVisibility(View.VISIBLE);
+				mHintErrorLayout.setVisibility(View.GONE);
+				mHintNoResultLayout.setVisibility(View.VISIBLE);
+				mHintNoResultText.setText(R.string.pick_place_error_no_search_result);
+				break;
+		}
+	}
 	private OnSearchFourSquareListener mOnSearchFourSquareListener = new OnSearchFourSquareListener() {
 		
 		@Override
@@ -165,24 +210,32 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 				DeBug.d("[Pick Place] request place , status = "+statusCode+", data size = "+collection.getCount());
 			else
 				DeBug.d("[Pick Place] request place , status = "+statusCode+", data is null");
+			ArrayList<MappingBirdPlaceItem> requestPlace = new ArrayList<MappingBirdPlaceItem>();
+			requestPlace.clear();
+			
 			if(statusCode == MappingBirdAPI.RESULT_OK) {
-				mRequestPlace.clear();
-				for(int i = 0; i < collection.getCount(); i++) {
-					mRequestPlace.add(new MappingBirdPlaceItem(
-							MappingBirdPlaceItem.TYPE_PLACE, collection.get(i), mLatitude, mLongitude));
-				}
-				java.util.Collections.sort(mRequestPlace, new Comparator<MappingBirdPlaceItem>() {
-
-					@Override
-					public int compare(MappingBirdPlaceItem lhs, MappingBirdPlaceItem rhs) {
-						return (int)(lhs.mDistance - rhs.mDistance);
+				if(collection.getCount() != 0) {
+					for(int i = 0; i < collection.getCount(); i++) {
+						requestPlace.add(new MappingBirdPlaceItem(
+								MappingBirdPlaceItem.TYPE_PLACE, collection.get(i), mLatitude, mLongitude));
 					}
-					
-				});
+					java.util.Collections.sort(requestPlace, new Comparator<MappingBirdPlaceItem>() {
+						@Override
+						public int compare(MappingBirdPlaceItem lhs, MappingBirdPlaceItem rhs) {
+							return (int)(lhs.mDistance - rhs.mDistance);
+						}
+						
+					});
+				} else {
+					if(TextUtils.isEmpty(mSearchText))
+						setHintLayout(HINT_NO_RESULT_EXPLORE);
+					else
+						setHintLayout(HINT_NO_RESULT_SEARCH);
+				}
 			} else {
-				mRequestPlace.clear();
+				setHintLayout(HINT_ERROR);
 			}
-			mPlaceAdapter.setPlaceData(mRequestPlace);
+			mPlaceAdapter.setPlaceData(requestPlace);
 		}
 	};
 /*
@@ -268,6 +321,18 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 	private void setTitleText(String title) {
 		mTitleText.setText(title);
 	}
+	
+	private OnClickListener mHintClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.pick_refresh_layout:
+				prepareData(null);
+				break;
+			}
+		}
+	};
 
 	private OnClickListener mTitleClickListener = new OnClickListener() {
 		

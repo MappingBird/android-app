@@ -59,11 +59,11 @@ public class MBPlaceAdapter extends BaseAdapter  {
 			mItems.clear();
 			mItems.addAll(mData);
 			// 如果 沒有資料的時候會出現這張卡片
-			if(mData.size() == 0) {
-				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_SEARCH_ERROR, 
-						mContext.getString(R.string.error_search_place_error),
-						""));
-			}
+//			if(mData.size() == 0) {
+//				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_SEARCH_ERROR, 
+//						mContext.getString(R.string.error_search_place_error),
+//						""));
+//			}
 			// 新增此地點
 			if(TextUtils.isEmpty(mAddPlaceName)) {
 				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE, 
