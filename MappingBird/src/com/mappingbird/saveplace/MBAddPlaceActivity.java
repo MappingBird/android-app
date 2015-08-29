@@ -24,12 +24,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
-import com.mappingbird.saveplace.MappingBirdPhotoAdapter.PhotoAdapterListener;
+import com.mappingbird.saveplace.MBPhotoAdapter.PhotoAdapterListener;
 import com.mappingbird.saveplace.MBAddPlaceInfoLayout.PlaceInfoListener;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
 import com.mpbd.mappingbird.MappingBirdDialog;
@@ -49,14 +50,16 @@ public class MBAddPlaceActivity extends FragmentActivity  {
 
 	private static final int REQUEST_TAKE_PICTURE = 2;
 
-	private MappingBirdPlaceItem mItem;
+	private MBPlaceItem mItem;
 	private String mType = MBPickPlaceActivity.TYPE_DEFAULT;
 
 	private TextView mTitleText;
 	private View mSubmitBtn;
+	private View mSubmitLayout;
+	private View mSubmitText;
 
 	private ListView mListView;
-	private MappingBirdPhotoAdapter mAdapter;
+	private MBPhotoAdapter mAdapter;
 	
 	private ScanPhotoThread mThread;
 	
@@ -77,7 +80,7 @@ public class MBAddPlaceActivity extends FragmentActivity  {
 		} else {
 			if(intent.hasExtra(EXTRA_TYPE)) 
 				mType = intent.getStringExtra(EXTRA_TYPE);
-			mItem = (MappingBirdPlaceItem) intent.getSerializableExtra(EXTRA_ITEM);
+			mItem = (MBPlaceItem) intent.getSerializableExtra(EXTRA_ITEM);
 		}
 		initTitleLayout();
 	}
@@ -100,10 +103,13 @@ public class MBAddPlaceActivity extends FragmentActivity  {
 
 		mTitleText = (TextView) findViewById(R.id.title_text);
 		findViewById(R.id.title_btn_back).setOnClickListener(mTitleClickListener);
+		mSubmitLayout = findViewById(R.id.title_btn_layout);
+		mSubmitText = findViewById(R.id.title_text_submit);
 		mSubmitBtn = findViewById(R.id.title_btn_submit);
-		mSubmitBtn.setOnClickListener(mTitleClickListener);
+		mSubmitLayout.setOnClickListener(mTitleClickListener);
 		Animation anim = MBAnimation.getActionBtnShowAnimation();
 		anim.setStartOffset(500);
+		anim.setAnimationListener(mSubmitBtnShowAnimListener);
 		mSubmitBtn.setAnimation(anim);
 		setTitleText(getString(R.string.pick_place_title));
 		
@@ -113,7 +119,7 @@ public class MBAddPlaceActivity extends FragmentActivity  {
 		mAddPlaceInfoLayout.setPlaceData(mItem, MBUtil.getPlaceTypeIconFont(mType));
 		
 		mListView.addHeaderView(mAddPlaceInfoLayout);
-		mAdapter = new MappingBirdPhotoAdapter(this);
+		mAdapter = new MBPhotoAdapter(this);
 		mAdapter.setPhotoAdapterListener(mPhotoAdapterListener);
 		mListView.setAdapter(mAdapter);
 		
@@ -131,20 +137,37 @@ public class MBAddPlaceActivity extends FragmentActivity  {
 		@Override
 		public void placeNameChanged(String s) {
 			if(s.length() == 0) {
-				if(mSubmitBtn.isEnabled()) {
-					mSubmitBtn.setEnabled(false);
+				if(mSubmitLayout.isEnabled()) {
+					mSubmitLayout.setEnabled(false);
 					Animation anim = MBAnimation.getActionBtnHideAnimation();
 					anim.setFillAfter(true);
 					mSubmitBtn.startAnimation(anim);
+					mSubmitText.setVisibility(View.INVISIBLE);
 				} 
 			} else {
-				if(!mSubmitBtn.isEnabled()) {
-					mSubmitBtn.setEnabled(true);
+				if(!mSubmitLayout.isEnabled()) {
+					mSubmitLayout.setEnabled(true);
 					Animation anim = MBAnimation.getActionBtnShowAnimation();
 					anim.setFillAfter(true);
+					anim.setAnimationListener(mSubmitBtnShowAnimListener);
 					mSubmitBtn.startAnimation(anim);
 				}
 			}
+		}
+	};
+
+	private AnimationListener mSubmitBtnShowAnimListener = new AnimationListener() {		
+		@Override
+		public void onAnimationStart(Animation animation) {
+		}
+		
+		@Override
+		public void onAnimationRepeat(Animation animation) {
+		}
+		
+		@Override
+		public void onAnimationEnd(Animation animation) {
+			mSubmitText.setVisibility(View.VISIBLE);
 		}
 	};
 
@@ -156,7 +179,7 @@ public class MBAddPlaceActivity extends FragmentActivity  {
 			case R.id.title_btn_back:
 				finish();
 				break;
-			case R.id.title_btn_submit:
+			case R.id.title_btn_layout:
 				MBPlaceAddDataToServer data = mAddPlaceInfoLayout.getPlaceInfoData();
 				data.type = mType;
 				data.setImageList(mAdapter.getSelectPhotoList());

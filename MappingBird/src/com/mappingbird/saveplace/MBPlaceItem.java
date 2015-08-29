@@ -8,7 +8,7 @@ import com.mappingbird.api.Venue;
 import com.mpbd.mappingbird.util.Utils;
 
 
-public class MappingBirdPlaceItem implements Serializable {
+public class MBPlaceItem implements Serializable {
 	public static final int TYPE_PLACE 					= 0;
 	public static final int TYPE_ADD_THIS_PLACE_FTITLE	= 1;
 	public static final int TYPE_SEARCH_OTHER_TEXT 		= 2;
@@ -26,7 +26,7 @@ public class MappingBirdPlaceItem implements Serializable {
 	private String mPlaceAddress = "";
 	private Venue mData;
 	public float mDistance;
-	public MappingBirdPlaceItem(int type, Venue data, double latitude, double longitude) {
+	public MBPlaceItem(int type, Venue data, double latitude, double longitude) {
 		mType = type;
 		mData = data;
 		mPlaceLatitude = mData.getLatitude();
@@ -40,7 +40,7 @@ public class MappingBirdPlaceItem implements Serializable {
 				longitude);
 	}
 
-	public MappingBirdPlaceItem(int type, String name, String address,
+	public MBPlaceItem(int type, String name, String address,
 			double currentLat, double currentLon) {
 		mType = type;
 		mPlaceLatitude = currentLat;
@@ -55,7 +55,7 @@ public class MappingBirdPlaceItem implements Serializable {
 	 * @param name
 	 * @param adress
 	 */
-	public MappingBirdPlaceItem(int type, String name, String adress) {
+	public MBPlaceItem(int type, String name, String adress) {
 		mType = type;
 		mPlaceName = name;
 		mPlaceAddress = adress;
@@ -67,7 +67,7 @@ public class MappingBirdPlaceItem implements Serializable {
 	 * @param name
 	 * @param adress
 	 */
-	public MappingBirdPlaceItem(int type, SpannableString spann, String address) {
+	public MBPlaceItem(int type, SpannableString spann, String address) {
 		mType = type;
 		mPlaceNameSpan = spann;
 		mPlaceAddress = address;

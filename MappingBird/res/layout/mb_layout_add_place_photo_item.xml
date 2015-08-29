@@ -10,35 +10,41 @@
         android:id="@+id/photo_1_layout"
         android:layout_width="0dp"
         android:layout_height="110dp"
-        android:layout_weight="1"
         android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp" >
+        android:layout_marginRight="4dp"
+        android:layout_weight="1" >
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/photo_1_hint_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_cell_bg"
+            android:visibility="gone" >
 
-            <com.mappingbird.widget.MappingbirdFontIcon
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:gravity="center"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/iconfont_camera_iris"
-                android:textColor="@color/graphic_symbol"
-                android:textSize="36dp" />
-
-            <com.mappingbird.widget.MappingbirdTextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/str_take_picture"
-                android:textColor="@color/font_hint"
-                android:textSize="12dp" />
-        </LinearLayout>
+                android:layout_centerInParent="true"
+                android:orientation="vertical" >
+
+                <com.mappingbird.widget.MappingbirdFontIcon
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/iconfont_camera_iris"
+                    android:textColor="@color/graphic_symbol"
+                    android:textSize="36dp" />
+
+                <com.mappingbird.widget.MappingbirdTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/str_take_picture"
+                    android:textColor="@color/font_hint"
+                    android:textSize="12dp" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/photo_1"
@@ -69,9 +75,9 @@
         android:id="@+id/photo_2_layout"
         android:layout_width="0dp"
         android:layout_height="110dp"
-        android:layout_weight="1"
         android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp" >
+        android:layout_marginRight="4dp"
+        android:layout_weight="1" >
 
         <ImageView
             android:id="@+id/photo_2"
@@ -102,9 +108,9 @@
         android:id="@+id/photo_3_layout"
         android:layout_width="0dp"
         android:layout_height="110dp"
-        android:layout_weight="1"
         android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp" >
+        android:layout_marginRight="4dp"
+        android:layout_weight="1" >
 
         <ImageView
             android:id="@+id/photo_3"

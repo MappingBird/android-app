@@ -210,18 +210,18 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 				DeBug.d("[Pick Place] request place , status = "+statusCode+", data size = "+collection.getCount());
 			else
 				DeBug.d("[Pick Place] request place , status = "+statusCode+", data is null");
-			ArrayList<MappingBirdPlaceItem> requestPlace = new ArrayList<MappingBirdPlaceItem>();
+			ArrayList<MBPlaceItem> requestPlace = new ArrayList<MBPlaceItem>();
 			requestPlace.clear();
 			
 			if(statusCode == MappingBirdAPI.RESULT_OK) {
 				if(collection.getCount() != 0) {
 					for(int i = 0; i < collection.getCount(); i++) {
-						requestPlace.add(new MappingBirdPlaceItem(
-								MappingBirdPlaceItem.TYPE_PLACE, collection.get(i), mLatitude, mLongitude));
+						requestPlace.add(new MBPlaceItem(
+								MBPlaceItem.TYPE_PLACE, collection.get(i), mLatitude, mLongitude));
 					}
-					java.util.Collections.sort(requestPlace, new Comparator<MappingBirdPlaceItem>() {
+					java.util.Collections.sort(requestPlace, new Comparator<MBPlaceItem>() {
 						@Override
-						public int compare(MappingBirdPlaceItem lhs, MappingBirdPlaceItem rhs) {
+						public int compare(MBPlaceItem lhs, MBPlaceItem rhs) {
 							return (int)(lhs.mDistance - rhs.mDistance);
 						}
 						
@@ -272,16 +272,16 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			MappingBirdPlaceItem item = (MappingBirdPlaceItem)mPlaceAdapter.getItem(position-1);
+			MBPlaceItem item = (MBPlaceItem)mPlaceAdapter.getItem(position-1);
 			switch(item.getType()) {
-				case MappingBirdPlaceItem.TYPE_PLACE: {
+				case MBPlaceItem.TYPE_PLACE: {
 					Intent intent = new Intent(MBPickPlaceActivity.this, MBAddPlaceActivity.class);
 					intent.putExtra(MBAddPlaceActivity.EXTRA_TYPE, mType);
 					intent.putExtra(MBAddPlaceActivity.EXTRA_ITEM, item);
 					MBPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
-				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
+				case MBPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
 					Intent intent = new Intent(MBPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LAT, mLatitude);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LONG, mLongitude);
@@ -291,7 +291,7 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 					MBPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
-				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
+				case MBPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
 					Intent intent = new Intent(MBPickPlaceActivity.this, MBAddCurrentLocationActivity.class);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LAT, mLatitude);
 					intent.putExtra(MBAddCurrentLocationActivity.EXTRA_LONG, mLongitude);
@@ -299,12 +299,12 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 					MBPickPlaceActivity.this.startActivityForResult(intent, REQUEST_ADD_PLACE);
 					break;
 				}
-				case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT: {
+				case MBPlaceItem.TYPE_SEARCH_OTHER_TEXT: {
 					prepareData(mPlaceAdapter.getFilterStr());
 					closeSearchBar();
 					break;
 				}
-				case MappingBirdPlaceItem.TYPE_SEARCH_ERROR: {
+				case MBPlaceItem.TYPE_SEARCH_ERROR: {
 					prepareData(null);
 					break;
 				}

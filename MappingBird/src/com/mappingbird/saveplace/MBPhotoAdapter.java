@@ -20,7 +20,7 @@ import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.MBUtil;
 
-public class MappingBirdPhotoAdapter extends BaseAdapter  {
+public class MBPhotoAdapter extends BaseAdapter  {
 	
 	private static final String TAG_CAMERA = "Camera";
 	private static final int MAX_PHOTO_NUMBER = 10;
@@ -30,11 +30,11 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 
 	private PhotoAdapterListener mPhotoAdapterListener = null;
 	private ArrayList<String> mSelectPhotoList = new ArrayList<String>();
-	private ArrayList<MappingBirdPhotoItem> mItems = new ArrayList<MappingBirdPhotoItem>();
+	private ArrayList<MBPhotoItem> mItems = new ArrayList<MBPhotoItem>();
 	
 	private Toast mMoreThenTenToast;
 
-	public MappingBirdPhotoAdapter(Context context) {
+	public MBPhotoAdapter(Context context) {
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);
 		mItems.clear();
@@ -50,7 +50,7 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 		notifyDataSetChanged();		
 	}
 
-	public void setPhotoData(ArrayList<MappingBirdPhotoItem> items) {
+	public void setPhotoData(ArrayList<MBPhotoItem> items) {
 		mItems.clear();
 		mItems.addAll(items);
 		notifyDataSetChanged();
@@ -58,14 +58,14 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 
 	public void addPhotoData(ArrayList<String> items) {
 		if(mItems.size() == 0) {
-			MappingBirdPhotoItem item = new MappingBirdPhotoItem();
+			MBPhotoItem item = new MBPhotoItem();
 			item.setPath1(TAG_CAMERA);
 			mItems.add(item);
 		}
 		for(String path : items) {
-			MappingBirdPhotoItem item = mItems.get(mItems.size()-1);
-			if(item.getPutIndex() == MappingBirdPhotoItem.PATH_FULL) {
-				item = new MappingBirdPhotoItem();
+			MBPhotoItem item = mItems.get(mItems.size()-1);
+			if(item.getPutIndex() == MBPhotoItem.PATH_FULL) {
+				item = new MBPhotoItem();
 				mItems.add(item);
 			}
 			
@@ -107,7 +107,7 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 	    }
 
 		if(convertView == null) {
-			convertView = mInflater.inflate(R.layout.mappingbird_add_place_photo, parent, false);
+			convertView = mInflater.inflate(R.layout.mb_layout_add_place_photo_item, parent, false);
 			ItemHost host = new ItemHost();
 			host.mPhoto1_Layout = convertView.findViewById(R.id.photo_1_layout);
 			host.mPhoto1_image = (ImageView) convertView.findViewById(R.id.photo_1);
@@ -131,18 +131,16 @@ public class MappingBirdPhotoAdapter extends BaseAdapter  {
 			convertView.setTag(host);
 		}
 
-		MappingBirdPhotoItem item = mItems.get(position);
+		MBPhotoItem item = mItems.get(position);
 		ItemHost host = (ItemHost) convertView.getTag();
 		if(item.getPath1() != null) {
 			host.mPhoto1_Layout.setVisibility(View.VISIBLE);
 			if(!item.getPath1().equals(TAG_CAMERA)) {
-				host.mPhoto1_Layout.setBackgroundDrawable(null);
 				host.mPhoto1_hint_layout.setVisibility(View.GONE);
 				host.mPhoto1_image.setVisibility(View.VISIBLE);
 				setLayoutData(host.mPhoto1_Layout, host.mPhoto1_image,
 						host.mPhoto1_check, host.mPhoto1_mask, item.getPath1());
 			} else {
-				host.mPhoto1_Layout.setBackgroundResource(R.drawable.btn_cell_bg);
 				host.mPhoto1_hint_layout.setVisibility(View.VISIBLE);
 				host.mPhoto1_image.setVisibility(View.GONE);
 				host.mPhoto1_check.setVisibility(View.GONE);

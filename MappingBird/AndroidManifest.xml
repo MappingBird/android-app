@@ -72,7 +72,7 @@
         </activity>
         <activity
             android:name="com.mappingbird.saveplace.MBAddPlaceActivity"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" >
         </activity>
         <activity

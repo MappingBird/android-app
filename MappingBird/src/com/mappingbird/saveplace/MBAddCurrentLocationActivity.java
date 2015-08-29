@@ -117,7 +117,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.mb_pick_place_add_current_location);
+		setContentView(R.layout.mb_activity_layout_pick_place_add_current_location);
 
 		mTitleText = (TextView) findViewById(R.id.title_text);
 		mProgressWheel = (ProgressWheel) findViewById(R.id.lock_address_loading);
@@ -264,7 +264,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 						mLocationLayout.getWidth() / 2, mLocationLayout
 								.getHeight() / 2));
 
-				MappingBirdPlaceItem item = new MappingBirdPlaceItem(0,
+				MBPlaceItem item = new MBPlaceItem(0,
 						mTitleStr, mAddress.getText().toString(),
 						latLng.latitude, latLng.longitude);
 				Intent intent = new Intent(MBAddCurrentLocationActivity.this,

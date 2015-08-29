@@ -27,8 +27,8 @@ public class MBPlaceAdapter extends BaseAdapter  {
 	private Context mContext;
 	private LayoutInflater mInflater;
 	
-	private ArrayList<MappingBirdPlaceItem> mData = new ArrayList<MappingBirdPlaceItem>();
-	private ArrayList<MappingBirdPlaceItem> mItems = new ArrayList<MappingBirdPlaceItem>();
+	private ArrayList<MBPlaceItem> mData = new ArrayList<MBPlaceItem>();
+	private ArrayList<MBPlaceItem> mItems = new ArrayList<MBPlaceItem>();
 	private String mFilterString = "";
 	private String mAddPlaceName = "";
 	
@@ -37,7 +37,7 @@ public class MBPlaceAdapter extends BaseAdapter  {
 		mInflater = LayoutInflater.from(mContext);
 	}
 
-	public void setPlaceData(ArrayList<MappingBirdPlaceItem> items) {
+	public void setPlaceData(ArrayList<MBPlaceItem> items) {
 		mData.clear();
 		mData.addAll(items);
 
@@ -66,29 +66,29 @@ public class MBPlaceAdapter extends BaseAdapter  {
 //			}
 			// 新增此地點
 			if(TextUtils.isEmpty(mAddPlaceName)) {
-				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE, 
+				mItems.add(new MBPlaceItem(MBPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE, 
 						mContext.getString(R.string.pick_place_add_create_location_des),
 						""));
 			} else {
-				mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE, 
+				mItems.add(new MBPlaceItem(MBPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE, 
 						getSpecialString(R.string.pick_place_add_create_location_title_by_text, " "+mAddPlaceName+" "),
 						mContext.getString(R.string.pick_place_add_create_location_des)));
 			}
 		} else {
 			mAddPlaceName = text;
 			mItems.clear();
-			for(MappingBirdPlaceItem item : mData) {
+			for(MBPlaceItem item : mData) {
 				if(!TextUtils.isEmpty(item.getName()) 
 						&& item.getName().contains(text)) {
 					mItems.add(item);
 				}
 			}
 			// 收尋別的字串
-			mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT, 
+			mItems.add(new MBPlaceItem(MBPlaceItem.TYPE_SEARCH_OTHER_TEXT, 
 					getSpecialString(R.string.pick_place_add_serach_title, " "+text+" "),
 					mContext.getString(R.string.pick_place_add_srarch_des)));
 			// 新增此地點
-			mItems.add(new MappingBirdPlaceItem(MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE, 
+			mItems.add(new MBPlaceItem(MBPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE, 
 					getSpecialString(R.string.pick_place_add_create_location_title_by_text, " "+text+" "),
 					mContext.getString(R.string.pick_place_add_create_location_des)));
 		}
@@ -127,7 +127,7 @@ public class MBPlaceAdapter extends BaseAdapter  {
 
 	@Override
 	public int getViewTypeCount() {
-		return MappingBirdPlaceItem.TYPE_NUMBER;
+		return MBPlaceItem.TYPE_NUMBER;
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class MBPlaceAdapter extends BaseAdapter  {
 		int type = getItemViewType(position);
 		if(convertView == null) {
 			switch(type) {
-				case MappingBirdPlaceItem.TYPE_PLACE: {
+				case MBPlaceItem.TYPE_PLACE: {
 					convertView = mInflater.inflate(R.layout.mb_layout_pick_place_item, parent, false);
 					ItemHost host = new ItemHost();
 					host.mName 		= (TextView) convertView.findViewById(R.id.item_name);
@@ -145,8 +145,8 @@ public class MBPlaceAdapter extends BaseAdapter  {
 					convertView.setTag(host);
 					break;
 				}
-				case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT:
-				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
+				case MBPlaceItem.TYPE_SEARCH_OTHER_TEXT:
+				case MBPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
 					convertView = mInflater.inflate(R.layout.mappingbird_pick_place_func_item, parent, false);
 					ItemHost host = new ItemHost();
 					host.mIconFont	= (TextView) convertView.findViewById(R.id.item_icon_font);
@@ -155,7 +155,7 @@ public class MBPlaceAdapter extends BaseAdapter  {
 					convertView.setTag(host);
 					break;
 				}
-				case MappingBirdPlaceItem.TYPE_SEARCH_ERROR: {
+				case MBPlaceItem.TYPE_SEARCH_ERROR: {
 					convertView = mInflater.inflate(R.layout.mappingbird_pick_place_func_error_item, parent, false);
 					ItemHost host = new ItemHost();
 					host.mName 		= (TextView) convertView.findViewById(R.id.item_state);
@@ -169,7 +169,7 @@ public class MBPlaceAdapter extends BaseAdapter  {
 					convertView.setTag(host);
 					break;
 				}
-				case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
+				case MBPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
 					convertView = mInflater.inflate(R.layout.mappingbird_pick_place_func_single_item, parent, false);
 					ItemHost host = new ItemHost();
 					host.mIconFont	= (TextView) convertView.findViewById(R.id.item_icon_font);
@@ -179,9 +179,9 @@ public class MBPlaceAdapter extends BaseAdapter  {
 				}
 			}
 		}
-		MappingBirdPlaceItem item = mItems.get(position);
+		MBPlaceItem item = mItems.get(position);
 		switch(type) {
-			case MappingBirdPlaceItem.TYPE_PLACE: {
+			case MBPlaceItem.TYPE_PLACE: {
 				ItemHost host = (ItemHost)convertView.getTag();
 				if(TextUtils.isEmpty(mFilterString)) {
 					host.mName.setText(item.getName());
@@ -194,7 +194,7 @@ public class MBPlaceAdapter extends BaseAdapter  {
 				host.mUnit.setText(disObject.mUnit);
 				break;
 			}
-			case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
+			case MBPlaceItem.TYPE_ADD_THIS_PLACE_FTITLE: {
 				ItemHost host = (ItemHost)convertView.getTag();
 				host.mIconFont.setText(R.string.iconfont_map_plus);
 				if(host.mIconFont instanceof MappingbirdFontIcon) {
@@ -205,7 +205,7 @@ public class MBPlaceAdapter extends BaseAdapter  {
 				host.mAddress.setText(item.getAddress());
 				break;
 			}
-			case MappingBirdPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
+			case MBPlaceItem.TYPE_ADD_THIS_PLACE_NO_TITLE: {
 				ItemHost host = (ItemHost)convertView.getTag();
 				host.mIconFont.setText(R.string.iconfont_map_plus);
 				if(host.mIconFont instanceof MappingbirdFontIcon) {
@@ -215,12 +215,12 @@ public class MBPlaceAdapter extends BaseAdapter  {
 				host.mName.setText(item.getName());
 				break;
 			}
-			case MappingBirdPlaceItem.TYPE_SEARCH_ERROR: {
+			case MBPlaceItem.TYPE_SEARCH_ERROR: {
 				ItemHost host = (ItemHost)convertView.getTag();
 				host.mName.setText(item.getName());
 				break;
 			}
-			case MappingBirdPlaceItem.TYPE_SEARCH_OTHER_TEXT: {
+			case MBPlaceItem.TYPE_SEARCH_OTHER_TEXT: {
 				ItemHost host = (ItemHost)convertView.getTag();
 				host.mIconFont.setText(R.string.iconfont_search);
 				if(host.mIconFont instanceof MappingbirdFontIcon) {

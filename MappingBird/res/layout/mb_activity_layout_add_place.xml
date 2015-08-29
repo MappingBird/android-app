@@ -18,11 +18,31 @@
             android:layout_alignParentLeft="true"
             android:text="@string/iconfont_arrow_left" />
 
-        <com.mappingbird.widget.MappingbirdFontIcon
-            android:id="@+id/title_btn_submit"
-            style="@style/TitleButtonStyle"
+        <LinearLayout
+            android:id="@+id/title_btn_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:text="@string/iconfont_checkbox_marked_circle" />
+            android:paddingLeft="6dp"
+            android:background="@drawable/titlebar_button_bg"
+            android:orientation="horizontal" >
+
+            <com.mappingbird.widget.MappingbirdTextView
+                android:id="@+id/title_text_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/add_place_save"
+                android:visibility="invisible"
+                android:textColor="@color/font_white"
+                android:textSize="14dp" />
+
+            <com.mappingbird.widget.MappingbirdFontIcon
+                android:id="@+id/title_btn_submit"
+                style="@style/TitleButtonStyle"
+                android:background="#00000000"
+                android:text="@string/iconfont_checkbox_marked_circle" />
+        </LinearLayout>
 
         <com.mappingbird.widget.MappingbirdTextView
             android:id="@+id/title_text"
@@ -30,10 +50,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/title_btn_layout"
             android:layout_toRightOf="@id/title_btn_back"
-            android:layout_toLeftOf="@id/title_btn_submit"
-            android:singleLine="true"
             android:paddingLeft="4dp"
+            android:singleLine="true"
             android:textColor="#FFF" />
     </RelativeLayout>
 
@@ -44,11 +64,11 @@
         android:layout_below="@id/title_bar"
         android:background="#00000000"
         android:cacheColorHint="#00000000"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
         android:divider="#00000000"
         android:dividerHeight="0dp"
         android:listSelector="#00000000"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
         android:scrollbars="none" />
 
 </RelativeLayout>

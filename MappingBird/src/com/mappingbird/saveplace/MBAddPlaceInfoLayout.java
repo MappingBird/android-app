@@ -46,7 +46,7 @@ public class MBAddPlaceInfoLayout extends LinearLayout {
 	private CollectionListAdapter mCollectionListAdapter;
 	
 	// Place data
-	private MappingBirdPlaceItem mPlaceData;
+	private MBPlaceItem mPlaceData;
 
 	// Place Layout
 	private View mPlacePhoneLayout;
@@ -162,7 +162,7 @@ public class MBAddPlaceInfoLayout extends LinearLayout {
 		}
 	};
 
-	public void setPlaceData(MappingBirdPlaceItem item, int placeType) {
+	public void setPlaceData(MBPlaceItem item, int placeType) {
 		mPlaceData = item;
 		mPlaceName.setText(mPlaceData.getName());
 		mPlaceAddress.setText(mPlaceData.getAddress());
