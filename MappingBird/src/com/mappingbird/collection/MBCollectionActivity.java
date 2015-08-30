@@ -16,6 +16,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -288,37 +289,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 				if(DeBug.DEBUG) {
 					DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[Collection] MSG : MSG_ADD_PLACE_FAILED"); 
 				}
-				String title = "";
-				String msg = "";
-				if(data.getState() == MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED) {
-					title = MappingBirdApplication.instance().getString(R.string.error_dialog_upload_images_failed_title);
-					msg = MappingBirdApplication.instance().getString(R.string.error_dialog_upload_images_failed_message);
-				} else {
-					title = MappingBirdApplication.instance().getString(R.string.error_dialog_submit_place_failed_title);
-					msg = MappingBirdApplication.instance().getString(R.string.error_dialog_submit_place_failed_message);
-				}
-				if(mDialog != null && mDialog.isShowing())
-					mDialog.dismiss();
-
-				// 上傳失敗
-				mDialog = new MBDialog(mContext);
-				mDialog.setTitle(title);
-				mDialog.setDescription(msg);
-				mDialog.setPositiveBtn(getString(R.string.str_retry), 
-						mSubmitFailedDialogOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
-				mDialog.setNegativeBtn(getString(R.string.str_cancel), 
-						mSubmitFailedDialogCancelClickListener, MBDialog.BTN_STYLE_DEFAULT);
-				mDialog.setCanceledOnTouchOutside(false);
-				mDialog.setOnKeyListener(new OnKeyListener() {
-					@Override
-					public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-						//不讓Back有用
-						if(keyCode == KeyEvent.KEYCODE_BACK)
-							return true;
-						return false;
-					}
-				});
-				mDialog.show();
+				DFshowDialog(DIALOG_UPLOAD_FAILED, 0 , data, null);
 				mMBCollectionListLayout.setProgress(data.getState(), 0, 0);
 				break;
 			case MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED:
@@ -362,12 +333,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 	};
 
-	private OnMBSubmitChangedListener mOnMBSubmitChangedListener = new OnMBSubmitChangedListener() {
-		@Override
-		public void onSubmitChanged(MBSubmitMsgData data) {
-		}
-	};
-
 	// 上傳失敗區
 	private OnClickListener mSubmitFailedDialogOkClickListener = new OnClickListener() {
 		@Override
@@ -407,6 +372,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 	protected void onPause() {
 		super.onPause();
 		closeLoadingDialog();
+		if(mLocationService != null)
+			mLocationService.stopUsingGPS();
 	}
 
 	@Override
@@ -432,8 +399,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if(mLocationService != null)
-			mLocationService.stopUsingGPS();
 		AppAnalyticHelper.endSession(this); 
 	}
 
@@ -697,7 +662,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onLocationChanged(final Location location) {
 			mHandler.post(new Runnable() {
-				
 				@Override
 				public void run() {
 					setMyLocation(location);
@@ -1150,11 +1114,28 @@ public class MBCollectionActivity extends FragmentActivity implements
 					getString(R.string.str_conitune), mCloseDialogListener, MBDialog.BTN_STYLE_BLUE,
 					getString(R.string.str_abort), mCancelUploadListener, MBDialog.BTN_STYLE_DEFAULT);
 			break;
-		case DIALOG_UPLOAD_FAILED:
+		case DIALOG_UPLOAD_FAILED: {
 			//先關閉之前的dialog
 			DFdismiss();
+			String title = "";
+			String msg = "";
+			if(data.getState() == MBPlaceSubmitTask.MSG_ADD_PLACE_IMAGE_UPLOAD_FAILED) {
+				title = MappingBirdApplication.instance().getString(R.string.error_dialog_upload_images_failed_title);
+				msg = MappingBirdApplication.instance().getString(R.string.error_dialog_upload_images_failed_message);
+			} else {
+				title = MappingBirdApplication.instance().getString(R.string.error_dialog_submit_place_failed_title);
+				msg = MappingBirdApplication.instance().getString(R.string.error_dialog_submit_place_failed_message);
+			}
 			mDialogMode = DIALOG_UPLOAD_FAILED;
+			DFShowMessageDialog(mDialogMode,
+					title, 
+					msg, 
+					getString(R.string.str_retry), mSubmitFailedDialogOkClickListener, MBDialog.BTN_STYLE_DEFAULT,
+					getString(R.string.str_cancel), mSubmitFailedDialogCancelClickListener, MBDialog.BTN_STYLE_DEFAULT,
+					true);
+
 			break;
+		}
 		case DIALOG_UPLOAD_SUCESSED:
 			if(mDialogMode == DIALOG_CANCEL_UPLOAD) {
 				// 之前有關閉上傳. 所以要跳
@@ -1245,6 +1226,13 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private void DFShowMessageDialog(int mode, String title, String message,
 			String okStr, OnClickListener oklistener, int okStyle,
 			String cancelStr, OnClickListener cancellistener, int cancelStyle) {
+		DFShowMessageDialog(mode, title, message,
+				okStr, oklistener, okStyle,
+				cancelStr, cancellistener, cancelStyle, false);
+	}
+	private void DFShowMessageDialog(int mode, String title, String message,
+			String okStr, OnClickListener oklistener, int okStyle,
+			String cancelStr, OnClickListener cancellistener, int cancelStyle, boolean handleBackKey) {
 		if(mDialog != null && mDialog.isShowing())
 			mDialog.dismiss();
 
@@ -1256,6 +1244,17 @@ public class MBCollectionActivity extends FragmentActivity implements
 		mDialog.setNegativeBtn(cancelStr, 
 				cancellistener, cancelStyle);
 		mDialog.setCanceledOnTouchOutside(false);
+		if(handleBackKey) {
+			mDialog.setOnKeyListener(new OnKeyListener() {
+				@Override
+				public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+					//不讓Back有用
+					if(keyCode == KeyEvent.KEYCODE_BACK)
+						return true;
+					return false;
+				}
+			});
+		}
 		mDialog.show();
 	}
 	
