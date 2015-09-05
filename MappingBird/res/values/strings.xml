@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Mappingbird</string>
+    <string name="app_name">MappingBird</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="get_start">Get Started</string>
@@ -27,18 +27,18 @@
     <string name="str_set_up">Set up</string>
 
     <!-- Sign in and Sign up activity and -->
-    <string name="login_content_title">Log In Mappingbird Account</string>
-    <string name="login_content">Once you log in your account, you can view all your saved places on Mappingbird.</string>
+    <string name="login_content_title">Log In MappingBird Account</string>
+    <string name="login_content">Once you log in your account, you can view all your saved places on MappingBird.</string>
     <string name="login_hint_email">Enter your Email</string>
     <string name="login_hint_password">Password</string>
     <string name="login_btn">LOG IN</string>
     <string name="login_logging">LOGGING IN</string>
-    <string name="sign_up_detail">Sign up a MappingBird ccount for backing up your favorite
-        places, sync ith other devices and access them on mappingbird.com</string>
+    <string name="sign_up_detail">Sign up a MappingBird account for backing up your favorite
+        places, sync with other devices and access them on mappingbird.com</string>
     <string name="sign_up_detail_link">
 		<![CDATA[
-        Sign up a MappingBird ccount for backing up your favorite
-        places, sync ith other devices and access them on  
+        Sign up a MappingBird account for backing up your favorite
+        places, sync with other devices and access them on  
         <font color=#01A9E7><a href="https://mappingbird.com/">www.mappingbird.com</a></font>
         ]]>
     </string>
@@ -51,7 +51,7 @@
 
     <!-- Tutorial -->
     <string name="tutorial_swipe_to_learn">Swipe to learn more</string>
-    <string name="tutorial_welocome_message_favorite_in_pockets">Your favorite places, restaurants, shopes, and bars all in your pockets.</string>
+    <string name="tutorial_welocome_message_favorite_in_pockets">Your favorite places, restaurants, shops, and bars all in your pockets.</string>
     <string name="tutorial_already_have_account">Already have a account?</string>
     <string name="tutorial_sign_in">LOG IN</string>
     <string name="tutorial_sign_up">SIGN UP</string>
@@ -129,7 +129,7 @@
     <string name="pick_place_add_create_location_des">Create a new location for everyone</string>
     <string name="pick_place_add_create_location_title_no_filter_str">Add current location</string>
     <string name="pick_place_add_serach_title">Search%s</string>
-    <string name="pick_place_add_srarch_des">Search more pleaces nearby</string>
+    <string name="pick_place_add_srarch_des">Search more places nearby</string>
     <string name="pick_place_error_no_suggest">There are no suggested places around. Try to search or create new one</string>
     <string name="pick_place_error_no_search_result">No search result. Try other keyword or create new place</string>
     <string name="pick_place_error_title">Oops! There are some problems.</string>
@@ -170,15 +170,15 @@
     <string name="error_dialog_upload_images_failed_message">New place has saved, but something went wrong with uploading photos.</string>
 
     <!-- Notification -->
-    <string name="noti_update_wait_title">Save wait</string>
-    <string name="noti_update_wait_message"></string>
+    <string name="noti_update_wait_title">Waiting for saving</string>
+    <string name="noti_update_wait_message">Please be patient</string>
     <string name="noti_update_error_photos_title">Upload photos failed</string>
     <string name="noti_update_error_place_title">Save place failed</string>
     <string name="noti_update_error_upload_title">Upload failed</string>
     <string name="noti_update_error_save_title">Save failed</string>
     <string name="noti_update_error_title">Update fails</string>
-    <string name="noti_update_error_message">Tap to options</string>
-    <string name="noti_update_tap_to_retry">Tap to options</string>
+    <string name="noti_update_error_message">Tap for options</string>
+    <string name="noti_update_tap_to_retry">Tap for options</string>
     <string name="noti_update_progress_title">Uploading photos:%1$s of %2$s</string>
     <string name="noti_update_progress_message">Tap to cancel</string>
     <string name="noti_update_finish_title">\"%1$s\" saved</string>

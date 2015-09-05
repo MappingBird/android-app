@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+
+    <string name="app_name">Mappingbird</string>
+    <string name="action_settings">設定</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="get_start">開始使用</string>
+    <string name="confirm_password">確認密碼</string>
+    <string name="logout">登出</string>
+    <string name="edit_profile">編輯個人資料</string>
+    <string name="change_password">變更密碼</string>
+    <string name="get_direction">導航</string>
+    <string name="login_description">登入帳號以檢視您在MappingBird.com所存的地點。</string>
+    <string name="no_data">沒有任何資料</string>
+    <string name="loading">載入中...</string>
+    <string name="my_loaction">我的位置</string>
+    <string name="data_incomplete">資料不完整</string>
+    <string name="ok">確認</string>
+    <string name="or">或</string>
+    <string name="str_retry">重試</string>
+    <string name="str_cancel">取消</string>
+    <string name="str_conitune">繼續</string>
+    <string name="str_cancel_upload">取消上傳</string>
+    <string name="str_confirm">確認</string>
+    <string name="str_on">開啟</string>
+    <string name="str_abort">中止</string>
+    <string name="str_set_up">前往設定</string>
+
+    <!-- Sign in and Sign up activity and -->
+    <string name="login_content_title">登入</string>
+    <string name="login_content">登入帳號後，以檢視您在電腦上所存的地點</string>
+    <string name="login_hint_email">輸入電子郵件帳號</string>
+    <string name="login_hint_password">密碼</string>
+    <string name="login_btn">登入</string>
+    <string name="login_logging">登入中...</string>
+    <string name="sign_up_detail">註冊帳號後，就可以隨時隨地透過MappingBird存下您想要記得的地點！</string>
+    <string name="sign_up_detail_link">
+		<![CDATA[
+        註冊帳號後，就可以隨時隨地透過<font color=#01A9E7><a href="https://www.mappingbird.com/">www.mappingbird.com</a></font>存下您想要記得的地點！
+        ]]>
+    </string>
+
+    <!-- Forgot password -->
+    <string name="forgot_password_title">已發送重設密碼的郵件</string>
+    <string name="forgot_password_message">請至您的電子信箱 %1$s 確認此郵件，並按照內容的指示重新設定密碼。</string>
+    <string name="forgot_password_enter_email_title">輸入電子郵件帳號</string>
+    <string name="forgot_password_text">忘記密碼</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_swipe_to_learn">滑動檢視更多內容</string>
+    <string name="tutorial_welocome_message_favorite_in_pockets">您所存過的地點、餐廳、商店與酒吧，都可以在手機裡輕易找到啦！</string>
+    <string name="tutorial_already_have_account">已經有帳號了嗎?</string>
+    <string name="tutorial_sign_in">登入</string>
+    <string name="tutorial_sign_up">註冊</string>
+    <string name="tutorial_page1_scenario_intro">旅途中意外發現不錯的地點嗎？手機也可以讓您方便地存點喔！</string>
+    <string name="tutorial_page2_scenario_intro">想跟朋友找個地方小酌一番嗎？滑開地圖收藏夾，找找您之前存過酒吧。</string>
+    <string name="tutorial_page3_scenario_intro">正進行自助旅遊規劃嗎？在電腦上存好想去的地點，出門只要帶著手機就行嘍！</string>
+    <string name="tutorial_sign_up_title">存下地點以備不時之需</string>
+    <string name="tutorial_sign_up_descriptions">註冊帳號後，就可以隨時隨地透過MappingBird存下您想要記得的地點！</string>
+    <string name="tutorial_create_account">免費註冊新帳號</string>
+    <string name="tutorial_do_it_later">等等再說</string>
+    <string name="tutorial_learn_more">瞭解更多</string>
+    <string name="tutorial_welcome">歡迎</string>
+
+    <!-- Dialog -->
+    <string name="dialog_sign_out_title">登出帳號</string>
+    <string name="dialog_sign_out_description">登出後您的暫存快取內容將會被清除？若重新登入將會消耗一些網路流量，確定要登出嗎？</string>
+    <string name="dialog_location_hint_title">開啟定位讓您的操作体驗更棒</string>
+    <string name="dialog_location_hint_content">除了提高定位的精確度，更能明確地知道自己的位置與使用導航功能。</string>
+    <string name="dialog_location">定位</string>
+    <!-- New Collection -->
+    <string name="dialog_create_collection_title">新增地圖</string>
+    <string name="dialog_create_collection_hint">輸入地圖名稱</string>
+    <!-- Collection -->
+    <string name="collection_dialog_cancel_upload_photos_title">上傳照片中</string>
+    <string name="collection_dialog_cancel_upload_photos_message">地點已新增，現在正上傳照片中，可能需要一些等候時間，確定要取消上傳嗎？</string>
+    <string name="collection_dialog_successed_upload_title">已儲存 \"%1$s\"</string>
+    <string name="collection_dialog_successed_upload_msg">新地點已被成功地儲存至 \"%1$s\" 地圖</string>
+    <string name="collection_dialog_btn_check_it_now">立即查看</string>
+    <!--  -->
+    <string name="place_last_update">最後更新 - %s</string>
+
+    <!-- Distance -->
+    <string name="distance_less_one_meter">&#060;1</string>
+    <string name="distance_meter">公尺</string>
+    <string name="distance_kilometer">公里</string>
+    <string name="distance_max_kilometer">多公里</string>
+
+    <!-- Add place hint -->
+    <string name="aph_kind_landscape">景點</string>
+    <string name="aph_kind_restaurant">餐廳</string>
+    <string name="aph_kind_shopping">購物</string>
+    <string name="aph_kind_hotel">旅館</string>
+    <string name="aph_kind_bar">酒吧</string>
+    <string name="aph_kind_pin">未分類</string>
+    
+    <!-- Add place -->
+    <string name="add_place_pick_category">您要新增哪一種類型的地點呢？</string>
+    <string name="add_place_save">儲存</string>
+    <string name="add_place_create">新增地點</string>
+    <string name="add_place_new_collection">新增地圖</string>
+    <string name="add_place_about_place">輸入關於這個地方的備註...</string>
+    <string name="add_place_add_tags">新增標籤</string>
+    <string name="add_place_location_name">輸入地點名稱</string>
+    <string name="add_place_address">輸入地址</string>
+    <string name="add_place_add_phone">輸入電話號碼</string>
+    <string name="add_place_add_open_time">輸入營業時間</string>
+    <string name="add_place_add_link">輸入關於這個地點的網頁連結</string>
+    <string name="add_place_add_field">新增其它相關資訊</string>
+    <string name="add_place_field_phone">新增電話號碼</string>
+    <string name="add_place_field_open_time">新增營業時間</string>
+    <string name="add_place_field_hyperlink">新增相關網頁連結</string>
+    <string name="add_place_create_new">新增地圖</string>
+    <string name="add_place_add_tag_title">新增或選擇標籤</string>
+    <string name="add_place_current_location_hint_title">此新地點將會是公開的</string>
+    <string name="add_place_current_location_hint_message">一旦新增後則無法再編輯，且其它人能定位在這個地址。</string>
+	<string name="add_place_toast_more_then_ten">最多只能上傳10張照片！</string>
+
+    <!-- Pick place -->
+    <string name="pick_place_title">請選擇要新增的地點</string>
+    <string name="pick_place_new_location">新增地點</string>
+    <string name="pick_place_add_create_location_title_by_text">新增 %s</string>
+    <string name="pick_place_add_create_location_title">新增地點</string>
+    <string name="pick_place_add_create_location_des">手動新增地點</string>
+    <string name="pick_place_add_create_location_title_no_filter_str">新增現在位置</string>
+    <string name="pick_place_add_serach_title">搜尋 %s</string>
+    <string name="pick_place_add_srarch_des">搜尋這附近更多的地點</string>
+    <string name="pick_place_error_no_suggest">附近沒有建議的地點，試試搜尋或是手動新增一個地點</string>
+    <string name="pick_place_error_no_search_result">無搜尋結果，試試其它關鍵字或是手動新增一個地點</string>
+    <string name="pick_place_error_title">哎呀！真是尷尬，好像發生了一些問題...</string>
+    <string name="pick_place_error_refresh">再點一下重試</string>
+    
+    <!-- Add current location -->
+    <string name="create_location_title">定位一個新位置</string>
+    <string name="create_location_title_with_text">定位 %s</string>
+    <string name="create_location_dialog_title_mean">你是指哪個地址？</string>
+    <!-- Settings -->
+    <string name="settings_about_title">關於MappingBird</string>
+    <string name="settings_about_subtitle">版本 : %s</string>
+    <!--  -->
+    <string name="str_question">回報問題</string>
+    <string name="str_settings">設定</string>
+    <string name="str_log_out">登出</string>
+    <string name="str_take_picture">開啟相機</string>
+
+    <!-- Error -->
+    <string name="error_normal_title">哎呀！真是尷尬...</string>
+    <string name="error_location_title">發生定位相關問題</string>
+    <string name="error_location_message">無法偵測您現在的位置，若開啟定位仍發生此問題，請回報至feedback@mappingbird.com，謝謝。</string>
+    <string name="error_internal_title">需要網路連線才能使用</string>
+    <string name="error_internal_message">請連線後重試，若連線沒有問題此問題仍持續發生，請回報至feedback@mappingbird.com，謝謝。</string>
+    <string name="error_unknow_title">發生了點問題</string>
+    <string name="error_unknow_message">請稍候重試，若重試後仍無法使用，請回報至feedback@mappingbird.com，謝謝。</string>
+    <string name="error_log_out_fail">登出失敗</string>
+    <string name="error_network_title">需要網路連線才能使用</string>
+    <string name="error_network_message">請開啟網路並確保連線狀態，才能使用。</string>
+    <string name="error_login_fail_network">請開啟網路並確保連線狀態，才能登入。</string>
+    <string name="error_login_fail_accout">請輸入正確的電子郵件及密碼，才能登入。</string>
+    <string name="error_sign_up_fail_password_not_match_message">您所輸入的密碼不一致，請再試一次、並確認兩個欄位的密碼都一樣。</string>
+    <string name="error_search_place_error">哎呀！真是尷尬，好像發生了一些問題...試試搜尋或是再點一下重試</string>
+    <string name="error_search_place_hint">或者你也可以試試…</string>
+    <string name="error_dialog_submit_place_failed_title">儲存地點時發生錯誤</string>
+    <string name="error_dialog_submit_place_failed_message">請確認你的網路連線是否沒有問題，並再重試一次。</string>
+    <string name="error_dialog_upload_images_failed_title">照片上傳失敗</string>
+    <string name="error_dialog_upload_images_failed_message">新地點已儲存成功，但上傳照片時發生了點問題。</string>
+
+    <!-- Notification -->
+    <string name="noti_update_wait_title">等待上傳中</string>
+    <string name="noti_update_wait_message">等～等～我等啊等～～～(是要等多久)</string>
+    <string name="noti_update_error_photos_title">上傳照片失敗</string>
+    <string name="noti_update_error_place_title">儲存地點失敗</string>
+    <string name="noti_update_error_upload_title">上傳失敗</string>
+    <string name="noti_update_error_save_title">儲存失敗</string>
+    <string name="noti_update_error_title">上傳照片失敗</string>
+    <string name="noti_update_error_message">點一下</string>
+    <string name="noti_update_tap_to_retry">點一下重試</string>
+    <string name="noti_update_progress_title">上傳照片中: %2$s 之 %1$s</string>
+    <string name="noti_update_progress_message">點一下取消</string>
+    <string name="noti_update_finish_title">已儲存 \"%1$s\"</string>
+    <string name="noti_update_finish_message">至 %1$s 地圖</string>
+    <string name="noti_update_place_title">儲存 \"%1$s\"</string>
+    <string name="noti_update_place_message">至 %1$s 地圖</string>
+    <string name="noti_update_place_ticker">Saving place</string>
+    <string name="noti_update_place_finished_ticker">已儲存 \"%1$s\"</string>
+
+    <!-- Debug -->
+    <string name="debug_dump_db">Dump DB</string>
+    <string name="debug_update_item">Update item</string>
+
+    <!-- Share -->
+    <string name="share_string">%1$s &#091;分享自MappingBird - 存下地點以備不時之需&#093; %2$s</string>
+
+    <!-- Address -->
+    <string name="pick_address_no_address">沒有地址</string>
+
+
+    
+</resources>
