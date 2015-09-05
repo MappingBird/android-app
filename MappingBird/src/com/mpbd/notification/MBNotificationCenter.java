@@ -8,8 +8,8 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
-import com.mappingbird.collection.MBCollectionActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
+import com.mpbd.collection.MBCollectionActivity;
 import com.mpbd.mappingbird.R;
 
 public class MBNotificationCenter {

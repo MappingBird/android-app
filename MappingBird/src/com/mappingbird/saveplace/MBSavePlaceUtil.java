@@ -8,9 +8,9 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 
-import com.mappingbird.collection.widget.MBSpannBackground;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
+import com.mpbd.collection.widget.MBSpannBackground;
 import com.mpbd.mappingbird.R;
 
 public class MBSavePlaceUtil {

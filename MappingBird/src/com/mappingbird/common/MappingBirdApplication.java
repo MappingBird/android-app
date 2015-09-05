@@ -7,7 +7,7 @@ import android.app.ActivityManager;
 import android.app.Application;
 
 import com.flurry.android.FlurryAgent;
-import com.mappingbird.collection.data.MBCollectionListObject;
+import com.mpbd.collection.data.MBCollectionListObject;
 
 @ReportsCrashes(
     formUri = "https://collector.tracepot.com/f6bb43f9"
@@ -40,7 +40,7 @@ public class MappingBirdApplication extends Application {
 		FlurryAgent.init(this, FLURRY_API_KEY);
 	}
 
-	public static MBCollectionListObject getCollectionObj() {
+	public MBCollectionListObject getCollectionObj() {
 		return mMBCollectionObj;
 	}
 
@@ -48,7 +48,7 @@ public class MappingBirdApplication extends Application {
 		return mInstance;
 	}
 
-	static public BitmapLoader getBitmapLoader() {
+	public BitmapLoader getBitmapLoader() {
 		return mBitmapLoader;
 	}
 

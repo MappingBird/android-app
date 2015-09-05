@@ -3,13 +3,13 @@ package com.mappingbird.api;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Collections implements Serializable{
+public class MBCollectionList implements Serializable{
 
-	private static final String TAG = Collections.class.getName();
-	private ArrayList<Collection> mCollections = new ArrayList<Collection>();
+	private static final String TAG = MBCollectionList.class.getName();
+	private ArrayList<MBCollectionItem> mCollections = new ArrayList<MBCollectionItem>();
 
 	// ------------------- PUBLIC METHOD -------------------
-	public final Collection get(int position) {
+	public final MBCollectionItem get(int position) {
 		return mCollections.get(position);
 	}
 
@@ -18,7 +18,7 @@ public class Collections implements Serializable{
 	}
 
 	// ------------------- DEFAULT METHOD -------------------
-	void add(Collection obj) {
+	void add(MBCollectionItem obj) {
 		mCollections.add(obj);
 	}
 

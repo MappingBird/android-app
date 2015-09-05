@@ -1,4 +1,4 @@
-package com.mappingbird.collection.widget;
+package com.mpbd.collection.widget;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -33,13 +33,13 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.api.MBPointData;
-import com.mappingbird.collection.widget.MBListLayoutAddLayout.OnSelectKindLayoutListener;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.saveplace.MBPickPlaceActivity;
+import com.mpbd.collection.widget.MBListLayoutAddLayout.OnSelectKindLayoutListener;
 import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.MBUtil;

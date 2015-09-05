@@ -1,4 +1,4 @@
-package com.mappingbird.collection;
+package com.mpbd.collection;
 
 
 class MBCollectionListItem {

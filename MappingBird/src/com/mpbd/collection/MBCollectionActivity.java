@@ -1,4 +1,4 @@
-package com.mappingbird.collection;
+package com.mpbd.collection;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
@@ -52,22 +51,21 @@ import com.google.maps.android.clustering.ClusterManager.OnClusterClickListener;
 import com.google.maps.android.clustering.ClusterManager.OnClusterItemClickListener;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
-import com.mappingbird.api.Collection;
-import com.mappingbird.api.Collections;
+import com.mappingbird.api.MBCollectionItem;
+import com.mappingbird.api.MBCollectionList;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnGetCollectionInfoListener;
 import com.mappingbird.api.OnGetCollectionsListener;
-import com.mappingbird.collection.data.MBCollectionListObject;
-import com.mappingbird.collection.widget.MBCollectionListLayout;
-import com.mappingbird.collection.widget.MBCollectionListLayout.NewCardClickListener;
 import com.mappingbird.common.DeBug;
-import com.mappingbird.common.MainUIMessenger.OnMBSubmitChangedListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.MBSubmitMsgData;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
+import com.mpbd.collection.data.MBCollectionListObject;
+import com.mpbd.collection.widget.MBCollectionListLayout;
+import com.mpbd.collection.widget.MBCollectionListLayout.NewCardClickListener;
 import com.mpbd.eventbus.MBAddPlaceEventBus;
 import com.mpbd.eventbus.MBAddPlaceEventBus.AddPlaceEventListener;
 import com.mpbd.mappingbird.MBSettingsActivity;
@@ -108,8 +106,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 
 	private MappingBirdAPI mApi = null;
 	private MBCollectionListAdapter mCollectionListAdapter;
-	private Collections mCollections = null;
-	private Collection mCollection = null;
+	private MBCollectionList mCollectionList = null;
+	private MBCollectionItem mCollectionItem = null;
 	private ArrayList<MBPointData> mPositionItems = new ArrayList<MBPointData>();
 
 	private LatLng mMyLocation = null;
@@ -144,9 +142,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 	
 	private long mClickButtonTime = 0;
 	
-	// 要等refresh collection完了以後才會出現
-	private AddPlaceSuccessedDialogClass mAddPlaceSuccessedDialogClass = null;
-
 	private AddPlaceEvent mAddPlaceEvent = new AddPlaceEvent();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -247,7 +242,7 @@ public class MBCollectionActivity extends FragmentActivity implements
         
 
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
-		listObj.setOnGetCollectionListener(getCollectionListener);
+		listObj.setOnGetCollectionListener(getCollectionListListener);
 		listObj.getCollectionList();
 		mApi = new MappingBirdAPI(this);
 		mAccountTextView.setText(mApi.getCurrentUser().getEmail());
@@ -309,21 +304,21 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 	}
 	
-	OnGetCollectionsListener getCollectionListener = new OnGetCollectionsListener() {
+	OnGetCollectionsListener getCollectionListListener = new OnGetCollectionsListener() {
 
 		@Override
-		public void onGetCollections(int statusCode, Collections collection) {
+		public void onGetCollections(int statusCode, MBCollectionList list) {
 			if(MBCollectionActivity.this.isFinishing())
 				return;
 
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
-				mCollections = collection;
-				if (collection.getCount() > 0) {
-					mCollectionListAdapter.setData(collection);
-					if(MappingBirdPref.getIns().getIns().getCollectionPosition() >= mCollectionListAdapter.getCount()) {
-						MappingBirdPref.getIns().getIns().setCollectionPosition(0);
+				mCollectionList = list;
+				if (list.getCount() > 0) {
+					mCollectionListAdapter.setData(list);
+					if(MappingBirdPref.getIns().getCollectionPosition() >= mCollectionListAdapter.getCount()) {
+						MappingBirdPref.getIns().setCollectionPosition(0);
 					}
-					selectItem(MappingBirdPref.getIns().getIns().getCollectionPosition());
+					selectItem(MappingBirdPref.getIns().getCollectionPosition());
 				} else {
 					setTitle(R.string.no_data);
 				}
@@ -380,7 +375,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 	protected void onDestroy() {
 		super.onDestroy();
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
-		listObj.removeOnGetCollectionsListener(getCollectionListener);
+		listObj.removeOnGetCollectionsListener(getCollectionListListener);
 		
 		if(mLoadingDialog != null)
 			mLoadingDialog.cancel();
@@ -428,10 +423,10 @@ public class MBCollectionActivity extends FragmentActivity implements
 			setTitle((MBCollectionListItem)mCollectionListAdapter.getItem(position));
 			mDrawerLayout.closeDrawer(mDrawerContentLayout);
 		}
-		if (mCollections != null && mCollections.getCount() > 0) {
+		if (mCollectionList != null && mCollectionList.getCount() > 0) {
 			showLoadingDialog();
 			mApi.getCollectionInfo(getCollectionInfoListener,
-					mCollections.get(position).getId());
+					mCollectionList.get(position).getId());
 		}
 	}
 
@@ -441,19 +436,19 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private void refreshThisCollections() {
 		showLoadingDialog();
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
-		listObj.setOnGetCollectionListener(getCollectionListener);
+		listObj.setOnGetCollectionListener(getCollectionListListener);
 		listObj.getCollectionList();
 	}
 
 	OnGetCollectionInfoListener getCollectionInfoListener = new OnGetCollectionInfoListener() {
 
 		@Override
-		public void onGetCollectionInfo(int statusCode, Collection collection) {
+		public void onGetCollectionInfo(int statusCode, MBCollectionItem collection) {
 			DeBug.i(TAG, "getCollectionInfoListener");
 
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
 				DeBug.i(TAG, "getCollectionInfoListener: OK");
-				mCollection = collection;
+				mCollectionItem = collection;
 				setUpMapIfNeeded();
 			} else {
 				String title = "";
@@ -814,8 +809,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 							.fromResource(R.drawable.icon_current_location)));
 		}
 
-		for (int i = 0; i < mCollection.getPointsObj().size(); i++) {
-			MBPointData point = mCollection.getPointsObj().get(i);
+		for (int i = 0; i < mCollectionItem.getPointsObj().size(); i++) {
+			MBPointData point = mCollectionItem.getPointsObj().get(i);
 			double latitude = point.getLocation()
 					.getLatitude();
 			double longitude = point.getLocation()
@@ -851,11 +846,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 	// ====================================================
 	class CustomInfoWindowAdapter implements InfoWindowAdapter {
 
-		private final View mContents;
-
-		CustomInfoWindowAdapter() {
-			mContents = getLayoutInflater().inflate(
-					R.layout.custom_info_contents, null);
+		public CustomInfoWindowAdapter() {
 		}
 
 		@Override
@@ -1285,9 +1276,5 @@ public class MBCollectionActivity extends FragmentActivity implements
 			mDialog.dismiss();
 		mDialog = null;
 		mDialogMode = DIALOG_NONE;
-	}
-	
-	private class AddPlaceSuccessedDialogClass {
-		public MBSubmitMsgData data;
 	}
 }

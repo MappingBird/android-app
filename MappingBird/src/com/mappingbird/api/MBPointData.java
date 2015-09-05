@@ -10,9 +10,9 @@ import android.text.Spanned;
 import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.mappingbird.collection.widget.MBSpannBackground;
 import com.mappingbird.common.MBLocation;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.collection.widget.MBSpannBackground;
 import com.mpbd.mappingbird.R;
 
 public class MBPointData implements Serializable {

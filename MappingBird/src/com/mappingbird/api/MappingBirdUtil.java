@@ -410,8 +410,8 @@ final class MappingBirdUtil {
 		private ArrayList<OnExploreFourSquareListener> mOnExploreFourSquareListenerArray = new ArrayList<OnExploreFourSquareListener>();
 		
 		private String mKey;
-		private Collections mCollections;
-		private Collection mCollection;
+		private MBCollectionList mCollections;
+		private MBCollectionItem mCollection;
 		private VenueCollection mVenues;
 		
 		private MBPointData mPoint;
@@ -655,11 +655,11 @@ final class MappingBirdUtil {
 			mPostdata = postData;
 		}
 
-		public void setCollections(Collections collections) {
+		public void setCollections(MBCollectionList collections) {
 			mCollections = collections;
 		}
 		
-		public void setCollection(Collection collection) {
+		public void setCollection(MBCollectionItem collection) {
 			mCollection = collection;
 		}
 
@@ -794,8 +794,8 @@ final class MappingBirdUtil {
 		@Override
 		public void run() {
 			DeBug.d(TAG, "thread run.");
-			Collections collections = null;
-			Collection collection = null;
+			MBCollectionList collections = null;
+			MBCollectionItem collection = null;
 			MBPointData point = null;
 			User user = null;
 			VenueCollection venues = null;

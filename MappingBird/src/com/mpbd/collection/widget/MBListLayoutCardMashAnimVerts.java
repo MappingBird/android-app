@@ -1,4 +1,4 @@
-package com.mappingbird.collection.widget;
+package com.mpbd.collection.widget;
 
 import android.graphics.Bitmap;
 

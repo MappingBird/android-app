@@ -9,9 +9,9 @@ import java.util.Date;
 
 import com.mappingbird.common.DeBug;
 
-public class Collection implements Serializable{
+public class MBCollectionItem implements Serializable{
 
-	private static final String TAG = Collection.class.getName();
+	private static final String TAG = MBCollectionItem.class.getName();
 	private long mId;
 	private long mUserId;
 	private String mName;
@@ -21,7 +21,7 @@ public class Collection implements Serializable{
 	private ArrayList<Integer> mPoints = new ArrayList<Integer>();
 	private ArrayList<MBPointData> mPointsObjs = new ArrayList<MBPointData>();
 
-	Collection(long id, long userId, String name, String createTime,
+	MBCollectionItem(long id, long userId, String name, String createTime,
 			String updateTime, boolean isNewest, ArrayList<Integer> points) {
 		mId = id;
 		mUserId = userId;
@@ -32,7 +32,7 @@ public class Collection implements Serializable{
 		mPoints = points;
 	}
 	
-	Collection(long id, long userId, String name, String createTime,
+	MBCollectionItem(long id, long userId, String name, String createTime,
 			String updateTime, ArrayList<MBPointData> pointobjs) {
 		mId = id;
 		mUserId = userId;
@@ -42,7 +42,7 @@ public class Collection implements Serializable{
 		mPointsObjs = pointobjs;
 	}
 	
-	Collection(long id, long userId, String name, ArrayList<MBPointData> pointobjs) {
+	MBCollectionItem(long id, long userId, String name, ArrayList<MBPointData> pointobjs) {
 		mId = id;
 		mUserId = userId;
 		mName = name;

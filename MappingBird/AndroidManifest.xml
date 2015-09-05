@@ -60,7 +60,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mappingbird.collection.MBCollectionActivity"
+            android:name="com.mpbd.collection.MBCollectionActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >

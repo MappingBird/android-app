@@ -1,4 +1,4 @@
-package com.mappingbird.collection.widget;
+package com.mpbd.collection.widget;
 
 import java.util.ArrayList;
 
@@ -15,12 +15,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mappingbird.collection.widget.MBProgressCircleLayout.ProgressListener;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.saveplace.MBPickPlaceActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
+import com.mpbd.collection.widget.MBProgressCircleLayout.ProgressListener;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.MBUtil;
 

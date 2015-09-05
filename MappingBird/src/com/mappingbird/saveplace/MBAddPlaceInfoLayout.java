@@ -22,14 +22,14 @@ import android.widget.LinearLayout;
 import android.widget.ListPopupWindow;
 import android.widget.TextView;
 
-import com.mappingbird.api.Collection;
-import com.mappingbird.api.Collections;
+import com.mappingbird.api.MBCollectionItem;
+import com.mappingbird.api.MBCollectionList;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnAddCollectionListener;
-import com.mappingbird.collection.data.MBCollectionListObject;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
+import com.mpbd.collection.data.MBCollectionListObject;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
@@ -247,7 +247,7 @@ public class MBAddPlaceInfoLayout extends LinearLayout {
 		public int size;
 		public int collectionPosition;
 		
-		public ListObject(Collection collection, int position) {
+		public ListObject(MBCollectionItem collection, int position) {
 			type = TYPE_COLLECTION;
 			name = collection.getName();
 			size = collection.getPoints().size();
@@ -261,7 +261,7 @@ public class MBAddPlaceInfoLayout extends LinearLayout {
 	}
 	
 	private class CollectionListAdapter extends BaseAdapter {
-		private Collections mCollections = null;
+		private MBCollectionList mCollections = null;
 		private int mSelectCollectionPosition = 0;
 		private ArrayList<ListObject> mList = new ArrayList<ListObject>();
 		private LayoutInflater mInflater; 
@@ -284,7 +284,7 @@ public class MBAddPlaceInfoLayout extends LinearLayout {
 		/**
 		 * 輸入 Collections 和 預設的position
 		 */
-		public void setData(Collections collections, int position) {
+		public void setData(MBCollectionList collections, int position) {
 			mSelectCollectionPosition = position;
 			mCollections = collections;
 			resetData();
@@ -293,7 +293,7 @@ public class MBAddPlaceInfoLayout extends LinearLayout {
 		/**
 		 * 輸入 Collections
 		 */
-		public void setData(Collections collections) {
+		public void setData(MBCollectionList collections) {
 			mCollections = collections;
 			resetData();
 		}
@@ -306,7 +306,7 @@ public class MBAddPlaceInfoLayout extends LinearLayout {
 			if(mCollections != null) {
 				for(int i = 0; i < mCollections.getCount(); i++) {
 					if(mSelectCollectionPosition != i) {
-						Collection collection = mCollections.get(i);
+						MBCollectionItem collection = mCollections.get(i);
 						mList.add(new ListObject(collection, i));
 					}
 				}

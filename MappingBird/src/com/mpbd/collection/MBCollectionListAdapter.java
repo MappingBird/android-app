@@ -1,4 +1,4 @@
-package com.mappingbird.collection;
+package com.mpbd.collection;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.mappingbird.api.Collections;
+import com.mappingbird.api.MBCollectionList;
 import com.mpbd.mappingbird.R;
 
 class MBCollectionListAdapter extends BaseAdapter {
@@ -28,7 +28,7 @@ class MBCollectionListAdapter extends BaseAdapter {
 		mItems.add(new MBCollectionListItem(mContext.getResources().getString(R.string.no_data), ""));		
 	}
 
-	void setData(Collections collection) {
+	void setData(MBCollectionList collection) {
 		mItems.clear();
 		for (int i = 0; i < collection.getCount(); i++) {
 			mItems.add(new MBCollectionListItem(collection.get(i).getName(),

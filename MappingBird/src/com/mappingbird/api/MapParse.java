@@ -119,10 +119,10 @@ class MapParse {
 		return user;
 	}
 
-	public static Collections parseCollectionsResult(String rsp)
+	public static MBCollectionList parseCollectionsResult(String rsp)
 			throws JSONException {
 
-		Collections collections = new Collections();
+		MBCollectionList collections = new MBCollectionList();
 		collections.clear();
 		JSONObject obj = new JSONObject(rsp);
 		long newestCollectionId = obj
@@ -151,7 +151,7 @@ class MapParse {
 				DeBug.i(TAG, "[collection json] pid=" + pid);
 				points.add(pid);
 			}
-			collections.add(new Collection(id, userId, name, createTime,
+			collections.add(new MBCollectionItem(id, userId, name, createTime,
 					updateTime, isNewest, points));
 		}
 
@@ -319,7 +319,7 @@ class MapParse {
 						lupdateTime), pcreateTime, pupdateTime);
 	}
 
-	public static Collection parseCollectionInfoResult(String rsp)
+	public static MBCollectionItem parseCollectionInfoResult(String rsp)
 			throws JSONException {
 		JSONObject obj = new JSONObject(rsp);
 		long cid = obj.optLong("id");
@@ -396,7 +396,7 @@ class MapParse {
 			points.add(new MBPointData(pid, title, coordinates, type, images,
 					tags, new MBLocation(lId, lcoordinates, address)));
 		}
-		return new Collection(cid, userId, name, points);
+		return new MBCollectionItem(cid, userId, name, points);
 	}
 
 	public static long parseErrorResult(String rsp) throws JSONException {

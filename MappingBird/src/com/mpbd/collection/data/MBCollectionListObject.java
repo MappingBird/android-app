@@ -1,8 +1,8 @@
-package com.mappingbird.collection.data;
+package com.mpbd.collection.data;
 
 import java.util.ArrayList;
 
-import com.mappingbird.api.Collections;
+import com.mappingbird.api.MBCollectionList;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnAddCollectionListener;
 import com.mappingbird.api.OnGetCollectionsListener;
@@ -14,7 +14,7 @@ public class MBCollectionListObject {
 	private ArrayList<OnGetCollectionsListener> mListener = new ArrayList<OnGetCollectionsListener>();
 	private OnAddCollectionListener mClientListener;
 	private int mLastStatusCode = -1;
-	private Collections mLastCollections = null;
+	private MBCollectionList mLastCollections = null;
 	public MBCollectionListObject() {
 		mListener.clear();
 	}
@@ -24,14 +24,14 @@ public class MBCollectionListObject {
 		api.getCollections(mOnGetCollectionsListener);
 	}
 	
-	public Collections getLastCollections() {
+	public MBCollectionList getLastCollections() {
 		return mLastCollections;
 	}
 
 	private OnGetCollectionsListener mOnGetCollectionsListener = new OnGetCollectionsListener() {
 		
 		@Override
-		public void onGetCollections(int statusCode, Collections collection) {
+		public void onGetCollections(int statusCode, MBCollectionList collection) {
 			mLastCollections = collection;
 			if(collection != null)
 				mLastStatusCode = statusCode;

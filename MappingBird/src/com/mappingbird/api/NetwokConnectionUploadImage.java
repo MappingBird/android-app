@@ -50,8 +50,8 @@ class NetwokConnectionUploadImage {
 	private static Context mContext = null;
 
 	private User mCurrentUser = null;
-	private Collections mCollections;
-	private Collection mCollection;
+	private MBCollectionList mCollections;
+	private MBCollectionItem mCollection;
 	private MBPointData mPoint;
 	private VenueCollection mVenues;
 
@@ -292,11 +292,11 @@ class NetwokConnectionUploadImage {
 		return mUser;
 	}
 
-	public Collections getCollections() {
+	public MBCollectionList getCollections() {
 		return mCollections;
 	}
 
-	public Collection getCollection() {
+	public MBCollectionItem getCollection() {
 		return mCollection;
 	}
 
