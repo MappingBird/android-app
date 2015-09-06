@@ -38,6 +38,7 @@ import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
+import com.mappingbird.saveplace.MBAddCurrentLocationActivity;
 import com.mappingbird.saveplace.MBPickPlaceActivity;
 import com.mpbd.collection.widget.MBListLayoutAddLayout.OnSelectKindLayoutListener;
 import com.mpbd.mappingbird.MappingBirdItem;
@@ -744,11 +745,18 @@ public class MBCollectionListLayout extends RelativeLayout {
 		@Override
 		public void onSelectKind(String type) {
 			
-			Intent intent = new Intent(getContext(), MBPickPlaceActivity.class);
-			intent.putExtra(MBPickPlaceActivity.EXTRA_TYPE, type);
-			intent.putExtra(MBPickPlaceActivity.EXTRA_LAT, mMyLocation.latitude);
-			intent.putExtra(MBPickPlaceActivity.EXTRA_LONG, mMyLocation.longitude);
-			getContext().startActivity(intent);
+			if(mMyLocation != null) {
+				// 有location的時候進入 PickPlaceActivity
+				Intent intent = new Intent(getContext(), MBPickPlaceActivity.class);
+				intent.putExtra(MBPickPlaceActivity.EXTRA_TYPE, type);
+				intent.putExtra(MBPickPlaceActivity.EXTRA_LAT, mMyLocation.latitude);
+				intent.putExtra(MBPickPlaceActivity.EXTRA_LONG, mMyLocation.longitude);
+				getContext().startActivity(intent);
+			} else {
+				Intent intent = new Intent(getContext(), MBAddCurrentLocationActivity.class);
+				intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TYPE, type);
+				getContext().startActivity(intent);
+			}
 		}
 		
 		@Override

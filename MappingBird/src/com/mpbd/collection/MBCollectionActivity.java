@@ -142,6 +142,9 @@ public class MBCollectionActivity extends FragmentActivity implements
 	
 	private long mClickButtonTime = 0;
 	
+	// Location
+	private boolean showGPSHintByLocation = false;
+	
 	private AddPlaceEvent mAddPlaceEvent = new AddPlaceEvent();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -259,6 +262,10 @@ public class MBCollectionActivity extends FragmentActivity implements
 		
 		// EventBus
 		MBAddPlaceEventBus.getDefault().register(mAddPlaceEvent);
+		
+		initMap();
+		
+		showGPSHintByLocation = true;
 	}
 
 	private class AddPlaceEvent implements AddPlaceEventListener {
@@ -325,29 +332,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 			} else {
 				DFshowDialog(DIALOG_ERROR_NO_NETWORK, statusCode, null, mErrorDialogOkClickListener);
 			}
-		}
-	};
-
-	// 上傳失敗區
-	private OnClickListener mSubmitFailedDialogOkClickListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			// 重新上穿
-			MBServiceClient.retryUpdate();
-			mDialog.dismiss();
-		}
-	};
-
-	private OnClickListener mSubmitFailedDialogCancelClickListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			// 取消上傳
-			// 這邊會出現兩種情況.
-			// 1. 上傳地點就失敗
-			// 2. 上傳照片幾張失敗
-			// 全部取消上傳
-			MBServiceClient.stopToUploadPlace();
-			mDialog.dismiss();
 		}
 	};
 
@@ -440,39 +424,21 @@ public class MBCollectionActivity extends FragmentActivity implements
 		listObj.getCollectionList();
 	}
 
+	// 拿取Collection item的值
 	OnGetCollectionInfoListener getCollectionInfoListener = new OnGetCollectionInfoListener() {
 
 		@Override
 		public void onGetCollectionInfo(int statusCode, MBCollectionItem collection) {
 			DeBug.i(TAG, "getCollectionInfoListener");
-
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
 				DeBug.i(TAG, "getCollectionInfoListener: OK");
 				mCollectionItem = collection;
 				setUpMapIfNeeded();
 			} else {
-				String title = "";
-				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
-				String error = "";
-				error = MBErrorMessageControl.getErrorMessage(statusCode, mContext);
 				
-				mDialog = new MBDialog(mContext);
-				mDialog.setTitle(title);
-				mDialog.setDescription(error);
-				mDialog.setPositiveBtn(getString(R.string.ok), 
-						mErrorDialogOkClickListener, MBDialog.BTN_STYLE_DEFAULT);
-				mDialog.setCanceledOnTouchOutside(false);
-				mDialog.show();
+				DFshowDialog(DIALOG_ERROR_NO_NETWORK, statusCode, null, mErrorDialogOkClickListener);
 			}
 		};
-	};
-
-	private OnClickListener mErrorDialogOkClickListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			mDialog.dismiss();
-			MBCollectionActivity.this.finish();
-		}
 	};
 
 	private OnClickListener mMenuClickListener = new OnClickListener() {
@@ -480,35 +446,32 @@ public class MBCollectionActivity extends FragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.collection_settings_layout: {
-				Intent intent = new Intent(mContext, MBSettingsActivity.class);
-				startActivity(intent);
-				
-				AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
-				        AppAnalyticHelper.CATEGORY_UI_ACTION, 
-				        AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS, 
-				        AppAnalyticHelper.LABEL_LIST_ITEM_SETTING, 0);
-				
-				break;
+				case R.id.collection_settings_layout: {
+					Intent intent = new Intent(mContext, MBSettingsActivity.class);
+					startActivity(intent);
+					
+					AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
+					        AppAnalyticHelper.CATEGORY_UI_ACTION, 
+					        AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS, 
+					        AppAnalyticHelper.LABEL_LIST_ITEM_SETTING, 0);
+					
+					break;
+				}
+				case R.id.collection_help_layout: {
+					Intent intent = new Intent(Intent.ACTION_SENDTO);
+					intent.setData(Uri.parse("mailto:"));
+					intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "feedback@mappingbird.com" });
+					intent.putExtra(Intent.EXTRA_SUBJECT, "MappingBird Feedback , ");
+					startActivity(intent);
+					
+	                AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
+	                        AppAnalyticHelper.CATEGORY_UI_ACTION, 
+	                        AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS,
+	                        AppAnalyticHelper.LABEL_LIST_ITEM_HELP, 0);				
+					
+					break;
+				}
 			}
-			case R.id.collection_help_layout: {
-				Intent intent = new Intent(Intent.ACTION_SENDTO);
-				intent.setData(Uri.parse("mailto:"));
-				intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "feedback@mappingbird.com" });
-				intent.putExtra(Intent.EXTRA_SUBJECT, "MappingBird Feedback , ");
-				startActivity(intent);
-				
-                AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
-                        AppAnalyticHelper.CATEGORY_UI_ACTION, 
-                        AppAnalyticHelper.ACTION_COLLECTION_LIST_ITEM_PRESS,
-                        AppAnalyticHelper.LABEL_LIST_ITEM_HELP, 0);				
-				
-				break;
-			}
-			default:
-				break;
-			}
-			
 		}
 	};
 	private OnClickListener mTitleClickListener = new OnClickListener() {
@@ -533,25 +496,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 	};
 	
-	View.OnClickListener mLocationRetryListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			mDialog.dismiss();
-			if(mLocationService != null)
-				mLocationService.start();
-		}
-	};
-
-	View.OnClickListener mCancelListener = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			mDialog.dismiss();
-			finish();
-		}
-	};
-
 	public void setTitle(MBCollectionListItem item) {
 		if(item == null)
 			return;
@@ -561,12 +505,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 	}
 
 	private void setUpMapIfNeeded() {
-		if (mMap == null) {
-			mMap = ((SupportMapFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.trip_map)).getMap();
-			DeBug.i(TAG, "mMap =" + mMap);
-		}
-
 		if (mMap != null) {
 			DeBug.i(TAG, "mMap !=  null");
 			if(mLocationService == null) {
@@ -575,12 +513,9 @@ public class MBCollectionActivity extends FragmentActivity implements
 			}
 			mLocationService.start();
 		}
-		
-		if(mMyLocation != null) {
-			closeLoadingDialog();
-			setUpMap();
-		} 
 
+		closeLoadingDialog();
+		setUpMap();
 	}
 
 	private void setMyLocation(Location location) {
@@ -590,41 +525,9 @@ public class MBCollectionActivity extends FragmentActivity implements
 			if(mDialog != null && mDialog.isShowing())
 				mDialog.dismiss();
 			mDialog = null;
-			if(hasGPSProvider()) {
-				// Error
-				String title = "";
-				title = getResources().getString(R.string.error_location_title);
-				String error = mContext.getString(R.string.error_location_message);
-				mDialog = new MBDialog(mContext);
-				mDialog.setTitle(title);
-				mDialog.setDescription(error);
-				mDialog.setNegativeBtn(getString(R.string.str_cancel), 
-						mCancelListener, MBDialog.BTN_STYLE_DEFAULT);
-				mDialog.setPositiveBtn(getString(R.string.str_retry), 
-						mLocationRetryListener, MBDialog.BTN_STYLE_DEFAULT);
-				mDialog.setCanceledOnTouchOutside(false);
-				mDialog.show();
-			} else {
-				mDialog = new MBDialog(mContext);
-				mDialog.setTitle(getString(R.string.dialog_location_hint_title));
-				mDialog.setDescription(getString(R.string.dialog_location_hint_content));
-				View view = LayoutInflater.from(mContext).inflate(R.layout.mb_dialog_location_hint, null);
-				mDialog.setView(view);
-				mDialog.setCanceledOnTouchOutside(false);
-				mDialog.setNegativeBtn(getString(R.string.str_cancel), 
-						mCancelListener, MBDialog.BTN_STYLE_DEFAULT);
-				mDialog.setPositiveBtn(getString(R.string.str_retry), 
-						new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								mDialog.dismiss();
-								mDialog = null;
-								Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-								startActivity(intent);
-							}
-						}, MBDialog.BTN_STYLE_BLUE);
-				mDialog.show();
+			if(showGPSHintByLocation) {
+				showGPSHintByLocation = false;
+				onNoLocation();
 			}
 		} else {
 			DeBug.i(TAG, "mMyLocationChangedListener : location = "+location.toString());
@@ -638,11 +541,15 @@ public class MBCollectionActivity extends FragmentActivity implements
 				if(icon != null)
 					mMyMarker.setIcon(icon);
 			} else {
-				setUpMap();
+				mMyMarker = mMap.addMarker(new MarkerOptions()
+						.position(mMyLocation)
+						.icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.icon_current_location)));
 			}
 		}
 	}
 	
+	// Location
 	private boolean hasGPSProvider() {
 		LocationManager status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
 		if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -652,6 +559,12 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 	}
 
+	private void onNoLocation() {
+		if(!hasGPSProvider()) {
+			DFshowDialog(DIALOG_GPS_HINT, 0, null, null);
+		}
+	}
+	
 	private LocationServiceListener mMyLocationChangedListener = new LocationServiceListener() {
 		
 		@Override
@@ -664,14 +577,15 @@ public class MBCollectionActivity extends FragmentActivity implements
 			});
 		}
 	};
-
-	private void setUpMap() {
-		if(mMap == null)
-			return;
+	
+	private void initMap() {
+		if (mMap == null) {
+			mMap = ((SupportMapFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.trip_map)).getMap();
+			DeBug.i(TAG, "mMap =" + mMap);
+		}
 		mMap.getUiSettings().setZoomControlsEnabled(false);
 		mInfoWindowAdapter = new CustomInfoWindowAdapter();
-
-		// add cluster
 		mClusterManager = new ClusterManager<MappingBirdItem>(this, mMap);
 		mMappingBirdRender = new MappingBirdRender();
 		mClusterManager.setRenderer(mMappingBirdRender);
@@ -681,11 +595,17 @@ public class MBCollectionActivity extends FragmentActivity implements
 		mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
 		mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(mInfoWindowAdapter);
 		mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+	}
+
+	private void setUpMap() {
+		if(mMap == null)
+			return;
+		
+		// add cluster
 		addItems();
 		mClusterManager.cluster();
 		mClusterManager
 				.setOnClusterClickListener(new OnClusterClickListener<MappingBirdItem>() {
-
 					@Override
 					public boolean onClusterClick(
 							Cluster<MappingBirdItem> cluster) {
@@ -706,7 +626,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 
 					@Override
 					public boolean onClusterItemClick(MappingBirdItem item, Marker marker) {
-//						DeBug.d(TAG, "onClusterItemClick, marker"+marker.getTitle());
 						if(mClickMarkerAnimator != null && mClickMarkerAnimator.isRunning())
 							return true;
 
@@ -724,6 +643,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 				});
 
 		if (mLatLngs != null && mLatLngs.size() != 0) {
+			// 有地點
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			if (mMyLocation != null) {
 				// 判斷Location是否與值偏差太遠.
@@ -749,10 +669,13 @@ public class MBCollectionActivity extends FragmentActivity implements
 			mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds,
 					(int)getResources().getDimension(R.dimen.col_map_camera_padding)));
 		} else if(mMyLocation != null) {
+			// 沒地點, 但是有Location
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			builder.include(mMyLocation);
 			LatLngBounds bounds = builder.build();
 			mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds,0));
+		} else {
+			// 如果都沒有要去哪邊, 判斷 用Mcc固定一個點?
 		}
 	}
 
@@ -802,7 +725,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 			mClickedMarker = null;
 		}
 
-		if (mMyMarker == null) {
+		if (mMyMarker == null && mMyLocation != null) {
 			mMyMarker = mMap.addMarker(new MarkerOptions()
 					.position(mMyLocation)
 					.icon(BitmapDescriptorFactory
@@ -882,8 +805,10 @@ public class MBCollectionActivity extends FragmentActivity implements
 				mClickButtonTime = System.currentTimeMillis();
 				Intent intent = new Intent();
 				intent.putExtra(MBPlaceActivity.EXTRA_MBPOINT, point);
-				intent.putExtra("myLatitude", mMyLocation.latitude);
-				intent.putExtra("myLongitude", mMyLocation.longitude);
+				if(mMyLocation != null) {
+					intent.putExtra("myLatitude", mMyLocation.latitude);
+					intent.putExtra("myLongitude", mMyLocation.longitude);
+				}
 	
 				intent.setClass(MBCollectionActivity.this,
 						com.mpbd.place.MBPlaceActivity.class);
@@ -894,7 +819,6 @@ public class MBCollectionActivity extends FragmentActivity implements
                         AppAnalyticHelper.ACTION_PLACE_LIST_ITEM_PRESS,
                         AppAnalyticHelper.LABEL_LIST_ITEM,
                         point.getId());
-				
 			}
 		}
 
@@ -919,6 +843,9 @@ public class MBCollectionActivity extends FragmentActivity implements
 					nowZoom = mMap.getMaxZoomLevel();
 				}
 				mMap.animateCamera(CameraUpdateFactory.newLatLng(mMyLocation), 300, null);
+			} else {
+				// Check GPS
+				onNoLocation();
 			}
 		}
 	};
@@ -1073,6 +1000,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private final static int DIALOG_NONE = 1000;
 	private final static int DIALOG_ERROR_NO_NETWORK = 0; // 拿Collection list或 一個Collection資料有問題.
 	private final static int DIALOG_LOCATION_NO_EXIST = 1; // Location拿不到
+	private final static int DIALOG_GPS_HINT = 2;
 	private final static int DIALOG_LOADING = 5; // 特別, 用另外一個Dialog
 	private final static int DIALOG_UPLOAD_SUCESSED = 10;
 	private final static int DIALOG_UPLOAD_FAILED = 11;
@@ -1089,6 +1017,30 @@ public class MBCollectionActivity extends FragmentActivity implements
 			return;
 				
 		switch(mode) {
+		case DIALOG_GPS_HINT:
+			DFdismiss();
+			mDialog = new MBDialog(mContext);
+			mDialog.setTitle(getString(R.string.dialog_location_hint_title));
+			mDialog.setDescription(getString(R.string.dialog_location_hint_content));
+			View view = LayoutInflater.from(mContext).inflate(R.layout.mb_dialog_location_hint, null);
+			mDialog.setView(view);
+			mDialog.setCanceledOnTouchOutside(false);
+			mDialog.setNegativeBtn(getString(R.string.str_cancel), 
+					mCancelListener, MBDialog.BTN_STYLE_DEFAULT);
+			mDialog.setPositiveBtn(getString(R.string.str_set_up), 
+					new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							mDialog.dismiss();
+							mDialog = null;
+							Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							startActivity(intent);
+						}
+					}, MBDialog.BTN_STYLE_BLUE);
+			mDialog.show();
+
+			break;
 		case DIALOG_ERROR_NO_NETWORK:
 			//先關閉之前的dialog
 			DFdismiss();
@@ -1277,4 +1229,54 @@ public class MBCollectionActivity extends FragmentActivity implements
 		mDialog = null;
 		mDialogMode = DIALOG_NONE;
 	}
+	
+	// 上傳失敗區
+	private OnClickListener mSubmitFailedDialogOkClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			// 重新上穿
+			MBServiceClient.retryUpdate();
+			mDialog.dismiss();
+		}
+	};
+
+	private OnClickListener mSubmitFailedDialogCancelClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			// 取消上傳
+			// 這邊會出現兩種情況.
+			// 1. 上傳地點就失敗
+			// 2. 上傳照片幾張失敗
+			// 全部取消上傳
+			MBServiceClient.stopToUploadPlace();
+			mDialog.dismiss();
+		}
+	};
+	
+	private OnClickListener mErrorDialogOkClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			mDialog.dismiss();
+			MBCollectionActivity.this.finish();
+		}
+	};
+	
+	//重新拿取Location
+	private View.OnClickListener mLocationRetryListener = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			mDialog.dismiss();
+			if(mLocationService != null)
+				mLocationService.start();
+		}
+	};
+
+	private View.OnClickListener mCancelListener = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			mDialog.dismiss();
+		}
+	};
 }
