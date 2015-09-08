@@ -67,7 +67,7 @@
             android:id="@+id/collection_card_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            layout="@layout/mappingbird_collection_list_layout"
+            layout="@layout/mb_layout_collection_list"
             android:visibility="gone" />
 
         <RelativeLayout

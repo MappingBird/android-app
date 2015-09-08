@@ -3,6 +3,121 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <!-- Hint -->
+
+    <LinearLayout
+        android:id="@+id/select_hint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="310dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <com.mappingbird.widget.MappingbirdTextView
+            android:id="@+id/select_hint_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/add_place_pick_category"
+            android:textColor="@color/font_white"
+            android:textSize="20dp" />
+        
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:rotation="180"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/arrow_sign_in"/>
+    </LinearLayout>
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/select_scene_text"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="239dp"
+        android:singleLine="true"
+        android:gravity="center"
+        android:text="@string/aph_kind_landscape"
+        android:textColor="#fff"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/select_restaurant_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="214dp"
+        android:layout_marginRight="104dp"
+        android:gravity="center"
+        android:text="@string/aph_kind_restaurant"
+        android:textColor="#fff"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/select_mall_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="150dp"
+        android:layout_marginRight="144dp"
+        android:gravity="center"
+        android:text="@string/aph_kind_shopping"
+        android:textColor="#fff"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/select_hotel_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="94dp"
+        android:layout_marginRight="144dp"
+        android:gravity="center"
+        android:text="@string/aph_kind_hotel"
+        android:textColor="#fff"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/select_default_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="104dp"
+        android:gravity="center"
+        android:text="@string/aph_kind_pin"
+        android:textColor="#fff"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/select_bar_text"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="3dp"
+        android:singleLine="true"
+        android:gravity="center"
+        android:text="@string/aph_kind_bar"
+        android:textColor="#fff"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
     <!-- Top -->
 
     <com.mappingbird.widget.MappingbirdFontIcon
@@ -28,6 +143,20 @@
         android:textSize="18dp" />
 
     <com.mappingbird.widget.MappingbirdFontIcon
+        android:id="@+id/select_mall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/select_category_margin_left"
+        android:background="@drawable/btn_create_circle"
+        android:gravity="center"
+        android:text="@string/iconfont_shopping"
+        android:textColor="#fff"
+        android:textSize="18dp" />
+
+    <!-- bottom -->
+
+    <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/select_hotel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,8 +167,6 @@
         android:textColor="#fff"
         android:textSize="18dp" />
 
-    <!-- bottom -->
-
     <com.mappingbird.widget.MappingbirdFontIcon
         android:id="@+id/select_default"
         android:layout_width="wrap_content"
@@ -48,18 +175,6 @@
         android:background="@drawable/btn_create_circle"
         android:gravity="center"
         android:text="@string/iconfont_general"
-        android:textColor="#fff"
-        android:textSize="18dp" />
-
-    <com.mappingbird.widget.MappingbirdFontIcon
-        android:id="@+id/select_mall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/select_category_margin_left"
-        android:background="@drawable/btn_create_circle"
-        android:gravity="center"
-        android:text="@string/iconfont_shopping"
         android:textColor="#fff"
         android:textSize="18dp" />
 
@@ -76,6 +191,7 @@
         android:textSize="18dp" />
 
     <!-- Center -->
+
     <com.mpbd.collection.widget.MBProgressCircleLayout
         android:id="@+id/item_current_position_layout"
         android:layout_width="wrap_content"
@@ -87,11 +203,20 @@
             android:id="@+id/item_current_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_centerInParent="true"
+            android:gravity="center"
             android:text="@string/iconfont_locate"
             android:textColor="@color/font_blue"
             android:textSize="26dp" />
+        
+        <ImageView 
+            android:id="@+id/item_current_position_scan_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:src="@drawable/btn_submit_scan"/>
+
     </com.mpbd.collection.widget.MBProgressCircleLayout>
 
     <com.mpbd.collection.widget.MBProgressCircleLayout
@@ -105,23 +230,10 @@
             android:id="@+id/item_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_centerInParent="true"
+            android:gravity="center"
             android:text="@string/iconfont_addplace"
             android:textColor="@color/white"
             android:textSize="26dp" />
     </com.mpbd.collection.widget.MBProgressCircleLayout>
-    
-    
-    <!-- TextLayout -->
-	<com.mappingbird.widget.MappingbirdTextView
-	    android:id="@+id/item_text_scene"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:textColor="@color/font_white"
-	    android:visibility="gone"
-	    android:layout_alignParentRight="true"
-	    android:layout_alignParentBottom="true"
-	    android:textSize="24dp" 
-	    />
 </com.mpbd.collection.widget.MBListLayoutAddLayout>

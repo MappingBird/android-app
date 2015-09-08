@@ -23,7 +23,9 @@
     <dimen name="col_add_place_padding_right">12dp</dimen>
     <dimen name="col_select_place_item_radius">90dp</dimen>
     <dimen name="col_select_place_item_width">48dp</dimen>
-
+    <dimen name="col_select_place_circle_radius">200dp</dimen>
+    <dimen name="col_select_place_circle_stroke_width">2dp</dimen>
+    
     <!-- Pick Place -->
     <dimen name="pick_place_listview_margin_bottom">60dp</dimen>
     <dimen name="pick_place_add_location_height">60dp</dimen>

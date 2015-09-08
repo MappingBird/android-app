@@ -55,7 +55,7 @@
     <string name="tutorial_page1_scenario_intro">旅途中意外發現不錯的地點嗎？手機也可以讓您方便地存點喔！</string>
     <string name="tutorial_page2_scenario_intro">想跟朋友找個地方小酌一番嗎？滑開地圖收藏夾，找找您之前存過酒吧。</string>
     <string name="tutorial_page3_scenario_intro">正進行自助旅遊規劃嗎？在電腦上存好想去的地點，出門只要帶著手機就行嘍！</string>
-    <string name="tutorial_sign_up_title">存下地點以備不時之需</string>
+    <string name="tutorial_sign_up_title">一鍵收藏，隨時參考</string>
     <string name="tutorial_sign_up_descriptions">註冊帳號後，就可以隨時隨地透過MappingBird存下您想要記得的地點！</string>
     <string name="tutorial_create_account">免費註冊新帳號</string>
     <string name="tutorial_do_it_later">等等再說</string>
@@ -188,7 +188,7 @@
     <string name="debug_update_item">Update item</string>
 
     <!-- Share -->
-    <string name="share_string">%1$s &#091;分享自MappingBird - 存下地點以備不時之需&#093; %2$s</string>
+    <string name="share_string">%1$s &#091;分享自MappingBird - 一鍵收藏，隨時參考&#093; %2$s</string>
 
     <!-- Address -->
     <string name="pick_address_no_address">沒有地址</string>

@@ -745,18 +745,14 @@ public class MBCollectionListLayout extends RelativeLayout {
 		@Override
 		public void onSelectKind(String type) {
 			
+			// 有location的時候進入 PickPlaceActivity
+			Intent intent = new Intent(getContext(), MBPickPlaceActivity.class);
+			intent.putExtra(MBPickPlaceActivity.EXTRA_TYPE, type);
 			if(mMyLocation != null) {
-				// 有location的時候進入 PickPlaceActivity
-				Intent intent = new Intent(getContext(), MBPickPlaceActivity.class);
-				intent.putExtra(MBPickPlaceActivity.EXTRA_TYPE, type);
 				intent.putExtra(MBPickPlaceActivity.EXTRA_LAT, mMyLocation.latitude);
 				intent.putExtra(MBPickPlaceActivity.EXTRA_LONG, mMyLocation.longitude);
-				getContext().startActivity(intent);
-			} else {
-				Intent intent = new Intent(getContext(), MBAddCurrentLocationActivity.class);
-				intent.putExtra(MBAddCurrentLocationActivity.EXTRA_TYPE, type);
-				getContext().startActivity(intent);
 			}
+			getContext().startActivity(intent);
 		}
 		
 		@Override
@@ -786,6 +782,10 @@ public class MBCollectionListLayout extends RelativeLayout {
 				mNewCardClickListener.onCurrentPosition();
 		}
 	};
+
+	public void onCurrentLocationScane(boolean enable) {
+		mAddLayout.onCurrentLocationScane(enable);
+	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -1049,5 +1049,9 @@ public class MBCollectionListLayout extends RelativeLayout {
 	// 回復到預設
 	public void resetState() {
 		
+	}
+	
+	public void setCurrentLocationBtn(boolean hasLocation) {
+		mAddLayout.setCurrentLocationBtn(hasLocation);
 	}
 }

@@ -81,6 +81,7 @@
     <string name="collection_dialog_successed_upload_title">\"%1$s\" saved</string>
     <string name="collection_dialog_successed_upload_msg">New place has been successfully saved to \"%1$s\"</string>
     <string name="collection_dialog_btn_check_it_now">Check it now</string>
+    <string name="collection_locationg_hint">Locating your current position, wait for a few moment</string>
     <!--  -->
     <string name="place_last_update">Last edit - %s</string>
 
@@ -139,6 +140,7 @@
     <string name="create_location_title">Locating a new place</string>
     <string name="create_location_title_with_text">Locating %s</string>
     <string name="create_location_dialog_title_mean">Do you mean?</string>
+    
     <!-- Settings -->
     <string name="settings_about_title">About MappingBird</string>
     <string name="settings_about_subtitle">Version : %s</string>

@@ -21,6 +21,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.common.location.LocationService;
 import com.common.location.LocationService.LocationServiceListener;
@@ -74,6 +76,7 @@ import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
+import com.mpbd.mappingbird.common.MBToast;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.MBUtil;
 import com.mpbd.mappingbird.util.Utils;
@@ -146,6 +149,10 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private boolean showGPSHintByLocation = false;
 	
 	private AddPlaceEvent mAddPlaceEvent = new AddPlaceEvent();
+	
+	private Toast mToast;
+	private boolean clickMoveCurrentLocationBtn = false;
+	private boolean startScanAnimationOnResume = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -341,10 +348,18 @@ public class MBCollectionActivity extends FragmentActivity implements
 
 		mLayoutLoginSignUp.setVisibility(MappingBirdPref.getIns().isGuestMode() ? View.VISIBLE : View.GONE);
 
+		if(startScanAnimationOnResume) {
+			// 開啟Scan動畫
+			if(hasGPSProvider())
+				mMBCollectionListLayout.onCurrentLocationScane(true);
+		}
 		if(mLocationService != null)
 			mLocationService.start();
 		if(MBUtil.mEnableAddFunction)
 			MBServiceClient.refreshAddPlaceState();
+		
+		startScanAnimationOnResume = false;
+		clickMoveCurrentLocationBtn = false;
 	}
 	
 	@Override
@@ -353,6 +368,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 		closeLoadingDialog();
 		if(mLocationService != null)
 			mLocationService.stopUsingGPS();
+		
+		mMBCollectionListLayout.onCurrentLocationScane(false);
 	}
 
 	@Override
@@ -521,6 +538,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private void setMyLocation(Location location) {
 		closeLoadingDialog();
 		if(location == null) {
+			mMBCollectionListLayout.setCurrentLocationBtn(false);
 			// 確認是否有開啟GPS權限
 			if(mDialog != null && mDialog.isShowing())
 				mDialog.dismiss();
@@ -530,6 +548,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 				onNoLocation();
 			}
 		} else {
+			mMBCollectionListLayout.onCurrentLocationScane(false);
+			mMBCollectionListLayout.setCurrentLocationBtn(true);
 			DeBug.i(TAG, "mMyLocationChangedListener : location = "+location.toString());
 			mMyLocation = new LatLng(location.getLatitude(),
 					location.getLongitude());
@@ -845,7 +865,20 @@ public class MBCollectionActivity extends FragmentActivity implements
 				mMap.animateCamera(CameraUpdateFactory.newLatLng(mMyLocation), 300, null);
 			} else {
 				// Check GPS
-				onNoLocation();
+				if(!hasGPSProvider()) {
+					clickMoveCurrentLocationBtn = true;
+					DFshowDialog(DIALOG_GPS_HINT, 0, null, null);
+				} else {
+					if(mToast != null)
+						mToast.cancel();
+					
+					mToast = MBToast.getToast(mContext, getString(R.string.collection_locationg_hint));
+					mToast.setGravity(Gravity.BOTTOM, 0, 
+							(int)(MBUtil.getWindowHeight(mContext)*0.15f));
+					mToast.setDuration(Toast.LENGTH_SHORT);
+					mToast.show();
+					mMBCollectionListLayout.onCurrentLocationScane(true);
+				}
 			}
 		}
 	};
@@ -1033,6 +1066,11 @@ public class MBCollectionActivity extends FragmentActivity implements
 						public void onClick(View v) {
 							mDialog.dismiss();
 							mDialog = null;
+							if(clickMoveCurrentLocationBtn) {
+								clickMoveCurrentLocationBtn = false;
+								startScanAnimationOnResume = true;
+							}
+								
 							Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							startActivity(intent);

@@ -58,6 +58,7 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 	private String mType = TYPE_DEFAULT;
 	private double mLatitude = 0;
 	private double mLongitude = 0;
+	private boolean mHasLocation = false;
 
 	// Search layout
 	private View mTitleLayout;
@@ -115,8 +116,14 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 		else {
 			if(intent.hasExtra(EXTRA_TYPE))
 				mType = intent.getStringExtra(EXTRA_TYPE);
-			mLatitude = intent.getDoubleExtra(EXTRA_LAT, 0);
-			mLongitude = intent.getDoubleExtra(EXTRA_LONG, 0);
+			if(intent.hasExtra(EXTRA_LAT) && intent.hasExtra(EXTRA_LONG)) {
+				mHasLocation = true;
+				mLatitude = intent.getDoubleExtra(EXTRA_LAT, 0);
+				mLongitude = intent.getDoubleExtra(EXTRA_LONG, 0);
+			} else {
+				mHasLocation = false;
+				findViewById(R.id.title_btn_search).setVisibility(View.GONE);
+			}
 			prepareData(null);
 		}
 		
