@@ -817,6 +817,12 @@ public class MBCollectionListLayout extends RelativeLayout {
 		}
 	}
 	
+	public void closeAddLayout() {
+		if(mAddLayout.isOpenSelect()) {
+			mAddLayout.closeSelector();
+		}
+	}
+	
 	// Key Event
 	public boolean handlerKeyDown() {
 		if(mAddLayout.isOpenSelect()) {

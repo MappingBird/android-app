@@ -207,7 +207,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 			public void onDrawerOpened(View v) {
 				DeBug.v("onDrawerOpened");
 				setTitle(mCurrentCollectionListItem);
-				invalidateOptionsMenu();
+				invalidateOptionsMenu();				
 			}
 			
 			@Override
@@ -499,8 +499,10 @@ public class MBCollectionActivity extends FragmentActivity implements
 			case R.id.title_btn_menu:
 				if(mDrawerLayout.isDrawerOpen(mDrawerContentLayout))
 					mDrawerLayout.closeDrawer(mDrawerContentLayout);
-				else
+				else {
+					mMBCollectionListLayout.closeAddLayout();
 					mDrawerLayout.openDrawer(mDrawerContentLayout);
+				}
 				break;
 			case R.id.title_text:
 				if(mDrawerLayout.isDrawerOpen(mDrawerContentLayout))
