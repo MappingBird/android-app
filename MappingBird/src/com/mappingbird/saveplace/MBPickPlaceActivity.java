@@ -72,11 +72,13 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 	private static final int HINT_ERROR = 1;
 	private static final int HINT_NO_RESULT_EXPLORE = 2;
 	private static final int HINT_NO_RESULT_SEARCH = 3;
+	private static final int HINT_NO_LOCATION = 4;
 	
 	private View mHintLayout;
 	private View mHintErrorLayout;
 	private View mHintNoResultLayout;
 	private TextView mHintNoResultText;
+	private boolean showHintLayout = false;
 
 	private Handler mHandler = new Handler() {
 
@@ -110,6 +112,14 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 		mPlaceAdapter = new MBPlaceAdapter(this);
 		mPlaceListView.setAdapter(mPlaceAdapter);
 		mPlaceListView.setOnItemClickListener(mOnItemClickListener);
+
+		// Hint Layout
+		mHintLayout = findViewById(R.id.pick_place_hint);
+		mHintErrorLayout = findViewById(R.id.pick_refresh_layout);
+		mHintNoResultLayout = findViewById(R.id.pick_oops_layout);
+		mHintNoResultText = (TextView) findViewById(R.id.pick_oops_msg);
+		mHintErrorLayout.setOnClickListener(mHintClickListener);
+		
 		Intent intent = getIntent();
 		if(intent == null)
 			finish();
@@ -137,12 +147,6 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 		mSearchInput = (EditText) findViewById(R.id.title_input);
 		mSearchInput.addTextChangedListener(mSearchInputTextWatcher);
 		
-		// Hint Layout
-		mHintLayout = findViewById(R.id.pick_place_hint);
-		mHintErrorLayout = findViewById(R.id.pick_refresh_layout);
-		mHintNoResultLayout = findViewById(R.id.pick_oops_layout);
-		mHintNoResultText = (TextView) findViewById(R.id.pick_oops_msg);
-		mHintErrorLayout.setOnClickListener(mHintClickListener);
 	}
 
 	@Override
@@ -175,11 +179,18 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 	}
 
 	private void prepareData(String filter) {
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
-		mLoadingDialog.show();
-//		mApi.explorefromFourSquare(mOnExploreFourSquareListener, mLatitude, mLongitude, 35);
-		mSearchText = filter;
-		mApi.searchfromFourSquare(mOnSearchFourSquareListener, mLatitude, mLongitude, filter, 50);
+		if(mHasLocation) {
+			mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
+			mLoadingDialog.show();
+	//		mApi.explorefromFourSquare(mOnExploreFourSquareListener, mLatitude, mLongitude, 35);
+			mSearchText = filter;
+			mApi.searchfromFourSquare(mOnSearchFourSquareListener, mLatitude, mLongitude, filter, 50);
+		} else {
+			ArrayList<MBPlaceItem> requestPlace = new ArrayList<MBPlaceItem>();
+			requestPlace.clear();
+			mPlaceAdapter.setPlaceData(requestPlace);
+			setHintLayout(HINT_NO_LOCATION);
+		}
 	}
 
 	private void setHintLayout(int mode) {
@@ -205,6 +216,12 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 				mHintErrorLayout.setVisibility(View.GONE);
 				mHintNoResultLayout.setVisibility(View.VISIBLE);
 				mHintNoResultText.setText(R.string.pick_place_error_no_search_result);
+				break;
+			case HINT_NO_LOCATION:
+				mHintLayout.setVisibility(View.VISIBLE);
+				mHintErrorLayout.setVisibility(View.GONE);
+				mHintNoResultLayout.setVisibility(View.VISIBLE);
+				mHintNoResultText.setText(R.string.pick_place_error_no_suggest);
 				break;
 		}
 	}
@@ -356,6 +373,10 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 				break;
 			case R.id.title_btn_search:
 				mSearchLayout.setVisibility(View.VISIBLE);
+				if(mHintLayout.getVisibility() == View.VISIBLE) {
+					mHintLayout.setVisibility(View.GONE);
+					showHintLayout = true;
+				}
 				mTitleLayout.setVisibility(View.GONE);
 				mHandler.postDelayed(new Runnable() {
 					@Override
@@ -377,6 +398,14 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 		mSearchLayout.setVisibility(View.GONE);
 		mTitleLayout.setVisibility(View.VISIBLE);
 		closeIME();
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if(showHintLayout)
+					mHintLayout.setVisibility(View.VISIBLE);
+				showHintLayout = false;
+			}
+		}, 300);
 	}
 
 	private TextWatcher mSearchInputTextWatcher = new TextWatcher() {
