@@ -21,6 +21,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -57,6 +58,7 @@ import com.mappingbird.api.MBCollectionItem;
 import com.mappingbird.api.MBCollectionList;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
+import com.mappingbird.api.OnAddCollectionListener;
 import com.mappingbird.api.OnGetCollectionInfoListener;
 import com.mappingbird.api.OnGetCollectionsListener;
 import com.mappingbird.common.DeBug;
@@ -76,6 +78,7 @@ import com.mpbd.mappingbird.MappingBirdItem;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
 import com.mpbd.mappingbird.common.MBErrorMessageControl;
+import com.mpbd.mappingbird.common.MBInputDialog;
 import com.mpbd.mappingbird.common.MBToast;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.MBUtil;
@@ -149,6 +152,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private boolean showGPSHintByLocation = false;
 	
 	private AddPlaceEvent mAddPlaceEvent = new AddPlaceEvent();
+	
+	private MBInputDialog mCreateNewDialog = null;
 	
 	private Toast mToast;
 	private boolean clickMoveCurrentLocationBtn = false;
@@ -252,6 +257,7 @@ public class MBCollectionActivity extends FragmentActivity implements
         
 
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
+		listObj.removeOnGetCollectionsListener(getCollectionListListener);
 		listObj.setOnGetCollectionListener(getCollectionListListener);
 		listObj.getCollectionList();
 		mApi = new MappingBirdAPI(this);
@@ -398,21 +404,83 @@ public class MBCollectionActivity extends FragmentActivity implements
 		AppAnalyticHelper.endSession(this); 
 	}
 
+	// Create New collection
+	private void createNewCollectionDialog() {
+		if(mCreateNewDialog != null && mCreateNewDialog.isShowing())
+			return;
+		mCreateNewDialog = new MBInputDialog(MBCollectionActivity.this);
+		mCreateNewDialog.setTitle(getString(R.string.dialog_create_collection_title));
+		mCreateNewDialog.setInput("",getString(R.string.dialog_create_collection_hint));
+		mCreateNewDialog.setCanceledOnTouchOutside(false);
+		mCreateNewDialog.setPositiveBtn(getString(R.string.ok), 
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mCreateNewDialog.dismiss();
+						if(!TextUtils.isEmpty(mCreateNewDialog.getInputText())) {
+							addCollection(mCreateNewDialog.getInputText());
+						}
+					}
+				}, MBInputDialog.BTN_STYLE_DEFAULT);
+		mCreateNewDialog.setNegativeBtn(getString(R.string.str_cancel), 
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mCreateNewDialog.dismiss();
+					}
+				}, MBInputDialog.BTN_STYLE_DEFAULT);
+		mCreateNewDialog.setCanceledOnTouchOutside(false);
+		mCreateNewDialog.show();
+	}
+
+	private void addCollection(String name) {
+		mLoadingDialog = MappingBirdDialog.createLoadingDialog(MBCollectionActivity.this);
+		mLoadingDialog.setCancelable(false);
+		mLoadingDialog.show();
+		final MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
+		listObj.createCollection(new OnAddCollectionListener() {
+			
+			@Override
+			public void onAddCollection(int statusCode) {
+				if(statusCode == MappingBirdAPI.RESULT_OK) {
+				} else {
+					mLoadingDialog.dismiss();
+					// 上傳失敗. 跳出error dialog
+					String error = MBErrorMessageControl.getErrorMessage(statusCode, MappingBirdApplication.instance());
+					DFshowDialog(DIALOG_ERROR, MappingBirdApplication.instance().getString(R.string.error_normal_title),
+							error, MappingBirdApplication.instance().getString(R.string.ok), 
+							new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									DFdismiss();
+								}
+							}, null, null);
+				}
+			}
+		}, name);
+	}
+
 	private class DrawerItemClickListener implements
 			ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			// 當選到相同的Collection, 就不重複loading
-			if(MappingBirdPref.getIns().getCollectionPosition() == position)
-				return;
-
-			if(mClickedMarker != null) {
-				mClickedMarker.remove();
-				mClickedMarker = null;
+			// Add Collection
+			int type = mCollectionListAdapter.getItemViewType(position);
+			if(type == MBCollectionListAdapter.TYPE_ADD_NEW_COLLECTION) {
+				createNewCollectionDialog();
+			} else {
+				// 當選到相同的Collection, 就不重複loading
+				if(MappingBirdPref.getIns().getCollectionPosition() == position)
+					return;
+	
+				if(mClickedMarker != null) {
+					mClickedMarker.remove();
+					mClickedMarker = null;
+				}
+				selectItem(position);
+				MappingBirdPref.getIns().setCollectionPosition(position);
 			}
-			selectItem(position);
-			MappingBirdPref.getIns().setCollectionPosition(position);
 		}
 	}
 
@@ -437,6 +505,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private void refreshThisCollections() {
 		showLoadingDialog();
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
+		listObj.removeOnGetCollectionsListener(getCollectionListListener);
 		listObj.setOnGetCollectionListener(getCollectionListListener);
 		listObj.getCollectionList();
 	}
@@ -1036,6 +1105,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private final static int DIALOG_ERROR_NO_NETWORK = 0; // 拿Collection list或 一個Collection資料有問題.
 	private final static int DIALOG_LOCATION_NO_EXIST = 1; // Location拿不到
 	private final static int DIALOG_GPS_HINT = 2;
+	private final static int DIALOG_ERROR = 3;
 	private final static int DIALOG_LOADING = 5; // 特別, 用另外一個Dialog
 	private final static int DIALOG_UPLOAD_SUCESSED = 10;
 	private final static int DIALOG_UPLOAD_FAILED = 11;
@@ -1043,6 +1113,30 @@ public class MBCollectionActivity extends FragmentActivity implements
 	
 	private int mDialogMode = DIALOG_NONE; 
 	
+	private void DFshowDialog(int mode,String title, String subTitle, String postStr, 
+			OnClickListener postlistener, String netStr, OnClickListener netListener) {
+		if(MBCollectionActivity.this.isFinishing())
+			return;
+
+		if(mode > mDialogMode)
+			return;
+				
+		switch(mode) {
+		case DIALOG_ERROR:
+			DFdismiss();
+			mDialog.setTitle(title);
+			mDialog.setDescription(subTitle);
+			if(!TextUtils.isEmpty(netStr)) {
+				mDialog.setNegativeBtn(netStr, 
+						netListener, MBDialog.BTN_STYLE_DEFAULT);
+			}
+			if(!TextUtils.isEmpty(postStr)) {
+				mDialog.setPositiveBtn(postStr,postlistener, MBDialog.BTN_STYLE_BLUE);
+			}
+			mDialog.show();
+			break;
+		}		
+	}
 	
 	private void DFshowDialog(int mode, int statusCode, MBSubmitMsgData data, OnClickListener listener) {
 		if(MBCollectionActivity.this.isFinishing())
@@ -1052,6 +1146,9 @@ public class MBCollectionActivity extends FragmentActivity implements
 			return;
 				
 		switch(mode) {
+		case DIALOG_ERROR:
+			DFdismiss();
+			break;
 		case DIALOG_GPS_HINT:
 			DFdismiss();
 			mDialog = new MBDialog(mContext);

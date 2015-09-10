@@ -685,6 +685,12 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			closeImm();
 		}
 
+		if(mHintLayout.getVisibility() != View.GONE || mItemViewHint.get(0).getVisibility() != View.GONE) {
+			mHintLayout.setVisibility(View.GONE);
+			for (View view : mItemViewHint)
+				view.setVisibility(View.GONE);
+		}
+
 		if (state == MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED) {
 			if (total == 0) {
 				post(new Runnable() {

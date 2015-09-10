@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@drawable/collection_item_bg"
+    android:paddingRight="16dp"
+    android:orientation="horizontal" >
+
+    <com.mappingbird.widget.MappingbirdFontIcon
+        android:id="@+id/collection_item_icon"
+        style="@style/TitleButtonStyle"
+        android:text="@string/iconfont_plus_circle_outline"
+        android:textColor="@color/iconfont_leading"
+        android:background="#00000000"
+         />
+
+    <com.mappingbird.widget.MappingbirdTextView
+        android:id="@+id/collection_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/font_normal"
+        android:textSize="16sp" />
+
+</LinearLayout>

@@ -47,7 +47,8 @@ public class MBCollectionListObject {
 	};
 	
 	public void setOnGetCollectionListener(OnGetCollectionsListener listener) {
-		mListener.add(listener);
+		if(!mListener.contains(listener))
+			mListener.add(listener);
 	}
 
 	public void removeOnGetCollectionsListener(OnGetCollectionsListener listener) {
