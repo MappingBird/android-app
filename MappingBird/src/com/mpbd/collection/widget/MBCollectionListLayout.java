@@ -466,7 +466,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 				if(isPressCardInItemMode) {
 					int diffX = (int)(ev.getX() - mTouchDownX);
 					int diffY = (int)(ev.getY() - mTouchDownY);
-					if(diffX*diffX + diffY*diffY > 80) {
+					if(diffX*diffX + diffY*diffY > 100) {
 						isPressCardInItemMode = false;
 						switchMode(MODE_MIDDLE_DRAGE);
 					}
@@ -475,11 +475,12 @@ public class MBCollectionListLayout extends RelativeLayout {
 				break;
 			}
 			case MotionEvent.ACTION_UP: {
-				isPressCardInItemMode = false;
 				if(isPressCardInItemMode) {
-					// Click event
+					if(mNewCardClickListener != null)
+						mNewCardClickListener.onClickCard(mItemAdapter.getSelectPoint());
 					return true;
 				}
+				isPressCardInItemMode = false;
 				break;
 			}
 			case MotionEvent.ACTION_CANCEL:
