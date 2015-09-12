@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.MBPickPlaceActivity;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
@@ -642,8 +643,11 @@ public class MBListLayoutAddLayout extends RelativeLayout {
 			}
 			if (mMode == MODE_OPEN_ANIM) {
 				mMode = MODE_OPEN;
-				isNeedShowHintCircle = true;
-				mHintLayout.setVisibility(View.VISIBLE);
+				if(MappingBirdPref.getIns().getAddPlaceHintCount() < 3) {
+					isNeedShowHintCircle = true;
+					mHintLayout.setVisibility(View.VISIBLE);
+					MappingBirdPref.getIns().setAddPlaceHintCount(MappingBirdPref.getIns().getAddPlaceHintCount()+1);
+				}
 				for (View view : mItemViewHint)
 					view.setVisibility(View.VISIBLE);
 			}

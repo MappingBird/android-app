@@ -16,6 +16,8 @@ public class MappingBirdPref{
 		public static final String USER_PASSWORD = "u_p";
 		
 		public static final String USER_GUST_MODE = "guest";
+		
+		public static final String ADD_PLACE_HINT_COUNT = "add_place_hint_count";
 	};
 	protected MappingBirdPref() {
 		mPref = PreferenceManager
@@ -123,5 +125,13 @@ public class MappingBirdPref{
 
 	public void setGuestMode(boolean mode) {
 		putBoolean(KEY.USER_GUST_MODE, mode);
+	}
+	
+	public void setAddPlaceHintCount( int count) {
+		putInt(KEY.ADD_PLACE_HINT_COUNT, count);
+	}
+
+	public int getAddPlaceHintCount() {
+		return getInt(KEY.ADD_PLACE_HINT_COUNT, 0);
 	}
 }

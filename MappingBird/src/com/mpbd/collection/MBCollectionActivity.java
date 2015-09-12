@@ -987,18 +987,28 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 
 		public void setFontIcon(int strId, Marker markerOptions) {
-			if(markerOptions != null) {
-				String iconStr = getResources().getString(strId);
-				Bitmap icon = mClusterIconGenerator.makeIcon(iconStr);
-				if(icon != null)
-					markerOptions.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+			try {
+				if(markerOptions != null) {
+					String iconStr = getResources().getString(strId);
+					Bitmap icon = mClusterIconGenerator.makeIcon(iconStr);
+					if(icon != null)
+						markerOptions.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+				}
+			} catch(Exception e) {
+				
 			}
 		}
 
 		public void setFontIcon(int strId, MarkerOptions markerOptions) {
-			String iconStr = getResources().getString(strId);
-			Bitmap icon = mClusterIconGenerator.makeIcon(iconStr);
-			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
+			try {
+				if(markerOptions != null) {
+					String iconStr = getResources().getString(strId);
+					Bitmap icon = mClusterIconGenerator.makeIcon(iconStr);
+					markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
+				}
+			} catch(Exception e) {
+				
+			}
 		}
 
 		protected void onBeforeClusterItemRendered(MappingBirdItem place,
