@@ -81,6 +81,7 @@ public class MBSettingsActivity extends Activity {
 					break;
 				case R.id.settings_dump_db_layout:
 					dumpDB();
+					dumpDataDB();
 					break;
 				case R.id.back_icon: {
 					finish();
@@ -156,6 +157,43 @@ public class MBSettingsActivity extends Activity {
 		{
 		  fis=new FileInputStream(f);
 		  fos=new FileOutputStream("/mnt/sdcard/db_dump.db");
+		  while(true)
+		  {
+		    int i=fis.read();
+		    if(i!=-1)
+		    {fos.write(i);}
+		    else
+		    {break;}
+		  }
+		  fos.flush();
+		  Toast.makeText(this, "DB dump OK", Toast.LENGTH_LONG).show();
+		}
+		catch(Exception e)
+		{
+		  e.printStackTrace();
+		  Toast.makeText(this, "DB dump ERROR", Toast.LENGTH_LONG).show();
+		}
+		finally
+		{
+		  try
+		  {
+		    fos.close();
+		    fis.close();
+		  }
+		  catch(IOException ioe)
+		  {}
+		}
+	}
+	
+	private void dumpDataDB() {
+		File f=new File("/data/data/com.mpbd.mappingbird/databases/DataDB.db");
+		FileInputStream fis=null;
+		FileOutputStream fos=null;
+
+		try
+		{
+		  fis=new FileInputStream(f);
+		  fos=new FileOutputStream("/mnt/sdcard/db_data_dump.db");
 		  while(true)
 		  {
 		    int i=fis.read();

@@ -7,6 +7,8 @@ import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnAddCollectionListener;
 import com.mappingbird.api.OnGetCollectionsListener;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mpbd.data.db.DataDB;
+import com.mpbd.data.db.DataDBHelper;
 
 
 public class MBCollectionListObject {
@@ -15,11 +17,14 @@ public class MBCollectionListObject {
 	private OnAddCollectionListener mClientListener;
 	private int mLastStatusCode = -1;
 	private MBCollectionList mLastCollections = null;
+	private DataDB mDataDB;
 	public MBCollectionListObject() {
 		mListener.clear();
+		mDataDB = new DataDB(MappingBirdApplication.instance());
 	}
 	
 	public void getCollectionList() {
+		// 先讀Server的值. 在判斷Cache
 		MappingBirdAPI api = new MappingBirdAPI(MappingBirdApplication.instance().getApplicationContext());
 		api.getCollections(mOnGetCollectionsListener);
 	}
@@ -32,16 +37,29 @@ public class MBCollectionListObject {
 		
 		@Override
 		public void onGetCollections(int statusCode, MBCollectionList collection) {
-			mLastCollections = collection;
-			if(collection != null)
+
+			if(collection != null) {
+				// Collection List有值
+				mLastCollections = collection;
 				mLastStatusCode = statusCode;
+				// 存入DB裡面
+				mDataDB.putCollectionList(collection, System.currentTimeMillis());
+			} else {
+				// Server沒拿到改拿Cache的直
+				mLastCollections = mDataDB.getCollectionList();
+				mLastStatusCode = statusCode;
+				if(mLastCollections != null)
+					mLastStatusCode = MappingBirdAPI.RESULT_OK;
+			}
+
 			for(OnGetCollectionsListener listener : mListener) {
 				if(listener != null)
-					listener.onGetCollections(statusCode, collection);
+					listener.onGetCollections(mLastStatusCode, mLastCollections);
 			}
+
 			// 新增Collection 用的
 			if(mClientListener != null) {
-				mClientListener.onAddCollection(statusCode);
+				mClientListener.onAddCollection(mLastStatusCode);
 			}
 		}
 	};
