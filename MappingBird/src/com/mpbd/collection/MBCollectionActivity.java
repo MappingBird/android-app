@@ -67,6 +67,7 @@ import com.mappingbird.common.MappingBirdPref;
 import com.mappingbird.saveplace.MBSubmitMsgData;
 import com.mappingbird.saveplace.services.MBPlaceSubmitTask;
 import com.mappingbird.saveplace.services.MBPlaceSubmitUtil;
+import com.mpbd.collection.data.MBCollectionItemObject;
 import com.mpbd.collection.data.MBCollectionListObject;
 import com.mpbd.collection.widget.MBCollectionListLayout;
 import com.mpbd.collection.widget.MBCollectionListLayout.NewCardClickListener;
@@ -114,7 +115,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private MBCollectionListAdapter mCollectionListAdapter;
 	private MBCollectionList mCollectionList = null;
 	private MBCollectionItem mCollectionItem = null;
-	private ArrayList<MBPointData> mPositionItems = new ArrayList<MBPointData>();
 
 	private LatLng mMyLocation = null;
 	private Marker mMyMarker = null;
@@ -257,7 +257,6 @@ public class MBCollectionActivity extends FragmentActivity implements
         
 
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
-		listObj.removeOnGetCollectionsListener(getCollectionListListener);
 		listObj.setOnGetCollectionListener(getCollectionListListener);
 		listObj.getCollectionList();
 		mApi = new MappingBirdAPI(this);
@@ -384,6 +383,9 @@ public class MBCollectionActivity extends FragmentActivity implements
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
 		listObj.removeOnGetCollectionsListener(getCollectionListListener);
 		
+		MBCollectionItemObject itemObj = MappingBirdApplication.instance().getCollectionItemObj();
+		itemObj.removeOnGetCollectionItemListener(getCollectionInfoListener);
+		
 		if(mLoadingDialog != null)
 			mLoadingDialog.cancel();
 		mLoadingDialog = null;
@@ -494,8 +496,9 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 		if (mCollectionList != null && mCollectionList.getCount() > 0) {
 			showLoadingDialog();
-			mApi.getCollectionInfo(getCollectionInfoListener,
-					mCollectionList.get(position).getId());
+			MBCollectionItemObject itemObj = MappingBirdApplication.instance().getCollectionItemObj();
+			itemObj.setOnGetCollectionItemListener(getCollectionInfoListener);
+			itemObj.getCollectionList(mCollectionList.get(position).getId());
 		}
 	}
 
@@ -505,7 +508,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private void refreshThisCollections() {
 		showLoadingDialog();
 		MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
-		listObj.removeOnGetCollectionsListener(getCollectionListListener);
 		listObj.setOnGetCollectionListener(getCollectionListListener);
 		listObj.getCollectionList();
 	}
@@ -602,8 +604,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 			mLocationService.start();
 		}
 
-		closeLoadingDialog();
 		setUpMap();
+		closeLoadingDialog();
 	}
 
 	private void setMyLocation(Location location) {
@@ -807,7 +809,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 		mMyMarker = null;
 		mClusterManager.clearItems();
-		mPositionItems.clear();
+		ArrayList<MBPointData> positionItems = new ArrayList<MBPointData>();
+		positionItems.clear();
 		mLatLngs.clear();
 		mMap.clear();
 
@@ -850,11 +853,11 @@ public class MBCollectionActivity extends FragmentActivity implements
 				mLatLngs.add(latlng);
 				MappingBirdItem offsetItem = new MappingBirdItem(i, latlng,
 						title, Utils.getPinIconFont(type));
-				mPositionItems.add(point);
+				positionItems.add(point);
 				mClusterManager.addItem(offsetItem);
 			}
 		}
-		mMBCollectionListLayout.setPositionData(mPositionItems);
+		mMBCollectionListLayout.setPositionData(positionItems);
 	}
 
 	// ====================================================

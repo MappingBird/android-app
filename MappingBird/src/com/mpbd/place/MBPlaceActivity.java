@@ -33,11 +33,13 @@ import com.mappingbird.api.OnGetPointsListener;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
+import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.widget.MBImageCountView;
 import com.mappingbird.widget.MappingbirdPlaceLayout;
 import com.mappingbird.widget.MappingbirdPlaceLayout.onPlaceLayoutListener;
 import com.mappingbird.widget.MappingbirdScrollView;
 import com.mappingbird.widget.MappingbirdScrollView.OnScrollViewListener;
+import com.mpbd.collection.data.MBPlaceItemObject;
 import com.mpbd.mappingbird.MappingBirdDialog;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.common.MBDialog;
@@ -153,10 +155,10 @@ public class MBPlaceActivity extends Activity implements
 		}
 
 		if(!isFinished) {
-			mApi = new MappingBirdAPI(this.getApplicationContext());
-	
-			mApi.getPoints(mPointListener, placeId);
 			mContext = this;
+			MBPlaceItemObject placeObj = MappingBirdApplication.instance().getPlaceItemObj();
+			placeObj.setOnGetPointsListener(mPointListener);
+			placeObj.getPlaceItem(placeId);
 	
 			mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
 			mLoadingDialog.setCancelable(false);
@@ -386,7 +388,7 @@ public class MBPlaceActivity extends Activity implements
 				title = MBErrorMessageControl.getErrorTitle(statusCode, mContext);
 				String error = "";
 				error = MBErrorMessageControl.getErrorMessage(statusCode, mContext);
-				MBDialog mDialog = new MBDialog(mContext);
+				mDialog = new MBDialog(mContext);
 				mDialog.setTitle(title);
 				mDialog.setDescription(error);
 				mDialog.setPositiveBtn(getResources().getString(R.string.ok),
@@ -437,6 +439,7 @@ public class MBPlaceActivity extends Activity implements
 		public void onClick(View view) {
 			if(mDialog != null)
 				mDialog.dismiss();
+			finish();
 		}
 	};
 
@@ -535,6 +538,9 @@ public class MBPlaceActivity extends Activity implements
     protected void onDestroy() {
         super.onDestroy();
         
+		MBPlaceItemObject placeObj = MappingBirdApplication.instance().getPlaceItemObj();
+		placeObj.removeOnGetPointsListener(mPointListener);
+
         AppAnalyticHelper.sendEvent(MBPlaceActivity.this, 
                 AppAnalyticHelper.CATEGORY_UI_ACTION, 
                 AppAnalyticHelper.ACTION_IMAGE_SWIPE,
