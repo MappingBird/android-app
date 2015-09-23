@@ -50,4 +50,5 @@
     <string name="iconfont_eye" translatable="false">\uE621</string>
     
     <string name="iconfont_sync" translatable="false">\uE63C</string>
+    <string name="iconfont_dots_vertical" translatable="false">\uE630</string>
 </resources>
