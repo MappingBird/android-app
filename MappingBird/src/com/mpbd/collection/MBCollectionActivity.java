@@ -931,12 +931,10 @@ public class MBCollectionActivity extends FragmentActivity implements
 		public void onCurrentPosition() {
 			if(mMyLocation != null && mMap != null) {
 				float nowZoom = mMap.getCameraPosition().zoom;
-				if(nowZoom < (mMap.getMaxZoomLevel() - 2)) {
-					nowZoom = nowZoom + 2;
-				} else {
-					nowZoom = mMap.getMaxZoomLevel();
+				if(nowZoom < (mMap.getMaxZoomLevel() - 4)) {
+					nowZoom = mMap.getMaxZoomLevel() - 4;
 				}
-				mMap.animateCamera(CameraUpdateFactory.newLatLng(mMyLocation), 300, null);
+				mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMyLocation, nowZoom), 300, null);
 			} else {
 				// Check GPS
 				if(!hasGPSProvider()) {
