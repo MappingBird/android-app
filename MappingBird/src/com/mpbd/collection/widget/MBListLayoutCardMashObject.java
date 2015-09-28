@@ -53,12 +53,9 @@ public class MBListLayoutCardMashObject {
 	}
 
 	public void buildBmp(Bitmap bmp) {
-		DeBug.d("Test", "Object buildBmp : "+bmp);
 
 		mBmp = bmp;
 		mPaint = new Paint();
-		
-		DeBug.e("Test", "mBmp = "+mBmp.getWidth()+"x"+mBmp.getHeight());
 		
 		buildVerts();
 		for(int i = 0; i < MBListLayoutCardMashAnimVerts.MATRIX_COLUME*MBListLayoutCardMashAnimVerts.MATRIX_ROW*2; i=i+2) {

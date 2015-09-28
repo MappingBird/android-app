@@ -137,7 +137,6 @@ public class MappingbirdPlaceLayout extends RelativeLayout {
 		case MotionEvent.ACTION_UP:
 		case MotionEvent.ACTION_CANCEL:
 		case MotionEvent.ACTION_OUTSIDE:
-			DeBug.i("Test", "mVelocityY = "+mVelocityY);
 			if(mTouchMode == MODE_TOUCH_SCROLL_LAYOUT) {
 				
 				if(mVelocityY > -2500) {

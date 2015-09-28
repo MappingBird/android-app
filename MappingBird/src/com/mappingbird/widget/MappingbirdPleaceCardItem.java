@@ -121,7 +121,6 @@ public class MappingbirdPleaceCardItem {
 				canvas.drawBitmap(mBitmap, mBitmapBound, mDrawBound, mBitmapPaint);
 				break;
 			case MODE_NEXT:
-//				DeBug.i("Test", "x = "+mPositionX+", Scale = "+(((float)mPositionX)/mWidth));
 				if(mPositionX <= 0) {
 					float rate = Math.abs(((float)mPositionX)/mWidth)*0.6f + 0.4f;
 					canvas.scale(rate, rate, mWidth/2, mHeight/2);
