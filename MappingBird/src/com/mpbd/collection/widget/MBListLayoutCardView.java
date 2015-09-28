@@ -206,6 +206,20 @@ public class MBListLayoutCardView extends RelativeLayout {
 		}
 	}
 
+	public void reLocation(LatLng mylocation) {
+		if(mPoint != null && mylocation != null) {
+			DistanceObject disObject = Utils.getDistanceObject(
+					Utils.getDistance(mylocation.latitude,
+					mylocation.longitude, 
+					mPoint.getLocation().getLatitude(), 
+					mPoint.getLocation().getLongitude()));
+			Utils.setDistanceToText(mCardDistance, disObject.mDistance);
+			mCardUnit.setText(disObject.mUnit);
+			Utils.setDistanceToText(mItemDistance, disObject.mDistance);
+			mItemUnit.setText(disObject.mUnit);			
+		}
+	}
+	
 	private int mStartHeight = 0;
 	private int mEndHeight = 0;
 	private int mIconStartHeight = 0;

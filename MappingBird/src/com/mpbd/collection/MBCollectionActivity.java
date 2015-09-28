@@ -1241,8 +1241,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 							data.getCollectionName());
 
 					if(data.getPlaceId() != 0) {
-						final int placeId = data.getPlaceId();
-						DeBug.d("Test", "placeId = "+placeId);
 						DFShowMessageDialog(mDialogMode,
 								title, message, 
 								getString(R.string.collection_dialog_btn_check_it_now),

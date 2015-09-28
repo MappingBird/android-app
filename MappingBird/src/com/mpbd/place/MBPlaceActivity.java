@@ -361,8 +361,8 @@ public class MBPlaceActivity extends Activity implements
 				setDataInLayout(point.getPlacePhone(), mPlacePhoneLayout, mPlacePhone);
 				// Address
 				setDataInLayout(point.getLocation().getPlaceAddress(), mPlaceAddressLayout, mPlaceAddress);
-//				// Date
-//				setDataInLayout(point.getCreateTime(), mPlaceDateLayout, mPlaceDate);
+				// Date
+				setDataInLayout(point.getCreateTime(), mPlaceDateLayout, mPlaceDate);
 				// Tags
 				setDataInLayout(point.getTagsString(), mPlaceTagLayout, mPlaceTag);
 				// Link
@@ -409,6 +409,10 @@ public class MBPlaceActivity extends Activity implements
 		}
 	}
 
+	private void setBusineHours() {
+		
+	}
+	
 	OnClickListener mShareClickListener = new OnClickListener() {
 
 		@Override

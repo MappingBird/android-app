@@ -145,7 +145,11 @@ public class MBCollectionListLayout extends RelativeLayout {
 	}
 
 	public void setMyLocation(LatLng location) {
-		mMyLocation = location;
+		if(!location.equals(mMyLocation)) {
+			mMyLocation = location;
+			mItemAdapter.relocation();
+			mCard.reLocation(location);
+		}
 	}
 
 	private void init() {
@@ -343,7 +347,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 			return true;
 
 		mGestureDetector.onTouchEvent(ev);
-//		DeBug.d("Test", "mMode = "+mMode);
 		switch(mMode) {
 			case MODE_SMALL_CARD:
 				if(handleSmallCardTouchEvent(ev))
@@ -532,7 +535,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 			break;
 		case MotionEvent.ACTION_MOVE:
 			if(mListViewTop && (ev.getY() - mTouchDownY) > -mMostTopPosition) {
-				DeBug.v("Test", "handleListTopNormal change to MODE_LIST_TOP_DRAGING_DOWN");
 				switchMode(MODE_ALL_DRAGE);
 				return true;
 			}
@@ -884,6 +886,23 @@ public class MBCollectionListLayout extends RelativeLayout {
 			});
 		}
 
+		public synchronized void relocation() {	
+			countDistance();
+			mItems.clear();
+			if(mSelectPoint != null) {
+				for(ListItem point : mAllPoints) {
+					if(point.equals(mSelectPoint.mPoint)) {
+						mItems.add(0, point);
+					} else {
+						mItems.add(point);
+					}
+				}
+			} else {
+				mItems.addAll(mAllPoints);
+			}
+			notifyDataSetChanged();
+		}
+		
 		public MBPointData getSelectPoint(int index) {
 			if(index >= mItems.size())
 				return null;
@@ -1045,6 +1064,10 @@ public class MBCollectionListLayout extends RelativeLayout {
 
 		public boolean equals(LatLng latlng) {
 			return mPoint.getLatLng().equals(latlng);
+		}
+
+		public boolean equals(MBPointData data) {
+			return mPoint.getLatLng().equals(data.getLatLng());
 		}
 	}
 	
