@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mpbd.mappingbird"
-    android:versionCode="1003011004"
-    android:versionName="1.3.1.1004" >
+    android:versionCode="1003011005"
+    android:versionName="1.3.1.1005" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -96,7 +96,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBlbCWPNXgMkH6f8v1Q3ZLJs_yAAAX6aS0" />
+            android:value="AIzaSyBZOPwIEZHVHegsqb5MDjT-tm3upt_cqnk" />
         <!--
         formal
         AIzaSyAOoW4gqgCyPTGaXZj0-y3jkC3VfsNNbN0 - old
