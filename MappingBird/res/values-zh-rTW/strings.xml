@@ -77,6 +77,7 @@
     <string name="collection_dialog_successed_upload_title">已儲存 \"%1$s\"</string>
     <string name="collection_dialog_successed_upload_msg">新地點已被成功地儲存至 \"%1$s\" 地圖</string>
     <string name="collection_dialog_btn_check_it_now">立即查看</string>
+    <string name="collection_locationg_hint">定位您的位置需要一些時間，請稍候…</string>
     <!--  -->
     <string name="place_last_update">最後更新 - %s</string>
 
