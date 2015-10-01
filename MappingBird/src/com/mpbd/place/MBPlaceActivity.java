@@ -1,6 +1,8 @@
 package com.mpbd.place;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -79,7 +81,7 @@ public class MBPlaceActivity extends Activity implements
 	private TextView mPlaceTag = null;
 
 	private View mPlaceDateLayout = null;
-	private TextView mPlaceDate = null;
+	private View mPlaceDate = null;
 
 	private View mPlaceLinkLayout = null;
 	private TextView mPlaceLink = null;
@@ -247,7 +249,7 @@ public class MBPlaceActivity extends Activity implements
 		mPlaceTag = (TextView) findViewById(R.id.trip_place_tag);
 
 		mPlaceDateLayout = findViewById(R.id.trip_place_date_layout);
-		mPlaceDate = (TextView) findViewById(R.id.trip_place_date);
+		mPlaceDate = findViewById(R.id.trip_place_date);
 
 		mPlaceLinkLayout = findViewById(R.id.trip_place_link_layout);
 		mPlaceLink = (TextView) findViewById(R.id.trip_place_link);
@@ -362,7 +364,8 @@ public class MBPlaceActivity extends Activity implements
 				// Address
 				setDataInLayout(point.getLocation().getPlaceAddress(), mPlaceAddressLayout, mPlaceAddress);
 				// Date
-				setDataInLayout(point.getCreateTime(), mPlaceDateLayout, mPlaceDate);
+//				setDataInLayout(point.getCreateTime(), mPlaceDateLayout, mPlaceDate);
+				setBusinessHours(point);
 				// Tags
 				setDataInLayout(point.getTagsString(), mPlaceTagLayout, mPlaceTag);
 				// Link
@@ -409,7 +412,46 @@ public class MBPlaceActivity extends Activity implements
 		}
 	}
 
-	private void setBusineHours() {
+	private void setBusinessHours(MBPointData point) {
+		if(point.getBusinessData() != null) {
+			mPlaceDateLayout.setVisibility(View.VISIBLE);
+			SimpleDateFormat sp = new SimpleDateFormat("cccc");
+			Calendar cl = Calendar.getInstance();
+			// 營業資料
+			TextView textView;
+			// 星期日
+			cl.set(Calendar.DAY_OF_WEEK, 1);
+			setBusinessData(R.id.trip_place_0_date, R.id.trip_place_0_time, sp.format(cl.getTime()), point.getBusinessData().getString(0));
+			cl.set(Calendar.DAY_OF_WEEK, 2);
+			setBusinessData(R.id.trip_place_1_date, R.id.trip_place_1_time, sp.format(cl.getTime()), point.getBusinessData().getString(1));
+			cl.set(Calendar.DAY_OF_WEEK, 3);
+			setBusinessData(R.id.trip_place_2_date, R.id.trip_place_2_time, sp.format(cl.getTime()), point.getBusinessData().getString(2));
+			cl.set(Calendar.DAY_OF_WEEK, 4);
+			setBusinessData(R.id.trip_place_3_date, R.id.trip_place_3_time, sp.format(cl.getTime()), point.getBusinessData().getString(3));
+			cl.set(Calendar.DAY_OF_WEEK, 5);
+			setBusinessData(R.id.trip_place_4_date, R.id.trip_place_4_time, sp.format(cl.getTime()), point.getBusinessData().getString(4));
+			cl.set(Calendar.DAY_OF_WEEK, 6);
+			setBusinessData(R.id.trip_place_5_date, R.id.trip_place_5_time, sp.format(cl.getTime()), point.getBusinessData().getString(5));
+			cl.set(Calendar.DAY_OF_WEEK, 7);
+			setBusinessData(R.id.trip_place_6_date, R.id.trip_place_6_time, sp.format(cl.getTime()), point.getBusinessData().getString(6));
+		} else {
+			mPlaceDateLayout.setVisibility(View.GONE);
+		}
+	}
+	
+	private void setBusinessData(int dateRes, int timeRes,String date, String time) {
+		if(!TextUtils.isEmpty(time)) {
+			((TextView)mPlaceDate.findViewById(timeRes)).setText(time);
+			((TextView)mPlaceDate.findViewById(dateRes)).setText(date);
+		} else {
+			TextView textView = (TextView)mPlaceDate.findViewById(timeRes);
+			textView.setText(R.string.place_businees_closed);
+			textView.setTextColor(getResources().getColor(R.color.font_red));
+
+			textView = (TextView)mPlaceDate.findViewById(dateRes);
+			textView.setText(date);
+			textView.setTextColor(getResources().getColor(R.color.font_red));
+		}
 		
 	}
 	

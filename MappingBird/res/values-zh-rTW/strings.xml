@@ -131,6 +131,9 @@
     <string name="pick_place_error_title">哎呀！真是尷尬，好像發生了一些問題...</string>
     <string name="pick_place_error_refresh">再點一下重試</string>
     
+    <!-- Detal Place -->
+    <string name="place_businees_closed">公休日</string>
+    
     <!-- Add current location -->
     <string name="create_location_title">定位一個新位置</string>
     <string name="create_location_title_with_text">定位 %s</string>

@@ -48,6 +48,7 @@ public class MBPointData implements Serializable {
 	private String mUpdateTime;
 	private double mLatitude;
 	private double mLongitude;
+	private MBPointBusinessData mBusinessList = null;
 
 	MBPointData(long id, String title, String coordinates, String type,
 			ArrayList<ImageDetail> images, ArrayList<Tag> tags, MBLocation location) {
@@ -66,7 +67,7 @@ public class MBPointData implements Serializable {
 			String address, String phone, String name, String coordinates,
 			ArrayList<ImageDetail> images, ArrayList<Tag> tags,
 			long collectionId, MBLocation location, String createTime,
-			String updateTime) {
+			String updateTime, MBPointBusinessData businessList) {
 		mId = id;
 		mTitle = title;
 		mUrl = url;
@@ -86,8 +87,14 @@ public class MBPointData implements Serializable {
 		}
 		mCreateTime = createTime;
 		mUpdateTime = updateTime;
+		if(businessList != null)
+			mBusinessList = businessList;
 	}
 
+	public MBPointBusinessData getBusinessData() {
+		return mBusinessList;
+	}
+	
 	public LatLng getLatLng() {
 		return new LatLng(mLatitude, mLongitude);
 	}

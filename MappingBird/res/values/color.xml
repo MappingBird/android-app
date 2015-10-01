@@ -43,6 +43,7 @@
     <color name="font_hint">#b2b2b2</color>
     <color name="font_white">#ffffff</color>
     <color name="font_white_disable">#33ffffff</color>
+    <color name="font_red">#ffbf0404</color>
 
     <!-- bg -->
     <color name="bg_grey">#e7e7e7</color>

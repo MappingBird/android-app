@@ -199,9 +199,13 @@ class MapParse {
 		String pupdateTime = obj.optString("update_time");
 		DeBug.i(TAG, "[add point json] updateTime=" + pupdateTime);
 
+		// 營業時間
+		MBPointBusinessData businessList = null;
+		//準備資料
+		
 		return new MBPointData(pid, title, url, type, description,
 				place_address, place_phone, place_name, coordinates, null,
-				null, collectionId, null, pcreateTime, pupdateTime);
+				null, collectionId, null, pcreateTime, pupdateTime, businessList);
 	}
 
 	public static MBPointData parsePointsResult(String rsp)
@@ -312,11 +316,17 @@ class MapParse {
 			tags.add(new Tag(tId, tName));
 		}
 
+		// 營業時間
+		MBPointBusinessData businessList = null;
+		//準備資料
+//		businessList = new MBPointBusinessData();
+//		businessList.fakeData();
+
 		return new MBPointData(pid, title, url, type, description,
 				place_address, place_phone, place_name, coordinates, images,
 				tags, collectionId, new MBLocation(lId, placeaddress, placephone,
 						placename, lcoordinates, category, lcreateTime,
-						lupdateTime), pcreateTime, pupdateTime);
+						lupdateTime), pcreateTime, pupdateTime, businessList);
 	}
 
 	public static MBCollectionItem parseCollectionInfoResult(String rsp)

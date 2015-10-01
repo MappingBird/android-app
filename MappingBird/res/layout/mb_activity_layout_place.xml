@@ -181,14 +181,11 @@
                             android:textColor="@color/graphic_symbol"
                             android:textSize="22sp" />
 
-                        <com.mappingbird.widget.MappingbirdTextView
-                            android:id="@+id/trip_place_date"
-                            style="@style/TextStyle_Body_Small"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:paddingLeft="6dp"
-                            android:textColor="@color/font_normal" />
+				        <include
+				            android:id="@+id/trip_place_date"
+				            android:layout_width="match_parent"
+				            android:layout_height="wrap_content"
+				            layout="@layout/mb_layout_place_business_time" />
                     </LinearLayout>
 
                     <LinearLayout

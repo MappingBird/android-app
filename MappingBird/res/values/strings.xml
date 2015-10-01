@@ -136,6 +136,9 @@
     <string name="pick_place_error_title">Oops! There are some problems.</string>
     <string name="pick_place_error_refresh">tap to refresh!</string>
     
+    <!-- Detal Place -->
+    <string name="place_businees_closed">Closed</string>
+    
     <!-- Add current location -->
     <string name="create_location_title">Locating a new place</string>
     <string name="create_location_title_with_text">Locating %s</string>
