@@ -158,6 +158,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 	private Toast mToast;
 	private boolean clickMoveCurrentLocationBtn = false;
 	private boolean startScanAnimationOnResume = false;
+	
+	private int mTempPosition = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -481,7 +483,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 					mClickedMarker = null;
 				}
 				selectItem(position);
-				MappingBirdPref.getIns().setCollectionPosition(position);
 			}
 		}
 	}
@@ -490,8 +491,6 @@ public class MBCollectionActivity extends FragmentActivity implements
 
 		if (mCollectionListAdapter.getCount() > 0) {
 			mMBCollectionListLayout.closeLayout();
-			mDrawerList.setItemChecked(position, true);
-			setTitle((MBCollectionListItem)mCollectionListAdapter.getItem(position));
 			mDrawerLayout.closeDrawer(mDrawerContentLayout);
 		}
 		if (mCollectionList != null && mCollectionList.getCount() > 0) {
@@ -499,6 +498,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 			MBCollectionItemObject itemObj = MappingBirdApplication.instance().getCollectionItemObj();
 			itemObj.setOnGetCollectionItemListener(getCollectionInfoListener);
 			itemObj.getCollectionList(mCollectionList.get(position).getId());
+			mTempPosition = position;
 		}
 	}
 
@@ -520,12 +520,19 @@ public class MBCollectionActivity extends FragmentActivity implements
 			DeBug.i(TAG, "getCollectionInfoListener");
 			if (statusCode == MappingBirdAPI.RESULT_OK) {
 				DeBug.i(TAG, "getCollectionInfoListener: OK");
+				if(mTempPosition >= 0) {
+					setTitle((MBCollectionListItem)mCollectionListAdapter.getItem(mTempPosition));
+					mCollectionListAdapter.setSelectedPosition(mTempPosition);
+					mCollectionListAdapter.notifyDataSetChanged();
+					MappingBirdPref.getIns().setCollectionPosition(mTempPosition);
+				}
 				mCollectionItem = collection;
 				setUpMapIfNeeded();
 			} else {
-				
-				DFshowDialog(DIALOG_ERROR_NO_NETWORK, statusCode, null, mErrorDialogOkClickListener);
+				closeLoadingDialog();
+				DFshowDialog(DIALOG_ERROR_NO_NETWORK, statusCode, null, mDialogCloseClickListener);
 			}
+			mTempPosition = -1;
 		};
 	};
 
@@ -1399,6 +1406,13 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 	};
 	
+	private OnClickListener mDialogCloseClickListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			mDialog.dismiss();
+		}
+	};
+
 	private OnClickListener mErrorDialogOkClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {

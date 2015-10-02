@@ -32,13 +32,16 @@ public class MBListLayoutChangeCardObject {
 
 	public boolean init(View defaultView) {
 		if(!mFirstObject.isInit()) {
-			defaultView.setDrawingCacheEnabled(true);
-			defaultView.buildDrawingCache();
-			Bitmap bmp = Bitmap.createBitmap(defaultView.getDrawingCache());
-			defaultView.setDrawingCacheEnabled(false);
-			mFirstObject.buildBmp(bmp);
-			mSecondObject.buildBmp(bmp);
-			mThreeObject.buildBmp(bmp);
+			try {
+				defaultView.setDrawingCacheEnabled(true);
+				defaultView.buildDrawingCache();
+				Bitmap bmp = Bitmap.createBitmap(defaultView.getDrawingCache());
+				defaultView.setDrawingCacheEnabled(false);
+				mFirstObject.buildBmp(bmp);
+				mSecondObject.buildBmp(bmp);
+				mThreeObject.buildBmp(bmp);
+			} catch (Exception e) {
+			}
 			return true;
 		}
 		return false;

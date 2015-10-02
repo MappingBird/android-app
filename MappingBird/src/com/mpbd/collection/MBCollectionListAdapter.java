@@ -19,6 +19,7 @@ class MBCollectionListAdapter extends BaseAdapter {
 	
 	private Context mContext;
 	private LayoutInflater mInflater;
+	private int mSelectPosition = -1;
 	public MBCollectionListAdapter(Context context) {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
@@ -68,6 +69,10 @@ class MBCollectionListAdapter extends BaseAdapter {
 		return 2;
 	}
 
+	public void setSelectedPosition(int position) {
+		mSelectPosition = position;
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		int type = getItemViewType(position);
@@ -83,9 +88,11 @@ class MBCollectionListAdapter extends BaseAdapter {
 				Host host = new Host();
 				host.mName = (TextView)convertView.findViewById(R.id.collection_item_name);
 				host.mNumber = (TextView)convertView.findViewById(R.id.collection_item_number);
+				host.mLayout = convertView.findViewById(R.id.collection_item_layout);
 				convertView.setTag(host);
 			}
 		}
+		
 		Host host = (Host)convertView.getTag();
 		MBCollectionListItem item = mItems.get(position);
 		if(type == TYPE_ADD_NEW_COLLECTION) {
@@ -93,11 +100,16 @@ class MBCollectionListAdapter extends BaseAdapter {
 		} else {
 			host.mName.setText(item.getName());
 			host.mNumber.setText(item.getItemNumber());
+			if(mSelectPosition == position)
+				host.mLayout.setSelected(true);
+			else
+				host.mLayout.setSelected(false);
 		}
 		return convertView;
 	}
 
 	private class Host {
+		View mLayout;
 		TextView mIconFont;
 		TextView mName;
 		TextView mNumber;
