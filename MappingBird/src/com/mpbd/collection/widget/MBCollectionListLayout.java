@@ -145,10 +145,28 @@ public class MBCollectionListLayout extends RelativeLayout {
 	}
 
 	public void setMyLocation(LatLng location) {
-		if(!location.equals(mMyLocation)) {
+		if(!location.equals(mMyLocation) || mCurrentPoint == null) {
 			mMyLocation = location;
-			mItemAdapter.relocation();
-			mCard.reLocation(location);
+			if(mMode == MODE_SMALL_CARD) {
+				if(mCurrentPoint != null) {
+					mItemAdapter.relocation();
+					mCard.reLocation(location);
+				} else {
+					mItemAdapter.relocation();
+					MBPointData point = mItemAdapter.clickFirstItem();
+					if(point != null) {
+						mCurrentPoint = point;
+						mChangeCardAnimBoj.prepareChangeCard(mCard);
+						mCard.setVisibility(View.INVISIBLE);
+						ObjectAnimator obj = ObjectAnimator.ofFloat(this, "SwitchAnimation", 0.0f, 1.0f);
+						obj.addListener(mListener);
+						obj.setInterpolator(new  DecelerateInterpolator());
+						obj.setDuration(500);
+						obj.start();
+						mCard.setData(mMyLocation, point);
+					}
+				}
+			}
 		}
 	}
 
@@ -197,8 +215,9 @@ public class MBCollectionListLayout extends RelativeLayout {
 			}
 			
 			ListItem first = (ListItem)mItemAdapter.getItem(0);
-			mItemAdapter.clickItem(first);
-			mCurrentPoint = first.mPoint;
+//			mItemAdapter.clickItem(first);
+//			mCurrentPoint = first.mPoint;
+			mCurrentPoint = null;
 			mCard.setData(mMyLocation, first.mPoint);
 			mCard.setVisibility(View.VISIBLE);
 			if(MBUtil.mEnableAddFunction) {
@@ -219,7 +238,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		if(DeBug.DEBUG)
 			DeBug.d(TAG, "clickItem,  item = "+item.mTitle);
 		MBPointData point = mItemAdapter.clickItem(item);
-		if(!mCurrentPoint.equals(point)) {
+		if(mCurrentPoint == null || !mCurrentPoint.equals(point)) {
 			mCurrentPoint = point;
 			mChangeCardAnimBoj.prepareChangeCard(mCard);
 			mCard.setVisibility(View.INVISIBLE);
@@ -915,17 +934,13 @@ public class MBCollectionListLayout extends RelativeLayout {
 			return mSelectPoint.mPoint;
 		}
 
-		public synchronized void clickItem(ListItem item) {
-			mItems.clear();
-			for(ListItem point : mAllPoints) {
-				if(point.equals(item.mPoint.getLatLng())) {
-					mSelectPoint = point;
-					mItems.add(0, point);
-				} else {
-					mItems.add(point);
-				}
+		public synchronized MBPointData clickFirstItem() {
+			if(mAllPoints.size() > 0) {
+				mSelectPoint = mAllPoints.get(0);
+				return mSelectPoint.mPoint;
+			} else {
+				return null;
 			}
-			notifyDataSetChanged();			
 		}
 
 		public synchronized MBPointData clickItem(MappingBirdItem item) {
