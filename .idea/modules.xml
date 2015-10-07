@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CommonLib/CommonLib.iml" filepath="$PROJECT_DIR$/CommonLib/CommonLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MappingBird/MappingBird.iml" filepath="$PROJECT_DIR$/MappingBird/MappingBird.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/google-play-services_lib/google-play-services_lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mlibray/mlibray.iml" filepath="$PROJECT_DIR$/mlibray/mlibray.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pingismo-android.iml" filepath="$PROJECT_DIR$/pingismo-android.iml" />
+    </modules>
+  </component>
+</project>
+

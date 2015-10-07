@@ -1,5 +1,5 @@
-include ':google-play-services_lib'
-include ':mlibray'
 include ':MappingBird'
 include ':CommonLib'
+include ':google-play-services_lib'
 include ':ViewPagerIndicator_library'
+include ':mlibray'

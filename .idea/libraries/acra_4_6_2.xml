@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="acra-4.6.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/MappingBird/libs/acra-4.6.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

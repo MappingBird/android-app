@@ -5,11 +5,14 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 10
-    buildToolsVersion "19.0.0"
-    lintOptions {
-        abortOnError false
+    compileSdkVersion 19
+    buildToolsVersion "21.1.2"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'

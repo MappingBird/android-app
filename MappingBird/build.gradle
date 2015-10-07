@@ -3,33 +3,36 @@ apply plugin: 'android'
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':google-play-services_lib')
-    compile project(':CommonLib')
     compile project(':ViewPagerIndicator_library')
+    compile project(':CommonLib')
 }
 
 android {
     compileSdkVersion 14
-    buildToolsVersion "19.0.0"
+    buildToolsVersion "21.1.2"
+
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 14
     }
-signingConfigs {
-   myConfig{
-     storeFile file("MPBD_mappingbird.keystore")
-    	storePassword "mappingbird"
-    	keyAlias "mpbd"
-    	keyPassword "mappingbird"
+
+    signingConfigs {
+        myConfig{
+            storeFile file("MPBD_mappingbird.keystore")
+            storePassword "mappingbird"
+            keyAlias "mpbd"
+            keyPassword "mappingbird"
+        }
     }
-}
-    
-buildTypes{
-     release {
-    	signingConfig  signingConfigs.myConfig
-        runProguard true
-        proguardFile 'proguard-project.txt'
-     } 
-   }
+
+    buildTypes{
+        release {
+            signingConfig  signingConfigs.myConfig
+            minifyEnabled true
+            proguardFile 'proguard-project.txt'
+        }
+    }
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -52,8 +55,5 @@ buildTypes{
         // by a similar customization.
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
-    }
-    lintOptions {
-        abortOnError false
     }
 }

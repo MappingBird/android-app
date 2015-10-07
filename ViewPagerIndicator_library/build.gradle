@@ -6,15 +6,9 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 14
-    buildToolsVersion "19.0.0"
-    defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 14
-    }
-    lintOptions {
-        abortOnError false
-    }
+    compileSdkVersion 16
+    buildToolsVersion "21.1.2"
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
