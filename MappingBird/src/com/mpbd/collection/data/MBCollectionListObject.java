@@ -1,12 +1,16 @@
 package com.mpbd.collection.data;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 
+import com.mappingbird.api.MBCollectionItem;
 import com.mappingbird.api.MBCollectionList;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnAddCollectionListener;
 import com.mappingbird.api.OnGetCollectionsListener;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.data.db.DataDB;
 import com.mpbd.data.db.DataDBHelper;
 
@@ -18,6 +22,7 @@ public class MBCollectionListObject {
 	private int mLastStatusCode = -1;
 	private MBCollectionList mLastCollections = null;
 	private DataDB mDataDB;
+    private MBCollectionBackListener mOnGetCollectionsListener = new MBCollectionBackListener();
 	public MBCollectionListObject() {
 		mListener.clear();
 		mDataDB = new DataDB(MappingBirdApplication.instance());
@@ -33,37 +38,53 @@ public class MBCollectionListObject {
 		return mLastCollections;
 	}
 
-	private OnGetCollectionsListener mOnGetCollectionsListener = new OnGetCollectionsListener() {
-		
-		@Override
-		public void onGetCollections(int statusCode, MBCollectionList collection) {
+    private class MBCollectionBackListener implements OnGetCollectionsListener {
 
-			if(collection != null) {
-				// Collection List有值
-				mLastCollections = collection;
-				mLastStatusCode = statusCode;
-				// 存入DB裡面
-				mDataDB.putCollectionList(collection, System.currentTimeMillis());
-			} else {
-				// Server沒拿到改拿Cache的直
-				mLastCollections = mDataDB.getCollectionList();
-				mLastStatusCode = statusCode;
-				if(mLastCollections != null)
-					mLastStatusCode = MappingBirdAPI.RESULT_OK;
-			}
+        private String mCreateCollectionName = null;
+        public void setCreateCollectionName(String name) {
+            mCreateCollectionName = name;
+        }
 
-			for(OnGetCollectionsListener listener : mListener) {
-				if(listener != null)
-					listener.onGetCollections(mLastStatusCode, mLastCollections);
-			}
+        @Override
+        public void onGetCollections(int statusCode, MBCollectionList collection) {
+            if(collection != null) {
+                // Collection List有值
+                mLastCollections = collection;
+                mLastStatusCode = statusCode;
+                // 存入DB裡面
+                mDataDB.putCollectionList(collection, System.currentTimeMillis());
+            } else {
+                // Server沒拿到改拿Cache的直
+                mLastCollections = mDataDB.getCollectionList();
+                mLastStatusCode = statusCode;
+                if(mLastCollections != null)
+                    mLastStatusCode = MappingBirdAPI.RESULT_OK;
+            }
 
-			// 新增Collection 用的
-			if(mClientListener != null) {
-				mClientListener.onAddCollection(mLastStatusCode);
-			}
-		}
-	};
-	
+            if(!TextUtils.isEmpty(mCreateCollectionName)) {
+                for(int i = 0; i < mLastCollections.getCount(); i++) {
+                    MBCollectionItem item = mLastCollections.get(i);
+                    if(item.getName().equals(mCreateCollectionName)) {
+                        MappingBirdPref.getIns().setCollectionPosition(i);
+                        break;
+                    }
+                }
+            }
+
+            mCreateCollectionName = null;
+
+            for(OnGetCollectionsListener listener : mListener) {
+                if(listener != null)
+                    listener.onGetCollections(mLastStatusCode, mLastCollections);
+            }
+
+            // 新增Collection 用的
+            if(mClientListener != null) {
+                mClientListener.onAddCollection(mLastStatusCode);
+            }
+        }
+    }
+
 	public void setOnGetCollectionListener(OnGetCollectionsListener listener) {
 		if(!mListener.contains(listener))
 			mListener.add(listener);
@@ -73,23 +94,28 @@ public class MBCollectionListObject {
 		mListener.remove(listener);
 	}
 
-	private OnAddCollectionListener mAddCollectionListener = new OnAddCollectionListener() {
-		
-		@Override
-		public void onAddCollection(int statusCode) {
-			if(statusCode == MappingBirdAPI.RESULT_OK) {
-				getCollectionList();
-			} else {
-				if(mClientListener != null) {
-					mClientListener.onAddCollection(statusCode);
-				}
-			}
-		}
-	};
+    private class MBAddCollectionListener implements OnAddCollectionListener {
+        private String mCollectionName = null;
+        public MBAddCollectionListener(String name) {
+            mCollectionName = name;
+        }
+        @Override
+        public void onAddCollection(int statusCode) {
+            if(statusCode == MappingBirdAPI.RESULT_OK) {
+                if(!TextUtils.isEmpty(mCollectionName))
+                    mOnGetCollectionsListener.setCreateCollectionName(mCollectionName);
+                getCollectionList();
+            } else {
+                if(mClientListener != null) {
+                    mClientListener.onAddCollection(statusCode);
+                }
+            }
+        }
+    }
 
 	public void createCollection(OnAddCollectionListener listener, String name) {
 		mClientListener = listener;
 		MappingBirdAPI api = new MappingBirdAPI(MappingBirdApplication.instance().getApplicationContext());
-		api.addCollection(mAddCollectionListener, name);;
+		api.addCollection(new MBAddCollectionListener(name), name);
 	}
 }
