@@ -223,34 +223,34 @@ public class MBAddPlaceActivity extends FragmentActivity  {
 			Cursor cursor = mResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, MediaColumns.DATE_ADDED+ " DESC");
 			if(cursor == null)
 				return;
-			cursor.moveToFirst();
 			int total = cursor.getCount();
 			int columnIndex = cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
 			int idIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
 
-			for(int i = 0; i < total; i++) {
-				String path = cursor.getString(columnIndex);
-				String thum = getThumbnail(cursor.getLong(idIndex));
-				if(path != null) {
-				File file = new File(path);
-				if(correctFile(file)) {
-					DeBug.d("file = "+path);
-					if(thum !=null && !correctFile(new File(thum))) {
-						thum = null;
-					}
-					tempItems.add((thum != null) ? thum : path);
+            if(cursor.moveToFirst()) {
+                do {
+                    String path = cursor.getString(columnIndex);
+                    String thum = getThumbnail(cursor.getLong(idIndex));
+                    if (path != null) {
+                        File file = new File(path);
+                        if (correctFile(file)) {
+                            DeBug.d("file = " + path);
+                            if (thum != null && !correctFile(new File(thum))) {
+                                thum = null;
+                            }
+                            tempItems.add((thum != null) ? thum : path);
 
-					if(tempItems.size() >= MAX_LOADING_ITEM_NUMBER) {
-						Message msg = new Message();
-						msg.what = MSG_REFRESH_DATA;
-						msg.obj = tempItems;
-						mHandler.sendMessage(msg);
-						tempItems = new ArrayList<String>();
-					}
-				}
-				}
-				cursor.moveToNext();
-			}
+                            if (tempItems.size() >= MAX_LOADING_ITEM_NUMBER) {
+                                Message msg = new Message();
+                                msg.what = MSG_REFRESH_DATA;
+                                msg.obj = tempItems;
+                                mHandler.sendMessage(msg);
+                                tempItems = new ArrayList<String>();
+                            }
+                        }
+                    }
+                } while (cursor.moveToNext());
+            }
 			cursor.close();
 			Message msg = new Message();
 			msg.what = MSG_REFRESH_DATA;
