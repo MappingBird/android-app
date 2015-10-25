@@ -1,7 +1,8 @@
 .DS_Store
 bin/
 gen/
-.gradle/
+.gradle
+.gradle/2.2.1/
 # Android Studio
 .idea/
 build/
