@@ -2,9 +2,11 @@ package com.mappingbird.common;
 
 import android.util.Log;
 
+import com.mpbd.mappingbird.BuildConfig;
+
 public class DeBug{
 
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = BuildConfig.EnableLog;
 
 	public static final String TAG = "MappingBird";
 	

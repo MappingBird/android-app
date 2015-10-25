@@ -1,7 +1,0 @@
-.DS_Store
-bin/
-gen/
-build/
-lint.xml
-proguard-project.txt
-proguard-project

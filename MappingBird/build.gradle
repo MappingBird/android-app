@@ -11,9 +11,15 @@ android {
     compileSdkVersion 14
     buildToolsVersion "21.1.2"
 
+    def BOOLEAN = "boolean"
+    def TRUE = "true"
+    def FALSE = "false"
+    def ENABLE_LOG = "EnableLog";
+
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 14
+        buildConfigField BOOLEAN, ENABLE_LOG, FALSE
     }
 
     signingConfigs {
@@ -30,6 +36,11 @@ android {
             signingConfig  signingConfigs.myConfig
             minifyEnabled true
             proguardFile 'proguard-project.txt'
+            buildConfigField BOOLEAN, ENABLE_LOG, FALSE
+        }
+        debug {
+            signingConfig  signingConfigs.myConfig
+            buildConfigField BOOLEAN, ENABLE_LOG, TRUE
         }
     }
 

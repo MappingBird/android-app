@@ -1,0 +1,155 @@
+# To enable ProGuard in your project, edit project.properties
+# to define the proguard.config property as described in that file.
+#
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in ${sdk.dir}/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the ProGuard
+# include property in project.properties.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+-dontskipnonpubliclibraryclassmembers
+-keep public class * extends android.view.View
+-keepattributes *Annotation*,SourceFile,LineNumberTable
+
+-keep class com.parse.** { *; }
+
+-dontwarn com.facebook.**
+-dontwarn android.support.v4.**
+-dontwarn com.google.android.gms.**
+-dontwarn com.flurry.**
+-dontwarn org.acra.**
+-dontwarn com.parse.**
+
+-keep class org.acra.** { *; }
+-keep class android.support.v4.** { *; }
+-keep class com.flurry.** { *; }
+-keep class com.mpbd.collection.widget.** { *; }
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keep class com.mpbd.eventbus.** { *; }
+-keep class de.greenrobot.event.** { *; }
+
+-keepclassmembers class * implements android.os.Parcelable {
+    static ** CREATOR; 
+} 
+
+# Remove - String method calls. Remove all invocations of String
+# methods without side effects whose return values are not used.
+-assumenosideeffects public class java.lang.String {
+    public <init>();
+    public <init>(byte[]);
+    public <init>(byte[],int);
+    public <init>(byte[],int,int);
+    public <init>(byte[],int,int,int);
+    public <init>(byte[],int,int,java.lang.String);
+    public <init>(byte[],java.lang.String);
+    public <init>(char[]);
+    public <init>(char[],int,int);
+    public <init>(java.lang.String);
+    public <init>(java.lang.StringBuffer);
+    public static java.lang.String copyValueOf(char[]);
+    public static java.lang.String copyValueOf(char[],int,int);
+    public static java.lang.String valueOf(boolean);
+    public static java.lang.String valueOf(char);
+    public static java.lang.String valueOf(char[]);
+    public static java.lang.String valueOf(char[],int,int);
+    public static java.lang.String valueOf(double);
+    public static java.lang.String valueOf(float);
+    public static java.lang.String valueOf(int);
+    public static java.lang.String valueOf(java.lang.Object);
+    public static java.lang.String valueOf(long);
+    public boolean contentEquals(java.lang.StringBuffer);
+    public boolean endsWith(java.lang.String);
+    public boolean equalsIgnoreCase(java.lang.String);
+    public boolean equals(java.lang.Object);
+    public boolean matches(java.lang.String);
+    public boolean regionMatches(boolean,int,java.lang.String,int,int);
+    public boolean regionMatches(int,java.lang.String,int,int);
+    public boolean startsWith(java.lang.String);
+    public boolean startsWith(java.lang.String,int);
+    public byte[] getBytes();
+    public byte[] getBytes(java.lang.String);
+    public char charAt(int);
+    public char[] toCharArray();
+    public int compareToIgnoreCase(java.lang.String);
+    public int compareTo(java.lang.Object);
+    public int compareTo(java.lang.String);
+    public int hashCode();
+    public int indexOf(int);
+    public int indexOf(int,int);
+    public int indexOf(java.lang.String);
+    public int indexOf(java.lang.String,int);
+    public int lastIndexOf(int);
+    public int lastIndexOf(int,int);
+    public int lastIndexOf(java.lang.String);
+    public int lastIndexOf(java.lang.String,int);
+    public int length();
+    public java.lang.CharSequence subSequence(int,int);
+    public java.lang.String concat(java.lang.String);
+    public java.lang.String replaceAll(java.lang.String,java.lang.String);
+    public java.lang.String replace(char,char);
+    public java.lang.String replaceFirst(java.lang.String,java.lang.String);
+    public java.lang.String[] split(java.lang.String);
+    public java.lang.String[] split(java.lang.String,int);
+    public java.lang.String substring(int);
+    public java.lang.String substring(int,int);
+    public java.lang.String toLowerCase();
+    public java.lang.String toLowerCase(java.util.Locale);
+    public java.lang.String toString();
+    public java.lang.String toUpperCase();
+    public java.lang.String toUpperCase(java.util.Locale);
+    public java.lang.String trim();
+}
+
+# Remove - StringBuffer method calls. Remove all invocations of StringBuffer
+# methods without side effects whose return values are not used.
+-assumenosideeffects public class java.lang.StringBuffer {
+    public <init>();
+    public <init>(int);
+    public <init>(java.lang.String);
+    public <init>(java.lang.CharSequence);
+    public java.lang.String toString();
+    public char charAt(int);
+    public int capacity();
+    public int codePointAt(int);
+    public int codePointBefore(int);
+    public int indexOf(java.lang.String,int);
+    public int lastIndexOf(java.lang.String);
+    public int lastIndexOf(java.lang.String,int);
+    public int length();
+    public java.lang.String substring(int);
+    public java.lang.String substring(int,int);
+}
+
+# Remove - StringBuilder method calls. Remove all invocations of StringBuilder
+# methods without side effects whose return values are not used.
+-assumenosideeffects public class java.lang.StringBuilder {
+    public <init>();
+    public <init>(int);
+    public <init>(java.lang.String);
+    public <init>(java.lang.CharSequence);
+    public java.lang.String toString();
+    public char charAt(int);
+    public int capacity();
+    public int codePointAt(int);
+    public int codePointBefore(int);
+    public int indexOf(java.lang.String,int);
+    public int lastIndexOf(java.lang.String);
+    public int lastIndexOf(java.lang.String,int);
+    public int length();
+    public java.lang.String substring(int);
+    public java.lang.String substring(int,int);
+} 
