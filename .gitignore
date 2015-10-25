@@ -1,7 +1,9 @@
 .DS_Store
 bin/
 gen/
-.gradle/1.10/
+.gradle/
+# Android Studio
+.idea/
 build/
 lint.xml
 proguard-project.txt
