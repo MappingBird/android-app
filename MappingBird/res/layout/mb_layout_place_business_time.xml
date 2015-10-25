@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_0_date"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:textColor="@color/font_normal" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_0_time"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_1_date"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:textColor="@color/font_normal" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_1_time"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_2_date"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -62,7 +62,7 @@
             android:layout_weight="1"
             android:textColor="@color/font_normal" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_2_time"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_3_date"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -84,7 +84,7 @@
             android:layout_weight="1"
             android:textColor="@color/font_normal" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_3_time"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_4_date"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -106,7 +106,7 @@
             android:layout_weight="1"
             android:textColor="@color/font_normal" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_4_time"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_5_date"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -128,7 +128,7 @@
             android:layout_weight="1"
             android:textColor="@color/font_normal" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_5_time"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_6_date"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"
@@ -150,7 +150,7 @@
             android:layout_weight="1"
             android:textColor="@color/font_normal" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_place_6_time"
             style="@style/TextStyle_Body_Small"
             android:layout_width="0dp"

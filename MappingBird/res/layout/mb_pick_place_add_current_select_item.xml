@@ -6,7 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp" >
 
-    <com.mappingbird.widget.MappingbirdTextView
+    <com.mpbd.widget.MappingbirdTextView
         android:id="@+id/item_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

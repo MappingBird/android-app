@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/item_transparent_background" >
 
-    <com.mappingbird.widget.MappingbirdFontIcon
+    <com.mpbd.widget.MappingbirdFontIcon
         android:id="@+id/item_checked"
         style="@style/TitleButtonStyle"
         android:layout_alignParentRight="true"
@@ -22,7 +22,7 @@
         android:layout_toLeftOf="@id/item_checked"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/item_name"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -31,7 +31,7 @@
             android:textColor="@color/font_normal"
             android:textSize="16dp" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/item_number"
             android:layout_width="wrap_content"
             android:layout_height="40dp"

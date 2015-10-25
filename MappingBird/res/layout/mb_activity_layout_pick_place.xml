@@ -13,7 +13,7 @@
         android:layout_height="@dimen/title_bar_height"
         android:background="@color/graphic_orange" >
 
-        <com.mappingbird.widget.MappingbirdFontIcon
+        <com.mpbd.widget.MappingbirdFontIcon
             android:id="@+id/title_btn_back"
             style="@style/TitleButtonStyle"
             android:layout_alignParentLeft="true"
@@ -30,7 +30,7 @@
             android:paddingLeft="4dp"
             android:visibility="gone" >
 
-            <com.mappingbird.widget.MappingbirdFontIcon
+            <com.mpbd.widget.MappingbirdFontIcon
                 android:id="@+id/title_icon_search"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
@@ -40,7 +40,7 @@
                 android:textColor="@color/titlebar_button_text_color"
                 android:textSize="26dp" />
 
-            <com.mappingbird.widget.MappingbirdEditText
+            <com.mpbd.widget.MappingbirdEditText
                 android:id="@+id/title_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -55,7 +55,7 @@
                 android:textSize="18dp" />
         </RelativeLayout>
 
-        <com.mappingbird.widget.MappingbirdFontIcon
+        <com.mpbd.widget.MappingbirdFontIcon
             android:id="@+id/title_btn_delete"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -74,13 +74,13 @@
             android:layout_toRightOf="@id/title_btn_back"
             android:paddingLeft="4dp" >
 
-            <com.mappingbird.widget.MappingbirdFontIcon
+            <com.mpbd.widget.MappingbirdFontIcon
                 android:id="@+id/title_btn_search"
                 style="@style/TitleButtonStyle"
                 android:layout_alignParentRight="true"
                 android:text="@string/iconfont_search" />
 
-            <com.mappingbird.widget.MappingbirdTextView
+            <com.mpbd.widget.MappingbirdTextView
                 android:id="@+id/title_text"
                 style="@style/TextStyle_Title"
                 android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/diagram_oops" />
 
-                <com.mappingbird.widget.MappingbirdTextView
+                <com.mpbd.widget.MappingbirdTextView
                     android:id="@+id/pick_oops_msg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" 
@@ -159,7 +159,7 @@
                 android:layout_centerInParent="true"
                 android:orientation="vertical" >
 
-                <com.mappingbird.widget.MappingbirdTextView
+                <com.mpbd.widget.MappingbirdTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" 
                     android:textSize="16dp"
@@ -168,7 +168,7 @@
                     android:text="@string/pick_place_error_title"
                     android:paddingBottom="4dp"
                     />
-                <com.mappingbird.widget.MappingbirdFontIcon
+                <com.mpbd.widget.MappingbirdFontIcon
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" 
                     android:textSize="36dp"
@@ -177,7 +177,7 @@
                     android:text="@string/iconfont_refresh"
                     />
 
-                <com.mappingbird.widget.MappingbirdTextView
+                <com.mpbd.widget.MappingbirdTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" 
                     android:textSize="16dp"

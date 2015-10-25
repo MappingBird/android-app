@@ -12,7 +12,7 @@
         android:layout_height="@dimen/title_bar_height"
         android:background="@color/graphic_orange" >
 
-        <com.mappingbird.widget.MappingbirdFontIcon
+        <com.mpbd.widget.MappingbirdFontIcon
             android:id="@+id/title_btn_back"
             style="@style/TitleButtonStyle"
             android:layout_alignParentLeft="true"
@@ -27,7 +27,7 @@
             android:background="@drawable/titlebar_button_bg"
             android:orientation="horizontal" >
 
-            <com.mappingbird.widget.MappingbirdTextView
+            <com.mpbd.widget.MappingbirdTextView
                 android:id="@+id/title_text_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,14 +37,14 @@
                 android:textColor="@color/font_white"
                 android:textSize="14dp" />
 
-            <com.mappingbird.widget.MappingbirdFontIcon
+            <com.mpbd.widget.MappingbirdFontIcon
                 android:id="@+id/title_btn_submit"
                 style="@style/TitleButtonStyle"
                 android:background="#00000000"
                 android:text="@string/iconfont_checkbox_marked_circle" />
         </LinearLayout>
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/title_text"
             style="@style/TextStyle_Title"
             android:layout_width="wrap_content"

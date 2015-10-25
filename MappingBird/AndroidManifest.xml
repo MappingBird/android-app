@@ -66,12 +66,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mappingbird.saveplace.MBPickPlaceActivity"
+            android:name="com.mpbd.saveplace.MBPickPlaceActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mappingbird.saveplace.MBAddPlaceActivity"
+            android:name="com.mpbd.saveplace.MBAddPlaceActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" >
         </activity>
@@ -80,7 +80,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mappingbird.saveplace.MBAddCurrentLocationActivity"
+            android:name="com.mpbd.saveplace.MBAddCurrentLocationActivity"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" >
         </activity>

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#FFF" >
 
-    <com.mappingbird.widget.MappingbirdTextView
+    <com.mpbd.widget.MappingbirdTextView
         android:id="@+id/item_btn_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textStyle="bold"
         android:textColor="#F6892A" />
 
-    <com.mappingbird.widget.MappingbirdEditText
+    <com.mpbd.widget.MappingbirdEditText
         android:id="@+id/item_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"

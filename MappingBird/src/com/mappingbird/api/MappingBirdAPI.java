@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import android.content.Context;
 
 import com.mappingbird.common.DeBug;
-import com.mappingbird.saveplace.services.MBPlaceSubmitData;
+import com.mpbd.saveplace.services.MBPlaceSubmitData;
 
 public class MappingBirdAPI {
 	private static final String TAG = MappingBirdAPI.class.getName();

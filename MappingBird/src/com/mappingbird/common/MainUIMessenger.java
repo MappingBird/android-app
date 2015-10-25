@@ -11,9 +11,8 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcelable;
 
-import com.mappingbird.saveplace.MBSubmitMsgData;
+import com.mpbd.saveplace.MBSubmitMsgData;
 import com.mpbd.services.MBService;
-import com.mpbd.services.MBServiceClient;
 
 /**
  * This is for yDoc to filter this class out. So this class will not show in Javadoc.

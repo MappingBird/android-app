@@ -5,7 +5,7 @@
     android:background="@color/graphic_orange" >
 
     <!-- IconFont Logo-->
-    <com.mappingbird.widget.MappingbirdFontIcon
+    <com.mpbd.widget.MappingbirdFontIcon
         android:id="@+id/tutoral_page_logo_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:src="@drawable/mappingbird_slogan" />
 
     <!-- ViewPager -->
-    <com.mappingbird.widget.MappingBirdParallaxPager
+    <com.mpbd.widget.MappingBirdParallaxPager
         android:id="@+id/tutoral_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -63,7 +63,7 @@
             android:background="@drawable/bg_bottombar"
             android:orientation="horizontal" >
 
-            <com.mappingbird.widget.MappingbirdTextView
+            <com.mpbd.widget.MappingbirdTextView
                 android:id="@+id/tutoral_bottom_btn_log_in"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -83,7 +83,7 @@
                 android:layout_marginTop="1dp"
                 android:background="#66ffffff" />
 
-            <com.mappingbird.widget.MappingbirdTextView
+            <com.mpbd.widget.MappingbirdTextView
                 android:id="@+id/tutoral_bottom_btn_sign_up"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

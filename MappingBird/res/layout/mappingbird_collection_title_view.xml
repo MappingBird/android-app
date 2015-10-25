@@ -3,21 +3,21 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent" >
 
-    <com.mappingbird.widget.MappingbirdFontIcon
+    <com.mpbd.widget.MappingbirdFontIcon
         android:id="@+id/title_btn_people"
         style="@style/TitleButtonStyle"
         android:layout_alignParentRight="true"
         android:text="@string/iconfont_account"
         android:visibility="gone" />
 
-    <com.mappingbird.widget.MappingbirdFontIcon
+    <com.mpbd.widget.MappingbirdFontIcon
         android:id="@+id/title_btn_add"
         style="@style/TitleButtonStyle"
         android:layout_toLeftOf="@id/title_btn_people"
         android:text="@string/iconfont_map_plus"
         android:visibility="gone" />
 
-    <com.mappingbird.widget.MappingbirdFontIcon
+    <com.mpbd.widget.MappingbirdFontIcon
         android:id="@+id/title_btn_menu"
         android:layout_width="30dp"
         android:layout_alignParentLeft="true"
@@ -33,7 +33,7 @@
         android:paddingLeft="4dp"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:textColor="@color/font_white"
             android:textSize="@dimen/header_title_text_size" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/title_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

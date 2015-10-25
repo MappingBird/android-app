@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mappingbird.saveplace.MBDialogAddTagLayout 
+<com.mpbd.saveplace.MBDialogAddTagLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dialog_framelayout"
@@ -8,7 +8,7 @@
     android:background="@drawable/dialog_bg_general"
     android:orientation="vertical" >
 
-    <com.mappingbird.widget.MappingbirdTextView
+    <com.mpbd.widget.MappingbirdTextView
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
         android:layout_height="45dp"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/dialog_negative"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -82,7 +82,7 @@
             android:background="@color/default_divider"
             android:visibility="visible" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/dialog_positive"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -95,4 +95,4 @@
             android:visibility="visible" />
     </LinearLayout>
 
-</com.mappingbird.saveplace.MBDialogAddTagLayout>
+</com.mpbd.saveplace.MBDialogAddTagLayout>

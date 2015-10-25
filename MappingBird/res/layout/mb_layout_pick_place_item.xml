@@ -10,7 +10,7 @@
         android:layout_height="41dp"
         android:paddingLeft="8dp" >
 
-        <com.mappingbird.widget.MappingbirdTextViewLight
+        <com.mpbd.widget.MappingbirdTextViewLight
             android:id="@+id/item_distance"
             android:layout_width="@dimen/place_item_card_distance_width"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:textColor="@color/font_dark"
             android:textSize="32dp" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:layout_height="26dp"
         android:paddingLeft="8dp">
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/item_unit"
             android:layout_width="@dimen/place_item_card_distance_width"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:textColor="@color/font_dark"
             android:textSize="16dp" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/item_address"
             android:layout_width="wrap_content"
             android:layout_height="18dp"

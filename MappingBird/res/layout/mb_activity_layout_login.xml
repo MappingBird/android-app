@@ -9,13 +9,13 @@
         android:layout_height="@dimen/title_bar_height"
         android:background="@color/graphic_orange" >
 
-        <com.mappingbird.widget.MappingbirdFontIcon
+        <com.mpbd.widget.MappingbirdFontIcon
             android:id="@+id/back_icon"
             style="@style/TitleButtonStyle"
             android:layout_alignParentLeft="true"
             android:text="@string/iconfont_arrow_left" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/login_title_name"
             style="@style/TextStyle_Title"
             android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             android:paddingRight="16dp"
             android:paddingTop="20dp" >
 
-            <com.mappingbird.widget.MappingbirdTextView
+            <com.mpbd.widget.MappingbirdTextView
                 android:id="@+id/login_content_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                 android:layout_below="@id/login_content_text"
                 android:layout_marginTop="16dp" >
 
-                <com.mappingbird.widget.MappingbirdEditText
+                <com.mpbd.widget.MappingbirdEditText
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -85,7 +85,7 @@
                 android:layout_height="40dp"
                 android:layout_below="@id/field_divider" >
 
-                <com.mappingbird.widget.MappingbirdFontIcon
+                <com.mpbd.widget.MappingbirdFontIcon
                     android:id="@+id/login_hint_password_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -100,7 +100,7 @@
                     android:textSize="20dp"
                     android:visibility="visible" />
 
-                <com.mappingbird.widget.MappingbirdTextView
+                <com.mpbd.widget.MappingbirdTextView
                     android:id="@+id/input_password_hint"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -111,7 +111,7 @@
                     android:textColor="@color/font_hint"
                     android:textSize="16dp" />
                 
-                <com.mappingbird.widget.MappingbirdEditText
+                <com.mpbd.widget.MappingbirdEditText
                     android:id="@+id/input_password"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -130,7 +130,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@drawable/login_btn_selector_bg" >
 
-                <com.mappingbird.widget.MappingbirdTextView
+                <com.mpbd.widget.MappingbirdTextView
                     android:id="@+id/login_loading_text"
                     style="@style/TextStyle_Label"
                     android:layout_width="wrap_content"
@@ -152,7 +152,7 @@
                 android:visibility="gone"
                 android:orientation="horizontal" >
 
-                <com.mappingbird.widget.MappingbirdFontIcon
+                <com.mpbd.widget.MappingbirdFontIcon
                     android:id="@+id/login_forgot_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                     android:textSize="24dp"
                     android:visibility="visible" />
 
-                <com.mappingbird.widget.MappingbirdTextView
+                <com.mpbd.widget.MappingbirdTextView
                     android:id="@+id/login_forgot_text"
                     style="@style/TextStyle_Label"
                     android:layout_gravity="center_vertical"

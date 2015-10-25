@@ -5,7 +5,7 @@
     android:background="@drawable/dialog_bg_general"
     android:orientation="vertical" >
 
-    <com.mappingbird.widget.MappingbirdTextView
+    <com.mpbd.widget.MappingbirdTextView
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:visibility="gone"
         android:layout_height="16dp" />
 
-    <com.mappingbird.widget.MappingbirdEditText
+    <com.mpbd.widget.MappingbirdEditText
         android:id="@+id/dialog_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         android:layout_height="45dp"
         android:orientation="horizontal" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/dialog_negative"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -76,7 +76,7 @@
             android:background="@color/default_divider"
             android:visibility="gone" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/dialog_positive"
             android:layout_width="0dp"
             android:layout_height="match_parent"

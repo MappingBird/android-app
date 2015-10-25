@@ -16,7 +16,7 @@
 
         <!-- placeholder for logo -->
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             style="@style/TextStyle_Label"
             android:id="@+id/tutoral_welcome_message"
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
             android:textColor="@color/font_white"
             android:textSize="16dp" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             style="@style/TextStyle_Label"
             android:id="@+id/tutoral_welcome_swipe_to_learn_more"
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
         android:layout_height="match_parent"
         android:visibility="gone" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/page_intro_title"
             style="@style/TextStyle_Label"
             android:layout_width="wrap_content"
@@ -81,7 +81,7 @@
         android:layout_height="match_parent"
         android:visibility="gone" >
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/tutoral_sign_up"
             style="@style/BtnTransparent"
             android:layout_width="272dp"
@@ -105,7 +105,7 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/instruction_or" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/tutoral_log_in"
             style="@style/BtnTransparent"
             android:background="@drawable/tutorial_login_btn_selector_bg"

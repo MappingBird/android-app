@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.mappingbird.common.MappingBirdApplication;
-import com.mappingbird.saveplace.MBPickPlaceActivity;
+import com.mpbd.saveplace.MBPickPlaceActivity;
 import com.mpbd.mappingbird.R;
 
 

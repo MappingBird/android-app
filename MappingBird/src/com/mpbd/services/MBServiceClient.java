@@ -1,10 +1,9 @@
 package com.mpbd.services;
 
 import android.content.Intent;
-import android.os.Messenger;
 
 import com.mappingbird.common.MappingBirdApplication;
-import com.mappingbird.saveplace.services.MBPlaceAddDataToServer;
+import com.mpbd.saveplace.services.MBPlaceAddDataToServer;
 
 public class MBServiceClient {
 	public static void refreshAddPlaceState() {

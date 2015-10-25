@@ -2,14 +2,11 @@ package com.mpbd.tutorial;
 
 import java.util.Stack;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
@@ -30,7 +27,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mappingbird.widget.MappingBirdParallaxPager;
+import com.mpbd.widget.MappingBirdParallaxPager;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.mappingbird.util.MBUtil;

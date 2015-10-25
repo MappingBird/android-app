@@ -19,7 +19,7 @@
         layout="@layout/mb_listlayout_card"
         android:visibility="invisible" />
 
-    <com.mappingbird.widget.MappingbirdListView
+    <com.mpbd.widget.MappingbirdListView
         android:id="@+id/item_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

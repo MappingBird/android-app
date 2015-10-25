@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="140dp" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:orientation="vertical"
             android:paddingLeft="8dp" >
 
-            <com.mappingbird.widget.MappingbirdTextViewLight
+            <com.mpbd.widget.MappingbirdTextViewLight
                 android:id="@+id/card_distance"
                 android:layout_width="@dimen/place_item_card_distance_width"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 android:textColor="@color/font_deep_blue"
                 android:textSize="32dp" />
 
-            <com.mappingbird.widget.MappingbirdTextView
+            <com.mpbd.widget.MappingbirdTextView
                 android:id="@+id/card_unit"
                 android:layout_width="@dimen/place_item_card_distance_width"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 android:textSize="16dp" />
         </LinearLayout>
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/card_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             android:orientation="vertical"
             android:paddingLeft="8dp" >
 
-            <com.mappingbird.widget.MappingbirdTextViewLight
+            <com.mpbd.widget.MappingbirdTextViewLight
                 android:id="@+id/item_distance"
                 android:layout_width="@dimen/place_item_card_distance_width"
                 android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 android:textColor="@color/font_deep_blue"
                 android:textSize="32dp" />
 
-            <com.mappingbird.widget.MappingbirdTextView
+            <com.mpbd.widget.MappingbirdTextView
                 android:id="@+id/item_unit"
                 android:layout_width="@dimen/place_item_card_distance_width"
                 android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
             android:orientation="vertical"
             android:paddingLeft="8dp" >
 
-            <com.mappingbird.widget.MappingbirdTextView
+            <com.mpbd.widget.MappingbirdTextView
                 android:id="@+id/item_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
                 android:textColor="@color/font_deep_blue"
                 android:textSize="14dp" />
 
-            <com.mappingbird.widget.MappingbirdTextView
+            <com.mpbd.widget.MappingbirdTextView
                 android:id="@+id/item_tag_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

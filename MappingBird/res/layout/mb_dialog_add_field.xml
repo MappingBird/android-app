@@ -13,7 +13,7 @@
         android:paddingRight="12dp"
         android:background="@drawable/item_transparent_background" >
 
-        <com.mappingbird.widget.MappingbirdFontIcon
+        <com.mpbd.widget.MappingbirdFontIcon
             android:id="@+id/field_phone_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -23,7 +23,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/field_photo_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
         android:paddingRight="12dp"
         android:background="@drawable/item_transparent_background" >
 
-        <com.mappingbird.widget.MappingbirdFontIcon
+        <com.mpbd.widget.MappingbirdFontIcon
             android:id="@+id/field_open_time_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -57,7 +57,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/field_open_time_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
         android:paddingRight="12dp"
         android:background="@drawable/item_transparent_background" >
 
-        <com.mappingbird.widget.MappingbirdFontIcon
+        <com.mpbd.widget.MappingbirdFontIcon
             android:id="@+id/field_link__icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -91,7 +91,7 @@
             android:textColor="@color/graphic_symbol"
             android:textSize="20dp" />
 
-        <com.mappingbird.widget.MappingbirdTextView
+        <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/field_link__text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
