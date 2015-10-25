@@ -10,7 +10,7 @@ import com.mappingbird.common.DeBug;
 public class DataDBHelper extends SQLiteOpenHelper {
 	private final static String TAG = "DataDB";
 
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 4;
     private static final String DB_NAME = "DataDB.db";
 
     /*
@@ -46,7 +46,7 @@ public class DataDBHelper extends SQLiteOpenHelper {
             +COLLECTION_ITEM_TABLE_NAME+"( "+
             	COLLECTION_ITEM_ID + " INTEGER, "+
             	COLLECTION_ITEM_OBJECT+" BLOB, "+
-            	COLLECTION_ITEM_UPDATE_TIME+" INTEGER"+
+            	COLLECTION_ITEM_UPDATE_TIME+" TEXT"+
                         ");";
     
     /*
@@ -64,7 +64,7 @@ public class DataDBHelper extends SQLiteOpenHelper {
             +PLACE_ITEM_TABLE_NAME+"( "+
             	PLACE_ITEM_ID + " INTEGER, "+
             	PLACE_ITEM_OBJECT+" BLOB, "+
-            	PLACE_ITEM_UPDATE_TIME+" INTEGER"+
+            	PLACE_ITEM_UPDATE_TIME+" TEXT"+
                         ");";
     
     public DataDBHelper(Context context) {

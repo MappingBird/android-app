@@ -39,7 +39,7 @@ public class MBPlaceItemObject {
 				currentPoint = point;
 				mLastStatusCode = statusCode;
 				// 存入DB裡面
-				mDataDB.putPlaceItem(point.getId(), point, System.currentTimeMillis());
+				mDataDB.putPlaceItem(point.getId(), point, ""+System.currentTimeMillis());
 			} else {
 				// Server沒拿到改拿Cache的直
 				currentPoint = mDataDB.getPlaceItem(mGetPlaceId);

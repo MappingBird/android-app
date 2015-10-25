@@ -23,7 +23,7 @@ public class MBCollectionItemObject {
 		mDataDB = new DataDB(MappingBirdApplication.instance());
 	}
 	
-	public void getCollectionList( long collectionId) {
+	public void getCollectionList(long collectionId) {
 		// 先讀Server的值. 在判斷Cache
 		mGetCollectionItemId = collectionId;
 		MappingBirdAPI api = new MappingBirdAPI(MappingBirdApplication.instance().getApplicationContext());
@@ -45,7 +45,7 @@ public class MBCollectionItemObject {
 				mLastCollectionItem = item;
 				mLastStatusCode = statusCode;
 				// 存入DB裡面
-				mDataDB.putCollectionItem(item.getId(), item, System.currentTimeMillis());
+				mDataDB.putCollectionItem(item.getId(), item, ""+System.currentTimeMillis());
 			} else {
 				// Server沒拿到改拿Cache的直
 				mLastCollectionItem = mDataDB.getCollectionItem(mGetCollectionItemId);

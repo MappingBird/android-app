@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.mappingbird.api.MBCollectionItem;
 import com.mappingbird.api.MBCollectionList;
@@ -30,7 +31,7 @@ public class DataDB {
      */
     public boolean putCollectionList(MBCollectionList list, long updateTime) {
     	// 檢查update time是否一致. 如果不一致. 砍掉重設定
-    	if(checkNeedToUpdateDB(updateTime))
+    	if(!checkNeedToUpdateDB(updateTime))
     		return true;
     	
     	SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -43,37 +44,50 @@ public class DataDB {
     	long orderId = db.insert(DataDBHelper.COLLECTION_LIST_TABLE_NAME, null, cv);
 
     	if(orderId < 0) {
-    		return false;
-    	}
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[Check Collection List] put failed");
+            return false;
+    	} else {
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[Check Collection List] put successed");
+        }
+
     	return true;
     }
     
     public boolean checkNeedToUpdateDB(long updateTime) {
+        if(DeBug.DEBUG)
+            DeBug.i(TAG, "[Check Collection List] check list update time : "+updateTime);
     	try {
 	    	SQLiteDatabase db = mHelper.getWritableDatabase();
-	    	DeBug.i(TAG, "getCollectionList 1");
 	    	Cursor cursor = db.query(DataDBHelper.COLLECTION_LIST_TABLE_NAME,
 	    			DataDBHelper.COLLECTION_LIST_TABLE_COLUMNS,
 	    			null , null, null, null, null);
 	    	boolean haveData = cursor != null && cursor.getCount() > 0;
-	    	if(haveData) {
+
+            if(haveData) {
 	    		cursor.moveToFirst();
-	    		if(updateTime != cursor.getInt((cursor.getColumnIndex(DataDBHelper.COLLECTION_LIST_UPDATE_TIME)))) {
+                if(DeBug.DEBUG)
+                    DeBug.i(TAG, "[Check Collection List] have cache , last update time : "+cursor.getLong((cursor.getColumnIndex(DataDBHelper.COLLECTION_LIST_UPDATE_TIME))));
+	    		if(updateTime != cursor.getLong(cursor.getColumnIndex(DataDBHelper.COLLECTION_LIST_UPDATE_TIME))) {
+                    if(DeBug.DEBUG)
+                        DeBug.i(TAG, "[Check Collection List] need update");
 	    			return true;
 	    		}
+                if(DeBug.DEBUG)
+                    DeBug.i(TAG, "[Check Collection List] pass update");
 	    	}
     	} catch(Exception e) {
-    		DeBug.i(TAG, "get Collection List Exception !!!");
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[Check Collection List] get Collection List Exception !!! ");
     		return true;
     	}
-
     	return false;
     }
     
     public MBCollectionList getCollectionList() {
     	try {
 	    	SQLiteDatabase db = mHelper.getWritableDatabase();
-	    	DeBug.i(TAG, "getCollectionList 1");
 	    	Cursor cursor = db.query(DataDBHelper.COLLECTION_LIST_TABLE_NAME,
 	    			DataDBHelper.COLLECTION_LIST_TABLE_COLUMNS,
 	    			null , null, null, null, null);
@@ -96,9 +110,9 @@ public class DataDB {
     /*
      * Collection item 
      */
-    public boolean putCollectionItem(long id, MBCollectionItem item, long updateTime) {
+    public boolean putCollectionItem(long id, MBCollectionItem item, String updateTime) {
     	// 檢查update time是否一致. 如果不一致. 砍掉重設定
-    	if(checkNeedToUpdateItemDB(id, updateTime))
+    	if(!checkNeedToUpdateItemDB(id, updateTime))
     		return true;
     	
     	SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -119,22 +133,31 @@ public class DataDB {
     	return true;
     }
     
-    public boolean checkNeedToUpdateItemDB(long id, long updateTime) {
-    	try {
+    public boolean checkNeedToUpdateItemDB(long id, String updateTime) {
+        if(DeBug.DEBUG)
+            DeBug.i(TAG, "[Check Collection Item] check item update time : "+updateTime);
+
+        try {
 	    	SQLiteDatabase db = mHelper.getWritableDatabase();
-	    	DeBug.i(TAG, "getCollectionItem 1");
 	    	Cursor cursor = db.query(DataDBHelper.COLLECTION_ITEM_TABLE_NAME,
 	    			DataDBHelper.COLLECTION_ITEM_TABLE_COLUMNS,
 	    			DataDBHelper.COLLECTION_ITEM_ID+"="+id , null, null, null, null);
 	    	boolean haveData = cursor != null && cursor.getCount() > 0;
 	    	if(haveData) {
 	    		cursor.moveToFirst();
-	    		if(updateTime != cursor.getInt((cursor.getColumnIndex(DataDBHelper.COLLECTION_ITEM_UPDATE_TIME)))) {
-	    			return true;
+                if(DeBug.DEBUG)
+                    DeBug.i(TAG, "[Check Collection Item] have cache , last update time : "+cursor.getString((cursor.getColumnIndex(DataDBHelper.COLLECTION_ITEM_UPDATE_TIME))));
+	    		if(TextUtils.isEmpty(updateTime) || !updateTime.equals(cursor.getString((cursor.getColumnIndex(DataDBHelper.COLLECTION_ITEM_UPDATE_TIME))))) {
+                    if(DeBug.DEBUG)
+                        DeBug.i(TAG, "[Check Collection Item] need update");
+                    return true;
 	    		}
-	    	}
+                if(DeBug.DEBUG)
+                    DeBug.i(TAG, "[Check Collection Item] pass update");
+            }
     	} catch(Exception e) {
-    		DeBug.i(TAG, "get Collection item Exception !!!");
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[Check Collection Item] get Collection Item Exception !!! ");
     		return true;
     	}
 
@@ -167,9 +190,9 @@ public class DataDB {
     /*
      * Place item
      */
-    public boolean putPlaceItem(long id, MBPointData item, long updateTime) {
+    public boolean putPlaceItem(long id, MBPointData item, String updateTime) {
     	// 檢查update time是否一致. 如果不一致. 砍掉重設定
-    	if(checkNeedToUpdatePlaceItemDB(id, updateTime))
+    	if(!checkNeedToUpdatePlaceItemDB(id, updateTime))
     		return true;
     	
     	SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -190,7 +213,7 @@ public class DataDB {
     	return true;
     }
     
-    public boolean checkNeedToUpdatePlaceItemDB(long id, long updateTime) {
+    public boolean checkNeedToUpdatePlaceItemDB(long id, String updateTime) {
 //    	try {
 	    	SQLiteDatabase db = mHelper.getWritableDatabase();
 	    	DeBug.i(TAG, "checkNeedToUpdatePlaceItemDB 1");
@@ -200,7 +223,8 @@ public class DataDB {
 	    	boolean haveData = cursor != null && cursor.getCount() > 0;
 	    	if(haveData) {
 	    		cursor.moveToFirst();
-	    		if(updateTime != cursor.getInt((cursor.getColumnIndex(DataDBHelper.PLACE_ITEM_UPDATE_TIME)))) {
+	    		if(TextUtils.isEmpty(updateTime) ||
+                        !updateTime.equals(cursor.getString((cursor.getColumnIndex(DataDBHelper.PLACE_ITEM_UPDATE_TIME))))) {
 	    			return true;
 	    		}
 	    	}
