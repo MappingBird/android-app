@@ -5,11 +5,13 @@ dependencies {
     compile project(':google-play-services_lib')
     compile project(':ViewPagerIndicator_library')
     compile project(':CommonLib')
+    compile 'com.android.support:cardview-v7:21.0.+'
+    compile 'com.android.support:recyclerview-v7:21.0.+'
 }
 
 android {
-    compileSdkVersion 14
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
 
     def BOOLEAN = "boolean"
     def TRUE = "true"

@@ -119,6 +119,62 @@ class MapParse {
 		return user;
 	}
 
+	public static MBSharePlaceList parseSharePlaceData(String rsp)
+			throws JSONException{
+        MBSharePlaceList sharePlaceList = new MBSharePlaceList();
+        JSONObject obj = new JSONObject(rsp);
+        JSONArray array = obj.getJSONArray("places");
+        if(DeBug.DEBUG)
+            DeBug.i(TAG, "[shareTo json] array size : "+array.length());
+        for (int i = 0; i < array.length(); i++) {
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[shareTo json] index : " + i);
+            JSONObject arrayobj = array.getJSONObject(i);
+            String phone = arrayobj.getString("phone_number");
+            String title = arrayobj.getString("name");
+            String address = arrayobj.getString("address");
+            JSONObject coordnate = arrayobj.getJSONObject("coordinates");
+            String lat = String.valueOf(coordnate.getDouble("lat"));
+            String lng = String.valueOf(coordnate.getDouble("lng"));
+            if(DeBug.DEBUG) {
+                DeBug.i(TAG, "[shareTo json] phone : " + phone);
+                DeBug.i(TAG, "[shareTo json] title : " + title);
+                DeBug.i(TAG, "[shareTo json] address : " + address);
+                DeBug.i(TAG, "[shareTo json] coordinates : " + lat +" x "+lng);
+                MBSharePlaceData data = new MBSharePlaceData();
+                if(!TextUtils.isEmpty(phone))
+                    data.placePhone = phone;
+                if(!TextUtils.isEmpty(title))
+                    data.placeName = title;
+                if(!TextUtils.isEmpty(address))
+                    data.placeAddress = address;
+                if(!TextUtils.isEmpty(lat) && !TextUtils.isEmpty(lng)) {
+                    data.lat = lat;
+                    data.lng = lng;
+                }
+                sharePlaceList.add(data);
+            }
+        }
+		return sharePlaceList;
+	}
+
+	public static MBShareHtmlData parseShareHtmlData(String rsp)
+			throws JSONException{
+        MBShareHtmlData data = new MBShareHtmlData();
+        JSONObject obj = new JSONObject(rsp);
+        JSONArray array = obj.getJSONArray("images");
+        String path;
+        for (int j = 0; j < array.length(); j++) {
+            path = (String)array.get(j);
+            if(!TextUtils.isEmpty(path)) {
+                if(DeBug.DEBUG)
+                    DeBug.i(TAG, "[Html data json] photo url =" + path);
+                data.mPhotoList.add(path);
+            }
+        }
+        return data;
+	}
+
 	public static MBCollectionList parseCollectionsResult(String rsp)
 			throws JSONException {
 
@@ -129,26 +185,34 @@ class MapParse {
 				.optLong("most_recent_modified_collection");
 		JSONArray array = obj.getJSONArray("collections");
 		for (int i = 0; i < array.length(); i++) {
-			DeBug.i(TAG, "[collection json] length=" + array.length() + ":" + i);
+            if(DeBug.DEBUG)
+			    DeBug.i(TAG, "[collection json] length=" + array.length() + ":" + i);
 			JSONObject arrayobj = array.getJSONObject(i);
 			long id = arrayobj.optLong("id");
-			DeBug.i(TAG, "[collection json] id=" + id);
+            if(DeBug.DEBUG)
+    			DeBug.i(TAG, "[collection json] id=" + id);
 			String name = arrayobj.optString("name");
-			DeBug.i(TAG, "[collection json] name=" + name);
+            if(DeBug.DEBUG)
+    			DeBug.i(TAG, "[collection json] name=" + name);
 			long userId = arrayobj.optLong("user");
-			DeBug.i(TAG, "[collection json] userId=" + userId);
+            if(DeBug.DEBUG)
+    			DeBug.i(TAG, "[collection json] userId=" + userId);
 			String createTime = arrayobj.optString("create_time");
-			DeBug.i(TAG, "[collection json] createTime=" + createTime);
+            if(DeBug.DEBUG)
+    			DeBug.i(TAG, "[collection json] createTime=" + createTime);
 			String updateTime = arrayobj.optString("update_time");
-			DeBug.i(TAG, "[collection json] updateTime=" + updateTime);
+            if(DeBug.DEBUG)
+    			DeBug.i(TAG, "[collection json] updateTime=" + updateTime);
 			boolean isNewest = (newestCollectionId == id ? true : false);
-			DeBug.i(TAG, "[collection json] isNewest=" + isNewest);
+            if(DeBug.DEBUG)
+    			DeBug.i(TAG, "[collection json] isNewest=" + isNewest);
 			ArrayList<Integer> points = new ArrayList<Integer>();
 			points.clear();
 			JSONArray pointarray = arrayobj.getJSONArray("points");
 			for (int j = 0; j < pointarray.length(); j++) {
 				int pid = (Integer) pointarray.get(j);
-				DeBug.i(TAG, "[collection json] pid=" + pid);
+                if(DeBug.DEBUG)
+    				DeBug.i(TAG, "[collection json] pid=" + pid);
 				points.add(pid);
 			}
 			collections.add(new MBCollectionItem(id, userId, name, createTime,
@@ -163,41 +227,54 @@ class MapParse {
 		JSONObject obj = new JSONObject(rsp);
 
 		long pid = obj.optLong("id");
-		DeBug.i(TAG, "[add point json] pid=" + pid);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] pid=" + pid);
 
 		String title = obj.optString("title");
-		DeBug.i(TAG, "[add point json] title=" + title);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] title=" + title);
 
 		String url = obj.optString("url");
-		DeBug.i(TAG, "[add point json] url=" + url);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] url=" + url);
 
 		String description = obj.optString("description");
-		DeBug.i(TAG, "[add point json] description=" + description);
-		DeBug.i(TAG, "[add point json] description index =" + description.indexOf("\n"));
+        if(DeBug.DEBUG) {
+            DeBug.i(TAG, "[add point json] description=" + description);
+            DeBug.i(TAG, "[add point json] description index =" + description.indexOf("\n"));
+        }
 
 		String place_name = obj.optString("place_name");
-		DeBug.i(TAG, "[add point json] place_name=" + place_name);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] place_name=" + place_name);
 
 		String place_address = obj.optString("place_address");
-		DeBug.i(TAG, "[add point json] place_address=" + place_address);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] place_address=" + place_address);
 
 		String place_phone = obj.optString("place_phone");
-		DeBug.i(TAG, "[add point json] place_phone=" + place_phone);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] place_phone=" + place_phone);
 
 		String coordinates = obj.optString("coordinates");
-		DeBug.i(TAG, "[add point json] coordinates=" + coordinates);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] coordinates=" + coordinates);
 
 		String type = obj.optString("type");
-		DeBug.i(TAG, "[add point json] type=" + type);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] type=" + type);
 
 		long collectionId = obj.optLong("collection");
-		DeBug.i(TAG, "[add point json] collectionId=" + collectionId);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] collectionId=" + collectionId);
 
 		String pcreateTime = obj.optString("create_time");
-		DeBug.i(TAG, "[add point json] createTime=" + pcreateTime);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] createTime=" + pcreateTime);
 
 		String pupdateTime = obj.optString("update_time");
-		DeBug.i(TAG, "[add point json] updateTime=" + pupdateTime);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[add point json] updateTime=" + pupdateTime);
 
 		// 營業時間
 		MBPointBusinessData businessList = null;
@@ -214,67 +291,88 @@ class MapParse {
 		JSONObject obj = new JSONObject(rsp);
 
 		long pid = obj.optLong("id");
-		DeBug.i(TAG, "[point json] pid=" + pid);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] pid=" + pid);
 
 		String title = obj.optString("title");
-		DeBug.i(TAG, "[point json] title=" + title);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] title=" + title);
 
 		String url = obj.optString("url");
-		DeBug.i(TAG, "[point json] url=" + url);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] url=" + url);
 
 		String description = obj.optString("description");
-		DeBug.i(TAG, "[point json] description=" + description);
-		DeBug.i(TAG, "[point json] description index =" + description.indexOf("\n"));
+        if(DeBug.DEBUG) {
+            DeBug.i(TAG, "[point json] description=" + description);
+            DeBug.i(TAG, "[point json] description index =" + description.indexOf("\n"));
+        }
 
 		String place_name = obj.optString("place_name");
-		DeBug.i(TAG, "[point json] place_name=" + place_name);
+        if(DeBug.DEBUG)
+            DeBug.i(TAG, "[point json] place_name=" + place_name);
 
 		String place_address = obj.optString("place_address");
-		DeBug.i(TAG, "[point json] place_address=" + place_address);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] place_address=" + place_address);
 
 		String place_phone = obj.optString("place_phone");
-		DeBug.i(TAG, "[point json] place_phone=" + place_phone);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] place_phone=" + place_phone);
 
 		String coordinates = obj.optString("coordinates");
-		DeBug.i(TAG, "[point json] coordinates=" + coordinates);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] coordinates=" + coordinates);
 
 		String type = obj.optString("type");
-		DeBug.i(TAG, "[point json] type=" + type);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] type=" + type);
 
 		long collectionId = obj.optLong("collection");
-		DeBug.i(TAG, "[point json] collectionId=" + collectionId);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] collectionId=" + collectionId);
 
 		String pcreateTime = obj.optString("create_time");
-		DeBug.i(TAG, "[point json] createTime=" + pcreateTime);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] createTime=" + pcreateTime);
 
 		String pupdateTime = obj.optString("update_time");
-		DeBug.i(TAG, "[point json] updateTime=" + pupdateTime);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[point json] updateTime=" + pupdateTime);
 
 		JSONObject location = obj.getJSONObject("location");
 
 		long lId = location.optLong("id");
-		DeBug.i(TAG, "[location json] lId=" + lId);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[location json] lId=" + lId);
 
 		String placename = location.optString("place_name");
-		DeBug.i(TAG, "[location json] place_name=" + placename);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[location json] place_name=" + placename);
 
 		String placeaddress = location.optString("place_address");
-		DeBug.i(TAG, "[location json] place_address=" + placeaddress);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[location json] place_address=" + placeaddress);
 
 		String placephone = location.optString("place_phone");
-		DeBug.i(TAG, "[location json] place_phone=" + placephone);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[location json] place_phone=" + placephone);
 
 		String lcoordinates = location.optString("coordinates");
-		DeBug.i(TAG, "[location json] coordinates=" + lcoordinates);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[location json] coordinates=" + lcoordinates);
 
 		String category = location.optString("category");
-		DeBug.i(TAG, "[location json] category=" + category);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[location json] category=" + category);
 
 		String lcreateTime = location.optString("create_time");
-		DeBug.i(TAG, "[location json] createTime=" + lcreateTime);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[location json] createTime=" + lcreateTime);
 
 		String lupdateTime = location.optString("update_time");
-		DeBug.i(TAG, "[location json] updateTime=" + lupdateTime);
+        if(DeBug.DEBUG)
+    		DeBug.i(TAG, "[location json] updateTime=" + lupdateTime);
 
 		ArrayList<ImageDetail> images = new ArrayList<ImageDetail>();
 		images.clear();
@@ -283,22 +381,28 @@ class MapParse {
 			JSONObject imagearrayobj = imagearray.getJSONObject(j);
 
 			long iId = imagearrayobj.optLong("id");
-			DeBug.i(TAG, "[image json] tId=" + iId);
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[image json] tId=" + iId);
 
 			String iUrl = imagearrayobj.optString("url");
-			DeBug.i(TAG, "[image json] Url=" + iUrl);//
+            if(DeBug.DEBUG)
+    			DeBug.i(TAG, "[image json] Url=" + iUrl);//
 
 			String thumb_path = imagearrayobj.optString("thumb_path");
-			DeBug.i(TAG, "[image json] thumb_path=" + thumb_path);
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[image json] thumb_path=" + thumb_path);
 
 			long iPointId = imagearrayobj.optLong("point");
-			DeBug.i(TAG, "[image json] PointId=" + iPointId);
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[image json] PointId=" + iPointId);
 
 			String ct = imagearrayobj.optString("create_time");
-			DeBug.i(TAG, "[image json] create_time=" + ct);
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[image json] create_time=" + ct);
 
 			String ut = imagearrayobj.optString("update_time");
-			DeBug.i(TAG, "[image json] update_time=" + ut);
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[image json] update_time=" + ut);
 			images.add(new ImageDetail(iId, thumb_path, iUrl, ct, ut, iPointId));
 		}
 
@@ -309,10 +413,12 @@ class MapParse {
 			JSONObject tagarrayobj = tagarray.getJSONObject(k);
 
 			long tId = tagarrayobj.optLong("id");
-			DeBug.i(TAG, "[tag json] tId=" + tId);
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[tag json] tId=" + tId);
 
 			String tName = tagarrayobj.optString("name");
-			DeBug.i(TAG, "[tag json] name=" + tName);
+            if(DeBug.DEBUG)
+                DeBug.i(TAG, "[tag json] name=" + tName);
 			tags.add(new Tag(tId, tName));
 		}
 

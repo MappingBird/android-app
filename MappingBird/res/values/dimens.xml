@@ -1,5 +1,7 @@
 <resources>
 
+    <!-- Common -->
+    <dimen name="divider_height">1dp</dimen>
     <!-- Place -->
     <dimen name="place_title_bar_show_start">100dp</dimen>
     <dimen name="place_title_bar_show_end">140dp</dimen>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mpbd.shareto.widgets.ShareToInputAbout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp">
+
+    <com.mpbd.widget.MappingbirdEditText
+        android:id="@+id/shareto_about_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="78dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="top|left"
+        android:background="@drawable/edit_custom_drawable"
+        android:hint="@string/add_place_about_place"
+        android:textColorHint="@color/font_hint"
+        android:textColor="@color/font_dark"
+        android:textSize="16dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/default_divider"/>
+
+    <com.mpbd.widget.MappingbirdTextView
+        android:id="@+id/shareto_about_btn"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:textColor="@color/btn_text_blue_color"
+        android:gravity="center"
+        android:text="@string/str_update"
+        android:textSize="16dp"
+        android:background="@drawable/btn_dialog_bg" />
+
+</com.mpbd.shareto.widgets.ShareToInputAbout>

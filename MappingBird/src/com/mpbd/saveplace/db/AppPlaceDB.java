@@ -47,7 +47,7 @@ public class AppPlaceDB {
 	        	String[] args = {String.valueOf(placeDBId)};
 	        	ContentValues cv = new ContentValues();
 	        	cv.put(AppPlaceDBHelper.ADD_PLACE_STATE, MBPlaceSubmitUtil.SUBMIT_STATE_CANCEL);
-	        	int output = sql.update(AppPlaceDBHelper.ADD_PLACE_TABLE_NAME, cv, 
+	        	int output = sql.update(AppPlaceDBHelper.ADD_PLACE_TABLE_NAME, cv,
 	        			AppPlaceDBHelper.ADD_PLACE_ID+"=?", args);
 	        	if(DeBug.DEBUG)
 	        		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[AppPlaceDB] : CancelPlaceValue ["+placeDBId+"], state = SUBMIT_STATE_CANCEL"
@@ -138,7 +138,7 @@ public class AppPlaceDB {
     	}
     	
     	// get Image photo
-		Cursor photoCursor = db.query(AppPlaceDBHelper.ADD_IMAGE_TABLE_NAME, 
+		Cursor photoCursor = db.query(AppPlaceDBHelper.ADD_IMAGE_TABLE_NAME,
 				AppPlaceDBHelper.ADD_IMAGE_TABLE_COLUMNS,
 				AppPlaceDBHelper.ADD_IMAGE_PLACE_DB_ID + " = "+placeDBId, null, null, null, null);
 
@@ -179,7 +179,7 @@ public class AppPlaceDB {
     	if(!TextUtils.isEmpty(placeId))
     		cv.put(AppPlaceDBHelper.ADD_PLACE_PLACE_ID, placeId);
     	cv.put(AppPlaceDBHelper.ADD_PLACE_STATE, state);
-    	int output = sql.update(AppPlaceDBHelper.ADD_PLACE_TABLE_NAME, cv, 
+    	int output = sql.update(AppPlaceDBHelper.ADD_PLACE_TABLE_NAME, cv,
     			AppPlaceDBHelper.ADD_PLACE_ID+"=?", args);
     	if(DeBug.DEBUG)
     		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[AppPlaceDB] : updatePlaceValue ["+placeDBId+"], placeId = "+placeId+", state = "+state+
@@ -194,7 +194,7 @@ public class AppPlaceDB {
     	SQLiteDatabase sql = mHelper.getWritableDatabase();
     	ContentValues cv = new ContentValues();
     	cv.put(AppPlaceDBHelper.ADD_IMAGE_STATE, state);
-    	int output = sql.update(AppPlaceDBHelper.ADD_IMAGE_TABLE_NAME, cv, 
+    	int output = sql.update(AppPlaceDBHelper.ADD_IMAGE_TABLE_NAME, cv,
     			AppPlaceDBHelper.ADD_IMAGE_ID+"=?", args);
     	if(DeBug.DEBUG)
     		DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "[AppPlaceDB] : updateImageValue ["+imageId+"] : state = "+state+

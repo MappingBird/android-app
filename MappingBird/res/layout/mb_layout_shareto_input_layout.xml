@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mpbd.shareto.widgets.ShareToInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginBottom="12dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:background="@drawable/bg_underline_input"
+    android:orientation="horizontal">
+
+    <com.mpbd.widget.MappingbirdEditText
+        android:id="@+id/shareto_dg_search_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#00000000"
+        android:layout_gravity="center_vertical"
+        android:textColorHint="@color/font_hint"
+        android:textColor="@color/font_dark"
+        android:textSize="16dp" />
+
+    <com.mpbd.widget.MappingbirdFontIcon
+        android:id="@+id/shareto_dg_search_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/iconfont_search"
+        android:textColor="@color/btn_text_blue_color"
+        android:paddingLeft="8dp"
+        android:layout_gravity="center_vertical"
+        android:textSize="26dp" />
+
+</com.mpbd.shareto.widgets.ShareToInputLayout>

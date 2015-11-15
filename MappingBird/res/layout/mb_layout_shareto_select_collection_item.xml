@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/item_transparent_background" >
+
+    <com.mpbd.widget.MappingbirdFontIcon
+        android:id="@+id/item_checked"
+        style="@style/TitleButtonStyle"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="#00000000"
+        android:gravity="center"
+        android:text="@string/iconfont_check"
+        android:textColor="@color/graphic_blue"
+        android:textSize="20dp"
+        android:visibility="gone" />
+
+    <com.mpbd.widget.MappingbirdTextView
+        android:id="@+id/item_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_toLeftOf="@id/item_checked"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:textColor="@color/font_normal"
+        android:textSize="16dp" />
+
+    <View
+        android:id="@+id/item_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/default_divider"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        />
+</RelativeLayout>

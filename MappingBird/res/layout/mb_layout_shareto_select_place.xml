@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mpbd.shareto.widgets.ShareToSelectPlaceLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp">
+
+    <View
+        android:id="@+id/shareto_list_top_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/default_divider"/>
+
+    <ListView
+        android:id="@+id/shareto_listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_grey"
+        android:cacheColorHint="#00000000"
+        android:divider="#00000000"
+        android:dividerHeight="0dp"
+        android:listSelector="#00000000"
+        android:scrollbars="none" />
+
+    <View
+        android:id="@+id/shareto_list_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/default_divider"/>
+
+    <com.mpbd.widget.MappingbirdTextView
+        android:id="@+id/shareto_list_btn"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:textColor="@color/font_normal"
+        android:gravity="center"
+        android:text="@string/share_to_dg_try_other_place_name"
+        android:textSize="16dp"
+        android:background="@drawable/btn_dialog_bg" />
+
+</com.mpbd.shareto.widgets.ShareToSelectPlaceLayout>

@@ -166,6 +166,20 @@ public class MappingBirdAPI {
 		}
 	}
 
+	public void getPlaceInfoByUrl(OnGetPlaceByUrlListener listener, String placeUrl, String placeName) {
+        String url = mHost + "/api/places?q="+placeName+"&url="+placeUrl;
+        String method = "GET";
+        mUtil.sendGetPlaceByUrl(NetwokConnection.API_GET_PLACE_BY_URL,
+                listener, url, method);
+    }
+
+	public void getHtmlDataByUrl(OnGetHtmlDataByUrlListener listener, String placeUrl) {
+		String url = mHost + "/api/scraper?url="+placeUrl;
+		String method = "GET";
+		mUtil.sendGetHtmlDataByUrl(NetwokConnection.API_GET_HTML_DATA_BY_URL,
+				listener, url, method);
+	}
+
 	public void searchfromFourSquare(OnSearchFourSquareListener listener, double latitude, double longitude, String key, int limit) {
 		searchfromFourSquare(listener, latitude, longitude, key, limit, 0);
 	}

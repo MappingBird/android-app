@@ -25,6 +25,7 @@
     <string name="str_on">On</string>
     <string name="str_abort">abort</string>
     <string name="str_set_up">Set up</string>
+    <string name="str_update">Update</string>
 
     <!-- Sign in and Sign up activity and -->
     <string name="login_content_title">Log In MappingBird Account</string>
@@ -203,4 +204,16 @@
     <!-- Address -->
     <string name="pick_address_no_address">No address</string>
 
+    <!-- Add place by shareTo -->
+    <string name="share_to_label_name">Add to MappingBird</string>
+    <string name="share_to_dg_input_place_title">Which place do you want to add?</string>
+    <string name="share_to_dg_input_place_hint">Place input place name or address</string>
+    <string name="share_to_dg_select_place">Do you mean</string>
+    <string name="share_to_dg_loading">Loading</string>
+    <string name="share_to_dg_try_other_place_name">Try other place name</string>
+    <string name="share_to_dg_info_title">Add this place</string>
+    <string name="share_to_dg_select_photo_title">Select photo</string>
+    <string name="share_to_dg_select_photo_cover">1 Cover</string>
+    <string name="share_to_dg_input_about_title">Input description</string>
+    <string name="share_to_dg_select_collection_title">Select collection</string>
 </resources>

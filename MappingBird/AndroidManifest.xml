@@ -84,6 +84,20 @@
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name="com.mpbd.shareto.MBShareToActivity"
+            android:label="@string/share_to_label_name"
+            android:icon="@drawable/ic_launcher"
+            android:theme="@style/LoadingDialogNoAnim"
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+
+        </activity>
         
         <service 
             android:name="com.mpbd.services.MBService"

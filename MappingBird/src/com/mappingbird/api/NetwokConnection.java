@@ -52,6 +52,8 @@ class NetwokConnection {
 	public static final int API_EXPLORE_FOURSQUARE = 9;
 	public static final int API_SIGNUP = 10;
 	public static final int API_UPLOAD_IMAGE_PATH = 11;
+	public static final int API_GET_PLACE_BY_URL = 12;
+	public static final int API_GET_HTML_DATA_BY_URL = 13;
 
 	private static User mUser = null;
 	private static Context mContext = null;
@@ -60,6 +62,8 @@ class NetwokConnection {
 	private MBCollectionList mCollections;
 	private MBCollectionItem mCollection;
 	private MBPointData mPoint;
+    private MBSharePlaceList mbSharePlaceList;
+    private MBShareHtmlData mbShareHtmlData;
 	private VenueCollection mVenues;
 
 	NetwokConnection(Context context) {
@@ -185,6 +189,12 @@ class NetwokConnection {
 						return MappingBirdAPI.RESULT_UNKNOW_ERROR;
 					}
 					break;
+                case API_GET_PLACE_BY_URL:
+                    mbSharePlaceList = MapParse.parseSharePlaceData(rsp);
+                    break;
+                case API_GET_HTML_DATA_BY_URL:
+                    mbShareHtmlData = MapParse.parseShareHtmlData(rsp);
+                    break;
 				}
 			} else {
 				DeBug.e(TAG, "RSP is  NULL!");
@@ -350,6 +360,14 @@ class NetwokConnection {
 	User getUser() {
 		return mUser;
 	}
+
+    public MBSharePlaceList getSharePlaceList() {
+        return mbSharePlaceList;
+    }
+
+    public MBShareHtmlData getShareHtmlDataList() {
+        return mbShareHtmlData;
+    }
 
 	public MBCollectionList getCollections() {
 		return mCollections;

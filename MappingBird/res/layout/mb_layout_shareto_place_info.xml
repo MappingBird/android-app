@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mpbd.shareto.widgets.ShareToPlaceInfoLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_grey"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+        <ImageView
+            android:id="@+id/shareto_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/cards_background"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/shareto_collection_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/bg_white">
+
+        <com.mpbd.widget.MappingbirdFontIcon
+            android:id="@+id/shareto_collection_icon"
+            style="@style/InfoIcon"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/iconfont_collections" />
+
+        <RelativeLayout
+            android:id="@+id/shareto_collection_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@id/shareto_collection_icon"
+            android:background="@drawable/edit_custom_drawable">
+
+            <com.mpbd.widget.MappingbirdFontIcon
+                android:id="@+id/shareto_collection_arrow"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/iconfont_menu_down"
+                android:textColor="@color/graphic_symbol"
+                android:textSize="20dp" />
+
+            <com.mpbd.widget.MappingbirdTextView
+                android:id="@+id/shareto_collection_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@id/shareto_collection_arrow"
+                android:background="#00000000"
+                android:hint="@string/add_place_new_collection"
+                android:textColor="#000"
+                android:textColorHint="@color/font_hint"
+                android:textSize="16dp"
+                android:visibility="visible" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp" >
+
+        <com.mpbd.widget.MappingbirdFontIcon
+            android:id="@+id/shareto_location_icon"
+            style="@style/InfoIcon"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/iconfont_general"/>
+
+        <com.mpbd.widget.MappingbirdEditText
+            android:id="@+id/shareto_location_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@id/shareto_location_icon"
+            android:background="@drawable/edit_custom_drawable"
+            android:hint="@string/add_place_location_name"
+            android:textSize="16dp"
+            android:textColorHint="@color/font_hint" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/shareto_about_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp">
+
+        <com.mpbd.widget.MappingbirdFontIcon
+            android:id="@+id/shareto_about_icon"
+            style="@style/InfoIcon"
+            android:layout_alignParentLeft="true"
+            android:paddingTop="10dp"
+            android:text="@string/iconfont_description" />
+
+        <com.mpbd.widget.MappingbirdTextView
+            android:id="@+id/shareto_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:layout_toRightOf="@id/shareto_about_icon"
+            android:background="@drawable/edit_custom_drawable"
+            android:hint="@string/add_place_about_place"
+            android:minHeight="40dp"
+            android:paddingTop="10dp"
+            android:singleLine="true"
+            android:textColorHint="@color/font_hint"
+            android:textColor="@color/font_dark"
+            android:textSize="16dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/default_divider" />
+
+    <com.mpbd.widget.MappingbirdTextView
+        android:id="@+id/shareto_info_positive"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/btn_dialog_bg"
+        android:gravity="center"
+        android:text="@string/ok"
+        android:textColor="@color/btn_text_blue_color"
+        android:textSize="16dp"
+        android:visibility="visible" />
+
+
+</com.mpbd.shareto.widgets.ShareToPlaceInfoLayout>

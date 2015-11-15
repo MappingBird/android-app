@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mpbd.shareto.widgets.ShareToFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shareto_framelayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66000000">
+
+    <RelativeLayout
+        android:id="@+id/shareto_dg_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/dialog_bg_general"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <com.mpbd.widget.MappingbirdTextView
+            android:id="@+id/shareto_dg_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/font_normal"
+            android:textSize="14dp" />
+
+        <include
+            android:id="@+id/shareto_dg_loading_layout"
+            layout="@layout/mb_layout_shareto_loading_layout"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/shareto_dg_input_layout"
+            layout="@layout/mb_layout_shareto_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/shareto_dg_title"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/bg_underline_input"
+            android:orientation="horizontal"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/shareto_dg_input_bottom_view"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_below="@id/shareto_dg_input_layout"
+            android:background="#00000000"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/shareto_dg_select_place_layout"
+            layout="@layout/mb_layout_shareto_select_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shareto_dg_title"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/shareto_dg_place_info_layout"
+            layout="@layout/mb_layout_shareto_place_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shareto_dg_title"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/shareto_dg_select_photo_layout"
+            layout="@layout/mb_layout_shareto_select_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shareto_dg_title"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/shareto_dg_input_about_layout"
+            layout="@layout/mb_layout_shareto_input_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shareto_dg_title"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+</com.mpbd.shareto.widgets.ShareToFrameLayout>

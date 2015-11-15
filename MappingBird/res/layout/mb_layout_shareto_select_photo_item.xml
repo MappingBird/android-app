@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.mpbd.shareto.widgets.ShareToSelectPhotoItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shareto_dg_photo_item_frame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_weight="1">
+
+    <ImageView
+        android:id="@+id/shareto_dg_photo_item_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/graphic_placeholder"
+        android:minHeight="120dp"
+        android:scaleType="centerCrop" />
+
+    <View
+        android:id="@+id/shareto_dg_photo_item_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/btn_outline_btn_blue_bg"
+        android:visibility="gone" />
+
+    <com.mpbd.widget.MappingbirdTextView
+        android:id="@+id/shareto_dg_photo_item_check"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/graphic_blue"
+        android:gravity="center"
+        android:minWidth="26dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textColor="@color/font_white"
+        android:textSize="16dp"
+        android:visibility="gone" />
+</com.mpbd.shareto.widgets.ShareToSelectPhotoItemLayout>

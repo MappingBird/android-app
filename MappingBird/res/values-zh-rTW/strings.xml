@@ -25,6 +25,7 @@
     <string name="str_on">開啟</string>
     <string name="str_abort">中止</string>
     <string name="str_set_up">前往設定</string>
+    <string name="str_update">更新</string>
 
     <!-- Sign in and Sign up activity and -->
     <string name="login_content_title">登入</string>
@@ -197,6 +198,16 @@
     <!-- Address -->
     <string name="pick_address_no_address">沒有地址</string>
 
-
-    
+    <!-- Add place by shareTo -->
+    <string name="share_to_label_name">新增到 MappingBird</string>
+    <string name="share_to_dg_input_place_title">這次要儲存什麼地點呢?</string>
+    <string name="share_to_dg_input_place_hint">請輸入名稱或地址</string>
+    <string name="share_to_dg_select_place">選取地點</string>
+    <string name="share_to_dg_loading">載入中</string>
+    <string name="share_to_dg_try_other_place_name">找不到想儲存的地點?</string>
+    <string name="share_to_dg_info_title">儲存此地點</string>
+    <string name="share_to_dg_select_photo_title">選擇你要的照片</string>
+    <string name="share_to_dg_select_photo_cover">1 封面</string>
+    <string name="share_to_dg_input_about_title">輸入相關訊息</string>
+    <string name="share_to_dg_select_collection_title">選擇地圖</string>
 </resources>
