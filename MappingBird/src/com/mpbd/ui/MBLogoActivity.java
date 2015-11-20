@@ -1,4 +1,4 @@
-package com.mpbd.mappingbird;
+package com.mpbd.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,10 +8,11 @@ import android.os.Message;
 import android.view.Window;
 
 import com.mappingbird.api.MappingBirdAPI;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
+import com.mpbd.mappingbird.R;
+import com.mpbd.util.AppAnalyticHelper;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
-public class MappingBirdLogoActivity extends Activity {
+public class MBLogoActivity extends Activity {
 
 	private boolean isLogin = false;
 	private ProgressWheel mLoading = null;
@@ -29,14 +30,14 @@ public class MappingBirdLogoActivity extends Activity {
 
 				// get token from db
 				if (!isLogin) {
-					intent.setClass(MappingBirdLogoActivity.this,
+					intent.setClass(MBLogoActivity.this,
                             com.mpbd.tutorial.MBTutorialActivity.class);
 				} else {
-					intent.setClass(MappingBirdLogoActivity.this,
+					intent.setClass(MBLogoActivity.this,
                             com.mpbd.collection.MBCollectionActivity.class);
 				}
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				MappingBirdLogoActivity.this.startActivity(intent);
+				MBLogoActivity.this.startActivity(intent);
 
                 if (!isLogin) {
                     overridePendingTransition(0, 0);

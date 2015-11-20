@@ -73,23 +73,25 @@ import com.mpbd.collection.widget.MBCollectionListLayout;
 import com.mpbd.collection.widget.MBCollectionListLayout.NewCardClickListener;
 import com.mpbd.eventbus.MBAddPlaceEventBus;
 import com.mpbd.eventbus.MBAddPlaceEventBus.AddPlaceEventListener;
-import com.mpbd.mappingbird.MBSettingsActivity;
-import com.mpbd.mappingbird.MappingBirdDialog;
-import com.mpbd.mappingbird.MappingBirdItem;
+import com.mpbd.ui.MBSettingsActivity;
+import com.mpbd.common.MBDialogUtil;
+import com.mpbd.ui.MBItem;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.common.MBDialog;
-import com.mpbd.mappingbird.common.MBErrorMessageControl;
-import com.mpbd.mappingbird.common.MBInputDialog;
-import com.mpbd.mappingbird.common.MBToast;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
-import com.mpbd.mappingbird.util.MBUtil;
-import com.mpbd.mappingbird.util.Utils;
+import com.mpbd.common.MBDialog;
+import com.mpbd.common.MBErrorMessageControl;
+import com.mpbd.common.MBInputDialog;
+import com.mpbd.common.MBToast;
+import com.mpbd.ui.MBLoginActivity;
+import com.mpbd.ui.MBSignUpActivity;
+import com.mpbd.util.AppAnalyticHelper;
+import com.mpbd.util.MBUtil;
+import com.mpbd.util.Utils;
 import com.mpbd.place.MBPlaceActivity;
 import com.mpbd.services.MBServiceClient;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MBCollectionActivity extends FragmentActivity implements
-		ClusterManager.OnClusterItemInfoWindowClickListener<MappingBirdItem> {
+		ClusterManager.OnClusterItemInfoWindowClickListener<MBItem> {
 	private static final String TAG = "MappingBird";
 	
 	public static final String EXTRA_NOTIFY = "extra_notify";
@@ -123,9 +125,9 @@ public class MBCollectionActivity extends FragmentActivity implements
 
 	private ProgressWheel mLoading = null;
 
-	private ClusterManager<MappingBirdItem> mClusterManager;
+	private ClusterManager<MBItem> mClusterManager;
 	private MappingBirdRender mMappingBirdRender;
-	private MappingBirdItem mClickedClusterItem;
+	private MBItem mClickedClusterItem;
 	private Marker mClickedMarker = null;
 
 	private LocationService mLocationService;
@@ -231,7 +233,7 @@ public class MBCollectionActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MBCollectionActivity.this, com.mpbd.mappingbird.MBLoginActivity.class);
+                intent.setClass(MBCollectionActivity.this, MBLoginActivity.class);
                 MBCollectionActivity.this.startActivity(intent);   
                 
                 AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
@@ -247,7 +249,7 @@ public class MBCollectionActivity extends FragmentActivity implements
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MBCollectionActivity.this, com.mpbd.mappingbird.MBSignUpActivity.class);
+                intent.setClass(MBCollectionActivity.this, MBSignUpActivity.class);
                 MBCollectionActivity.this.startActivity(intent);               
                 
                 AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
@@ -266,7 +268,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 
 		mContext = this;
 		
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
+		mLoadingDialog = MBDialogUtil.createLoadingDialog(mContext);
 		mLoadingDialog.setCancelable(false);
 		mLoading = (ProgressWheel) mLoadingDialog.findViewById(R.id.image);
 		mLoading.stopSpinning();
@@ -438,7 +440,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 	}
 
 	private void addCollection(String name) {
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(MBCollectionActivity.this);
+		mLoadingDialog = MBDialogUtil.createLoadingDialog(MBCollectionActivity.this);
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
 		final MBCollectionListObject listObj = MappingBirdApplication.instance().getCollectionObj();
@@ -686,7 +688,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 		mMap.getUiSettings().setZoomControlsEnabled(false);
 		mInfoWindowAdapter = new CustomInfoWindowAdapter();
-		mClusterManager = new ClusterManager<MappingBirdItem>(this, mMap);
+		mClusterManager = new ClusterManager<MBItem>(this, mMap);
 		mMappingBirdRender = new MappingBirdRender();
 		mClusterManager.setRenderer(mMappingBirdRender);
 		mMap.setOnMarkerClickListener(mClusterManager);
@@ -705,10 +707,10 @@ public class MBCollectionActivity extends FragmentActivity implements
 		addItems();
 		mClusterManager.cluster();
 		mClusterManager
-				.setOnClusterClickListener(new OnClusterClickListener<MappingBirdItem>() {
+				.setOnClusterClickListener(new OnClusterClickListener<MBItem>() {
 					@Override
 					public boolean onClusterClick(
-							Cluster<MappingBirdItem> cluster) {
+							Cluster<MBItem> cluster) {
 						float nowZoom = mMap.getCameraPosition().zoom;
 						if(nowZoom < (mMap.getMaxZoomLevel() - 3)) {
 							nowZoom = nowZoom + 3;
@@ -722,10 +724,10 @@ public class MBCollectionActivity extends FragmentActivity implements
 				});
 
 		mClusterManager
-				.setOnClusterItemClickListener(new OnClusterItemClickListener<MappingBirdItem>() {
+				.setOnClusterItemClickListener(new OnClusterItemClickListener<MBItem>() {
 
 					@Override
-					public boolean onClusterItemClick(MappingBirdItem item, Marker marker) {
+					public boolean onClusterItemClick(MBItem item, Marker marker) {
 						if(mClickMarkerAnimator != null && mClickMarkerAnimator.isRunning())
 							return true;
 
@@ -858,7 +860,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 			if (!isSame) {
 				DeBug.e(TAG, "Add Item in mClusterManager");
 				mLatLngs.add(latlng);
-				MappingBirdItem offsetItem = new MappingBirdItem(i, latlng,
+				MBItem offsetItem = new MBItem(i, latlng,
 						title, Utils.getPinIconFont(type));
 				positionItems.add(point);
 				mClusterManager.addItem(offsetItem);
@@ -885,7 +887,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void onClusterItemInfoWindowClick(MappingBirdItem item) {
+	public void onClusterItemInfoWindowClick(MBItem item) {
 		int position = -1;
 		for (int i = 0; i < mLatLngs.size(); i++) {
 			if (item.getPosition().equals(mLatLngs.get(i))) {
@@ -962,7 +964,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 		}
 	};
 
-	class MappingBirdRender extends DefaultClusterRenderer<MappingBirdItem> {
+	class MappingBirdRender extends DefaultClusterRenderer<MBItem> {
 
 		private final IconGenerator mClusterIconGenerator = new IconGenerator(
 				getApplicationContext());
@@ -1019,14 +1021,14 @@ public class MBCollectionActivity extends FragmentActivity implements
 			}
 		}
 
-		protected void onBeforeClusterItemRendered(MappingBirdItem place,
+		protected void onBeforeClusterItemRendered(MBItem place,
 				MarkerOptions markerOptions) {
 			setFontIcon(place.mPinIcon, markerOptions);
 		}
 
 		@Override
 		protected void onBeforeClusterRendered(
-				Cluster<MappingBirdItem> cluster, MarkerOptions markerOptions) {
+				Cluster<MBItem> cluster, MarkerOptions markerOptions) {
 			String size = String.valueOf(cluster.getSize());
 			if(cluster.getSize() > 100) {
 				size = "99+";

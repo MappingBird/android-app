@@ -29,7 +29,7 @@ import com.mpbd.saveplace.services.MBPlaceSubmitTask;
 import com.mpbd.saveplace.services.MBPlaceSubmitUtil;
 import com.mpbd.collection.widget.MBProgressCircleLayout.ProgressListener;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.MBUtil;
+import com.mpbd.util.MBUtil;
 
 public class MBListLayoutAddLayout extends RelativeLayout {
 

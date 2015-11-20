@@ -5,7 +5,7 @@ import java.io.Serializable;
 import android.text.SpannableString;
 
 import com.mappingbird.api.Venue;
-import com.mpbd.mappingbird.util.Utils;
+import com.mpbd.util.Utils;
 
 
 public class MBPlaceItem implements Serializable {

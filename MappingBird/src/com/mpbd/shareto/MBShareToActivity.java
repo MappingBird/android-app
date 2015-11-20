@@ -8,7 +8,7 @@ import android.view.KeyEvent;
 
 import com.mappingbird.common.DeBug;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
+import com.mpbd.util.AppAnalyticHelper;
 import com.mpbd.shareto.widgets.ShareToFrameLayout;
 
 import java.io.UnsupportedEncodingException;

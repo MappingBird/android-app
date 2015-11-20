@@ -1,4 +1,4 @@
-package com.mpbd.mappingbird;
+package com.mpbd.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -29,10 +29,12 @@ import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.User;
 import com.mappingbird.common.MappingBirdPref;
-import com.mpbd.mappingbird.common.MBDialog;
-import com.mpbd.mappingbird.common.MBErrorMessageControl;
-import com.mpbd.mappingbird.common.MBInputDialog;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
+import com.mpbd.common.MBDialog;
+import com.mpbd.common.MBDialogUtil;
+import com.mpbd.common.MBErrorMessageControl;
+import com.mpbd.common.MBInputDialog;
+import com.mpbd.mappingbird.R;
+import com.mpbd.util.AppAnalyticHelper;
 
 public class MBLoginActivity extends Activity implements
 		OnClickListener {
@@ -321,7 +323,7 @@ public class MBLoginActivity extends Activity implements
 	private void showLoadingDialog() {
 		if(mLoadingDialog != null)
 			return;
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(MBLoginActivity.this);
+		mLoadingDialog = MBDialogUtil.createLoadingDialog(MBLoginActivity.this);
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
 	}

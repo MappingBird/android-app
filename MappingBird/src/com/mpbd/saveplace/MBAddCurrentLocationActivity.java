@@ -38,11 +38,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.common.MappingBirdApplication;
-import com.mpbd.mappingbird.MappingBirdDialog;
+import com.mpbd.common.MBDialogUtil;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.common.MBListDialog;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
-import com.mpbd.mappingbird.util.MBUtil;
+import com.mpbd.common.MBListDialog;
+import com.mpbd.util.AppAnalyticHelper;
+import com.mpbd.util.MBUtil;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MBAddCurrentLocationActivity extends FragmentActivity {
@@ -426,7 +426,7 @@ public class MBAddCurrentLocationActivity extends FragmentActivity {
 		if(mLoadingDialog != null && mLoadingDialog.isShowing())
 			return;
 		
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
+		mLoadingDialog = MBDialogUtil.createLoadingDialog(this);
 		mLoadingDialog.show();
 	}
 	

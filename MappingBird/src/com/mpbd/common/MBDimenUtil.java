@@ -1,17 +1,9 @@
-package com.mpbd.mappingbird.common;
+package com.mpbd.common;
 
-import android.content.Context;
-import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Display;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mappingbird.common.MappingBirdApplication;
-import com.mpbd.mappingbird.R;
 
 public class MBDimenUtil {
     private static DisplayMetrics mMetrics = null;

@@ -1,4 +1,4 @@
-package com.mpbd.mappingbird;
+package com.mpbd.ui;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,8 +19,9 @@ import android.widget.Toast;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
-import com.mpbd.mappingbird.common.MBDialog;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
+import com.mpbd.common.MBDialog;
+import com.mpbd.mappingbird.R;
+import com.mpbd.util.AppAnalyticHelper;
 import com.mpbd.services.MBServiceClient;
 
 public class MBSettingsActivity extends Activity {

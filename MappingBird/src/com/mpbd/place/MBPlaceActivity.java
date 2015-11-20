@@ -42,12 +42,12 @@ import com.mpbd.widget.MappingbirdPlaceLayout.onPlaceLayoutListener;
 import com.mpbd.widget.MappingbirdScrollView;
 import com.mpbd.widget.MappingbirdScrollView.OnScrollViewListener;
 import com.mpbd.collection.data.MBPlaceItemObject;
-import com.mpbd.mappingbird.MappingBirdDialog;
+import com.mpbd.common.MBDialogUtil;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.common.MBDialog;
-import com.mpbd.mappingbird.common.MBErrorMessageControl;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
-import com.mpbd.mappingbird.util.Utils;
+import com.mpbd.common.MBDialog;
+import com.mpbd.common.MBErrorMessageControl;
+import com.mpbd.util.AppAnalyticHelper;
+import com.mpbd.util.Utils;
 
 public class MBPlaceActivity extends Activity implements
 		OnClickListener {
@@ -162,7 +162,7 @@ public class MBPlaceActivity extends Activity implements
 			placeObj.setOnGetPointsListener(mPointListener);
 			placeObj.getPlaceItem(placeId);
 	
-			mLoadingDialog = MappingBirdDialog.createLoadingDialog(mContext);
+			mLoadingDialog = MBDialogUtil.createLoadingDialog(mContext);
 			mLoadingDialog.setCancelable(false);
 			mLoadingDialog.show();
 		}

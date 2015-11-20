@@ -14,10 +14,9 @@ import android.widget.TextView;
 
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
-import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.common.MBDimenUtil;
+import com.mpbd.common.MBDimenUtil;
 
 import java.util.ArrayList;
 

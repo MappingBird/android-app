@@ -33,11 +33,11 @@ import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.saveplace.MBPhotoAdapter.PhotoAdapterListener;
 import com.mpbd.saveplace.MBAddPlaceInfoLayout.PlaceInfoListener;
 import com.mpbd.saveplace.services.MBPlaceAddDataToServer;
-import com.mpbd.mappingbird.MappingBirdDialog;
+import com.mpbd.common.MBDialogUtil;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.common.MBAnimation;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
-import com.mpbd.mappingbird.util.MBUtil;
+import com.mpbd.common.MBAnimation;
+import com.mpbd.util.AppAnalyticHelper;
+import com.mpbd.util.MBUtil;
 import com.mpbd.services.MBServiceClient;
 
 public class MBAddPlaceActivity extends FragmentActivity  {
@@ -124,7 +124,7 @@ public class MBAddPlaceActivity extends FragmentActivity  {
 		mListView.setAdapter(mAdapter);
 		
 		// 暫時先關閉
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
+		mLoadingDialog = MBDialogUtil.createLoadingDialog(this);
 		mLoadingDialog.show();
 		mHandler.sendEmptyMessageDelayed(MSG_START_SCANE, 200);
 	}

@@ -28,9 +28,9 @@ import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnSearchFourSquareListener;
 import com.mappingbird.api.VenueCollection;
 import com.mappingbird.common.DeBug;
-import com.mpbd.mappingbird.MappingBirdDialog;
+import com.mpbd.common.MBDialogUtil;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
+import com.mpbd.util.AppAnalyticHelper;
 
 public class MBPickPlaceActivity extends FragmentActivity  {
 	private static final int REQUEST_ADD_PLACE = 0x001010;
@@ -180,7 +180,7 @@ public class MBPickPlaceActivity extends FragmentActivity  {
 
 	private void prepareData(String filter) {
 		if(mHasLocation) {
-			mLoadingDialog = MappingBirdDialog.createLoadingDialog(this);
+			mLoadingDialog = MBDialogUtil.createLoadingDialog(this);
 			mLoadingDialog.show();
 	//		mApi.explorefromFourSquare(mOnExploreFourSquareListener, mLatitude, mLongitude, 35);
 			mSearchText = filter;

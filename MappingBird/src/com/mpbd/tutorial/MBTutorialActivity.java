@@ -27,10 +27,12 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mpbd.ui.MBLoginActivity;
+import com.mpbd.ui.MBSignUpActivity;
 import com.mpbd.widget.MappingBirdParallaxPager;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
-import com.mpbd.mappingbird.util.MBUtil;
+import com.mpbd.util.AppAnalyticHelper;
+import com.mpbd.util.MBUtil;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 
@@ -233,7 +235,7 @@ public class MBTutorialActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MBLoginActivity.class);
+                intent.setClass(MBTutorialActivity.this, MBLoginActivity.class);
                 MBTutorialActivity.this.startActivity(intent);
             }
         });
@@ -243,7 +245,7 @@ public class MBTutorialActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MBSignUpActivity.class);
+                intent.setClass(MBTutorialActivity.this, MBSignUpActivity.class);
                 MBTutorialActivity.this.startActivity(intent);
             }
         });
@@ -409,7 +411,7 @@ public class MBTutorialActivity extends FragmentActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MBLoginActivity.class);
+                        intent.setClass(MBTutorialActivity.this, MBLoginActivity.class);
                         MBTutorialActivity.this.startActivity(intent);
                     }
                 });
@@ -419,7 +421,7 @@ public class MBTutorialActivity extends FragmentActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        intent.setClass(MBTutorialActivity.this, com.mpbd.mappingbird.MBSignUpActivity.class);
+                        intent.setClass(MBTutorialActivity.this, MBSignUpActivity.class);
                         MBTutorialActivity.this.startActivity(intent);
                     }
                 });

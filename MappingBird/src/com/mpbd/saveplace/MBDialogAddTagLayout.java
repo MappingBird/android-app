@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.MBUtil;
+import com.mpbd.util.MBUtil;
 
 public class MBDialogAddTagLayout extends LinearLayout {
 

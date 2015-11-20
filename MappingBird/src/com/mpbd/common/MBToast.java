@@ -1,4 +1,4 @@
-package com.mpbd.mappingbird.common;
+package com.mpbd.common;
 
 import android.content.Context;
 import android.view.LayoutInflater;

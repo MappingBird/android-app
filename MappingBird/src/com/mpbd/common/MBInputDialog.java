@@ -1,4 +1,4 @@
-package com.mpbd.mappingbird.common;
+package com.mpbd.common;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.MBUtil;
+import com.mpbd.util.MBUtil;
 
 
 public class MBInputDialog {

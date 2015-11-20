@@ -28,11 +28,11 @@ import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.saveplace.services.MBPlaceAddDataToServer;
 import com.mpbd.collection.data.MBCollectionListObject;
-import com.mpbd.mappingbird.MappingBirdDialog;
+import com.mpbd.common.MBDialogUtil;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.common.MBDialog;
-import com.mpbd.mappingbird.common.MBErrorMessageControl;
-import com.mpbd.mappingbird.common.MBInputDialog;
+import com.mpbd.common.MBDialog;
+import com.mpbd.common.MBErrorMessageControl;
+import com.mpbd.common.MBInputDialog;
 
 public class MBAddPlaceInfoLayout extends LinearLayout {
 
@@ -437,7 +437,7 @@ public class MBAddPlaceInfoLayout extends LinearLayout {
 	}
 
 	private void addCollection(String name) {
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(getContext());
+		mLoadingDialog = MBDialogUtil.createLoadingDialog(getContext());
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();				
 		mListObject.createCollection(new OnAddCollectionListener() {

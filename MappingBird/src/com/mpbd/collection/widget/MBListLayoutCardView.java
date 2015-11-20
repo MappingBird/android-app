@@ -23,8 +23,8 @@ import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.MBUtil;
-import com.mpbd.mappingbird.util.Utils;
+import com.mpbd.util.MBUtil;
+import com.mpbd.util.Utils;
 
 public class MBListLayoutCardView extends RelativeLayout {
 

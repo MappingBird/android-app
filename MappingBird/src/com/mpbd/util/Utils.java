@@ -1,4 +1,4 @@
-package com.mpbd.mappingbird.util;
+package com.mpbd.util;
 
 import java.text.DecimalFormat;
 

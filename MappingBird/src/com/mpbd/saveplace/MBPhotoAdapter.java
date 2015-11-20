@@ -18,7 +18,7 @@ import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.MBUtil;
+import com.mpbd.util.MBUtil;
 
 public class MBPhotoAdapter extends BaseAdapter  {
 	

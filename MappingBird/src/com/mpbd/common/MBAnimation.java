@@ -1,4 +1,4 @@
-package com.mpbd.mappingbird.common;
+package com.mpbd.common;
 
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;

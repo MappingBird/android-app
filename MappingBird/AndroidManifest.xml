@@ -34,7 +34,7 @@
         </activity>
         -->
         <activity
-            android:name="com.mpbd.mappingbird.MappingBirdLogoActivity"
+            android:name="com.mpbd.ui.MBLogoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -52,11 +52,11 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mpbd.mappingbird.MBSignUpActivity"
+            android:name="com.mpbd.ui.MBSignUpActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mpbd.mappingbird.MBLoginActivity"
+            android:name="com.mpbd.ui.MBLoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -76,7 +76,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mpbd.mappingbird.MBSettingsActivity"
+            android:name="com.mpbd.ui.MBSettingsActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity

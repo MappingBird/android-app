@@ -1,55 +1,56 @@
-package com.mpbd.mappingbird.common;
+package com.mpbd.common;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.graphics.Typeface;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.MBUtil;
+import com.mpbd.util.MBUtil;
 
 
-public class MBListDialog {
+public class MBDialog {
 	public Dialog mDialog = null;
 	
 	// UI
 	private TextView mDialogTitle;
-	private ListView mDialogListView;
+	private TextView mDialogDescription;
 	private TextView mDialogNegativeBtn;
 	private TextView mDialogPositiveBtn;
 	private View mDialogTitlePaddingBottom;
 	private View mDialogDivider;
+	private FrameLayout mContextLayout;
 
 	// Style
 	public static final int BTN_STYLE_DEFAULT = 0;
 	public static final int BTN_STYLE_BLUE = 1;
-	public MBListDialog(Context context) {
+	public MBDialog(Context context) {
 		
 		initView(context);
 	}
 	
 	private void initView(Context context) {
-		View view = (LayoutInflater.from(context)).inflate(R.layout.mb_dialog_list, null);
+		View view = (LayoutInflater.from(context)).inflate(R.layout.mb_dialog, null);
 
 		if(view != null) {
 			mDialogTitle = (TextView) view.findViewById(R.id.dialog_title);
 			mDialogTitlePaddingBottom = view.findViewById(R.id.dialog_title_padding_bottom);
-			mDialogListView = (ListView) view.findViewById(R.id.dialog_list);
+			mDialogDescription = (TextView) view.findViewById(R.id.dialog_description);
 			mDialogNegativeBtn = (TextView) view.findViewById(R.id.dialog_negative);
 			mDialogPositiveBtn = (TextView) view.findViewById(R.id.dialog_positive);
 			mDialogDivider = view.findViewById(R.id.dialog_divider);
+			mContextLayout = (FrameLayout) view.findViewById(R.id.dialog_content_layout);
 			mDialog = new Dialog(context, R.style.MBDialog);
 			setDialogSize(MBUtil.getWindowWidth(context), 0);
 			mDialog.setContentView(view);
@@ -81,19 +82,40 @@ public class MBListDialog {
 			mDialogTitle.setText(title);
 	}
 
-	public void setAdapter(BaseAdapter adapter) {
-		mDialogListView.setAdapter(adapter);
+	public void setDescription(String description) {
+		if(mDialogDescription != null) {
+			mDialogTitlePaddingBottom.setVisibility(View.GONE);
+			mDialogDescription.setVisibility(View.VISIBLE);
+			mDialogDescription.setText(description);
+		}
 	}
-	
-	public void setOnItemClickListener(OnItemClickListener listener) {
-		mDialogListView.setOnItemClickListener(listener);
+
+	public void setDescription(SpannableString description) {
+		if(mDialogDescription != null) {
+			mDialogTitlePaddingBottom.setVisibility(View.GONE);
+			mDialogDescription.setVisibility(View.VISIBLE);
+			mDialogDescription.setText(description);
+		}
 	}
-	
+
+	public void setView(View view) {
+		if(view != null) {
+			mContextLayout.removeAllViews();
+			mContextLayout.addView(view);
+			mContextLayout.setVisibility(View.VISIBLE);
+			mDialogDescription.setPadding(
+					(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.dialog_padding_left),
+					(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.dialog_description_padding_top),
+					(int)MappingBirdApplication.instance().getResources().getDimension(R.dimen.dialog_padding_left),
+					0);
+		}
+	}
 	public void setNegativeBtn(String text, OnClickListener listener, int style) {
 		if(mDialogNegativeBtn != null) {
 			mDialogNegativeBtn.setVisibility(View.VISIBLE);
 			mDialogNegativeBtn.setOnClickListener(listener);
 			mDialogNegativeBtn.setText(text);
+			mDialogPositiveBtn.setAllCaps(true);
 			setBtnStyle(mDialogNegativeBtn, style);
 			if(mDialogPositiveBtn.getVisibility() == View.VISIBLE) {
 				mDialogDivider.setVisibility(View.VISIBLE);
@@ -106,6 +128,7 @@ public class MBListDialog {
 			mDialogPositiveBtn.setVisibility(View.VISIBLE);
 			mDialogPositiveBtn.setOnClickListener(listener);
 			mDialogPositiveBtn.setText(text);
+			mDialogPositiveBtn.setAllCaps(true);
 			setBtnStyle(mDialogPositiveBtn, style);
 			if(mDialogNegativeBtn.getVisibility() == View.VISIBLE) {
 				mDialogDivider.setVisibility(View.VISIBLE);

@@ -1,4 +1,4 @@
-package com.mpbd.mappingbird;
+package com.mpbd.ui;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -33,9 +33,11 @@ import com.mappingbird.api.OnSignUpListener;
 import com.mappingbird.api.User;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
-import com.mpbd.mappingbird.common.MBDialog;
-import com.mpbd.mappingbird.common.MBErrorMessageControl;
-import com.mpbd.mappingbird.util.AppAnalyticHelper;
+import com.mpbd.common.MBDialog;
+import com.mpbd.common.MBDialogUtil;
+import com.mpbd.common.MBErrorMessageControl;
+import com.mpbd.mappingbird.R;
+import com.mpbd.util.AppAnalyticHelper;
 
 public class MBSignUpActivity extends Activity implements
 		OnClickListener {
@@ -232,7 +234,7 @@ public class MBSignUpActivity extends Activity implements
 	private void showLoadingDialog() {
 		if(mLoadingDialog != null)
 			return;
-		mLoadingDialog = MappingBirdDialog.createLoadingDialog(MBSignUpActivity.this);
+		mLoadingDialog = MBDialogUtil.createLoadingDialog(MBSignUpActivity.this);
 		mLoadingDialog.setCancelable(false);
 		mLoadingDialog.show();
 	}

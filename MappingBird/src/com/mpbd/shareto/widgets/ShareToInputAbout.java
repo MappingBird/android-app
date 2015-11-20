@@ -3,23 +3,13 @@ package com.mpbd.shareto.widgets;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.mappingbird.api.MBSharePlaceData;
-import com.mappingbird.api.MBSharePlaceList;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.MBUtil;
-
-import java.util.ArrayList;
+import com.mpbd.util.MBUtil;
 
 /**
  *

@@ -1,24 +1,12 @@
 package com.mpbd.shareto.widgets;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mappingbird.common.BitmapLoader;
-import com.mappingbird.common.BitmapParameters;
-import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.common.MBDimenUtil;
-
-import java.util.ArrayList;
 
 /**
  *

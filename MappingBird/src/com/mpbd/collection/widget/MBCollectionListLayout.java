@@ -40,10 +40,10 @@ import com.mappingbird.common.DeBug;
 import com.mappingbird.common.DistanceObject;
 import com.mpbd.saveplace.MBPickPlaceActivity;
 import com.mpbd.collection.widget.MBListLayoutAddLayout.OnSelectKindLayoutListener;
-import com.mpbd.mappingbird.MappingBirdItem;
+import com.mpbd.ui.MBItem;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.MBUtil;
-import com.mpbd.mappingbird.util.Utils;
+import com.mpbd.util.MBUtil;
+import com.mpbd.util.Utils;
 
 public class MBCollectionListLayout extends RelativeLayout {
 	private final static String TAG = "MB.Collection.List";
@@ -233,7 +233,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 		}
 	}
 
-	public void clickItem(MappingBirdItem item) {
+	public void clickItem(MBItem item) {
 		if(DeBug.DEBUG)
 			DeBug.d(TAG, "clickItem,  item = "+item.mTitle);
 		MBPointData point = mItemAdapter.clickItem(item);
@@ -942,7 +942,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 			}
 		}
 
-		public synchronized MBPointData clickItem(MappingBirdItem item) {
+		public synchronized MBPointData clickItem(MBItem item) {
 			mItems.clear();
 			MBPointData clickPoint = null;
 			for(ListItem point : mAllPoints) {

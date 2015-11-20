@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.mappingbird.common.DistanceObject;
 import com.mpbd.widget.MappingbirdFontIcon;
 import com.mpbd.mappingbird.R;
-import com.mpbd.mappingbird.util.Utils;
+import com.mpbd.util.Utils;
 
 public class MBPlaceAdapter extends BaseAdapter  {
 	
