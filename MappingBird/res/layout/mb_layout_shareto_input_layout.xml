@@ -17,6 +17,7 @@
         android:layout_gravity="center_vertical"
         android:textColorHint="@color/font_hint"
         android:textColor="@color/font_dark"
+        android:singleLine="true"
         android:textSize="16dp" />
 
     <com.mpbd.widget.MappingbirdFontIcon

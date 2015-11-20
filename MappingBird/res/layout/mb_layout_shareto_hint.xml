@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mpbd.shareto.widgets.ShareToSelectHintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp">
+
+    <com.mpbd.widget.MappingbirdTextView
+        android:id="@+id/shareto_dg_hint_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/font_normal"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="16dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/default_divider" />
+
+    <com.mpbd.widget.MappingbirdTextView
+        android:id="@+id/shareto_dg_hint_positive"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:textColor="@color/btn_text_blue_color"
+        android:gravity="center"
+        android:text="@string/ok"
+        android:textSize="16dp"
+        android:background="@drawable/btn_dialog_bg"  />
+
+</com.mpbd.shareto.widgets.ShareToSelectHintLayout>

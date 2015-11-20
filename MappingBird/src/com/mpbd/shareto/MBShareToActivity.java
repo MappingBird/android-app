@@ -1,20 +1,15 @@
 package com.mpbd.shareto;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 
-import com.mappingbird.api.MBSharePlaceData;
 import com.mappingbird.common.DeBug;
-import com.mpbd.collection.data.MBCollectionListObject;
 import com.mpbd.mappingbird.R;
 import com.mpbd.mappingbird.util.AppAnalyticHelper;
 import com.mpbd.shareto.widgets.ShareToFrameLayout;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -22,16 +17,8 @@ import java.net.URLEncoder;
 public class MBShareToActivity extends FragmentActivity {
     public static final String TAG = "ShareTo";
 
-    private Dialog mLoadingDialog = null;
-    private ProgressWheel mLoading = null;
-
-    private Handler mHandler = new Handler();
-
     // Data
     private String mShareUrl = "";
-    private MBSharePlaceData mSelectData;
-    private MBCollectionListObject mCollectionList;
-
 
     // dialog layout
     private ShareToFrameLayout mDialogLayout;
@@ -60,6 +47,7 @@ public class MBShareToActivity extends FragmentActivity {
 
     private void initLayout() {
         mDialogLayout = (ShareToFrameLayout) findViewById(R.id.shareto_framelayout);
+        mDialogLayout.setShareToFramelayoutListener(mShareToFramelayoutListener);
     }
 
     private void handleSendText(Intent intent) {
@@ -87,7 +75,16 @@ public class MBShareToActivity extends FragmentActivity {
                 DeBug.d(TAG, "[ShareTo] url : " + url);
             }
 
-            mShareUrl = url;
+            try {
+                mShareUrl = URLEncoder.encode(url, "UTF-8");//url;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                mShareUrl = url;
+            }
+            if (DeBug.DEBUG) {
+                DeBug.d(TAG, "[ShareTo] share to url : " + mShareUrl);
+            }
+
             //
             mDialogLayout.setShareUrl(mShareUrl);
         } else {
@@ -97,6 +94,14 @@ public class MBShareToActivity extends FragmentActivity {
             finish();
         }
     }
+
+    private ShareToFrameLayout.ShareToFramelayoutListener mShareToFramelayoutListener = new ShareToFrameLayout.ShareToFramelayoutListener() {
+
+        @Override
+        public void onFinish() {
+            MBShareToActivity.this.finish();
+        }
+    };
 
     @Override
     protected void onStart() {

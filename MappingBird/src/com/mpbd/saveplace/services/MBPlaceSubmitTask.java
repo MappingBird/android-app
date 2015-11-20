@@ -226,6 +226,7 @@ public class MBPlaceSubmitTask implements Runnable{
 		boolean haveBmp = data.updateImageTempBySession(mSubmitData.placeId, 
 				mUserToken.getCSRFToken(),
 				mUserToken.getSession(),
+				mSubmitData.mFrom,
 				new SubmitImageDataListener() {
 			
 			@Override

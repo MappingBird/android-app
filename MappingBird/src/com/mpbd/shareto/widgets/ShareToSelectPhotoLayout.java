@@ -1,6 +1,7 @@
 package com.mpbd.shareto.widgets;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
@@ -16,6 +17,7 @@ import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.common.MBDimenUtil;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 public class ShareToSelectPhotoLayout extends LinearLayout {
     private static final String TAG = "ShareTo";
 
+    private int mItemWidth = 0;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private PhotoAdapter mPhotoAdapter;
@@ -54,6 +57,8 @@ public class ShareToSelectPhotoLayout extends LinearLayout {
         mRecyclerView.setAdapter(mPhotoAdapter);
         findViewById(R.id.shareto_dg_photo_negative).setOnClickListener(mBtnClickListener);
         findViewById(R.id.shareto_dg_photo_positive).setOnClickListener(mBtnClickListener);
+
+        mItemWidth = (MBDimenUtil.getWindowWidth() - MBDimenUtil.dp2px(80)) / 2;
     }
 
     public void setData(ArrayList<String> items, ArrayList<String> preSelected) {
@@ -108,8 +113,6 @@ public class ShareToSelectPhotoLayout extends LinearLayout {
             String info = mPhotoPathList.get(position);
             holder.setData(info);
             int index = mPhotoSelect.indexOf(info);
-            if(DeBug.DEBUG)
-                DeBug.d(TAG, "[SelectPhoto] preselect index = "+index);
             if(index >= 0)
                 holder.setSelected(true, index+1);
             else
@@ -139,8 +142,28 @@ public class ShareToSelectPhotoLayout extends LinearLayout {
         public void setData(String url) {
             BitmapLoader bitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
             BitmapParameters params = BitmapParameters.getUrlBitmap(url);
+            params.mBitmapDownloaded = mBmpListener;
             bitmapLoader.getBitmap(mImageView, params);
         }
+
+        private BitmapLoader.BitmapDownloadedListener mBmpListener = new BitmapLoader.BitmapDownloadedListener() {
+
+            @Override
+            public void onDownloadComplete(String url, ImageView icon, Bitmap bmp, BitmapParameters params) {
+
+                int viewHeight = (int)((bmp.getHeight()/ (float)bmp.getWidth())*mItemWidth);
+                icon.setMinimumHeight(viewHeight);
+//                if(DeBug.DEBUG) {
+//                    DeBug.d("Test", "bmp = " + bmp.getWidth() + "x" + bmp.getHeight());
+//                    DeBug.d("Test", "view = " + mItemWidth + "x" + viewHeight);
+//                }
+            }
+
+            @Override
+            public void onDownloadFaild(String url, ImageView icon, BitmapParameters params) {
+
+            }
+        };
 
         public void setSelected(boolean selected, int index) {
             if(selected) {

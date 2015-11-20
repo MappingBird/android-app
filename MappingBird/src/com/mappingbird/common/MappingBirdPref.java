@@ -18,6 +18,8 @@ public class MappingBirdPref{
 		public static final String USER_GUST_MODE = "guest";
 		
 		public static final String ADD_PLACE_HINT_COUNT = "add_place_hint_count";
+
+        public static final String ADD_PLACE_NOTIFY_ID = "add_place_notify_id";
 	};
 	protected MappingBirdPref() {
 		mPref = PreferenceManager
@@ -134,4 +136,13 @@ public class MappingBirdPref{
 	public int getAddPlaceHintCount() {
 		return getInt(KEY.ADD_PLACE_HINT_COUNT, 0);
 	}
+
+    public void setAddPlaceNotifyId( int id) {
+        putInt(KEY.ADD_PLACE_NOTIFY_ID, id);
+    }
+
+    public int getAddPlaceNotifyId() {
+        return getInt(KEY.ADD_PLACE_NOTIFY_ID, 1);
+    }
+
 }

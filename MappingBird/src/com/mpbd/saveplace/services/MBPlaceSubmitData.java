@@ -23,6 +23,8 @@ public class MBPlaceSubmitData {
 	public String type = "";
 	public long collectionId = -1;
 	public String collectionName = "";
+	public String placeOpenTime = "";
+    public int mFrom = MBPlaceAddDataToServer.ADD_PALCE_FROM_ACTIVITY;
 
 	public ArrayList<MBPlaceSubmitImageData> imageArrays = new ArrayList<MBPlaceSubmitImageData>();
 
@@ -43,6 +45,7 @@ public class MBPlaceSubmitData {
 		collectionId 	= data.collectionId;
 		description 	= data.description;
 		collectionName 	= data.collectionName;
+        mFrom           = data.mFrome;
 		imageArrays.clear();
 	}
 

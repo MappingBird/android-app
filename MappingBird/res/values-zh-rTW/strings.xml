@@ -168,6 +168,7 @@
     <string name="error_dialog_submit_place_failed_message">請確認你的網路連線是否沒有問題，並再重試一次。</string>
     <string name="error_dialog_upload_images_failed_title">照片上傳失敗</string>
     <string name="error_dialog_upload_images_failed_message">新地點已儲存成功，但上傳照片時發生了點問題。</string>
+    <string name="error_network_error_try_again_later">請連接網路後再嘗試</string>
 
     <!-- Notification -->
     <string name="noti_update_wait_title">等待上傳中</string>
@@ -210,4 +211,5 @@
     <string name="share_to_dg_select_photo_cover">1 封面</string>
     <string name="share_to_dg_input_about_title">輸入相關訊息</string>
     <string name="share_to_dg_select_collection_title">選擇地圖</string>
+    <string name="share_to_dg_input_another_title">找不到啊，請用別的關鍵字試試</string>
 </resources>

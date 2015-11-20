@@ -38,8 +38,9 @@ public class MBPlaceSubmitLogic {
 	/**
 	 * 重新上傳
 	 */
-	public void retry() {
+	public boolean retry() {
 		//如果沒有東西上傳. 回傳submitFinished(RESULT_OK)
+		return false;
 	}
 
 	/**

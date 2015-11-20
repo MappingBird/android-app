@@ -16,6 +16,7 @@ import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.MBUtil;
 
 /**
  *
@@ -136,6 +137,7 @@ public class ShareToPlaceInfoLayout extends LinearLayout {
 
     void setAbout(String about) {
         mAbout.setText(about);
+//        MBUtil.openIme(getContext(), mAbout);
     }
 
     void requestFocusToImage() {

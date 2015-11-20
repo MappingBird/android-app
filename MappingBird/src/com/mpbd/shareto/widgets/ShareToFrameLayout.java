@@ -2,9 +2,9 @@ package com.mpbd.shareto.widgets;
 
 import android.content.Context;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +21,9 @@ import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.collection.data.MBCollectionListObject;
 import com.mpbd.mappingbird.R;
+import com.mpbd.saveplace.MBPickPlaceActivity;
+import com.mpbd.saveplace.services.MBPlaceAddDataToServer;
+import com.mpbd.services.MBServiceClient;
 
 import java.util.ArrayList;
 
@@ -44,6 +47,9 @@ public class ShareToFrameLayout extends RelativeLayout {
 
     private int mCollectionIndex = 0;
 
+    private int mNextMode = MODE_INPUT_PLACE_NAME;
+    // Oops
+    private View mOopsImageView;
     // Loading
     private ShareToLoadingLayout mLoadingLayout;
     // View
@@ -59,6 +65,10 @@ public class ShareToFrameLayout extends RelativeLayout {
     private ShareToSelectPhotoLayout mSelectPhotoLayout;
     // About
     private ShareToInputAbout mInputAboutLayout;
+    // Hint
+    private ShareToSelectHintLayout mHintLayout;
+
+    private ShareToFramelayoutListener mShareToFramelayoutListener = null;
 
     public ShareToFrameLayout(Context context) {
         super(context);
@@ -87,6 +97,9 @@ public class ShareToFrameLayout extends RelativeLayout {
         mSelectPhotoLayout.setPhotoSelectListener(mPhotoSelectListener);
         mInputAboutLayout = (ShareToInputAbout)findViewById(R.id.shareto_dg_input_about_layout);
         mInputAboutLayout.setShareToAboutListener(mAboutListener);
+        mOopsImageView = findViewById(R.id.shareto_dg_oops_image);
+        mHintLayout = (ShareToSelectHintLayout) findViewById(R.id.shareto_dg_hint_layout);
+        mHintLayout.setOnHintListener(mHintListener);
     }
 
     public void setFinished(boolean finished) {
@@ -155,10 +168,11 @@ public class ShareToFrameLayout extends RelativeLayout {
 
             if (statusCode == MappingBirdAPI.RESULT_OK) {
                 // 有Collection
-                checkCollection(mCollectionList);
+                checkCollection(list);
             } else {
-                // 錯誤機制
-                checkCollection(null);
+                setMode(MODE_HINT);
+                mHintLayout.setMessage(getResources().getString(R.string.error_network_error_try_again_later));
+                mNextMode = MODE_FINISHED;
             }
         }
     };
@@ -193,6 +207,7 @@ public class ShareToFrameLayout extends RelativeLayout {
         setMode(MODE_INPUT_PLACE_NAME);
     }
 
+    private static final int MODE_FINISHED = 100;
     private static final int MODE_INPUT_PLACE_NAME = 1;
     private static final int MODE_SELECT_ITEM_LISTVIEW = 2;
     private static final int MODE_INFO_LAYOUT = 3;
@@ -200,6 +215,8 @@ public class ShareToFrameLayout extends RelativeLayout {
     private static final int MODE_SELECT_PHTOT = 5;
     private static final int MODE_INPUT_ABOUT = 6;
     private static final int MODE_SELECT_COLLECTION = 7;
+    private static final int MODE_INPUT_PLACE_ADDRESS = 8;
+    private static final int MODE_HINT = 9;
 
     private int mMode = -1;
 
@@ -218,6 +235,20 @@ public class ShareToFrameLayout extends RelativeLayout {
                 mLoadingLayout.setText(R.string.share_to_dg_loading);
                 mLoadingLayout.start();
                 break;
+            case MODE_INPUT_PLACE_ADDRESS:
+                mMode = mode;
+                hideLayout();
+
+                mInputLayout.setVisibility(View.VISIBLE);
+                mInputLayoutBottomView.setVisibility(View.VISIBLE);
+
+                mInputLayout.setHint(R.string.share_to_dg_input_place_hint);
+                mInputLayout.setInputListener(mInputListener);
+                mInputLayout.show();
+                mTitleText.setVisibility(View.VISIBLE);
+                mTitleText.setText(R.string.share_to_dg_input_another_title);
+                mOopsImageView.setVisibility(View.VISIBLE);
+                break;
             case MODE_INPUT_PLACE_NAME:
                 mMode = mode;
                 hideLayout();
@@ -227,7 +258,7 @@ public class ShareToFrameLayout extends RelativeLayout {
 
                 mInputLayout.setHint(R.string.share_to_dg_input_place_hint);
                 mInputLayout.setInputListener(mInputListener);
-                mInputLayout.clear();
+                mInputLayout.show();
                 mTitleText.setVisibility(View.VISIBLE);
                 mTitleText.setText(R.string.share_to_dg_input_place_title);
                 break;
@@ -274,6 +305,14 @@ public class ShareToFrameLayout extends RelativeLayout {
                 mSelectPlaceLayout.setData(mCollectionList, mCollectionIndex);
                 mSelectPlaceLayout.setVisibility(View.VISIBLE);
                 break;
+            case MODE_HINT:
+                mMode = mode;
+                hideLayout();
+
+                mTitleText.setVisibility(View.VISIBLE);
+                mTitleText.setText(R.string.error_network_title);
+                mHintLayout.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -287,6 +326,8 @@ public class ShareToFrameLayout extends RelativeLayout {
         mPlaceInfoLayout.setVisibility(View.GONE);
         mTitleText.setVisibility(View.GONE);
         mInputAboutLayout.setVisibility(View.GONE);
+        mOopsImageView.setVisibility(View.GONE);
+        mHintLayout.setVisibility(View.GONE);
     }
     // Input ---
     private ShareToInputLayout.InputListener mInputListener = new ShareToInputLayout.InputListener() {
@@ -306,11 +347,11 @@ public class ShareToFrameLayout extends RelativeLayout {
             if(isFinished())
                 return;
 
-            if(list != null) {
+            if(list != null && list.getCount() > 0) {
                 setMode(MODE_SELECT_ITEM_LISTVIEW);
                 mSelectPlaceLayout.setData(list);
             } else {
-                // 看Error code
+                setMode(MODE_INPUT_PLACE_ADDRESS);
             }
         }
     };
@@ -396,6 +437,13 @@ public class ShareToFrameLayout extends RelativeLayout {
             mPlaceData.placeName = mPlaceInfoLayout.getPlaceName();
             mPlaceInfoLayout.leave();
             // 準備上傳
+            MBPlaceAddDataToServer data = getPlaceInfoData();
+            data.type = MBPickPlaceActivity.TYPE_DEFAULT;
+            data.setImageList(mSelectedPhotoList);
+            data.mFrome = MBPlaceAddDataToServer.ADD_PLACE_FROM_SHARE_TO;
+            MBServiceClient.addPlace(data);
+            if(mShareToFramelayoutListener != null)
+                mShareToFramelayoutListener.onFinish();
         }
 
         @Override
@@ -410,6 +458,7 @@ public class ShareToFrameLayout extends RelativeLayout {
             mPlaceData.placeName = mPlaceInfoLayout.getPlaceName();
             mPlaceInfoLayout.leave();
             setMode(MODE_INPUT_ABOUT);
+            mInputAboutLayout.setAbout(mPlaceData.description);
         }
 
         @Override
@@ -421,6 +470,30 @@ public class ShareToFrameLayout extends RelativeLayout {
         }
     };
 
+    public MBPlaceAddDataToServer getPlaceInfoData() {
+        MBPlaceAddDataToServer data = new MBPlaceAddDataToServer();
+        if(!TextUtils.isEmpty(mPlaceData.placeName)) {
+            data.title = data.placeName = mPlaceData.placeName;
+        }
+        if(!TextUtils.isEmpty(mPlaceData.placeAddress))
+            data.placeAddress = mPlaceData.placeAddress;
+        if(!TextUtils.isEmpty(mPlaceData.description))
+            data.description = mPlaceData.description;
+
+        if(!TextUtils.isEmpty(mPlaceData.placePhone))
+            data.placePhone = mPlaceData.placePhone;
+        if(!TextUtils.isEmpty(mPlaceData.placeOpenTime))
+            data.placeOpenTime = mPlaceData.placeOpenTime;
+        if(!TextUtils.isEmpty(mPlaceData.url))
+            data.url = mPlaceData.url;
+
+//        data.tags = mTagsListStr;
+        data.collectionId = mCollectionList.get(mCollectionIndex).getId();
+        data.collectionName = mCollectionList.get(mCollectionIndex).getName();
+        data.lat = String.valueOf(mPlaceData.lat);
+        data.lng = String.valueOf(mPlaceData.lng);
+        return data;
+    }
     // Select Photo
     private ShareToSelectPhotoLayout.PhotoSelectListener mPhotoSelectListener = new ShareToSelectPhotoLayout.PhotoSelectListener() {
 
@@ -440,7 +513,6 @@ public class ShareToFrameLayout extends RelativeLayout {
     };
 
     // About
-
     private ShareToInputAbout.ShareToAboutListener mAboutListener = new ShareToInputAbout.ShareToAboutListener() {
         @Override
         public void updateAbout(String about) {
@@ -450,4 +522,25 @@ public class ShareToFrameLayout extends RelativeLayout {
             perpareInfoData();
         }
     };
+
+    // Hint Layout
+    private ShareToSelectHintLayout.OnHintListener mHintListener = new ShareToSelectHintLayout.OnHintListener() {
+        @Override
+        public void onHintBtnClick() {
+            if(mNextMode == MODE_FINISHED) {
+                mShareToFramelayoutListener.onFinish();
+            } else {
+                setMode(mNextMode);
+            }
+        }
+    };
+
+    // Listener
+    public void setShareToFramelayoutListener(ShareToFramelayoutListener listener) {
+        mShareToFramelayoutListener = listener;
+    }
+
+    public interface ShareToFramelayoutListener {
+        public void onFinish();
+    }
 }

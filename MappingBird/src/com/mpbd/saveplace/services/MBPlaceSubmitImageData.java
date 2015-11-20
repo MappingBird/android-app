@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -121,31 +123,94 @@ public class MBPlaceSubmitImageData {
 		return sample;
 	}
 	
-	public boolean updateImageTempBySession(final String placeId, final String csrfToken, final String session,
+	public boolean updateImageTempBySession(final String placeId, final String csrfToken, final String session, final int from,
 			SubmitImageDataListener listener) {
-		final byte[] bmp = getBitmapBytArraySession(mFileUrl);
-		if(bmp != null) {
-			mListener = listener;
-			new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					uploadFile("https://mappingbird.com/api/upload",
-							Integer.parseInt(placeId),
-							bmp,
-							"p"+placeId+".jpg",
-							csrfToken,
-							session
-							);					
-				}
-			}).start();
-			return true;
-		} else {
-			return false;
-		}
+        if(from == MBPlaceAddDataToServer.ADD_PLACE_FROM_SHARE_TO) {
+            mListener = listener;
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    //只上傳Url
+                    uploadFileURL("https://mappingbird.com/api/images",
+                            Integer.parseInt(placeId),
+                            mFileUrl);
+                }
+            }).start();
+            return true;
+        } else {
+            final byte[] bmp = getBitmapBytArraySession(mFileUrl);
+            if(bmp != null) {
+                mListener = listener;
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        uploadFile("https://mappingbird.com/api/upload",
+                                Integer.parseInt(placeId),
+                                bmp,
+                                "p" + placeId + ".jpg",
+                                csrfToken,
+                                session
+                        );
+                    }
+                }).start();
+                return true;
+            } else {
+                return false;
+            }
+        }
 	}
 
-	private void uploadFile(String apiUrl, int point, byte[] object, String fileName, String csrftoken, String sessionid) {		
+    private void uploadFileURL(String apiUrl, int point, String imageUrl) {
+        if(DeBug.DEBUG) {
+            DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "update image url : "+apiUrl+"/"+imageUrl);
+        }
+
+        try {
+            URL url = new URL(apiUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setUseCaches(false);
+            conn.setDoOutput(true);
+
+            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+            StringBuilder sb = new StringBuilder();
+            sb.append("url=").append(URLEncoder.encode(imageUrl, "UTF-8"));
+            sb.append("&");
+            sb.append("point=").append(URLEncoder.encode("" + point, "UTF-8"));
+
+            wr.writeBytes(sb.toString());
+            wr.flush();
+            wr.close();
+
+            int serverResponseCode = conn.getResponseCode();
+            String serverResponseMessage = conn.getResponseMessage();
+            DeBug.d("HTTP Response is : " + String.valueOf(serverResponseCode) + " " + serverResponseMessage);
+            if (serverResponseCode == 200 || serverResponseCode == 201){
+                // 上傳成功
+                if(null != mListener)
+                    mListener.submitSuccessd();
+            } else {
+                // 上傳失敗
+                if(null != mListener)
+                    mListener.submitFailed();
+            }
+            conn.disconnect();
+        } catch (Exception e) {
+            if(e != null) {
+//				DeBug.e(MBPlaceSubmitUtil.ADD_TAG,e.getMessage());
+                e.printStackTrace();
+            }
+            DeBug.e(MBPlaceSubmitUtil.ADD_TAG,"update load failed");
+            if(null != mListener)
+                mListener.submitFailed();
+        } finally{
+        }
+    }
+
+    private void uploadFile(String apiUrl, int point, byte[] object, String fileName, String csrftoken, String sessionid) {
 		String lineEnd = "\r\n";
 		String twoHyphens = "--";
         String boundary = "----WebKitFormBoundaryMRUCc049xtgXiwJZ";
@@ -163,7 +228,8 @@ public class MBPlaceSubmitImageData {
 			String serverResponseMessage;			
 			
 	        URL url = new URL(apiUrl);
-	        DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "uploadFile by session");
+            if(DeBug.DEBUG)
+	            DeBug.i(MBPlaceSubmitUtil.ADD_TAG, "uploadFile by session");
 	        //-- open a HTTP  connection to  the URL
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection(); 
 	        conn.setDoInput(true); // Allow Inputs
@@ -247,7 +313,9 @@ public class MBPlaceSubmitImageData {
 			} else {
 				DeBug.e(MBPlaceSubmitUtil.ADD_TAG,"update load failed");
 			}
-		} finally{
+            if(null != mListener)
+                mListener.submitFailed();
+        } finally{
 	        //-- close the streams
 			if (null != dos) {
 				try {

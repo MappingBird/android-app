@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.mpbd.mappingbird.R;
 
 
 public class MBUtil {
+    private LruCache<String, String> m;
 	public static final boolean mEnableAddFunction = true;
 	public static int getWindowHeight(Context context) {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -54,7 +56,7 @@ public class MBUtil {
 		InputMethodManager inputMethodManager=(InputMethodManager)
 				context.getSystemService(Context.INPUT_METHOD_SERVICE);
 	    inputMethodManager.toggleSoftInputFromWindow(view.getWindowToken(),
-	    		0, 0);
+                0, 0);
 	}
 
 	public static void closeIME(Context context, View view) {

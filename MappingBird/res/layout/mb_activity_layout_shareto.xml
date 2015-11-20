@@ -90,5 +90,25 @@
             android:orientation="vertical"
             android:paddingTop="8dp"
             android:visibility="gone" />
+
+        <include
+            android:id="@+id/shareto_dg_hint_layout"
+            layout="@layout/mb_layout_shareto_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shareto_dg_title"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:visibility="gone" />
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/shareto_dg_oops_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/shareto_dg_layout"
+        android:layout_marginBottom="-35dp"
+        android:visibility="gone"
+        android:src="@drawable/dialog_icon_oops"/>
 </com.mpbd.shareto.widgets.ShareToFrameLayout>

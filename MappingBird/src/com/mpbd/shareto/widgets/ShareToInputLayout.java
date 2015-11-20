@@ -15,13 +15,17 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.mpbd.mappingbird.R;
+import com.mpbd.mappingbird.util.MBUtil;
 
 /**
  *
@@ -52,6 +56,17 @@ public class ShareToInputLayout extends LinearLayout {
         super.onFinishInflate();
         mEditText = (EditText) findViewById(R.id.shareto_dg_search_edit);
         mEditText.addTextChangedListener(mTextWatcher);
+        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    clickBtn();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         mSearchBtn = findViewById(R.id.shareto_dg_search_btn);
         mSearchBtn.setOnClickListener(mClickListener);
         mSearchBtn.setEnabled(false);
@@ -84,20 +99,34 @@ public class ShareToInputLayout extends LinearLayout {
         }
     };
 
-    public void clear() {
+    private void clear() {
         mEditText.setText("");
     }
 
+    public void show() {
+        clear();
+        this.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MBUtil.openIme(getContext(), mEditText);
+            }
+        }, 500);
+
+    }
     private OnClickListener mClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(mInputListener != null) {
-                closeIME();
-                String text = mEditText.getText().toString();
-                mInputListener.onClickSearch(text);
-            }
+            clickBtn();
         }
     };
+
+    private void clickBtn() {
+        if(mInputListener != null) {
+            closeIME();
+            String text = mEditText.getText().toString();
+            mInputListener.onClickSearch(text);
+        }
+    }
 
     public void setInputListener(InputListener listener) {
         mInputListener = listener;

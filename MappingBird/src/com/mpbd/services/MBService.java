@@ -9,6 +9,7 @@ import android.os.IBinder;
 
 import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdApplication;
+import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.saveplace.MBSubmitMsgData;
 import com.mpbd.saveplace.db.AppPlaceDB;
 import com.mpbd.saveplace.services.MBPlaceAddDataToServer;
@@ -27,9 +28,6 @@ public class MBService extends Service{
 	private static final int NOTIFY_FINISHED_ID = 10021;
 	public static final String EXTRA_SERVICE_COMMEND = "extra_service_commend";
 	
-	public static final int CMD_START_LOCATUIN 	= 100;
-	public static final int CMD_STOP_LOCATUIN 	= 101;
-	public static final int CMD_ATTACH_MESSAGE 	= 102;
 	public static final int CMD_ADD_PLACE_ITEM	= 103;
 	public static final int CMD_RETRY_UPDATE 	= 104;
 	public static final int CMD_STOP_TO_UPLOAD 	= 105;
@@ -37,7 +35,6 @@ public class MBService extends Service{
 	public static final int CMD_STOP_SERVICE 	= 110;
 
 	//
-	public static final String EXTRA_MESSENGER 	= "extra_messenger";
 	public static final String EXTRA_PLACE_DATA = "extra_place_data";
 	
 	//
@@ -78,8 +75,7 @@ public class MBService extends Service{
 				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : update data");
 			MBPlaceSubmitLogic logic = MBPlaceSubmitLogic.getInstance();
 			boolean updateData = logic.submit();
-			if(updateData) {
-			} else {
+			if(!updateData) {
 				stopSelf();
 				DeBug.d(MBPlaceSubmitUtil.ADD_TAG, "[Service] RETRY : no update - stop service ");
 			}			
@@ -200,12 +196,14 @@ public class MBService extends Service{
 					String ticker = String.format(
 							MappingBirdApplication.instance().getString(R.string.noti_update_place_finished_ticker),
 							data.placeName);
-					Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(), 
-							ticker, 
-							title, 
-							message,
-							state, data.placeId);
-					notificationManager.notify(NOTIFY_FINISHED_ID, nm);
+					Notification nm = MBNotificationCenter.getUpdateMessageNotification(MappingBirdApplication.instance(),
+                            ticker,
+                            title,
+                            message,
+                            state, data.placeId);
+                    int id = MappingBirdPref.getIns().getAddPlaceNotifyId();
+                    MappingBirdPref.getIns().setAddPlaceNotifyId(id+1);
+					notificationManager.notify(NOTIFY_FINISHED_ID+id, nm);
 				}
 				sendAddPlaceStateMessage(MBPlaceSubmitTask.MSG_ADD_PLACE_FINISHED,
 						progess, totle, data);
@@ -225,8 +223,8 @@ public class MBService extends Service{
 			NotificationManager notificationManager = (NotificationManager) MappingBirdApplication.instance().getSystemService(Context.NOTIFICATION_SERVICE);
 			if(notificationManager != null && data != null) {
 				// 計算上傳照片的值
-				int nProgess = 0;
-				int nTotle = 0;
+				int nProgess;
+				int nTotle;
 				if(totle > 1) {
 					nProgess = progess - 1;
 					nTotle = totle - 1;
