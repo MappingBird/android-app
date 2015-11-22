@@ -33,6 +33,8 @@ public class MBShareToActivity extends FragmentActivity {
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
+        if (DeBug.DEBUG)
+            DeBug.e(TAG, "[ShareTo] action = "+action+", type = "+type);
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
@@ -40,6 +42,17 @@ public class MBShareToActivity extends FragmentActivity {
             } else {
                 if (DeBug.DEBUG)
                     DeBug.e(TAG, "[ShareTo] type is wrong, finished");
+                finish();
+            }
+        } else {
+            //
+            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (DeBug.DEBUG) {
+                DeBug.d(TAG, "[ShareTo] Extra text : " + sharedText);
+            }
+            if(!TextUtils.isEmpty(sharedText) && sharedText.contains("tripadvisor")) {
+                handleSendText(intent);
+            } else {
                 finish();
             }
         }
@@ -52,10 +65,10 @@ public class MBShareToActivity extends FragmentActivity {
 
     private void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (DeBug.DEBUG) {
+            DeBug.d(TAG, "[ShareTo] Extra text : " + sharedText);
+        }
         if (!TextUtils.isEmpty(sharedText)) {
-            if (DeBug.DEBUG) {
-                DeBug.d(TAG, "[ShareTo] Extra text : " + sharedText);
-            }
             // 分析直
             int httpIndex = sharedText.toLowerCase().indexOf("http");
             if (httpIndex == -1) {

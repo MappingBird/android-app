@@ -42,8 +42,10 @@ import com.mpbd.saveplace.MBPickPlaceActivity;
 import com.mpbd.collection.widget.MBListLayoutAddLayout.OnSelectKindLayoutListener;
 import com.mpbd.ui.MBItem;
 import com.mpbd.mappingbird.R;
+import com.mpbd.util.MBBitmapParamUtil;
 import com.mpbd.util.MBUtil;
 import com.mpbd.util.Utils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MBCollectionListLayout extends RelativeLayout {
 	private final static String TAG = "MB.Collection.List";
@@ -71,9 +73,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 	// Select kind
 	private MBListLayoutAddLayout mAddLayout;
 
-	//Bitmap loader
-	private BitmapLoader mBitmapLoader;
-	
 	private float mDragY = 0;
 	private float mStartY = 0, mEndY = 0;
 	
@@ -116,7 +115,6 @@ public class MBCollectionListLayout extends RelativeLayout {
 
 		mListView = (ListView) findViewById(R.id.item_list);
 		mListView.setVisibility(View.INVISIBLE);
-		mBitmapLoader = new BitmapLoader(getContext());
 		mItemAdapter = new ItemAdapter(getContext());
 		mListView.setAdapter(mItemAdapter);
 		mListView.setOnItemClickListener(mListViewItemClickListener);
@@ -1002,19 +1000,7 @@ public class MBCollectionListLayout extends RelativeLayout {
 			if(item.mPoint.getImageDetails().size() > 0) {
 				if(TextUtils.isEmpty(imagePath))
 					imagePath = item.mPoint.getImageDetails().get(0).getUrl();
-				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
-				params.mBitmapDownloaded = new BitmapDownloadedListener() {
-					@Override
-					public void onDownloadFaild(String url, ImageView icon,
-							BitmapParameters params) {
-					}
-					
-					@Override
-					public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
-							BitmapParameters params) {
-					}
-				};
-				mBitmapLoader.getBitmap(host.mImageView, params, false);
+                ImageLoader.getInstance().displayImage(imagePath, host.mImageView, MBBitmapParamUtil.COL_CARD_BMP_PARAM_OTHER);
 			}
 			
 			host.mTitle.setText(item.mPoint.getTitle());

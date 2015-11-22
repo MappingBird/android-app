@@ -14,11 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mappingbird.common.BitmapLoader;
-import com.mappingbird.common.BitmapParameters;
-import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.util.MBBitmapParamUtil;
 import com.mpbd.util.MBUtil;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MBPhotoAdapter extends BaseAdapter  {
 	
@@ -26,7 +25,6 @@ public class MBPhotoAdapter extends BaseAdapter  {
 	private static final int MAX_PHOTO_NUMBER = 10;
 	private Context mContext;
 	private LayoutInflater mInflater;
-	private BitmapLoader mBitmapLoader;
 
 	private PhotoAdapterListener mPhotoAdapterListener = null;
 	private ArrayList<String> mSelectPhotoList = new ArrayList<String>();
@@ -38,7 +36,6 @@ public class MBPhotoAdapter extends BaseAdapter  {
 		mContext = context;
 		mInflater = LayoutInflater.from(mContext);
 		mItems.clear();
-		mBitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
 	}
 
 	public ArrayList<String> getSelectPhotoList() {
@@ -173,8 +170,8 @@ public class MBPhotoAdapter extends BaseAdapter  {
 	private void setLayoutData(View layout, ImageView image,
 			TextView checkView, View mask, String path) {
 		layout.setVisibility(View.VISIBLE);
-		BitmapParameters params = BitmapParameters.getFileBitmap(path, 320, 320);
-		mBitmapLoader.getBitmap(image, params);
+        image.setImageDrawable(null);
+        ImageLoader.getInstance().displayImage("file:///"+path, image, MBBitmapParamUtil.SAVE_PLAE_PHOTO_PARAM);
 		layout.setTag(path);
 		if(mSelectPhotoList.contains(path)) {
 			checkView.setVisibility(View.VISIBLE);

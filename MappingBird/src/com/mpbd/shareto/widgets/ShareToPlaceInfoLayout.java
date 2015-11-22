@@ -16,6 +16,8 @@ import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.util.MBBitmapParamUtil;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  *
@@ -113,9 +115,10 @@ public class ShareToPlaceInfoLayout extends LinearLayout {
 
     void setFirstImageUrl(String url) {
         mImageView.setVisibility(View.VISIBLE);
-        BitmapLoader bitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
-        BitmapParameters params = BitmapParameters.getUrlBitmap(url);
-        bitmapLoader.getBitmap(mImageView, params);
+//        BitmapLoader bitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
+//        BitmapParameters params = BitmapParameters.getUrlBitmap(url);
+//        bitmapLoader.getBitmap(mImageView, params);
+        ImageLoader.getInstance().displayImage(url, mImageView, MBBitmapParamUtil.SHARETO_PHOTO_PARAM);
     }
 
     void closeImageView() {

@@ -11,6 +11,10 @@ import com.mpbd.collection.data.MBCollectionItemObject;
 import com.mpbd.collection.data.MBCollectionListObject;
 import com.mpbd.collection.data.MBPlaceItemObject;
 import com.mpbd.data.cache.CacheData;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 @ReportsCrashes(
     formUri = "https://collector.tracepot.com/f6bb43f9"
@@ -47,8 +51,19 @@ public class MappingBirdApplication extends Application {
         mCacheData = new CacheData();
 
 		FlurryAgent.init(this, FLURRY_API_KEY);
+        initImageLoader();
 	}
 
+    private void initImageLoader() {
+        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(mInstance);
+        config.threadPriority(Thread.NORM_PRIORITY - 2);
+        config.denyCacheImageMultipleSizesInMemory();
+        config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
+        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
+        config.tasksProcessingOrder(QueueProcessingType.LIFO);
+        config.writeDebugLogs(); // Remove for release app
+        ImageLoader.getInstance().init(config.build());
+    }
 	public MBPlaceItemObject getPlaceItemObj() {
 		return mMBPlaceItemObj;
 	}

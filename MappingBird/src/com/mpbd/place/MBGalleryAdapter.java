@@ -16,6 +16,10 @@ import com.mappingbird.common.BitmapLoader.BitmapDownloadedListener;
 import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.util.MBBitmapParamUtil;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 public class MBGalleryAdapter extends PagerAdapter {
@@ -23,11 +27,9 @@ public class MBGalleryAdapter extends PagerAdapter {
 	private ArrayList<String> mImagePathList = new ArrayList<String>();
 	private Context mContext;
 	private LayoutInflater mInflater;
-	private BitmapLoader mBitmapLoader;
 	public MBGalleryAdapter(Context context) {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
-		mBitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
 	}
 
 	public void setPathList(ArrayList<String> list) {
@@ -51,30 +53,37 @@ public class MBGalleryAdapter extends PagerAdapter {
 		final View viewHolder = mInflater.inflate(R.layout.mb_gallery_item_image, container, false);
 		final ImageView image = (ImageView)viewHolder.findViewById(R.id.item_image);
 		final ProgressWheel progress = (ProgressWheel) viewHolder.findViewById(R.id.item_loading);
-		BitmapParameters params = BitmapParameters.getUrlBitmap(path);
-		params.mBitmapDownloaded = new BitmapDownloadedListener() {
-			
-			@Override
-			public void onDownloadFaild(String url, ImageView icon,
-					BitmapParameters params) {
-				if(image != null && icon != null && image.getTag().equals(icon.getTag())) {
-					image.setImageResource(R.drawable.default_problem_big);
-					progress.stopSpinning();
-					progress.setVisibility(View.GONE);
-				}
-			}
-			
-			@Override
-			public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
-					BitmapParameters params) {
-				if(image != null && icon != null && image.getTag().equals(icon.getTag())) {
-					image.setScaleType(ScaleType.FIT_CENTER);
-					progress.stopSpinning();
-					progress.setVisibility(View.GONE);
-				}
-			}
-		};
-		mBitmapLoader.getBitmap(image, params, false);
+        image.setTag(R.id.item_image, path);
+        ImageLoader.getInstance().displayImage(path, image, MBBitmapParamUtil.COL_CARD_BMP_PARAM_OTHER,
+                new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String s, View view) {
+
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String s, View view, FailReason failReason) {
+                        if(image != null && view != null && image.getTag(R.id.item_image).equals(view.getTag(R.id.item_image))) {
+                            image.setImageResource(R.drawable.default_problem_big);
+                            progress.stopSpinning();
+                            progress.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                        if(image != null && view != null && image.getTag(R.id.item_image).equals(view.getTag(R.id.item_image))) {
+                            image.setScaleType(ScaleType.FIT_CENTER);
+                            progress.stopSpinning();
+                            progress.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String s, View view) {
+
+                    }
+                });
 		container.addView(viewHolder);
 		return viewHolder;
 	}

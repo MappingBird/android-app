@@ -23,8 +23,10 @@ import com.mappingbird.common.BitmapParameters;
 import com.mappingbird.common.DistanceObject;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mpbd.mappingbird.R;
+import com.mpbd.util.MBBitmapParamUtil;
 import com.mpbd.util.MBUtil;
 import com.mpbd.util.Utils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class MBListLayoutCardView extends RelativeLayout {
 
@@ -32,7 +34,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 	public static final int MODE_DRAG = 1;
 
 	private ImageView mCardIcon;
-	private BitmapLoader mBitmapLoader;
 	private MBPointData mPoint;
 	private TextView mCardTitle, mCardDistance, mCardUnit;
 	private View mCardContentLayout;
@@ -52,7 +53,6 @@ public class MBListLayoutCardView extends RelativeLayout {
 	private View mMaskView;
 
 	private int mParentHeight = 0;
-	private float mCard0_Position = 0;
 	private float mCardMaxHeight = 0;
 	private float mCardPoisition = 0;
 	
@@ -73,15 +73,12 @@ public class MBListLayoutCardView extends RelativeLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		mBitmapLoader = MappingBirdApplication.instance().getBitmapLoader();
-		
 		// Card
 		mCardIcon = (ImageView) findViewById(R.id.card_icon);
 		mCardTitle = (TextView) findViewById(R.id.card_title);
 		mCardDistance = (TextView) findViewById(R.id.card_distance);
 		mCardUnit = (TextView) findViewById(R.id.card_unit);
 		mCardContentLayout = findViewById(R.id.card_content_layout);
-		mCard0_Position = (int)getResources().getDimension(R.dimen.list_layout_card0_position_height);
 		mContentMarginLeft = (int) getResources().getDimension(R.dimen.list_layout_card_icon_width);
 		
 		// List item
@@ -137,40 +134,40 @@ public class MBListLayoutCardView extends RelativeLayout {
 	public void setData(LatLng mylocation, MBPointData point) {
 		if(point == null)
 			return;
+
+        // 清除之前的資料
 		mPoint = point;
-		if(mPoint.getImageDetails().size() > 0) {
+        mCardIcon.setScaleType(ScaleType.CENTER_CROP);
+        if(mPoint.getImageDetails().size() > 0) {
 			String imagePath = null;
 			if(TextUtils.isEmpty(imagePath))
 				imagePath = mPoint.getImageDetails().get(0).getUrl();
 			if(!TextUtils.isEmpty(imagePath)) {
-				mCardIcon.setScaleType(ScaleType.CENTER_CROP);
+
 				mCardIcon.setImageResource(mPoint.getDefTypeResource());
-				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
-				params.mBitmapDownloaded = new BitmapDownloadedListener() {
-					
-					@Override
-					public void onDownloadFaild(String url, ImageView icon,
-							BitmapParameters params) {
-						if(mCardIcon != null && icon != null && mCardIcon.getTag().equals(icon.getTag())) {
-							mCardIcon.setScaleType(ScaleType.CENTER_CROP);
-							mCardIcon.setImageResource(mPoint.getDefTypeResource());
-						}
-					}
-					
-					@Override
-					public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
-							BitmapParameters params) {
-						if(mCardIcon != null && icon != null && mCardIcon.getTag().equals(icon.getTag()))
-							mCardIcon.setScaleType(ScaleType.CENTER_CROP);
-					}
-				};
-				mBitmapLoader.getBitmap(mCardIcon, params, false);
+//				BitmapParameters params = BitmapParameters.getUrlBitmap(imagePath);
+//				params.mBitmapDownloaded = new BitmapDownloadedListener() {
+//
+//					@Override
+//					public void onDownloadFaild(String url, ImageView icon,
+//							BitmapParameters params) {
+//						if(mCardIcon != null && icon != null && mCardIcon.getTag().equals(icon.getTag())) {
+//							mCardIcon.setImageResource(mPoint.getDefTypeResource());
+//						}
+//					}
+//
+//					@Override
+//					public void onDownloadComplete(String url, ImageView icon, Bitmap bmp,
+//							BitmapParameters params) {
+//					}
+//				};
+//				mBitmapLoader.getBitmap(mCardIcon, params, false);
+                ImageLoader imageLoader = ImageLoader.getInstance();
+                imageLoader.displayImage(imagePath, mCardIcon, MBBitmapParamUtil.COL_CARD_BMP_PARAM_FIRST);
 			} else {
-				mCardIcon.setScaleType(ScaleType.CENTER_CROP);
 				mCardIcon.setImageResource(mPoint.getDefTypeResource());
 			}
 		} else {
-			mCardIcon.setScaleType(ScaleType.CENTER_CROP);
 			mCardIcon.setImageResource(mPoint.getDefTypeResource());
 		}
 		
