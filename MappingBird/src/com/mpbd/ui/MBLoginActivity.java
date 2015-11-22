@@ -25,9 +25,16 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.mappingbird.api.MappingBirdAPI;
 import com.mappingbird.api.OnLogInListener;
 import com.mappingbird.api.User;
+import com.mappingbird.common.DeBug;
 import com.mappingbird.common.MappingBirdPref;
 import com.mpbd.common.MBDialog;
 import com.mpbd.common.MBDialogUtil;
@@ -38,6 +45,7 @@ import com.mpbd.util.AppAnalyticHelper;
 
 public class MBLoginActivity extends Activity implements
 		OnClickListener {
+    private static final String TAG = "MB.Login";
 	private RelativeLayout mLogInBtnLayout = null;
 	private EditText mEmail = null;
 	private EditText mPassword = null;
@@ -57,11 +65,38 @@ public class MBLoginActivity extends Activity implements
 
 	private MBInputDialog mInputEmailDialog = null;
 	private String mForgotemail = "";
+
+    private CallbackManager callbackManager;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.mb_activity_layout_login);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        setContentView(R.layout.mb_activity_layout_login);
+
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_fb_btn);
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                if(DeBug.DEBUG)
+                    DeBug.i(TAG, "[FB Login] onSuccess");
+            }
+
+            @Override
+            public void onCancel() {
+                if(DeBug.DEBUG)
+                    DeBug.i(TAG, "[FB Login] Cacnel");
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                if(DeBug.DEBUG)
+                    DeBug.e(TAG, "[FB Login] Error = "+e.toString());
+            }
+        });
+        loginButton.setVisibility(View.GONE);
+
 		mLogInBtnLayout = (RelativeLayout) findViewById(R.id.login_bnt_layout);
 		mEmail = (EditText) findViewById(R.id.input_email);
 		mPassword = (EditText) findViewById(R.id.input_password);
@@ -334,4 +369,10 @@ public class MBLoginActivity extends Activity implements
 		}
 		mLoadingDialog = null;
 	}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 }
