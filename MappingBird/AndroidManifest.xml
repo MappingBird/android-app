@@ -13,8 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="14" />
+        android:minSdkVersion="15"
+        android:targetSdkVersion="15" />
 
     <application
         android:name="com.mappingbird.common.MappingBirdApplication"

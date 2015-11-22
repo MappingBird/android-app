@@ -1,4 +1,4 @@
-include ':MappingBird', ':universal-image-loader-1.9.4'
+include ':MappingBird', ':universal-image-loader-1.9.4', ':facebook-android-sdk-4.8.1'
 include ':CommonLib'
 include ':google-play-services_lib'
 include ':ViewPagerIndicator_library'

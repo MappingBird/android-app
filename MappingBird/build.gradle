@@ -8,45 +8,41 @@ dependencies {
     compile 'com.android.support:cardview-v7:21.0.+'
     compile 'com.android.support:recyclerview-v7:21.0.+'
     compile project(':universal-image-loader-1.9.4')
+    compile project(':facebook-android-sdk-4.8.1')
 }
 
 android {
     compileSdkVersion 21
     buildToolsVersion '21.1.2'
-
     def BOOLEAN = "boolean"
     def TRUE = "true"
     def FALSE = "false"
     def ENABLE_LOG = "EnableLog";
-
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 14
+        minSdkVersion 16
+        targetSdkVersion 16
         buildConfigField BOOLEAN, ENABLE_LOG, FALSE
     }
-
     signingConfigs {
-        myConfig{
+        myConfig {
             storeFile file("MPBD_mappingbird.keystore")
             storePassword "mappingbird"
             keyAlias "mpbd"
             keyPassword "mappingbird"
         }
     }
-
-    buildTypes{
+    buildTypes {
         release {
-            signingConfig  signingConfigs.myConfig
+            signingConfig signingConfigs.myConfig
             minifyEnabled true
             proguardFile 'proguard-project.txt'
             buildConfigField BOOLEAN, ENABLE_LOG, FALSE
         }
         debug {
-            signingConfig  signingConfigs.myConfig
+            signingConfig signingConfigs.myConfig
             buildConfigField BOOLEAN, ENABLE_LOG, TRUE
         }
     }
-
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -69,5 +65,7 @@ android {
         // by a similar customization.
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
+    }
+    productFlavors {
     }
 }
