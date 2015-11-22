@@ -31,21 +31,16 @@ public class MBCollectionItem implements Serializable{
 		mIsNewest = isNewest;
 		mPoints = points;
 	}
-	
+
 	MBCollectionItem(long id, long userId, String name, String createTime,
-			String updateTime, ArrayList<MBPointData> pointobjs) {
+					 String updateTime, ArrayList<MBPointData> pointobjs) {
 		mId = id;
 		mUserId = userId;
 		mName = name;
-		mCreateTime = createTime;
-		mUpdateTime = updateTime;
-		mPointsObjs = pointobjs;
-	}
-	
-	MBCollectionItem(long id, long userId, String name, ArrayList<MBPointData> pointobjs) {
-		mId = id;
-		mUserId = userId;
-		mName = name;
+		if(createTime != null)
+		    mCreateTime = createTime;
+        if(updateTime != null)
+		    mUpdateTime = updateTime;
 		mPointsObjs = pointobjs;
 	}
 

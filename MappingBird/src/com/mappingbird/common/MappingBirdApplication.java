@@ -10,6 +10,7 @@ import com.flurry.android.FlurryAgent;
 import com.mpbd.collection.data.MBCollectionItemObject;
 import com.mpbd.collection.data.MBCollectionListObject;
 import com.mpbd.collection.data.MBPlaceItemObject;
+import com.mpbd.data.cache.CacheData;
 
 @ReportsCrashes(
     formUri = "https://collector.tracepot.com/f6bb43f9"
@@ -22,6 +23,7 @@ public class MappingBirdApplication extends Application {
 	private static MBCollectionListObject mMBCollectionObj;
 	private static MBCollectionItemObject mMBCollectionItem;
 	private static MBPlaceItemObject mMBPlaceItemObj;
+	private static CacheData mCacheData;
 	private int memoryClass = 0;
 	private static BitmapLoader mBitmapLoader;
 	private static final String FLURRY_API_KEY = "C8DY53HJK42K8H3Z4RFF";
@@ -42,7 +44,8 @@ public class MappingBirdApplication extends Application {
 		mMBCollectionObj = new MBCollectionListObject();
 		mMBCollectionItem = new MBCollectionItemObject();
 		mMBPlaceItemObj = new MBPlaceItemObject();
-		
+        mCacheData = new CacheData();
+
 		FlurryAgent.init(this, FLURRY_API_KEY);
 	}
 
@@ -65,6 +68,10 @@ public class MappingBirdApplication extends Application {
 	public BitmapLoader getBitmapLoader() {
 		return mBitmapLoader;
 	}
+
+    public CacheData getCacheData() {
+        return mCacheData;
+    }
 
 	public int getMemoryClass() {
 		if (memoryClass == 0) {

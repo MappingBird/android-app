@@ -45,7 +45,8 @@ public class MBCollectionItemObject {
 				mLastCollectionItem = item;
 				mLastStatusCode = statusCode;
 				// 存入DB裡面
-				mDataDB.putCollectionItem(item.getId(), item, ""+System.currentTimeMillis());
+				String time = item.getUpdateTime() != null ? item.getUpdateTime() : ""+System.currentTimeMillis();
+				mDataDB.putCollectionItem(item.getId(), item, time);
 			} else {
 				// Server沒拿到改拿Cache的直
 				mLastCollectionItem = mDataDB.getCollectionItem(mGetCollectionItemId);

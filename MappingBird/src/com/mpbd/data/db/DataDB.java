@@ -29,10 +29,10 @@ public class DataDB {
     /*
      * Collection List
      */
-    public boolean putCollectionList(MBCollectionList list, long updateTime) {
-    	// 檢查update time是否一致. 如果不一致. 砍掉重設定
-    	if(!checkNeedToUpdateDB(updateTime))
-    		return true;
+    public synchronized boolean putCollectionList(MBCollectionList list, long updateTime) {
+    	// 不用檢查, 每次就直接覆蓋上去
+//    	if(!checkNeedToUpdateDB(updateTime))
+//    		return true;
     	
     	SQLiteDatabase db = mHelper.getWritableDatabase();
     	// 砍掉
@@ -54,38 +54,8 @@ public class DataDB {
 
     	return true;
     }
-    
-    public boolean checkNeedToUpdateDB(long updateTime) {
-        if(DeBug.DEBUG)
-            DeBug.i(TAG, "[Check Collection List] check list update time : "+updateTime);
-    	try {
-	    	SQLiteDatabase db = mHelper.getWritableDatabase();
-	    	Cursor cursor = db.query(DataDBHelper.COLLECTION_LIST_TABLE_NAME,
-	    			DataDBHelper.COLLECTION_LIST_TABLE_COLUMNS,
-	    			null , null, null, null, null);
-	    	boolean haveData = cursor != null && cursor.getCount() > 0;
 
-            if(haveData) {
-	    		cursor.moveToFirst();
-                if(DeBug.DEBUG)
-                    DeBug.i(TAG, "[Check Collection List] have cache , last update time : "+cursor.getLong((cursor.getColumnIndex(DataDBHelper.COLLECTION_LIST_UPDATE_TIME))));
-	    		if(updateTime != cursor.getLong(cursor.getColumnIndex(DataDBHelper.COLLECTION_LIST_UPDATE_TIME))) {
-                    if(DeBug.DEBUG)
-                        DeBug.i(TAG, "[Check Collection List] need update");
-	    			return true;
-	    		}
-                if(DeBug.DEBUG)
-                    DeBug.i(TAG, "[Check Collection List] pass update");
-	    	}
-    	} catch(Exception e) {
-            if(DeBug.DEBUG)
-                DeBug.i(TAG, "[Check Collection List] get Collection List Exception !!! ");
-    		return true;
-    	}
-    	return false;
-    }
-    
-    public MBCollectionList getCollectionList() {
+    public synchronized MBCollectionList getCollectionList() {
     	try {
 	    	SQLiteDatabase db = mHelper.getWritableDatabase();
 	    	Cursor cursor = db.query(DataDBHelper.COLLECTION_LIST_TABLE_NAME,
@@ -110,11 +80,21 @@ public class DataDB {
     /*
      * Collection item 
      */
-    public boolean putCollectionItem(long id, MBCollectionItem item, String updateTime) {
-    	// 檢查update time是否一致. 如果不一致. 砍掉重設定
-    	if(!checkNeedToUpdateItemDB(id, updateTime))
+    public synchronized boolean putCollectionItem(long id, MBCollectionItem item, String updateTime) {
+
+        // 沒有update time
+		if(TextUtils.isEmpty(updateTime) || item == null)
+            return false;
+
+        if(DeBug.DEBUG)
+            DeBug.w(TAG, "[Check Collection Item] put Collection - "+item.getName()+" : updateTiem = "+updateTime);
+        // 檢查update time是否一致. 如果不一致. 砍掉重設定
+        if (!checkNeedToUpdateItemDB(id, updateTime))
     		return true;
-    	
+
+        if(DeBug.DEBUG)
+            DeBug.i(TAG, "[Check Collection Item] put Collection - "+item.getName()+" go to put");
+
     	SQLiteDatabase db = mHelper.getWritableDatabase();
     	// 砍掉
     	db.delete(DataDBHelper.COLLECTION_ITEM_TABLE_NAME, 
@@ -126,6 +106,8 @@ public class DataDB {
     	cv.put(DataDBHelper.COLLECTION_ITEM_OBJECT, serializeObject(item));
        	cv.put(DataDBHelper.COLLECTION_ITEM_UPDATE_TIME, updateTime);
     	long orderId = db.insert(DataDBHelper.COLLECTION_ITEM_TABLE_NAME, null, cv);
+        if(DeBug.DEBUG)
+            DeBug.i(TAG, "[Check Collection Item] put Collection, dbID = "+orderId);
 
     	if(orderId < 0) {
     		return false;
@@ -133,7 +115,7 @@ public class DataDB {
     	return true;
     }
     
-    public boolean checkNeedToUpdateItemDB(long id, String updateTime) {
+    public synchronized boolean checkNeedToUpdateItemDB(long id, String updateTime) {
         if(DeBug.DEBUG)
             DeBug.i(TAG, "[Check Collection Item] check item update time : "+updateTime);
 
@@ -154,6 +136,10 @@ public class DataDB {
 	    		}
                 if(DeBug.DEBUG)
                     DeBug.i(TAG, "[Check Collection Item] pass update");
+            } else {
+                if(DeBug.DEBUG)
+                    DeBug.i(TAG, "[Check Collection Item] no data. need update");
+                return true;
             }
     	} catch(Exception e) {
             if(DeBug.DEBUG)
@@ -164,7 +150,7 @@ public class DataDB {
     	return false;
     }
 
-    public MBCollectionItem getCollectionItem(long id) {
+    public synchronized MBCollectionItem getCollectionItem(long id) {
     	try {
 	    	SQLiteDatabase db = mHelper.getWritableDatabase();
 	    	DeBug.i(TAG, "getCollectionItem 1");
@@ -190,7 +176,7 @@ public class DataDB {
     /*
      * Place item
      */
-    public boolean putPlaceItem(long id, MBPointData item, String updateTime) {
+    public synchronized boolean putPlaceItem(long id, MBPointData item, String updateTime) {
     	// 檢查update time是否一致. 如果不一致. 砍掉重設定
     	if(!checkNeedToUpdatePlaceItemDB(id, updateTime))
     		return true;
@@ -213,10 +199,10 @@ public class DataDB {
     	return true;
     }
     
-    public boolean checkNeedToUpdatePlaceItemDB(long id, String updateTime) {
+    public synchronized boolean checkNeedToUpdatePlaceItemDB(long id, String updateTime) {
 //    	try {
 	    	SQLiteDatabase db = mHelper.getWritableDatabase();
-	    	DeBug.i(TAG, "checkNeedToUpdatePlaceItemDB 1");
+	    	DeBug.i(TAG, "[Check Place Item] checkNeedToUpdatePlaceItemDB 1");
 	    	Cursor cursor = db.query(DataDBHelper.PLACE_ITEM_TABLE_NAME,
 	    			DataDBHelper.PLACE_ITEM_TABLE_COLUMNS,
 	    			DataDBHelper.PLACE_ITEM_ID+"="+id , null, null, null, null);
@@ -227,7 +213,11 @@ public class DataDB {
                         !updateTime.equals(cursor.getString((cursor.getColumnIndex(DataDBHelper.PLACE_ITEM_UPDATE_TIME))))) {
 	    			return true;
 	    		}
-	    	}
+            } else {
+                if(DeBug.DEBUG)
+                    DeBug.i(TAG, "[Check Place Item] no data. need update");
+                return true;
+            }
 //    	} catch(Exception e) {
 //    		DeBug.i(TAG, "get Place Item Exception !!!");
 //    		e.printStackTrace();
@@ -237,7 +227,7 @@ public class DataDB {
     	return false;
     }
 
-    public MBPointData getPlaceItem(long id) {
+    public synchronized MBPointData getPlaceItem(long id) {
     	try {
 	    	SQLiteDatabase db = mHelper.getWritableDatabase();
 	    	DeBug.i(TAG, "getPlaceItem 1");
@@ -262,7 +252,7 @@ public class DataDB {
     }
 
     // ===== set and get byte array =====
- 	public static Object deserializeObject(byte[] b) {
+ 	public synchronized static Object deserializeObject(byte[] b) {
  		try {
  			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(b));
  			Object object = in.readObject();
@@ -280,7 +270,7 @@ public class DataDB {
  		}
  	}
 
- 	public static byte[] serializeObject(Object o) {
+ 	public synchronized static byte[] serializeObject(Object o) {
  		ByteArrayOutputStream bos = new ByteArrayOutputStream();
  		try {
  			ObjectOutput out = new ObjectOutputStream(bos);

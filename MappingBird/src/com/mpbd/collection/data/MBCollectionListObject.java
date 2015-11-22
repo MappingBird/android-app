@@ -11,6 +11,7 @@ import com.mappingbird.api.OnAddCollectionListener;
 import com.mappingbird.api.OnGetCollectionsListener;
 import com.mappingbird.common.MappingBirdApplication;
 import com.mappingbird.common.MappingBirdPref;
+import com.mpbd.data.cache.CacheData;
 import com.mpbd.data.db.DataDB;
 import com.mpbd.data.db.DataDBHelper;
 
@@ -53,6 +54,8 @@ public class MBCollectionListObject {
                 mLastStatusCode = statusCode;
                 // 存入DB裡面
                 mDataDB.putCollectionList(collection, System.currentTimeMillis());
+                // 準備開始Cache
+                MappingBirdApplication.instance().getCacheData().perpareCollectionCache(collection);
             } else {
                 // Server沒拿到改拿Cache的直
                 mLastCollections = mDataDB.getCollectionList();

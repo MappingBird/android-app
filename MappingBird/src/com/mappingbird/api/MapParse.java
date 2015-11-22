@@ -447,7 +447,19 @@ class MapParse {
 		long userId = obj.optLong("user");
 		DeBug.i(TAG, "[collection info json] userId=" + userId);
 
-		JSONArray array = obj.getJSONArray("points");
+        String updateTime = null;
+        if(obj.has("update_time")) {
+            updateTime = obj.getString("update_time");
+        }
+        DeBug.i(TAG, "[collection info json] updateTime=" + updateTime);
+
+        String createTime = null;
+        if(obj.has("create_time")) {
+            createTime = obj.getString("create_time");
+        }
+        DeBug.i(TAG, "[collection info json] createTime=" + createTime);
+
+        JSONArray array = obj.getJSONArray("points");
 		ArrayList<MBPointData> points = new ArrayList<MBPointData>();
 		points.clear();
 		for (int i = 0; i < array.length(); i++) {
@@ -512,7 +524,7 @@ class MapParse {
 			points.add(new MBPointData(pid, title, coordinates, type, images,
 					tags, new MBLocation(lId, lcoordinates, address)));
 		}
-		return new MBCollectionItem(cid, userId, name, points);
+		return new MBCollectionItem(cid, userId, name, createTime, updateTime, points);
 	}
 
 	public static long parseErrorResult(String rsp) throws JSONException {

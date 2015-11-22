@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/google-play-services_lib/google-play-services_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/mlibray/mlibray.iml" filepath="$PROJECT_DIR$/mlibray/mlibray.iml" />
+      <module fileurl="file://$PROJECT_DIR$/universal-image-loader-1.9.4/universal-image-loader-1.9.4.iml" filepath="$PROJECT_DIR$/universal-image-loader-1.9.4/universal-image-loader-1.9.4.iml" />
     </modules>
   </component>
 </project>

@@ -1,26 +1,27 @@
 package com.mpbd.data.cache;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-
 import com.mappingbird.api.MBCollectionList;
-import com.mappingbird.common.DeBug;
 
 
 public class CacheData {
-	private final static String TAG = "DataDB";
-    private CacheTask mCacheTask = null;
+	private final static String TAG = "MB.CacheData";
+    private CacheCollectionTask mCacheCollectionTask = null;
 
     public CacheData() {
-
     }
 
-    public void perpareCache(MBCollectionList list) {
-        if(mCacheTask != null)
+    public void perpareCollectionCache(MBCollectionList list) {
+        if(mCacheCollectionTask != null && mCacheCollectionTask.isRunning())
             return;
 
-
+        // 準備確認是否要Cache Collection
+        mCacheCollectionTask = new CacheCollectionTask();
+        mCacheCollectionTask.syncData(list);
     }
 
+    public void stopCacheCollection() {
+        if(mCacheCollectionTask != null) {
+            mCacheCollectionTask.stop();
+        }
+    }
 }

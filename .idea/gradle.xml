@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/ViewPagerIndicator_library" />
             <option value="$PROJECT_DIR$/google-play-services_lib" />
             <option value="$PROJECT_DIR$/mlibray" />
+            <option value="$PROJECT_DIR$/universal-image-loader-1.9.4" />
           </set>
         </option>
       </GradleProjectSettings>
