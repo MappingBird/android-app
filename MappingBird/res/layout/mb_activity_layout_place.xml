@@ -316,10 +316,10 @@
             android:text="@string/iconfont_arrow_left" />
 
         <com.mpbd.widget.MappingbirdFontIcon
-            android:id="@+id/share_icon_back"
+            android:id="@+id/menu_icon_back"
             style="@style/TitleButtonStyle"
             android:layout_alignParentRight="true"
-            android:text="@string/iconfont_share" />
+            android:text="@string/iconfont_dots_vertical" />
 
         <com.mpbd.widget.MappingbirdTextView
             android:id="@+id/trip_detail_title_name"
@@ -327,7 +327,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/share_icon_back"
+            android:layout_toLeftOf="@id/menu_icon_back"
             android:layout_toRightOf="@id/back_icon_back"
             android:singleLine="true"
             android:textColor="@color/white" />
@@ -346,10 +346,9 @@
             android:text="@string/iconfont_arrow_left" />
 
         <com.mpbd.widget.MappingbirdFontIcon
-            android:id="@+id/share_icon"
+            android:id="@+id/menu_icon"
             style="@style/TitleButtonStyle"
             android:layout_alignParentRight="true"
-            android:text="@string/iconfont_share" />
+            android:text="@string/iconfont_dots_vertical" />
     </RelativeLayout>
-
 </com.mpbd.widget.MappingbirdPlaceLayout>

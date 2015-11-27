@@ -177,7 +177,7 @@ public class MappingBirdAPI {
 		String url = mHost + "/api/scraper?url="+placeUrl;
 		String method = "GET";
 		mUtil.sendGetHtmlDataByUrl(NetwokConnection.API_GET_HTML_DATA_BY_URL,
-				listener, url, method);
+                listener, url, method);
 	}
 
 	public void searchfromFourSquare(OnSearchFourSquareListener listener, double latitude, double longitude, String key, int limit) {
@@ -195,7 +195,7 @@ public class MappingBirdAPI {
 				url = url + "&radius=" + radius;
 		}
 		mUtil.sendSearchFourSquare(NetwokConnection.API_SEARCH_FOURSQUARE,
-				listener, url, method);
+                listener, url, method);
 	}
 	
 	public void explorefromFourSquare(OnExploreFourSquareListener listener, double latitude, double longitude, int limit) {
@@ -214,7 +214,7 @@ public class MappingBirdAPI {
 				url = url + "&radius=" + radius;
 		}
 		mUtil.sendExploreFourSquare(NetwokConnection.API_EXPLORE_FOURSQUARE,
-				listener, url, method);
+                listener, url, method);
 	}
 
 	public boolean logOut() {
@@ -241,4 +241,12 @@ public class MappingBirdAPI {
 	private boolean clearUser() {
 		return mCurrentUserPref.deleteUser(getCurrentUser());
 	}
+
+	public void deletePlace(OnDeletePlaceListener listener, long id) {
+
+        String url = mHost + "/api/points/"+id;
+        String method = "DELETE";
+        mUtil.sendDeletePlaecInfo(NetwokConnection.API_DELETE_PLACE,
+                listener, url, method);
+    }
 }

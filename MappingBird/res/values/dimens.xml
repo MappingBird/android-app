@@ -47,6 +47,9 @@
     <dimen name="place_item_card_icon_width">72dp</dimen>
     <dimen name="place_item_card_icon_height">72dp</dimen>
     <dimen name="place_item_card_height">72dp</dimen>
+    <dimen name="place_item_card_max_position">220dp</dimen>
+    <dimen name="place_item_list_info_height">80dp</dimen>
+    <dimen name="place_menu_top">24dp</dimen>
 
     <!-- Collection listlayout -->
     <dimen name="list_layout_card_height">82dp</dimen>
@@ -61,8 +64,6 @@
     <dimen name="list_layout_item_info_height">70dp</dimen>
     <dimen name="list_layout_item_distance_width">80dp</dimen>
     <dimen name="list_layout_item_address_height">60dp</dimen>
-    <dimen name="place_item_card_max_position">220dp</dimen>
-    <dimen name="place_item_list_info_height">80dp</dimen>
     <dimen name="list_layout_new_card_icon_width">76dp</dimen>
     <dimen name="list_layout_new_card_icon_height">70dp</dimen>
     <dimen name="list_layout_new_card_height">75dp</dimen>
@@ -134,5 +135,4 @@
 
     <!-- Tag item -->
     <dimen name="tag_item_height">41dp</dimen>
-
 </resources>

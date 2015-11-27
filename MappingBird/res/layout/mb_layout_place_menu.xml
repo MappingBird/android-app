@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg_general"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/place_menu_edit_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/menu_item_bg"
+        android:orientation="horizontal">
+
+        <com.mpbd.widget.MappingbirdFontIcon
+            android:id="@+id/place_menu_edit_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:gravity="center"
+            android:text="@string/iconfont_edit"
+            android:textColor="@color/graphic_symbol"
+            android:textSize="16dp" />
+
+        <com.mpbd.widget.MappingbirdTextView
+            android:id="@+id/place_menu_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical"
+            android:minWidth="64dp"
+            android:text="@string/menu_edit"
+            android:textColor="@color/font_normal"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/default_divider" />
+
+    <LinearLayout
+        android:id="@+id/place_menu_delete_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/menu_item_bg"
+        android:orientation="horizontal">
+
+        <com.mpbd.widget.MappingbirdFontIcon
+            android:id="@+id/place_menu_delete_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:gravity="center"
+            android:text="@string/iconfont_delete"
+            android:textColor="@color/graphic_symbol"
+            android:textSize="16dp" />
+
+        <com.mpbd.widget.MappingbirdTextView
+            android:id="@+id/place_menu_delete_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical"
+            android:minWidth="64dp"
+            android:text="@string/menu_delete"
+            android:textColor="@color/font_normal"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/default_divider" />
+
+    <LinearLayout
+        android:id="@+id/place_menu_share_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/menu_item_bg"
+        android:orientation="horizontal">
+
+        <com.mpbd.widget.MappingbirdFontIcon
+            android:id="@+id/place_menu_share_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:gravity="center"
+            android:text="@string/iconfont_share"
+            android:textColor="@color/graphic_symbol"
+            android:textSize="16dp" />
+
+        <com.mpbd.widget.MappingbirdTextView
+            android:id="@+id/place_menu_share_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical"
+            android:minWidth="64dp"
+            android:text="@string/menu_share"
+            android:textColor="@color/font_normal"
+            android:textSize="16dp" />
+    </LinearLayout>
+</LinearLayout>

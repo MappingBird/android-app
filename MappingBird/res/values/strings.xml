@@ -85,8 +85,6 @@
     <string name="collection_dialog_successed_upload_msg">New place has been successfully saved to \"%1$s\"</string>
     <string name="collection_dialog_btn_check_it_now">Check it now</string>
     <string name="collection_locationg_hint">Locating your current position, wait for a few moment</string>
-    <!--  -->
-    <string name="place_last_update">Last edit - %s</string>
 
     <!-- Distance -->
     <string name="distance_less_one_meter">&#060;1</string>
@@ -141,7 +139,9 @@
     
     <!-- Detal Place -->
     <string name="place_businees_closed">Closed</string>
-    
+    <string name="place_last_update">Last edit - %s</string>
+    <string name="place_delete_msg">Are you sure you want to delete this place?</string>
+
     <!-- Add current location -->
     <string name="create_location_title">Locating a new place</string>
     <string name="create_location_title_with_text">Locating %s</string>
@@ -220,4 +220,9 @@
     <string name="share_to_dg_input_about_title">Input description</string>
     <string name="share_to_dg_select_collection_title">Select collection</string>
     <string name="share_to_dg_input_another_title">Sorry, this place doesn\'t available. Please try another one.</string>
+
+    <!-- Menu -->
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_share">Share</string>
 </resources>

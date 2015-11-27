@@ -10,7 +10,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,12 +20,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -31,6 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.mappingbird.api.ImageDetail;
 import com.mappingbird.api.MBPointData;
 import com.mappingbird.api.MappingBirdAPI;
+import com.mappingbird.api.OnDeletePlaceListener;
 import com.mappingbird.api.OnGetPointsListener;
 import com.mappingbird.common.BitmapLoader;
 import com.mappingbird.common.BitmapParameters;
@@ -70,7 +77,6 @@ public class MBPlaceActivity extends Activity implements
 	private ImageView mTripMapView = null;
 	private MappingbirdScrollView mScrollView = null;
 
-	
 	private View mPlacePhoneLayout = null;
 	private TextView mPlacePhone = null;
 
@@ -103,7 +109,6 @@ public class MBPlaceActivity extends Activity implements
 	private double mPlaceLongitude = 0;
 	private LatLng mMyLocation = null;
 
-	private MappingBirdAPI mApi = null;
 	private MBPointData mPoint = null;
 	private Context mContext = null;
 	private Dialog mLoadingDialog = null;
@@ -121,6 +126,8 @@ public class MBPlaceActivity extends Activity implements
 	
 	//
 	MBDialog mDialog;
+    // Menu
+    private PopupWindow mMenuWindow;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -268,7 +275,7 @@ public class MBPlaceActivity extends Activity implements
 		
 		mPlaceAddressOnMap = (TextView) findViewById(R.id.trip_map_address);
 		mPinIcon = (TextView) findViewById(R.id.pin_icon);
-		findViewById(R.id.share_icon).setOnClickListener(mShareClickListener);
+		findViewById(R.id.menu_icon).setOnClickListener(mShareClickListener);
 
 		mTripMapView = (ImageView) findViewById(R.id.trip_map_view);
 		mTripMapView.setOnClickListener(this);
@@ -459,25 +466,107 @@ public class MBPlaceActivity extends Activity implements
 
 		@Override
 		public void onClick(View v) {
-			String placeInfo = "";
-			if (mPoint != null) {
-				placeInfo = String.format(getString(R.string.share_string),
-						mPoint.getLocation().getPlaceName(),
-						mPoint.getUrl());
-//				placeInfo = mPoint.getLocation().getPlaceName() + "\n"
-//						+ mPoint.getLocation().getPlaceAddress() + "\n"
-//						+ mPoint.getUrl()+"\n";
-				getShareIntent("Share", placeInfo);
-				
-				
-	            AppAnalyticHelper.sendEvent(MBPlaceActivity.this, 
-	                    AppAnalyticHelper.CATEGORY_UI_ACTION, 
-	                    AppAnalyticHelper.ACTION_BUTTON_PRESS,
-	                    AppAnalyticHelper.LABEL_BUTTON_SHARE, 0);   
-			}
+            if(mMenuWindow == null) {
+                View layout = LayoutInflater.from(MBPlaceActivity.this).inflate(
+                        R.layout.mb_layout_place_menu, null);
+                layout.findViewById(R.id.place_menu_edit_layout).setOnClickListener(mMenuClickListener);
+                layout.findViewById(R.id.place_menu_delete_layout).setOnClickListener(mMenuClickListener);
+                layout.findViewById(R.id.place_menu_share_layout).setOnClickListener(mMenuClickListener);
+                mMenuWindow = new PopupWindow(layout);
+                mMenuWindow.setWindowLayoutMode(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                mMenuWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                mMenuWindow.setOutsideTouchable(true);
+                mMenuWindow.setFocusable(true);
+                mMenuWindow.setAnimationStyle(R.style.PopupMenuAnimation);
+                mMenuWindow.setContentView(layout);
+            }
 
-		}
+            mMenuWindow.showAtLocation(findViewById(R.id.trip_detail_title), Gravity.RIGHT
+                    | Gravity.TOP, 0, (int) getResources().getDimension(R.dimen.place_menu_top));
+        }
 	};
+
+    private OnDeletePlaceListener mDeletePlaceListener = new OnDeletePlaceListener() {
+        @Override
+        public void OnDeletePlaceListener(int statusCode) {
+            if(DeBug.DEBUG)
+                DeBug.d(TAG, "[Delete Place] statusCode = "+statusCode);
+            if(statusCode == MappingBirdAPI.RESULT_OK) {
+                if(mLoadingDialog != null && mLoadingDialog.isShowing())
+                    mLoadingDialog.dismiss();
+                // 成功刪除
+                setResult(RESULT_OK);
+                finish();
+            } else {
+                // 刪除失敗
+                //跳出失敗的Dialog
+                if(mLoadingDialog != null && mLoadingDialog.isShowing())
+                    mLoadingDialog.dismiss();
+            }
+        }
+    };
+
+    private OnClickListener mMenuClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.place_menu_edit_layout:
+                    dismissMenu();
+
+                    break;
+                case R.id.place_menu_delete_layout:
+                    dismissMenu();
+                    mDialog = new MBDialog(mContext);
+                    mDialog.setTitle(getString(R.string.place_delete_msg));
+                    mDialog.setPositiveBtn(getString(R.string.ok), new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mDialog != null && mDialog.isShowing())
+                                mDialog.dismiss();
+                            MappingBirdAPI api = new MappingBirdAPI(MappingBirdApplication.instance().getApplicationContext());
+                            api.deletePlace(mDeletePlaceListener, mPoint.getId());
+                            mLoadingDialog.show();
+                        }
+                    }, MBDialog.BTN_STYLE_DEFAULT);
+                    mDialog.setNegativeBtn(getString(R.string.str_cancel), new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (mDialog != null && mDialog.isShowing())
+                                mDialog.dismiss();
+                        }
+                    }, MBDialog.BTN_STYLE_DEFAULT);
+                    mDialog.show();
+                    break;
+                case R.id.place_menu_share_layout:
+                    dismissMenu();
+                    sharPlace();
+                    break;
+            }
+        }
+    };
+
+    private void dismissMenu() {
+        if(mMenuWindow != null && mMenuWindow.isShowing()) {
+            mMenuWindow.dismiss();
+        }
+    }
+	private void sharPlace() {
+        String placeInfo = "";
+        if (mPoint != null) {
+            placeInfo = String.format(getString(R.string.share_string),
+                    mPoint.getLocation().getPlaceName(),
+                    mPoint.getUrl());
+            getShareIntent("Share", placeInfo);
+
+
+            AppAnalyticHelper.sendEvent(MBPlaceActivity.this,
+                    AppAnalyticHelper.CATEGORY_UI_ACTION,
+                    AppAnalyticHelper.ACTION_BUTTON_PRESS,
+                    AppAnalyticHelper.LABEL_BUTTON_SHARE, 0);
+        }
+    }
 
 	View.OnClickListener mPositiveListener = new View.OnClickListener() {
 

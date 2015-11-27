@@ -28,6 +28,7 @@ final class MappingBirdUtil {
     private static final int MSG_UPLOAD_IMAGE_PATH_FINISH = 11;
     private static final int MSG_GET_PLACE_BY_URL = 12;
     private static final int MSG_GET_HTML_DATA_BY_URL = 13;
+    private static final int MSG_DELETE_PLACE = 14;
 
     private final static int LOADING_THREAD_MAX = 1;
     // 同一個或分開都可以
@@ -386,6 +387,37 @@ final class MappingBirdUtil {
         }
     }
 
+    public void sendDeletePlaecInfo(int apiType,
+                                      OnDeletePlaceListener listener, String url, String method) {
+
+        DeBug.d(TAG, "[sendDeletePlaceInfo]");
+        Info info = new Info(apiType, listener, url, method);
+        LoadInfoThread thread = mLoadingThreadHashMap.get(info.mKey);
+        if (thread != null) {
+            DeBug.d(TAG, "[sendDeletePlaceInfo] thread exist.");
+            thread.addDeletePlaceListener(listener);
+        } else {
+            if (mLoadingThreadHashMap.size() >= LOADING_THREAD_MAX) {
+                Info waitinfo = mWaitHaspMap.get(info.mKey);
+                if (waitinfo != null) {
+                    DeBug.d(TAG, "[sendDeletePlaceInfo] info exist");
+                    waitinfo.addDeletePlaceListener(listener);
+                } else {
+                    DeBug.d(TAG, "[sendDeletePlaceInfo] info add");
+                    mWaitHaspMap.put(info.mKey, info);
+                    mWaitIndexArray.add(info.mKey);
+                }
+            } else {
+                DeBug.d(TAG, "[sendDeletePlaceInfo] thread <1");
+                thread = new LoadInfoThread(info);
+                mLoadingThreadHashMap.put(info.mKey, thread);
+                thread.start();
+            }
+        }
+    }
+
+
+    // -------
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -459,6 +491,11 @@ final class MappingBirdUtil {
                         info.setShareHtmlDataListener();
                     }
                     break;
+                case MSG_DELETE_PLACE:
+                    if (msg.obj instanceof Info) {
+                        info.setDeletePlaceListener();
+                    }
+                    break;
             }
             mLoadingThreadHashMap.remove(info.mKey);
             checkWaitLoadInfoMap();
@@ -483,6 +520,7 @@ final class MappingBirdUtil {
 
         private ArrayList<OnGetPlaceByUrlListener> mOnGetPlaceByUrlListenerArray = new ArrayList<OnGetPlaceByUrlListener>();
         private ArrayList<OnGetHtmlDataByUrlListener> mOnGetHtmlDataByUrlListenerArray = new ArrayList<OnGetHtmlDataByUrlListener>();
+        private ArrayList<OnDeletePlaceListener> mOnDeletePlaceListenerArray = new ArrayList<OnDeletePlaceListener>();
 
         private String mKey;
         private MBCollectionList mCollections;
@@ -629,6 +667,17 @@ final class MappingBirdUtil {
             mApiType = apiType;
         }
 
+        public Info(int apiType, OnDeletePlaceListener listener,
+                    String url, String method) {
+            mUrl = url;
+            mMethod = method;
+            mPostdata = null;
+            mOnDeletePlaceListenerArray.clear();
+            mOnDeletePlaceListenerArray.add(listener);
+            mKey = createKey();
+            mApiType = apiType;
+        }
+
         private String createKey() {
             return mUrl + mMethod + mPostdata;
         }
@@ -764,6 +813,12 @@ final class MappingBirdUtil {
                 mOnGetHtmlDataByUrlListenerArray.add(cListener);
         }
 
+        public void addDeletePlaceListener(
+                OnDeletePlaceListener cListener) {
+            if(!mOnDeletePlaceListenerArray.contains(cListener))
+                mOnDeletePlaceListenerArray.add(cListener);
+        }
+
         public void setStatus(int status) {
             mStatus = status;
         }
@@ -866,6 +921,13 @@ final class MappingBirdUtil {
                     listener.onGetHtmlDataByUrlListener(mStatus, mShareHtmlData);
             }
         }
+
+        public void setDeletePlaceListener() {
+            for (OnDeletePlaceListener listener : mOnDeletePlaceListenerArray) {
+                if (listener != null)
+                    listener.OnDeletePlaceListener(mStatus);
+            }
+        }
     }
 
     class LoadInfoThread extends Thread {
@@ -938,6 +1000,12 @@ final class MappingBirdUtil {
         public void addHtmlDataByUrlListener(OnGetHtmlDataByUrlListener listener) {
             if(mInfo != null)
                 mInfo.addGetHtmlDataByUrlListener(listener);
+        }
+
+        public void addDeletePlaceListener(
+                OnDeletePlaceListener cListener) {
+            if (mInfo != null)
+                mInfo.addDeletePlaceListener(cListener);
         }
 
         @Override
@@ -1018,6 +1086,9 @@ final class MappingBirdUtil {
                     MBShareHtmlData data = handler.getShareHtmlDataList();
                     mInfo.setmShareHtmlData(data);
                     msg.what = MSG_GET_HTML_DATA_BY_URL;
+                    break;
+                case NetwokConnection.API_DELETE_PLACE:
+                    msg.what = MSG_DELETE_PLACE;
                     break;
             }
             msg.obj = mInfo;

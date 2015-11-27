@@ -18,6 +18,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -54,6 +55,7 @@ class NetwokConnection {
 	public static final int API_UPLOAD_IMAGE_PATH = 11;
 	public static final int API_GET_PLACE_BY_URL = 12;
 	public static final int API_GET_HTML_DATA_BY_URL = 13;
+	public static final int API_DELETE_PLACE = 14;
 
 	private static User mUser = null;
 	private static Context mContext = null;
@@ -179,22 +181,33 @@ class NetwokConnection {
 						return MappingBirdAPI.RESULT_UNKNOW_ERROR;
 					}
 					break;
-				case API_EXPLORE_FOURSQUARE:
-					long ecode = MapParse.parseErrorResult(rsp);
-					if (ecode == 200) {
-						mVenues = MapParse.parseExploreResult(rsp);
-					} else if (ecode == 400) {
-						return MappingBirdAPI.RESULT_BAD_REQUEST_ERROR;
-					} else {
-						return MappingBirdAPI.RESULT_UNKNOW_ERROR;
-					}
-					break;
+				case API_EXPLORE_FOURSQUARE: {
+                    long ecode = MapParse.parseErrorResult(rsp);
+                    if (ecode == 200) {
+                        mVenues = MapParse.parseExploreResult(rsp);
+                    } else if (ecode == 400) {
+                        return MappingBirdAPI.RESULT_BAD_REQUEST_ERROR;
+                    } else {
+                        return MappingBirdAPI.RESULT_UNKNOW_ERROR;
+                    }
+                    break;
+                }
                 case API_GET_PLACE_BY_URL:
                     mbSharePlaceList = MapParse.parseSharePlaceData(rsp);
                     break;
                 case API_GET_HTML_DATA_BY_URL:
                     mbShareHtmlData = MapParse.parseShareHtmlData(rsp);
                     break;
+                case API_DELETE_PLACE: {
+                    long ecode = MapParse.parseErrorResult(rsp);
+                    if (ecode == 204) {
+                    } else if (ecode == 400) {
+                        return MappingBirdAPI.RESULT_BAD_REQUEST_ERROR;
+                    } else {
+                        return MappingBirdAPI.RESULT_UNKNOW_ERROR;
+                    }
+                    break;
+                }
 				}
 			} else {
 				DeBug.e(TAG, "RSP is  NULL!");
@@ -311,7 +324,16 @@ class NetwokConnection {
 						"UTF-8");
 				post.setEntity(jsonentity);
 			}
-		}
+		} else if(method.equals("DELETE")) {
+            HttpDelete post = new HttpDelete(url);
+            request = post;
+            post.setHeader("Content-Type", "application/json");
+            post.setHeader("Accept", "application/json");
+            if(mCurrentUser != null) {
+                String auth = "Token " + mCurrentUser.getToken();
+                post.setHeader("Authorization", auth);
+            }
+        }
 
 		HttpResponse response = client.execute(request);
 		StatusLine status = response.getStatusLine();
@@ -319,16 +341,20 @@ class NetwokConnection {
 		DeBug.d(TAG, "statusCode =" + statusCode);
 		// 200 - SC_OK      : ok
 		// 201 - SC_CREATED : Post 指令被成功地執行
+        // 204 - SC_NO_CONTENT : Delet 指令被成功的執行
 		if (statusCode == HttpStatus.SC_OK ||
-				statusCode == HttpStatus.SC_CREATED) {
-			rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
-			if(apiType == API_LOGIN) {
-				Header[] headers = response.getAllHeaders();
-				for (Header header : headers) {
-					DeBug.d("Test" , "Key : " + header.getName() 
-					      + " ,Value : " + header.getValue());
-				}
-			}
+				statusCode == HttpStatus.SC_CREATED ) {
+            rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
+            if (apiType == API_LOGIN) {
+                Header[] headers = response.getAllHeaders();
+                for (Header header : headers) {
+                    DeBug.d("Test", "Key : " + header.getName()
+                            + " ,Value : " + header.getValue());
+                }
+            }
+        } else if( method.equals("DELETE") ||
+            statusCode == HttpStatus.SC_NO_CONTENT) {
+            rsp = "{\"meta\":{\"code\":204}}";
 		} else if (statusCode == HttpStatus.SC_BAD_REQUEST) {
 			rsp = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
 		} else {

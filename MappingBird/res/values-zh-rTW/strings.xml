@@ -79,8 +79,6 @@
     <string name="collection_dialog_successed_upload_msg">新地點已被成功地儲存至 \"%1$s\" 地圖</string>
     <string name="collection_dialog_btn_check_it_now">立即查看</string>
     <string name="collection_locationg_hint">定位您的位置需要一些時間，請稍候…</string>
-    <!--  -->
-    <string name="place_last_update">最後更新 - %s</string>
 
     <!-- Distance -->
     <string name="distance_less_one_meter">&#060;1</string>
@@ -134,6 +132,8 @@
     
     <!-- Detal Place -->
     <string name="place_businees_closed">公休日</string>
+    <string name="place_last_update">最後更新 - %s</string>
+    <string name="place_delete_msg">你確定要刪除這個地點嗎?</string>
     
     <!-- Add current location -->
     <string name="create_location_title">定位一個新位置</string>
@@ -212,4 +212,9 @@
     <string name="share_to_dg_input_about_title">輸入相關訊息</string>
     <string name="share_to_dg_select_collection_title">選擇地圖</string>
     <string name="share_to_dg_input_another_title">找不到啊，請用別的關鍵字試試</string>
+
+    <!-- Menu -->
+    <string name="menu_edit">編輯</string>
+    <string name="menu_delete">刪除</string>
+    <string name="menu_share">分享</string>
 </resources>

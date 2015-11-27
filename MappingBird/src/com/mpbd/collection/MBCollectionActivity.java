@@ -93,6 +93,8 @@ import com.pnikosis.materialishprogress.ProgressWheel;
 public class MBCollectionActivity extends FragmentActivity implements
 		ClusterManager.OnClusterItemInfoWindowClickListener<MBItem> {
 	private static final String TAG = "MappingBird";
+
+	private static final int REQUEST_PLACE_CHANGED = 1202;
 	
 	public static final String EXTRA_NOTIFY = "extra_notify";
 	public static final int NOTIFY_CANCEL_UPLOAD_IMAGE = 4;
@@ -410,7 +412,17 @@ public class MBCollectionActivity extends FragmentActivity implements
 		AppAnalyticHelper.endSession(this); 
 	}
 
-	// Create New collection
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_PLACE_CHANGED && resultCode == RESULT_OK) {
+            // 重新整理現在的Collection
+            mMBCollectionListLayout.closeLayout();
+            refreshThisCollections();
+        }
+    }
+
+    // Create New collection
 	private void createNewCollectionDialog() {
 		if(mCreateNewDialog != null && mCreateNewDialog.isShowing())
 			return;
@@ -914,10 +926,10 @@ public class MBCollectionActivity extends FragmentActivity implements
 				}
 	
 				intent.setClass(MBCollectionActivity.this,
-						com.mpbd.place.MBPlaceActivity.class);
-				MBCollectionActivity.this.startActivity(intent);
-				
-				AppAnalyticHelper.sendEvent(MBCollectionActivity.this, 
+                        com.mpbd.place.MBPlaceActivity.class);
+                MBCollectionActivity.this.startActivityForResult(intent, REQUEST_PLACE_CHANGED);
+
+                AppAnalyticHelper.sendEvent(MBCollectionActivity.this,
                         AppAnalyticHelper.CATEGORY_UI_ACTION, 
                         AppAnalyticHelper.ACTION_PLACE_LIST_ITEM_PRESS,
                         AppAnalyticHelper.LABEL_LIST_ITEM,
@@ -1106,7 +1118,7 @@ public class MBCollectionActivity extends FragmentActivity implements
 				
 							placeIntent.setClass(MBCollectionActivity.this,
 									com.mpbd.place.MBPlaceActivity.class);
-							MBCollectionActivity.this.startActivity(placeIntent);
+							MBCollectionActivity.this.startActivityForResult(placeIntent, REQUEST_PLACE_CHANGED);
 							return true;
 						}
 					}
@@ -1287,8 +1299,8 @@ public class MBCollectionActivity extends FragmentActivity implements
 				placeIntent.putExtra("myLongitude", mMyLocation.longitude);
 			}
 			placeIntent.setClass(MBCollectionActivity.this,
-					com.mpbd.place.MBPlaceActivity.class);
-			MBCollectionActivity.this.startActivity(placeIntent);
+                    com.mpbd.place.MBPlaceActivity.class);
+            MBCollectionActivity.this.startActivityForResult(placeIntent, REQUEST_PLACE_CHANGED);
 		}
 	};
 	

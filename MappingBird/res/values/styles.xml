@@ -183,4 +183,9 @@
         <item name="android:textSize">20dp</item>
         <item name="android:textColor">@color/iconfont_leading</item>
     </style>
+
+    <style name="PopupMenuAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popup_menu_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_menu_exist</item>
+    </style>
 </resources>

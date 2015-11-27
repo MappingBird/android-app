@@ -51,4 +51,8 @@
     
     <string name="iconfont_sync" translatable="false">\uE63C</string>
     <string name="iconfont_dots_vertical" translatable="false">\uE630</string>
+
+    <string name="iconfont_edit" translatable="false">\uE605</string>
+    <string name="iconfont_delete" translatable="false">\uE63d</string>
+
 </resources>
